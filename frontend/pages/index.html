@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hi! Paris - Accueil</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Styles fournis par l'utilisateur -->
+  <link rel="stylesheet" href="../styles/index.css" />
+</head>
+
+<body>
+  <!-- ===============================
+       WIDGET GOOGLE TRANSLATE (FR/EN)
+  ================================ -->
+  <div id="google_translate_element"
+    style="position: fixed; top: 20px; right: 20px; z-index: 9999; background: #004676; backdrop-filter: blur(10px); border-radius: 8px; padding: 5px 10px; box-shadow: 0 4px 15px rgb(255, 255, 255); border: 1px solid rgba(255,255,255,0.2);">
+  </div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'fr',
+        includedLanguages: 'en,fr', // On limite à Anglais et Français
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <style>
+    /* Nettoyage du style Google Translate pour que ça s'intègre mieux */
+    .goog-te-gadget-simple {
+      background-color: transparent !important;
+      border: none !important;
+      font-family: 'Inter', 'Nunito', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: white !important;
+    }
+
+    .goog-te-gadget-simple span {
+      color: white !important;
+    }
+
+    .goog-te-gadget-icon {
+      display: none;
+      /* Cache l'icone Google pour un look plus clean */
+    }
+
+    /* Cache la barre noire en haut générée par Google */
+    body {
+      top: 0px !important;
+    }
+
+    .skiptranslate iframe {
+      display: none !important;
+    }
+  </style>
+
+  <!-- ===============================
+       1. SLIDER ZONE
+  ================================ -->
+  <section id="zoom-home">
+    <div id="particles-js"></div>
+
+    <div class="slides-wrapper">
+
+      <!-- Slide 1 : Typewriter Text -->
+      <div class="slide slide-active" id="slide-1">
+        <img src="https://hi-paris.fr/wp-content/uploads/2019/12/hi-paris-logo-bleu-bg-footer.png" alt="Hi! Paris"
+          class="logo" style="width: 200px; margin-bottom: 20px;">
+        <h1 class="accroche" id="typewriter-text"></h1>
+      </div>
+
+      <!-- Slide 2 : Partenaires -->
+      <div class="slide" id="slide-2">
+        <h3 style="font-size: 2.8rem; font-family: 'Roboto'; margin-bottom: 50px; font-weight: 700;">Nos Membres &
+          Partenaires</h3>
+
+        <div style="display: flex; flex-direction: column; gap: 60px; align-items: center;">
+          <!-- Première ligne -->
+          <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+            <h3 class="stagger-item" style="font-size: 1.8rem; margin: 0; animation-delay: 0.2s;">Founding members
+            </h3>
+            <img src="Page-demo/Image/polytech_founding_member.png" alt="Polytechnique" class="stagger-item partner-img"
+              style="height: 150px; object-fit: contain; animation-delay: 0.7s;">
+            <img src="Page-demo/Image/hec_founding_member.png" alt="HEC" class="stagger-item partner-img"
+              style="height: 85px; object-fit: contain; animation-delay: 1.2s;">
+            <img src="Page-demo/Image/inria_founding_member.png" alt="Inria" class="stagger-item partner-img"
+              style="height: 85px; object-fit: contain; animation-delay: 1.7s;">
+          </div>
+
+          <!-- Deuxième ligne 
+          <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+            <h3 class="stagger-item" style="font-size: 1.8rem; margin: 0; animation-delay: 2.3s;">IA-Cluster members
+            </h3>
+            <img src="Page-demo/Image/cnrs_ia_cluster.png" alt="CNRS" class="stagger-item partner-img"
+              style="height: 85px; object-fit: contain; animation-delay: 2.8s;">
+            <img src="Page-demo/Image/utt_ia_cluster.png" alt="UTT" class="stagger-item partner-img"
+              style="height: 85px; object-fit: contain; animation-delay: 3.3s;">
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Slide 3 : Focus sur la plateforme -->
+      <div class="slide" id="slide-3">
+        <h2 style="font-size: 3rem; font-family: 'Roboto'; margin-bottom: 20px;">L'Apprentissage Par L'Action</h2>
+        <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+          Construisez, manipulez et observez vos propres réseaux de neurones s'entraîner en temps réel dans votre
+          navigateur.
+        </p>
+      </div>
+
+      <!-- Slide 4 : Statistiques express -->
+      <div class="slide" id="slide-4">
+        <h2 style="font-size: 3rem; font-family: 'Roboto'; margin-bottom: 20px; color: var(--e-global-color-accent);">
+          Un
+          Centre d'Innovation</h2>
+        <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+          Rejoignez une communauté florissante de chercheurs, d'enseignants et d'étudiants pionniers dans
+          l'Intelligence
+          Artificielle.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Contrôles Puces -->
+    <div class="slide-controls">
+      <div class="slide-dot active" onclick="goToSlide(0)"></div>
+      <div class="slide-dot" onclick="goToSlide(1)"></div>
+      <div class="slide-dot" onclick="goToSlide(2)"></div>
+      <div class="slide-dot" onclick="goToSlide(3)"></div>
+    </div>
+  </section>
+
+  <!-- ===============================
+       2. DESCRIPTION ZONE
+  ================================ -->
+  <section class="desc-zone container">
+    <div class="desc-logo">
+      <img src="Page-demo/Image/logo_f.png" alt="Hi Paris Playground Logo">
+    </div>
+    <div class="desc-text">
+      <h2>Apprenez le Deep Learning autrement grâce à Hi! Paris</h2>
+      <p>
+        Hi! Paris Playground est une plateforme interactive et ludique spécialement conçue pour démystifier le monde de
+        l'intelligence artificielle et des réseaux de neurones.
+      </p>
+      <p>
+        <strong>Pour les étudiants :</strong> Exécutez des algorithmes en temps réel, jouez avec l'architecture,
+        comprenez le rôle des couches cachées (Hidden Layers), et observez comment vos données sont classées devant vos
+        yeux.
+      </p>
+      <p>
+        <strong>Pour les enseignants :</strong> Créez facilement des exercices personnalisés, générez des jeux de
+        données complexes et partagez-les à toute la communauté pour guider vos élèves dans leur compréhension des
+        mathématiques de l'A.I.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===============================
+       3. BOUTONS ZONE
+  ================================ -->
+  <section class="action-zone">
+
+    <div style="text-align: center; margin-bottom: 20px;" class="container">
+      <!-- <div id="visitor-pill" class="visitor-pill" style="margin-bottom: 15px;">
+        <i class="fas fa-chart-line"></i>
+        <span id="visitor-count">0</span> visiteurs nous font confiance
+      </div> -->
+      <br>
+      <span style="font-size: 2.2rem; font-weight: 800; color: var(--e-global-color-primary);">Que souhaitez-vous faire
+        aujourd'hui ?</span>
+    </div>
+    <div class="container action-grid">
+
+      <!-- Bouton 1 S'entrainer -->
+      <a href="Page-demo/exercises.html" class="action-btn btn-train">
+        <span class="emoji">🕹️</span>
+        <h3>S'entraîner</h3>
+        <span class="sub">Faire des exercices interactifs.</span>
+      </a>
+
+      <!-- Bouton 2 Créer -->
+      <a href="create.html" class="action-btn btn-create">
+        <span class="emoji">🏗️</span>
+        <h3>Créer des exercices</h3>
+        <span class="sub">Partagez votre expertise à la communauté</span>
+      </a>
+
+      <!-- Bouton 3 Compte -->
+      <a href="login.html" class="action-btn btn-join">
+        <span class="emoji">👤</span>
+        <h3>Rejoindre</h3>
+        <span class="sub">Se connecter ou créer un compte</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       4. STATISTIQUES ZONE
+  ================================ -->
+  <section class="stat-zone container">
+    <div class="stat-grid" id="stats-section">
+
+      <!-- <div class="stat-box">
+        <h2 style="color: var(--e-global-color-primary);" class="counter" data-target="X">X</h2>
+        <h3>Étudiants<br>inscrits</h3>
+      </div> -->
+
+      <div class="stat-box">
+        <h2 style="color: var(--e-global-color-primary);" id="student-count-val">⌛</h2>
+        <h3>Étudiants<br>inscrits</h3>
+      </div>
+
+      <div class="stat-box">
+        <h2 style="color: var(--e-global-color-secondary);" id="teacher-count-val">⌛</h2>
+        <h3>Enseignants<br>Inscrits</h3>
+      </div>
+
+
+      <div class="stat-box">
+        <h2 style="color: var(--e-global-color-accent);" id="visit-count-val">⌛</h2>
+        <h3>Visites<br>sur la plateforme</h3>
+      </div>
+
+
+      <div class="stat-box">
+        <h2 style="color: var(--wp--preset--color--vivid-purple);" id="exercise-count-val">⌛</h2>
+        <h3>Exercices<br>disponibles</h3>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===============================
+       5. FOOTER ZONE
+  ================================ -->
+  <footer class="elementor-location-footer">
+    <div class="footer-inner">
+
+      <!-- LOGO ET CONTACTS -->
+      <div class="footer-col">
+        <a href="https://hi-paris.fr">
+          <img src="https://hi-paris.fr/wp-content/uploads/2019/12/hi-paris-logo-bleu-bg-footer.png" alt="Hi Paris Logo"
+            style="width: 180px; margin-bottom: 20px;">
+        </a>
+        <ul class="footer-icons">
+          <li>
+            <svg viewBox="0 0 448 512">
+              <path
+                d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48zm-16.39 307.37l-15 65A15 15 0 0 1 354 416C194 416 64 286.29 64 126a15.7 15.7 0 0 1 11.63-14.61l65-15A18.23 18.23 0 0 1 144 96a16.27 16.27 0 0 1 13.79 9.09l30 70A17.9 17.9 0 0 1 189 181a17 17 0 0 1-5.5 11.61l-37.89 31a231.91 231.91 0 0 0 110.78 110.78l31-37.89A17 17 0 0 1 299 291a17.85 17.85 0 0 1 5.91 1.21l70 30A16.25 16.25 0 0 1 384 336a17.41 17.41 0 0 1-.39 3.37z">
+              </path>
+            </svg>
+            <span>+33 (0)1 75 31 92 03</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 448 512">
+              <path
+                d="M400 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM178.117 262.104C87.429 196.287 88.353 196.121 64 177.167V152c0-13.255 10.745-24 24-24h272c13.255 0 24 10.745 24 24v25.167c-24.371 18.969-23.434 19.124-114.117 84.938-10.5 7.655-31.392 26.12-45.883 25.894-14.503.218-35.367-18.227-45.883-25.895zM384 217.775V360c0 13.255-10.745 24-24 24H88c-13.255 0-24-10.745-24-24V217.775c13.958 10.794 33.329 25.236 95.303 70.214 14.162 10.341 37.975 32.145 64.694 32.01 26.887.134 51.037-22.041 64.72-32.025 61.958-44.965 81.325-59.406 95.283-70.199z">
+              </path>
+            </svg>
+            <span>contact@hi-paris.fr</span>
+          </li>
+        </ul>
+        <div class="social-icons">
+          <a href="https://fr.linkedin.com/company/hi-paris-center" target="_blank"><svg viewBox="0 0 448 512">
+              <path
+                d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z">
+              </path>
+            </svg></a>
+          <a href="https://youtube.com/@hipariscenter?si=tvKXDW82UqhVr3ug" target="_blank"><svg viewBox="0 0 576 512">
+              <path
+                d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z">
+              </path>
+            </svg></a>
+          <a href="https://hi-paris.fr/feed/" target="_blank"><svg viewBox="0 0 448 512">
+              <path
+                d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z">
+              </path>
+            </svg></a>
+        </div>
+      </div>
+
+      <!-- PILLIERS HT PARIS -->
+      <div class="footer-col">
+        <h4>Pillars of Hi! PARIS</h4>
+        <ul class="footer-icons">
+          <li><a href="https://hi-paris.fr/engineering-team-research/">Research</a></li>
+          <li><a href="https://hi-paris.fr/engineering-team-innovation/">Innovation</a></li>
+          <li><a href="https://hi-paris.fr/engineering-team-education/">Education</a></li>
+          <li><a href="https://hi-paris.fr/ai-for-society/">Society</a></li>
+        </ul>
+      </div>
+
+      <!-- MEMBRES ACADEMIQUES -->
+      <div class="footer-col">
+        <h4>Academic Members</h4>
+        <ul class="footer-icons">
+          <li><a href="https://www.hec.edu/fr" target="_blank">HEC Paris</a></li>
+          <li><a href="https://www.ip-paris.fr" target="_blank">Institut Polytechnique de Paris</a></li>
+          <li><a href="https://www.inria.fr/fr" target="_blank">Inria</a></li>
+          <li><a href="https://www.cnrs.fr/fr" target="_blank">CNRS</a></li>
+          <li><a href="https://www.utt.fr" target="_blank">UTT</a></li>
+        </ul>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div class="footer-col">
+        <h4>Stay in the know by subscribing to our newsletter</h4>
+        <form class="sib_signup_form">
+          <input type="email" placeholder="Enter your email address" required="required">
+          <input type="submit" value="OK">
+        </form>
+      </div>
+
+    </div>
+
+    <!-- FOOTER BOTTOM COPY -->
+    <div class="footer-bottom">
+      <div>Hi! PARIS © All rights reserved</div>
+      <div><a href="https://hi-paris.fr/legal-notice/">Legal notice</a></div>
+    </div>
+  </footer>
+
+  <!-- ===============================
+       SCRIPTS JAVASCRIPT
+  ================================ -->
+  <!-- Particles.js pour le fond animé et étoilé du Slider -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <script>
+    /* --- 1. CONFIGURATION DES PARTICULES (nombres de neuroen bg) --- */
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 500, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.4, "random": false },
+        "size": { "value": 4, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
+        }
+      },
+      "retina_detect": true
+    });
+
+
+    /* --- 2. LOGIQUE DU SLIDER --- */
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slide-dot');
+    const totalSlides = slides.length;
+    let slideInterval;
+
+    function goToSlide(index) {
+      slides[currentSlide].classList.remove('slide-active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = index;
+      slides[currentSlide].classList.add('slide-active');
+      dots[currentSlide].classList.add('active');
+
+      resetInterval();
+
+      // Relance l'animation machine à écrire seulement si le slide 1 s'affiche
+      if (index === 0) {
+        document.getElementById('typewriter-text').innerHTML = '';
+        typeWriterIdx = 0;
+        setTimeout(typeWriter, 500);
+      }
+    }
+
+    function nextSlide() {
+      let next = (currentSlide + 1) % totalSlides;
+      goToSlide(next);
+    }
+
+    function resetInterval() {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 7000); // Change toutes les 7 secondes
+    }
+
+    // Démarre le slider
+    resetInterval();
+
+
+    /* --- 3. EFFET MACHINE À ÉCRIRE (Typewriter) --- */
+    const typeText = "Explorez, comprenez et maîtrisez le Deep Learning grâce à l'expérimentation visuelle des réseaux de neurones...";
+    let typeWriterIdx = 0;
+    const targetElement = document.getElementById('typewriter-text');
+
+    function typeWriter() {
+      if (typeWriterIdx < typeText.length) {
+        targetElement.innerHTML = typeText.substring(0, typeWriterIdx + 1) + '<span class="cursor">|</span>';
+        typeWriterIdx++;
+        setTimeout(typeWriter, 40); // Vitesse de frappe (40ms par lettre)
+      } else {
+        targetElement.innerHTML = typeText + '<span class="cursor">|</span>';
+      }
+    }
+    // Lancement de la frappe au chargement de la page (du slide 1)
+    setTimeout(typeWriter, 800);
+
+
+    /* --- 4. ANIMATION DES STATISTIQUES AU SCROLL --- */
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200; // Plus c'est bas, plus l'animation cible vite
+
+    const animateCounters = () => {
+      counters.forEach(counter => {
+        const updateCount = () => {
+          const target = +counter.getAttribute('data-target');
+          const count = +counter.innerText;
+          const inc = target / speed;
+
+          if (count < target) {
+            counter.innerText = Math.ceil(count + inc);
+            setTimeout(updateCount, 15);
+          } else {
+            counter.innerText = target + (target > 100 ? '+' : '');
+          }
+        };
+        updateCount();
+      });
+    };
+
+    // On utilise l'IntersectionObserver pour ne déclencher l'animation que quand on scrolle sur les stats
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.disconnect(); // On l'anime une seule fois
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(document.getElementById('stats-section'));
+
+
+    /* --- 5. COMPTEUR DE VISITEURS (Supabase) --- */
+    // La logique est désormais intégrée dans updateRealStats ci-dessous
+
+
+  </script>
+  <script>
+    // --- MISE À JOUR DES COMPTEURS DEPUIS L'API ---
+    const BASE_EXERCISES_COUNT = 17; // Nombre d'exercices de base (définis dans exercises.js)
+
+    function animateValue(el, start, end, duration) {
+      if (!el) return;
+      let startTime = null;
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        el.textContent = Math.ceil(progress * (end - start) + start);
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    async function updateRealStats() {
+      try {
+        // 1. Incrémenter la visite actuelle
+        await fetch('/api/stats/visit');
+
+        // 2. Récupérer toutes les stats utilisateurs
+        const res = await fetch('/api/stats/users');
+        const data = await res.json();
+
+        if (data.students !== undefined) document.getElementById('student-count-val').textContent = data.students;
+        if (data.teachers !== undefined) document.getElementById('teacher-count-val').textContent = data.teachers;
+        if (data.visits !== undefined) {
+          const formattedVisits = data.visits.toLocaleString();
+          if (document.getElementById('visit-count-val')) document.getElementById('visit-count-val').textContent = formattedVisits;
+          if (document.getElementById('visitor-count')) document.getElementById('visitor-count').textContent = formattedVisits;
+        }
+      } catch (err) {
+        console.error("Erreur stats utilisateurs:", err);
+      }
+
+      // 3. Récupérer le nombre d'exercices communautaires depuis l'API
+      const exoEl = document.getElementById('exercise-count-val');
+      try {
+        const exoRes = await fetch('/api/exercises');
+        if (exoRes.ok) {
+          const exoData = await exoRes.json();
+          const communityCount = Array.isArray(exoData) ? exoData.length : 0;
+          const totalExos = BASE_EXERCISES_COUNT + communityCount;
+          animateValue(exoEl, 0, totalExos, 17);
+        } else {
+          // Fallback : afficher uniquement les exercices de base
+          animateValue(exoEl, 0, BASE_EXERCISES_COUNT, 17);
+        }
+      } catch (err) {
+        console.warn("API exercices indisponible, affichage du nombre de base:", err);
+        animateValue(exoEl, 0, BASE_EXERCISES_COUNT, 17);
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', updateRealStats);
+  </script>
+</body>
+
+</html>

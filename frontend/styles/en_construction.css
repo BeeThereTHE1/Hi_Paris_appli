@@ -1,0 +1,207 @@
+ :root {
+     /* Couleurs officielles Hi! Paris */
+     --primary: #004676;
+     --secondary: #FF034D;
+     --accent: #61CE70;
+     /* Fond sombre typique du playground */
+     --bg: #0b0f1a;
+     --text: #ffffff;
+ }
+
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     background-color: var(--bg);
+     color: var(--text);
+     font-family: 'Nunito', sans-serif;
+     height: 100vh;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     overflow: hidden;
+     position: relative;
+ }
+
+ /* ====== ARRIÈRE-PLAN LUMINEUX ====== */
+ .orb {
+     position: absolute;
+     border-radius: 50%;
+     filter: blur(100px);
+     opacity: 0.4;
+     animation: drift 10s infinite alternate ease-in-out;
+     z-index: -1;
+ }
+
+ .orb-1 {
+     width: 500px;
+     height: 500px;
+     background: var(--primary);
+     top: -150px;
+     left: -150px;
+ }
+
+ .orb-2 {
+     width: 400px;
+     height: 400px;
+     background: var(--secondary);
+     bottom: -100px;
+     right: -100px;
+     animation-delay: -5s;
+ }
+
+ @keyframes drift {
+     from {
+         transform: translate(0, 0) scale(1);
+     }
+
+     to {
+         transform: translate(40px, 50px) scale(1.15);
+     }
+ }
+
+ /* ====== CONTENEUR GLASSSMORPHISM ====== */
+ .construction-container {
+     text-align: center;
+     padding: 50px 40px;
+     backdrop-filter: blur(16px);
+     -webkit-backdrop-filter: blur(16px);
+     background: rgba(255, 255, 255, 0.03);
+     border: 1px solid rgba(255, 255, 255, 0.08);
+     border-radius: 24px;
+     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+     max-width: 600px;
+     width: 90%;
+     animation: popup 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+     opacity: 0;
+     transform: scale(0.8);
+ }
+
+ @keyframes popup {
+     100% {
+         transform: scale(1);
+         opacity: 1;
+     }
+ }
+
+ /* ====== ANIMATIONS DES ENGRENAGES ====== */
+ .anim-icons {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 15px;
+     margin-bottom: 25px;
+     font-size: 3.5rem;
+ }
+
+ .gear {
+     display: inline-block;
+     animation: spin 5s linear infinite;
+ }
+
+ .gear.reverse {
+     animation-direction: reverse;
+     animation-duration: 4s;
+ }
+
+ @keyframes spin {
+     100% {
+         transform: rotate(360deg);
+     }
+ }
+
+ .pulse-brain {
+     font-size: 4.5rem;
+     animation: heartbeat 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+ }
+
+ @keyframes heartbeat {
+
+     0%,
+     100% {
+         transform: scale(1);
+         filter: drop-shadow(0 0 10px rgba(255, 3, 77, 0.5));
+     }
+
+     50% {
+         transform: scale(1.15);
+         filter: drop-shadow(0 0 25px rgba(255, 3, 77, 0.9));
+     }
+ }
+
+ /* ====== TYPOGRAPHIE ====== */
+ h1 {
+     font-family: 'Roboto', sans-serif;
+     font-size: 2.8rem;
+     font-weight: 900;
+     margin-bottom: 15px;
+     line-height: 1.2;
+     background: linear-gradient(135deg, #ffffff, #ffb3c6);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+ }
+
+ p {
+     font-size: 1.15rem;
+     color: #cbd5e1;
+     line-height: 1.7;
+     margin-bottom: 35px;
+ }
+
+ /* ====== LOADING BAR ====== */
+ .progress-bar {
+     width: 100%;
+     height: 6px;
+     background: rgba(255, 255, 255, 0.1);
+     border-radius: 10px;
+     overflow: hidden;
+     margin-bottom: 40px;
+     position: relative;
+ }
+
+ .progress-fill {
+     height: 100%;
+     width: 40%;
+     /* Pour simuler un chargement en cours */
+     background: linear-gradient(90deg, var(--primary), var(--secondary));
+     border-radius: 10px;
+     animation: scan 2s infinite ease-in-out alternate;
+ }
+
+ @keyframes scan {
+     0% {
+         transform: translateX(0%);
+         width: 20%;
+     }
+
+     100% {
+         transform: translateX(400%);
+         width: 20%;
+     }
+ }
+
+ /* ====== BOUTON ====== */
+ .btn-retour {
+     display: inline-flex;
+     align-items: center;
+     gap: 10px;
+     text-decoration: none;
+     padding: 14px 32px;
+     font-size: 1.1rem;
+     font-weight: 700;
+     color: #fff;
+     background: linear-gradient(135deg, var(--primary), var(--secondary));
+     border-radius: 30px;
+     transition: all 0.3s;
+     box-shadow: 0 10px 20px rgba(255, 3, 77, 0.25);
+ }
+
+ .btn-retour:hover {
+     transform: translateY(-4px);
+     box-shadow: 0 15px 30px rgba(255, 3, 77, 0.45);
+     filter: brightness(1.1);
+ }

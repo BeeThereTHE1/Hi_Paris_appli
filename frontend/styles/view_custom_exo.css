@@ -1,0 +1,24 @@
+ .preview-header {
+     background: rgba(15, 23, 42, 0.9);
+     padding: 20px 40px;
+     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+ }
+
+ .preview-badge {
+     background: #f59e0b;
+     color: white;
+     padding: 4px 12px;
+     border-radius: 20px;
+     font-size: 12px;
+     font-weight: 700;
+     text-transform: uppercase;
+ }
+
+ .main-view {
+     height: calc(100vh - 80px);
+     width: 100%;
+     border: none;
+ }

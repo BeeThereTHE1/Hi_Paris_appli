@@ -1,0 +1,132 @@
+:root {
+  --red: #c43b3b;
+  --text: #111;
+  --muted: #666;
+  --bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.page {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 28px 28px 20px;
+}
+
+.header {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.title-line,
+.subtitle-line {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  align-items: baseline;
+  gap: 12px;
+  border: 1px solid rgba(68, 59, 196, 0.35);
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-style: italic;
+  color: #3a7b3a;
+  /* léger vert comme sur ta slide */
+  font-size: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.2px;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.role-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 900px;
+  width: 100%;
+  margin: 60px auto 0;
+  align-content: start;
+}
+
+.role-btn {
+  background: #fff;
+  border: 2px solid var(--red);
+  color: var(--text);
+  padding: 28px 24px;
+  font-size: 44px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  text-decoration: none;
+}
+
+.role-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.role-btn:active {
+  transform: translateY(0px);
+  box-shadow: none;
+}
+
+.footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brand {
+  font-weight: 700;
+  color: #3d3bc2;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .role-picker {
+    grid-template-columns: 1fr;
+    margin-top: 40px;
+  }
+
+  .role-btn {
+    font-size: 34px;
+    padding: 22px;
+  }
+
+  .title-line,
+  .subtitle-line {
+    grid-template-columns: 60px 1fr;
+  }
+}

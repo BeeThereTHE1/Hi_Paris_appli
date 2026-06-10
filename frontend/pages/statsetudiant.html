@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques Étudiants - Neural Playground</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/statsetudiant.css">
+</head>
+
+<body>
+
+    <!-- ===============================
+       WIDGET GOOGLE TRANSLATE (FR/EN)
+  ================================ -->
+    <div id="google_translate_element" style="display: none !important;"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                includedLanguages: 'en,fr',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <style>
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+            font-family: 'Inter', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+        }
+
+        .goog-te-gadget-icon {
+            display: none;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        .skiptranslate iframe {
+            display: none !important;
+        }
+    </style>
+
+    <!-- Security Check: Redirect if not PROF -->
+    <script>
+        const u = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        const role = u ? (u.profil || u.profile || u.role || '').toUpperCase() : '';
+        const isTeacher = role.includes('TEACH') || role.includes('ENS') || role.includes('PROF');
+
+        if (!u) {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleEl = document.querySelector('.brand-name');
+            if (isTeacher) {
+                titleEl.innerText = "Neural Dashboard Enseignant";
+            } else {
+                titleEl.innerText = "Neural Dashboard Étudiant";
+                // Adaptation sidebar pour étudiant
+                const sidebarTitle = document.querySelector('.sidebar h2');
+                if (sidebarTitle) sidebarTitle.innerText = "Mon Espace";
+                const boardTab = document.querySelector('.menu-item[data-target="board-block"]');
+                if (boardTab) boardTab.innerHTML = '<span style="font-size: 1.2rem;">📈</span> Ma Progression';
+            }
+        });
+    </script>
+
+    <div class="orb-blur-1"></div>
+    <div class="orb-blur-2"></div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <a class="header-brand" href="index.html">
+            <div class="brand-icon">
+                <img src="Page-demo/Image/logo_f.png" style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo">
+            </div>
+            <span class="brand-name">Neural Dashboard</span>
+        </a>
+
+        <div class="header-right">
+            <a class="btn-back" href="Page-demo/exercises.html">
+                <span class="material-icons" style="font-size: 18px;">arrow_back</span> Page d'exercices
+            </a>
+            <!-- Widget Profil Header comme dans Historique -->
+            <div id="widget-profil-header"></div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+            <h2>Espace Enseignant</h2>
+            <nav style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="menu-item active" data-target="board-block">
+                    <span style="font-size: 1.2rem;">📊</span> Suivi des Étudiants
+                </div>
+                <!-- <div class="menu-item" data-target="chat-block">
+                    <span style="font-size: 1.2rem;">💬</span> Chat de Groupe
+                </div> -->
+            </nav>
+            <div style="flex:1;"></div> <!-- Spacer -->
+            <div
+                style="padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-size: 0.8rem; line-height: 1.5;">
+                <strong style="color:var(--success);">Astuce Pédagogique :</strong><br>
+                Surveillez le temps passé par exercice. Si un étudiant y passe plus de 15 minutes, il bloque peut-être
+                sur le "Gradient Killing" !
+            </div>
+        </aside>
+
+        <main class="content-area">
+
+            <!-- BLOC 1 : SUIVI DES ETUDIANTS -->
+            <section id="board-block" class="content-block active">
+                <div class="block-header">
+                    Suivi de Progression des Étudiants
+                    <div style="font-size: 0.9rem; font-weight: 500; color: var(--sub);">Vue d'ensemble de la promotion
+                    </div>
+                </div>
+
+                <!-- Barre de recherche et de filtres (Affichée uniquement pour le prof) -->
+                <div id="teacher-controls" class="controls-bar" style="display: none;">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="search-student"
+                            placeholder="Rechercher un étudiant (nom, prénom, email)...">
+                    </div>
+                    <div class="filters-wrapper">
+                        <div class="filter-group">
+                            <label for="filter-institution">Institution :</label>
+                            <select id="filter-institution">
+                                <option value="all">Toutes les institutions</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-level">Niveau :</label>
+                            <select id="filter-level">
+                                <option value="all">Tous les niveaux</option>
+                                <option value="Débutant">Débutant</option>
+                                <option value="Intermédiaire">Intermédiaire</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="sort-by">Trier par :</label>
+                            <select id="sort-by">
+                                <option value="name-asc">Nom (A-Z)</option>
+                                <option value="name-desc">Nom (Z-A)</option>
+                                <option value="exos-desc">Exos validés (max-min)</option>
+                                <option value="time-desc">Temps total (max-min)</option>
+                                <option value="institution-asc">Institution (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="students-grid" id="students-grid">
+                    <!-- Généré dynamiquement en JS (Mock pour l'IHM) -->
+                </div>
+            </section>
+
+            <!-- BLOC 2 : CHAT GLOBAL -->
+            <section id="chat-block" class="content-block">
+                <div class="block-header">
+                    <div>
+                        Chat Global Promotion <span style="font-size: 1rem; color:var(--success); margin-left:10px;">🟢
+                            2 En ligne</span>
+                    </div>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div style="text-align: center; color: var(--sub); font-size: 0.8rem; margin-bottom: 20px;">
+                            Aujourd'hui</div>
+
+                        <div class="message msg-received">
+                            <div class="chat-author">Sophie Martin (Étudiante)</div>
+                            Bonjour Monsieur, dans l'exercice 16, pourquoi la loss bloque avec la Sigmoïde peu importe
+                            le Learning Rate ?
+                        </div>
+
+                        <div class="message msg-sent">
+                            <div class="chat-author">Vous (Enseignant)</div>
+                            Excellente question Sophie ! C'est ce qu'on appelle la disparition du gradient (vanishing
+                            gradient). Regarde l'onglet "Output" de chaque neurone, tu verras qu'ils saturent à 0 ou 1.
+                            Essaie de changer par ReLU !
+                        </div>
+
+                        <div class="message msg-received">
+                            <div class="chat-author">Léo Bernard (Étudiant)</div>
+                            Ah merci, je viens de tester et ça a convergé en 50 itérations ! 🚀
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <button class="btn-send" style="background: var(--input-bg); color: var(--sub);"
+                            title="Ajouter des membres">+</button>
+                        <input type="text" class="chat-input" id="chat-input"
+                            placeholder="Envoyer un message à la classe...">
+                        <button class="btn-send" id="btn-send">➤</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // --- 1. Gestion des onglets du menu ---
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Désactive tout
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.content-block').forEach(b => b.classList.remove('active'));
+                // Active la cible
+                item.classList.add('active');
+                document.getElementById(item.dataset.target).classList.add('active');
+            });
+        });
+
+        // --- 2. Chat Basique IHM ---
+        const chatInput = document.getElementById('chat-input');
+        const chatMsgs = document.getElementById('chat-messages');
+        const btnSend = document.getElementById('btn-send');
+
+        const sendMessage = () => {
+            const txt = chatInput.value.trim();
+            if (!txt) return;
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message msg-sent';
+            msgDiv.innerHTML = `<div class="chat-author">Vous (Enseignant)</div>${txt}`;
+            chatMsgs.appendChild(msgDiv);
+            chatInput.value = '';
+            chatMsgs.scrollTop = chatMsgs.scrollHeight;
+        };
+        btnSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+
+
+        // --- toggleDetails : ouvre/ferme l'accordéon d'un étudiant ---
+        window.toggleDetails = (id) => {
+            const det = document.getElementById('details-' + id);
+            const chev = document.getElementById('chevron-' + id);
+            if (!det) return;
+            if (det.style.display === 'block') {
+                det.style.display = 'none';
+                if (chev) chev.style.transform = 'rotate(0deg)';
+            } else {
+                det.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            }
+        };
+
+
+
+        // Fonction pour formater les secondes en MM:SS
+        const formatTime = (s) => {
+            if (!s || s <= 0) return "0s";
+            const m = Math.floor(s / 60);
+            const sec = s % 60;
+            return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
+        };
+
+        // --- 3. LOGIQUE DE DONNÉES DYNAMIQUE (CONNECTÉ BD) ---
+        let allStudentsData = [];
+
+        const renderStudents = (list) => {
+            const grid = document.getElementById('students-grid');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                grid.innerHTML = '<p style="padding:20px; color:var(--sub); text-align:center;">Aucun étudiant trouvé.</p>';
+                return;
+            }
+
+            list.forEach(stu => {
+                let badgeClass = 'level-debutant';
+                if (stu.level === 'Intermédiaire') badgeClass = 'level-inter';
+                if (stu.level === 'Expert') badgeClass = 'level-expert';
+
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                if (stu.id === 'me') card.style.border = '2px solid var(--accent)';
+
+                let historyHTML = '';
+                if ((stu.history || []).length === 0) {
+                    historyHTML = `<div style="text-align:center; padding: 12px 0; color: var(--sub); font-size:0.85rem;">Aucun exercice réalisé pour l'instant.</div>`;
+                } else {
+                    (stu.history || []).forEach(h => {
+                        const isCompleted = h.date !== 'En cours' && h.date !== 'Sauvegardé';
+                        const statusColor = isCompleted ? 'var(--success)' : 'var(--warning)';
+                        const statusIcon = isCompleted ? '✅' : '🕐';
+                        historyHTML += `
+                        <div class="exercise-row">
+                            <div class="exo-name">📘 ${h.nom}</div>
+                            <div class="exo-detail-row">
+                                <span style="color:${statusColor}; font-size:0.78rem; font-weight:600;">${statusIcon} ${h.date}</span>
+                                <span class="exo-time-chip">⏱ ${h.temps || '0s'}</span>
+                            </div>
+                        </div>`;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="level-badge ${badgeClass}">${stu.level}</div>
+                    <div class="student-header">
+                        <div class="student-avatar" style="background: linear-gradient(135deg, ${stu.online ? '#10b981, #059669' : '#475569, #1e293b'});">
+                            ${stu.prenom[0]}${stu.nom[0]}
+                        </div>
+                        <div class="student-info">
+                            <div class="student-name">${stu.prenom} ${stu.nom}</div>
+                            <div class="student-role" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                                <span>
+                                    <span class="status-dot ${stu.online ? 'online' : 'offline'}"></span>
+                                    ${stu.online ? 'Actif' : 'Hors ligne'}
+                                </span>
+                                <span style="font-size:0.75rem; color:var(--accent); font-weight: 500;">🏫 ${stu.ecole || 'Non spécifiée'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-row">
+                        <div class="kpi-item"><span class="kpi-val">${stu.exosFaits}</span><span class="kpi-label">Exos validés</span></div>
+                        <div class="kpi-item"><span class="kpi-val">${stu.efficacite}</span><span class="kpi-label">Score</span></div>
+                        <div class="kpi-item"><span class="kpi-val" style="font-size:0.9rem;">${stu.tempsMoyen}</span><span class="kpi-label">Temps total</span></div>
+                    </div>
+                    <button class="detail-btn" onclick="toggleDetails('${stu.id}')">
+                        <span>Détails des exercices (${(stu.history || []).length})</span>
+                        <span id="chevron-${stu.id}" class="chevron-arrow">&#9660;</span>
+                    </button>
+                    <div class="student-details" id="details-${stu.id}" style="display:none;">${historyHTML}</div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        const applyFiltersAndSort = () => {
+            const searchQuery = document.getElementById('search-student')?.value.toLowerCase().trim() || '';
+            const selectedLevel = document.getElementById('filter-level')?.value || 'all';
+            const selectedInstitution = document.getElementById('filter-institution')?.value || 'all';
+            const sortBy = document.getElementById('sort-by')?.value || 'name-asc';
+
+            let filtered = [...allStudentsData];
+
+            // 1. Search Filter
+            if (searchQuery) {
+                filtered = filtered.filter(s => {
+                    const fullName = `${s.prenom} ${s.nom}`.toLowerCase();
+                    const email = (s.email || '').toLowerCase();
+                    return fullName.includes(searchQuery) || email.includes(searchQuery);
+                });
+            }
+
+            // 2. Level Filter
+            if (selectedLevel !== 'all') {
+                filtered = filtered.filter(s => s.level === selectedLevel);
+            }
+
+            // 2.5. Institution Filter
+            if (selectedInstitution !== 'all') {
+                filtered = filtered.filter(s => (s.ecole || 'Non spécifiée') === selectedInstitution);
+            }
+
+            // 3. Sorting
+            filtered.sort((a, b) => {
+                if (sortBy === 'name-asc') {
+                    const nameA = `${a.prenom} ${a.nom}`.toLowerCase();
+                    const nameB = `${b.prenom} ${b.nom}`.toLowerCase();
+                    return nameA.localeCompare(nameB);
+                } else if (sortBy === 'name-desc') {
+                    const nameA = `${a.prenom} ${a.nom}`.toLowerCase();
+                    const nameB = `${b.prenom} ${b.nom}`.toLowerCase();
+                    return nameB.localeCompare(nameA);
+                } else if (sortBy === 'exos-desc') {
+                    return (b.exosFaits || 0) - (a.exosFaits || 0);
+                } else if (sortBy === 'time-desc') {
+                    return (b.totalTime || 0) - (a.totalTime || 0);
+                } else if (sortBy === 'institution-asc') {
+                    const instA = (a.ecole || '').toLowerCase();
+                    const instB = (b.ecole || '').toLowerCase();
+                    return instA.localeCompare(instB);
+                }
+                return 0;
+            });
+
+            renderStudents(filtered);
+        };
+
+        const initDashboard = async () => {
+            const grid = document.getElementById('students-grid');
+            grid.innerHTML = '<p style="padding:20px; color:var(--sub);">Chargement des données réelles depuis Supabase...</p>';
+
+            try {
+                if (isTeacher) {
+                    // Show teacher controls bar
+                    const ctrlBar = document.getElementById('teacher-controls');
+                    if (ctrlBar) ctrlBar.style.display = 'flex';
+
+                    // Fetch stats
+                    // Fetch stats avec le nouveau header de sécurité
+                    const res = await fetch('/api/teacher/students-progress', {
+                        headers: { 'x-user-email': u.email }
+                    });
+                    const allStats = await res.json();
+
+                    allStudentsData = allStats.map(s => ({
+                        ...s,
+                        online: Math.random() > 0.5,
+                        level: s.exosFaits > 10 ? "Expert" : (s.exosFaits > 5 ? "Intermédiaire" : "Débutant"),
+                        efficacite: s.exosFaits > 0 ? "80%" : "0%",
+                        tempsMoyen: formatTime(s.totalTime),
+                        history: s.history.map(h => ({
+                            nom: h.nom,
+                            date: h.date,
+                            temps: formatTime(h.temps)
+                        }))
+                    }));
+
+                    // Populate dynamically the institution filter dropdown
+                    const instFilter = document.getElementById('filter-institution');
+                    if (instFilter) {
+                        const insts = [...new Set(allStudentsData.map(s => s.ecole || 'Non spécifiée'))].filter(Boolean).sort();
+                        instFilter.innerHTML = '<option value="all">Toutes les institutions</option>';
+                        insts.forEach(inst => {
+                            const opt = document.createElement('option');
+                            opt.value = inst;
+                            opt.textContent = inst;
+                            instFilter.appendChild(opt);
+                        });
+                    }
+
+                    // Bind control events once
+                    const searchInput = document.getElementById('search-student');
+                    const levelFilter = document.getElementById('filter-level');
+                    const instFilterElement = document.getElementById('filter-institution');
+                    const sortByFilter = document.getElementById('sort-by');
+
+                    if (searchInput && !searchInput.dataset.bound) {
+                        searchInput.addEventListener('input', applyFiltersAndSort);
+                        searchInput.dataset.bound = "true";
+                    }
+                    if (levelFilter && !levelFilter.dataset.bound) {
+                        levelFilter.addEventListener('change', applyFiltersAndSort);
+                        levelFilter.dataset.bound = "true";
+                    }
+                    if (instFilterElement && !instFilterElement.dataset.bound) {
+                        instFilterElement.addEventListener('change', applyFiltersAndSort);
+                        instFilterElement.dataset.bound = "true";
+                    }
+                    if (sortByFilter && !sortByFilter.dataset.bound) {
+                        sortByFilter.addEventListener('change', applyFiltersAndSort);
+                        sortByFilter.dataset.bound = "true";
+                    }
+                } else {
+                    const resProg = await fetch(`/api/progress/${u.email}`);
+                    const userProgress = await resProg.json();
+                    const exosValides = userProgress.filter(p => p.status === 'COMPLETED').length;
+                    const totalTimeSeconds = userProgress.reduce((acc, p) => acc + (p.time_spent || 0), 0);
+
+                    allStudentsData = [{
+                        id: 'me',
+                        nom: u.nom,
+                        prenom: u.prenom,
+                        online: true,
+                        level: exosValides > 10 ? "Expert" : (exosValides > 5 ? "Intermédiaire" : "Débutant"),
+                        exosFaits: exosValides,
+                        efficacite: exosValides > 0 ? "Dynamique" : "0%",
+                        tempsMoyen: formatTime(totalTimeSeconds),
+                        totalTime: totalTimeSeconds,
+                        ecole: u.ecole || 'Non spécifiée',
+                        history: userProgress
+                            .filter(p => p.exercises)
+                            .map(p => ({
+                                nom: p.exercises.title,
+                                date: p.completed_at ? new Date(p.completed_at).toLocaleDateString() : (p.is_saved ? "Sauvegardé" : "En cours"),
+                                temps: formatTime(p.time_spent)
+                            }))
+                    }];
+                }
+
+                applyFiltersAndSort();
+            } catch (err) {
+                grid.innerHTML = `<p style="padding:20px; color:var(--danger);">Erreur lors de la connexion à la base de données : ${err.message}</p>`;
+            }
+        };
+
+        // --- 4. INTEGRATION WIDGET PROFIL AVEC NOTIFICATIONS ---
+        (function () {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const container = document.getElementById('widget-profil-header');
+            if (!container || !isLoggedIn || !user) return;
+
+            container.style.cssText = 'position: relative; perspective: 1000px; display: flex; align-items: center;';
+
+            // Création du badge de notification
+            const notifBadge = document.createElement('div');
+            notifBadge.id = 'notif-badge-avatar';
+            notifBadge.style.cssText = 'position:absolute; top:-2px; right:-2px; width:14px; height:14px; background:#ef4444; border:2px solid #0b0f1a; border-radius:50%; z-index:10; display:none;';
+            container.appendChild(notifBadge);
+
+            const initiales = (user.prenom ? user.prenom[0] : '') + (user.nom ? user.nom[0] : '');
+            const avatar = document.createElement('div');
+            avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); transition: transform 0.3s;';
+            avatar.innerText = initiales.toUpperCase();
+
+            const menu = document.createElement('div');
+            menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); overflow: hidden; opacity: 0; transform: scale(0.9) translateY(-10px); transition: all 0.3s; z-index: 1001;';
+
+            const typeProfil = (user.role || user.profil || 'Étudiant').toUpperCase();
+
+            menu.innerHTML = `
+                <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <div style="font-size: 17px; font-weight: 800; color: #fff;">${user.prenom || ''} ${user.nom || ''}</div>
+                    <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${user.email || ''}</div>
+                    <div style="display: inline-block; margin-top: 10px; padding: 4px 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; color: #10b981;">🟢 Profil ${typeProfil}</div>
+                </div>
+                <div style="padding: 8px;">
+                    <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
+                        📊 Mon Historique
+                    </a>
+                    <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
+                        📈 Statistiques
+                    </a>
+                    <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
+                        🚪 Déconnexion
+                    </div>
+                </div>
+            `;
+
+            let isOpen = false;
+            avatar.onclick = async () => {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    menu.style.display = 'block'; setTimeout(() => { menu.style.opacity = '1'; menu.style.transform = 'scale(1) translateY(0)'; }, 10);
+                    // Check notifications au clic
+                    try {
+                        let count = 0;
+                        if (isTeacher) {
+                            const r = await fetch(`/api/submissions/teacher/${user.id}/count`, { headers: { 'x-user-email': user.email } });
+                            const d = await r.json(); count = d.count || 0;
+                        } else {
+                            const r = await fetch(`/api/submissions/student/${user.id}`);
+                            const s = await r.json(); count = s.filter(x => x.status !== 'PENDING').length;
+                        }
+                        notifBadge.style.display = count > 0 ? 'block' : 'none';
+                    } catch (e) { }
+                } else {
+                    menu.style.opacity = '0'; menu.style.transform = 'scale(0.9) translateY(-10px)'; setTimeout(() => menu.style.display = 'none', 300);
+                }
+            };
+            menu.querySelector('#btnFuturLogout').onclick = () => { localStorage.clear(); window.location.href = 'index.html'; };
+            container.appendChild(avatar); container.appendChild(menu);
+
+            // Auto-check notifications au chargement
+            (async () => {
+                try {
+                    let count = 0;
+                    if (isTeacher) {
+                        const r = await fetch(`/api/submissions/teacher/${user.id}/count`, { headers: { 'x-user-email': user.email } });
+                        const d = await r.json(); count = d.count || 0;
+                    } else {
+                        const r = await fetch(`/api/submissions/student/${user.id}`);
+                        const s = await r.json(); count = s.filter(x => x.status !== 'PENDING').length;
+                    }
+                    if (count > 0) notifBadge.style.display = 'block';
+                } catch (e) { }
+            })();
+        })();
+
+        // Lancement initial
+        initDashboard();
+
+    </script>
+
+    <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <script src="inactivite.js"></script>
+</body>
+
+</html>

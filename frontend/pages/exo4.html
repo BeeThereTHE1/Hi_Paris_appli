@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercice 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/exo.css" />
+</head>
+
+<body>
+
+  <!-- ===============================
+       WIDGET GOOGLE TRANSLATE (FR/EN)
+  ================================ -->
+  <div id="google_translate_element" style="display: none !important;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'fr', 
+        includedLanguages: 'en,fr',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
+    .goog-te-gadget-icon { display: none; }
+    body { top: 0px !important; }
+    .skiptranslate iframe { display: none !important; }
+  </style>
+
+  <div id="background-container"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <header class="universal-header">
+    <a class="header-brand" href="index.html">
+      <div class="brand-icon">
+        <img src="Page-demo/Image/logo_f.png" style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo">
+      </div>
+      <span class="brand-name">Neural Playground</span>
+    </a>
+
+    <div class="header-right">
+      <a class="btn-header" href="Page-demo/exercises.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Retour vers page des exercices
+      </a>
+      <a class="btn-header" href="exo3.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Exercice précédent</a>
+      <a class="btn-header" href="exo5.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Exercice suivant ⏭️</a>
+      <a class="btn-header" href="Page-demo/historique.html">Mon historique</a>
+      <div id="widget-profil-header" style="margin-left: 20px;"></div>
+    </div>
+  </header>
+
+  <div class="exo-actions-footer">
+    <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
+      <span class="icon">💾</span> SAUVEGARDER
+    </button>
+    <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
+      <span class="icon">✅</span> Exercice Réussi !!
+    </button>
+  </div>
+
+  <section class="exo-header">
+    <div class="exo-toprow">
+      <div class="badge">4</div>
+      <h1 class="exo-title">Exercice #4</h1>
+    </div>
+    <p class="exo-instructions">
+      Entraîne le modèle pour classifier les points.
+     <!-- <br>Parametre par défaut : LR =0,03,None Reg, ratio Training test = 0,5, pas de noise, Batch Size = 10 -->
+    </p>
+  </section>
+
+  <main class="exo-main">
+    <iframe class="exo-frame" src="./playground/index.html?exo=4"></iframe>
+  </main>
+
+  <script src="inactivite.js"></script>
+  <script src="../playground-master/src/exos/storage_service.js"></script>
+  <script src="../playground-master/src/exos/exo4_page.js"></script>
+</body>
+</html>

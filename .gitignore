@@ -1,0 +1,26 @@
+.env
+node_modules
+.vscode
+dist
+STRUCTURE_PROJET.md
+journal_du_matin.md
+FEUILLE_DE_ROUTE_PROJET.md
+explication_routage_page.md
+READMEPlayground.md
+cycle_de_vie_hiparis.md
+readmef.txt
+readmep.txt
+Recap 2404.md
+deploiement.md
+.vercel
+.env
+cicd_guide.md
+for_data_base_28_04.md
+.env*.local
+node_modules/
+*.log
+.vscode
+deploie.md
+GUIDE_DEPLOIEMENT_PIERRE_ANTOINE.md
+Deploiement.docx
+code_doc_md

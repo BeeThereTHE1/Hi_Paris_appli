@@ -1,0 +1,65 @@
+body{
+  font-family: Arial, sans-serif;
+  background:#f5f6fa;
+  padding:40px;
+}
+
+.container{
+  display:flex;
+  flex-direction:column;
+  gap:60px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items:center;
+  gap:40px;
+}
+
+.part{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.part h3{
+  text-align:center;
+  margin:0;
+  font-weight:600;
+}
+
+.steps{
+  display:flex;
+  gap:8px;
+}
+
+.step{
+  width:80px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:bold;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+}
+
+
+.blue .step{ background:#1f4b7a; }
+.red .step{ background:#b44747; }
+.green .step{ background:#5c6f3d; }
+.grey .step{ background:#6b6b86; }
+
+.quiz{
+
+  height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  letter-spacing:4px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  border-radius:8px;
+}

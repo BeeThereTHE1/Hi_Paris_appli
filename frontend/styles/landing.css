@@ -1,0 +1,149 @@
+:root {
+    --text-primary: #1e293b;
+    --red-accent: #e63946;
+    --red-hover: #d62828;
+    --blue-accent: #60a5fa;
+    --bg-color: #f8fafc;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.login-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 400;
+    font-size: 1.15rem;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.login-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--text-primary);
+    transition: width 0.3s ease;
+}
+
+.login-link:hover::after {
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5vh;
+}
+
+.hero {
+    /* To align everything nicely visually like the screenshot */
+    max-width: 1000px;
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.title {
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    font-weight: 500;
+    color: var(--red-accent);
+    letter-spacing: 0.01em;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.title .highlight {
+    position: relative;
+    white-space: nowrap;
+}
+
+.title .highlight::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 4px;
+    left: 0;
+    background-color: var(--red-accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.title:hover .highlight::after {
+    opacity: 0.2;
+}
+
+.subtitle {
+    color: #7dd3fc;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 4rem;
+    padding-left: 20px;
+}
+
+
+.buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.btn {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 400;
+    padding: 1rem 4rem;
+    border: 1px solid var(--text-primary);
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    min-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.btn:hover {
+    background-color: #f1f5f9;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure text is above effect */
+.btn-choose, .btn-create {
+    z-index: 1;
+}

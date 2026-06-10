@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiParis - Catalogue Technologique</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/catalog.css">
+</head>
+
+<body>
+
+  <!-- ===============================
+       WIDGET GOOGLE TRANSLATE (FR/EN)
+  ================================ -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'fr', 
+        includedLanguages: 'en,fr',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
+    .goog-te-gadget-icon { display: none; }
+    body { top: 0px !important; }
+    .skiptranslate iframe { display: none !important; }
+  </style>
+
+    <div id="background-container"></div>
+    <!-- Arrière-plan : Orbes -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <header>
+        <a href="index.html" class="header-brand">
+            <div class="brand-icon">
+                <img src="Page-demo/Image/logo_f.png" style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo HiParis">
+            </div>
+            <span class="brand-name">Neural Playground</span>
+        </a>
+        <div class="header-right">
+            <a href="#" class="btn-back" id="btn-back">
+                🏠 Accueil
+            </a>
+            <div id="widget-profil-header" style="margin-left: 20px;"></div>
+            
+            <!-- Nouveau Widget Traduction intégré au header -->
+            <div id="google_translate_element" style="display: none !important;"></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- PARTIE CONTROLES (3/4) -->
+        <section class="controls-section">
+            <div class="bento-grid">
+                <!-- DATA -->
+                <div class="bento-card card-full">
+                    <div class="card-title"><span class="material-icons">storage</span> Architecture des Données</div>
+                    <div class="options-list">
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/gaussian.jpg.png" checked>
+                            <div class="opt-box">Gaussian</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/circle.pgg.png">
+                            <div class="opt-box">Circle</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/or.jpg.png">
+                            <div class="opt-box">XOR / OR</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/spiral.jpg.png">
+                            <div class="opt-box">Spirale</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/noise.jpg.png">
+                            <div class="opt-box">Noise</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/batch.jpg.png">
+                            <div class="opt-box">Batch Size</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/ratio.jpg.png">
+                            <div class="opt-box">Ratio</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- FEATURES -->
+                <div class="bento-card">
+                    <div class="card-title"><span class="material-icons">settings_input_component</span> Features &
+                        Inputs</div>
+                    <div class="options-list" style="grid-template-columns: repeat(2, 1fr);">
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/x1.jpg.png">
+                            <div class="opt-box">Input X1</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/x2.jpg.png">
+                            <div class="opt-box">Input X2</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/x12.jpg.png">
+                            <div class="opt-box">Square X1</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/x22.jpg.png">
+                            <div class="opt-box">Square X2</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/sinx1.jpg.png">
+                            <div class="opt-box">Sin(X1)</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/sinx2.jpg.png">
+                            <div class="opt-box">Sin(X2)</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- NETWORK -->
+                <div class="bento-card">
+                    <div class="card-title"><span class="material-icons">account_tree</span> Architecture Réseau</div>
+                    <div class="options-list" style="grid-template-columns: repeat(2, 1fr);">
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/weight.jpg.png">
+                            <div class="opt-box">Weights</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/biais.jpg.png">
+                            <div class="opt-box">Bias</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/hidden.jpg.png">
+                            <div class="opt-box">Couches cachées</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/layers.jpg.png">
+                            <div class="opt-box">Structure</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/output.jpg.png">
+                            <div class="opt-box">Output</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- CORE -->
+                <div class="bento-card card-full">
+                    <div class="card-title"><span class="material-icons">terminal</span> Paramètres du Moteur</div>
+                    <div class="options-list">
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/run.jpg.png">
+                            <div class="opt-box">Run Engine</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/epoch.jpg.png">
+                            <div class="opt-box">Epochs</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/learning_rate.jpg.png">
+                            <div class="opt-box">Learning Rate</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/activation.jpg.png">
+                            <div class="opt-box">Activation</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/regularisation.jpg.png">
+                            <div class="opt-box">Regularization</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/probleme.jpg.png">
+                            <div class="opt-box">Problem Type</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/testloss.jpg.png">
+                            <div class="opt-box">Test Loss</div>
+                        </label>
+                        <label class="opt-label"><input type="radio" name="feature"
+                                data-image="assets/images/trainingloss.jpg.png">
+                            <div class="opt-box">Train Loss</div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PARTIE APERÇU (1/4) -->
+        <aside class="preview-aside">
+            <div class="preview-window">
+                <img id="preview-image" src="assets/images/gaussian.jpg.png" alt="Aperçu Composant">
+            </div>
+
+            <div class="action-panel">
+                <span class="action-title">Éditeur Studio</span>
+                <p style="font-size: 13px; color: var(--text-dim); line-height: 1.5;">Sélectionnez un module pour
+                    visualiser son intégration dans le simulateur.</p>
+
+                <button class="btn-action btn-main" onclick="location.href='create.html'">
+                    <span class="material-icons">add_circle</span> Créer
+                </button>
+                <button class="btn-action btn-sub btn-disabled" disabled title="Fonctionnalité à venir">
+                    <span class="material-icons">edit</span> Modifier
+                </button>
+                <button class="btn-action btn-sub btn-disabled" disabled style="color: #f87171; border-color: rgba(248, 113, 113, 0.2);" title="Fonctionnalité à venir">
+                    <span class="material-icons">delete</span> Supprimer
+                </button>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // --- LOGIQUE APERÇU ---
+        const radios = document.querySelectorAll('input[name="feature"]');
+        const preview = document.getElementById('preview-image');
+
+        radios.forEach(r => {
+            r.addEventListener('change', () => {
+                preview.style.opacity = '0';
+                setTimeout(() => {
+                    preview.src = r.dataset.image;
+                    preview.style.opacity = '1';
+                }, 200);
+            });
+        });
+
+        // --- WIDGET PROFIL & AUTH ---
+        (function () {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const container = document.getElementById('widget-profil-header');
+
+            if (!isLoggedIn || !user.email) {
+                container.innerHTML = `<a href="index.html" class="btn-back">Connexion</a>`;
+                return;
+            }
+
+            const initials = ((user.prenom ? user.prenom[0] : '') + (user.nom ? user.nom[0] : '')).toUpperCase();
+            const typeProfil = user.profile || user.role || 'Étudiant';
+
+            container.innerHTML = `
+                <div class="avatar-box">${initials}</div>
+                <div class="profile-menu">
+                    <div style="padding: 15px; border-bottom: 1px solid var(--border)">
+                        <div style="font-weight: 700; color: #fff;">${user.prenom} ${user.nom}</div>
+                        <div style="font-size: 11px; color: var(--text-dim)">${user.email}</div>
+                        <div class="profile-type">🟢 ${typeProfil}</div>
+                    </div>
+                    <a href="Page-demo/historique.html" class="menu-item"><span class="material-icons">history</span>Historique</a>
+                    <div class="menu-item" id="logout-btn" style="color:#f87171; cursor:pointer;"><span class="material-icons">logout</span>Déconnexion</div>
+                </div>
+            `;
+
+            const avatar = container.querySelector('.avatar-box');
+            const menu = container.querySelector('.profile-menu');
+            avatar.onclick = (e) => { e.stopPropagation(); menu.classList.toggle('open'); };
+            document.onclick = () => menu.classList.remove('open');
+            container.querySelector('#logout-btn').onclick = () => {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('currentUser');
+                location.reload();
+            };
+        })();
+
+        // --- RETOUR ---
+        document.getElementById('btn-back').onclick = (e) => {
+            e.preventDefault();
+            window.location.href = localStorage.getItem('isLoggedIn') === 'true' ? 'Page-demo/login_with_catalog.html' : 'index.html';
+        };
+
+        // --- ANIMATION DE FOND ---
+        (function () {
+            const bg = document.getElementById('background-container');
+            const formulas = ['\\sqrt{x}', '\\sum', '\\int', 'f(x)', '\\alpha', '\\beta', 'E=mc^2', '\\sigma', '\\theta'];
+            for (let i = 0; i < 50; i++) {
+                const el = document.createElement('div');
+                el.className = i % 2 === 0 ? 'math-formula' : 'neuron';
+                if (i % 2 === 0) el.textContent = formulas[Math.floor(Math.random() * formulas.length)];
+                else {
+                    const size = Math.random() * 5 + 2;
+                    el.style.width = size + 'px'; el.style.height = size + 'px';
+                }
+                el.style.left = Math.random() * 100 + 'vw'; el.style.top = Math.random() * 100 + 'vh';
+                el.style.opacity = Math.random() * 0.1;
+                bg.appendChild(el);
+            }
+        })();
+    </script>
+
+    <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <script src="inactivite.js"></script>
+</body>
+
+</html>
