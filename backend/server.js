@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Créer ou mettre à jour un utilisateur (upsert à l'inscription/login)
 app.post('/api/users', async (req, res) => {
-  const { email, nom, prenom, ecole, role, password } = req.body;
+  const { email, nom, prenom, ecole, role } = req.body;
 
   if (!email) return res.status(400).json({ error: 'email requis' });
 
@@ -33,7 +33,7 @@ app.post('/api/users', async (req, res) => {
   const { data, error } = await supabase
     .from('users')
     .upsert(
-      { email, nom, prenom, ecole, role, password },
+      { email, nom, prenom, ecole, role },
       { onConflict: 'email' }
     )
     .select()
