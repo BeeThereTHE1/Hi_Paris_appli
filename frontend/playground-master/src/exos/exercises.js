@@ -197,33 +197,253 @@ const role = (user.role || user.profil || user.profile || 'ETUDIANT').toUpperCas
 const isTeacher = role.includes('TEACH') || role.includes('ENS') || role.includes('PROF');
 /* ─── RENDU ─── */
 /* ─── RENDU ─── */
-function renderCards(gridId, list, sectionId) {
-    const grid = document.getElementById(gridId);
-    const section = document.getElementById(sectionId);
-    grid.innerHTML = '';
-    if (!list.length) {
-        section.style.display = 'none';
-        return;
+/* === CODES SVG DES CADENAS & ETOILES === */
+function getLockSvg(locked, size = 35) {
+    const color = locked ? "#EF4444" : "#10B981";
+    const opacity = locked ? 1 : 0.65;
+    const lockClass = locked ? "locked-svg" : "unlocked-svg";
+    if (locked) {
+        return `<svg class="${lockClass}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: ${opacity}; transition: all 0.3s ease;">
+            <rect x="3" y="11" width="18" height="11" rx="2" fill="${color}" />
+            <path d="M7 11V7a5 5 0 0110 0v4" fill="none" />
+        </svg>`;
+    } else {
+        return `<svg class="${lockClass}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: ${opacity}; transition: all 0.3s ease;">
+            <rect x="3" y="11" width="18" height="11" rx="2" fill="${color}" />
+            <path d="M7 11V7a5 5 0 019-3" fill="none" />
+        </svg>`;
     }
-    section.style.display = 'block';
-    list.forEach((ex, i) => {
-        const card = document.createElement('div');
-        card.className = `ex-card ${ex.difficulty}`;
-        // --- NOUVEAU : Bouton de suppression pour profs OU créateur ---
-        let deleteBtn = '';
-        // --- RESTRICTION : Seuls les profs peuvent supprimer du catalogue public ---
-        if (ex.isCustom && isTeacher) {
-            deleteBtn = `<button class="btn-delete-exo" onclick="event.stopPropagation(); deleteCommunityExo('${ex.id}')" title="Supprimer l'exercice">
-            <span class="material-icons" style="font-size:18px; pointer-events: none;">delete_forever</span>
-          </button>`;
+}
+
+function getStarSvg(active, size = 38) {
+    const color = active ? "#FACC15" : "#4B5563";
+    const fillClass = active ? "validated" : "unvalidated";
+    return `<svg class="star-interactive ${fillClass}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}" stroke="none" style="transition: transform 0.2s ease, fill 0.3s ease;">
+        <path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z" />
+    </svg>`;
+}
+
+
+/* === MAPPINGS DE SECTIONS ET D'EXERCICES === */
+const SECTIONS_CONFIG = {
+    1: { name: "Basic models: Foundations of neural network", exos: [1, 2, 3, 5], gridId: "exGridSec1", containerId: "section-1-container" },
+    2: { name: "The Building Blocks of Neural Networks", exos: [6, 4, 7, 8], gridId: "exGridSec2", containerId: "section-2-container" },
+    3: { name: "Training & Optimization", exos: [9, 10, 11, 17, 13, 14], gridId: "exGridSec3", containerId: "section-3-container" },
+    4: { name: "Generalization & Deep Learning Limits", exos: [16, 12, 15], gridId: "exGridSec4", containerId: "section-4-container" }
+};
+
+const FUN_FACTS = {
+    1: "La régression logistique a été inventée par Joseph Berkson en 1944. C'est l'un des modèles de classification les plus utilisés au monde !",
+    2: "L'apprentissage supervisé s'inspire directement de la façon dont un enfant apprend en faisant des erreurs et en étant corrigé par un adulte.",
+    3: "Les données circulaires ne peuvent pas être séparées par une simple ligne droite. C'est pourquoi nous avons besoin de fonctions d'activation non linéaires !",
+    4: "Le biais permet de décaler la fonction d'activation vers la gauche ou la droite, offrant un degré de liberté crucial au neurone.",
+    5: "Combiner plusieurs caractéristiques d'entrée complexes (comme x² ou xy) permet de résoudre des problèmes non linéaires sans ajouter de couches cachées.",
+    6: "Les couches cachées agissent comme des extracteurs de caractéristiques de plus en plus abstraites. Plus on va profond, plus le concept est complexe.",
+    7: "ReLU (Rectified Linear Unit) est la fonction d'activation la plus populaire car elle évite le problème de la disparition du gradient tout en étant très rapide à calculer.",
+    8: "Un réseau de neurones avec les mêmes hyperparamètres peut converger vers des solutions différentes à cause de l'initialisation aléatoire des poids !",
+    9: "La descente de gradient stochastique (SGD) utilise un seul échantillon à la fois pour mettre à jour les poids, rendant l'apprentissage extrêmement rapide mais bruyant.",
+    10: "Le taux d'apprentissage (learning rate) est l'hyperparamètre le plus sensible : trop grand, le modèle oscille ; trop petit, il met une éternité à converger.",
+    11: "La rétropropagation du gradient (backpropagation) a été popularisée par Geoffrey Hinton en 1986. Elle calcule les dérivées partielles de l'erreur par rapport à chaque poids.",
+    12: "Le surapprentissage (overfitting) se produit lorsque le modèle apprend par cœur le bruit des données d'entraînement, perdant sa capacité de généralisation.",
+    13: "La régularisation L2 (Ridge) ajoute une pénalité proportionnelle au carré de la valeur des poids pour forcer le réseau à garder des poids petits et simples.",
+    14: "Le dropout désactive aléatoirement un pourcentage de neurones à chaque itération, forçant le réseau à ne pas dépendre d'un seul chemin de neurones.",
+    15: "La validation croisée (cross-validation) divise les données pour estimer de manière fiable les performances réelles du modèle sur de futures données.",
+    16: "Les réseaux profonds peuvent apprendre des fonctions d'une complexité infinie. C'est le théorème d'approximation universelle !",
+    17: "Les fonctions d'erreur (loss functions) comme l'erreur quadratique moyenne ou la cross-entropy mesurent l'écart entre les prédictions et la réalité."
+};
+
+const QUIZZES = {
+    1: {
+        title: "Quiz Section 1 : Fondations des Réseaux",
+        questions: [
+            {
+                q: "Quelle fonction d'activation est indispensable pour que la régression logistique retourne une probabilité entre 0 et 1 ?",
+                options: ["Sigmoïde", "ReLU", "Linéaire", "Tangente Hyperbolique"],
+                answer: 0,
+                fallbackExo: 1
+            },
+            {
+                q: "Si des données de classification forment un cercle parfait entourant une autre classe, quel type de séparation est nécessaire ?",
+                options: ["Une séparation linéaire", "Une séparation non linéaire", "Aucune séparation possible"],
+                answer: 1,
+                fallbackExo: 3
+            }
+        ]
+    },
+    2: {
+        title: "Quiz Section 2 : Les Blocs de Construction",
+        questions: [
+            {
+                q: "Quel est le rôle principal du biais (bias) dans un neurone artificiel ?",
+                options: ["Décaler la fonction d'activation", "Multiplier le poids de l'entrée", "Calculer l'erreur de prédiction"],
+                answer: 0,
+                fallbackExo: 4
+            },
+            {
+                q: "Pourquoi les fonctions d'activation non-linéaires (comme ReLU ou Sigmoïde) sont-elles cruciales dans les couches cachées ?",
+                options: ["Pour accélérer le calcul matériel", "Pour permettre au réseau d'apprendre des relations complexes non-linéaires", "Pour stabiliser les poids initiaux à zéro"],
+                answer: 1,
+                fallbackExo: 7
+            }
+        ]
+    },
+    3: {
+        title: "Quiz Section 3 : Entraînement & Optimisation",
+        questions: [
+            {
+                q: "Quel problème peut survenir si le taux d'apprentissage (learning rate) est trop élevé ?",
+                options: ["L'entraînement est trop lent", "Le modèle risque d'osciller et ne jamais converger vers le minimum", "Les poids deviennent tous égaux à zéro"],
+                answer: 1,
+                fallbackExo: 10
+            },
+            {
+                q: "Quelle technique permet de propager l'erreur de la sortie vers l'entrée pour ajuster les poids ?",
+                options: ["La rétropropagation du gradient", "La descente de gradient stochastique", "La régularisation L1/L2"],
+                answer: 0,
+                fallbackExo: 11
+            }
+        ]
+    },
+    4: {
+        title: "Quiz Section 4 : Généralisation & Limites",
+        questions: [
+            {
+                q: "Comment appelle-t-on le phénomène où un modèle est excellent sur les données d'entraînement mais très mauvais sur les nouvelles données ?",
+                options: ["Sous-apprentissage (Underfitting)", "Surapprentissage (Overfitting)", "Régularisation extrême"],
+                answer: 1,
+                fallbackExo: 12
+            },
+            {
+                q: "Quel est le but du 'Dropout' lors de l'entraînement d'un réseau profond ?",
+                options: ["Supprimer définitivement les mauvaises données", "Désactiver aléatoirement des neurones pour éviter le surapprentissage", "Augmenter la dimension de l'espace d'entrée"],
+                answer: 1,
+                fallbackExo: 14
+            }
+        ]
+    }
+};
+
+/* Lottie Arrow JSON Data */
+const ARROW_LOTTIE_JSON = {"nm":"Main Scene","ddd":0,"h":200,"w":200,"meta":{"g":"@lottiefiles/creator@1.94.0"},"layers":[{"ty":4,"nm":"Shape Layer 7","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[50,50,100],"t":0},{"s":[50,50,100],"t":24}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,-1,0],"t":0,"ti":[0,-31.667,0],"to":[0,31.667,0]},{"s":[100,94,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"s":[100],"t":24}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":1},{"ty":4,"nm":"Shape Layer 6","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":0,"k":[50,50,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,94,0],"t":0,"ti":[0,-15,0],"to":[0,15,0]},{"s":[100,139,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":0,"k":100,"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":2},{"ty":4,"nm":"Shape Layer 5","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[50,50,100],"t":0},{"s":[25,25,100],"t":24}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,139,0],"t":0,"ti":[0,-20.333,0],"to":[0,20.333,0]},{"s":[100,200,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100],"t":0},{"s":[0],"t":24}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":3}],"v":"5.7.0","fr":24,"op":24,"ip":0,"assets":[]};
+
+/* === VARIABLES DE PROGRESSION GLOBALES === */
+let completedOfficialIds = new Set();
+let userCreatedCount = 0;
+let activeQuizSection = null;
+let activeQuizAnswers = {};
+
+/* Initialisation des variables intro de Section 0 */
+let introState = JSON.parse(localStorage.getItem('section0_visited') || '{"eval":false,"res":false,"tuto":false}');
+
+function visitIntroItem(type) {
+    introState[type] = true;
+    localStorage.setItem('section0_visited', JSON.stringify(introState));
+    
+    // Enlever le clignotement de la carte cliquée
+    const clickedCard = document.getElementById(`card-intro-${type}`);
+    if (clickedCard) clickedCard.classList.remove('pulsing');
+    
+    // Faire clignoter la carte suivante non visitée
+    if (type === 'eval' && !introState.res) {
+        document.getElementById('card-intro-res').classList.add('pulsing');
+    } else if (type === 'res' && !introState.tuto) {
+        document.getElementById('card-intro-tuto').classList.add('pulsing');
+    }
+
+    updateIntroUI();
+    applyFilters(); // Recalculer l'état global et verrous
+}
+
+function updateIntroUI() {
+    const keys = ['eval', 'res', 'tuto'];
+    keys.forEach(k => {
+        const el = document.getElementById(`status-intro-${k}`);
+        if (el) {
+            if (introState[k]) {
+                el.innerHTML = "✅ Visité";
+                el.style.color = "var(--green)";
+            } else {
+                el.innerHTML = "❌ Non visité";
+                el.style.color = "var(--red)";
+            }
         }
+    });
+}
+
+function isSection0Completed() {
+    return introState.eval && introState.res && introState.tuto;
+}
+
+/* === RECUPERATION DES STATUTS DEPUIS L'API SUPABASE === */
+async function fetchProgressAndCreatedExos() {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user || !user.email) return;
+
+    try {
+        // 1. Récupérer l'historique de progression
+        const progressRes = await fetch(`/api/progress/${user.email}`);
+        if (progressRes.ok) {
+            const progressData = await progressRes.json();
+            completedOfficialIds = new Set(
+                progressData
+                    .filter(p => p.status === 'COMPLETED')
+                    .map(p => p.exercises ? p.exercises.official_id : null)
+                    .filter(id => id !== null)
+            );
+        }
+
+        // 2. Récupérer le nombre de créations de cet utilisateur
+        const exercisesRes = await fetch(`/api/exercises`);
+        if (exercisesRes.ok) {
+            const exercisesData = await exercisesRes.json();
+            const createdByUser = exercisesData.filter(exo => exo.creator_id === user.id);
+            userCreatedCount = createdByUser.length;
+        }
+
+    } catch (err) {
+        console.error("Erreur lors de la récupération de la progression :", err);
+    }
+}
+
+/* === RENDU DES CARTES D'EXERCICES AVEC PROGRESSION === */
+function renderSectionCards(gridId, list, isSectionUnlocked) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    list.forEach((ex, index) => {
+        const card = document.createElement('div');
+        
+        // Déterminer le statut de verrouillage
+        // L'exercice 0 d'une section déverrouillée est ouvert. L'exercice K est ouvert si l'exercice K-1 est terminé.
+        let isExUnlocked = false;
+        if (isSectionUnlocked) {
+            if (index === 0) {
+                isExUnlocked = true;
+            } else {
+                const prevExo = list[index - 1];
+                isExUnlocked = completedOfficialIds.has(prevExo.id);
+            }
+        }
+
+        const isCompleted = completedOfficialIds.has(ex.id);
+        const lockIcon = getLockSvg(!isExUnlocked);
+        const starIcon = getStarSvg(isCompleted);
+
+        card.className = `ex-card ${ex.difficulty} ${!isExUnlocked ? 'locked-card' : ''}`;
+        
+        // Ajouter un effet de clignotement sur le premier exercice disponible non complété
+        if (isSectionUnlocked && isExUnlocked && !isCompleted && (index === 0 || completedOfficialIds.has(list[index - 1].id))) {
+            card.classList.add('pulsing');
+        }
+
         card.innerHTML = `
           <div class="card-top">
-            <div class="card-icon">${ex.icon}</div>
-            <div style="display:flex; align-items:center; gap:8px;">
-               ${deleteBtn}
-               <span class="badge ${ex.difficulty}">${DIFF_LABEL[ex.difficulty]}</span>
+            <div class="card-actions-top">
+                <span class="lock-indicator">${lockIcon}</span>
+                <span class="star-indicator" onclick="event.stopPropagation(); showFunFact(${ex.id}, ${isCompleted})">${starIcon}</span>
             </div>
+            <span class="badge ${ex.difficulty}">${DIFF_LABEL[ex.difficulty]}</span>
           </div>
           <div class="category-tag">${ex.category}</div>
           <div class="card-title">${ex.title}</div>
@@ -233,7 +453,7 @@ function renderCards(gridId, list, sectionId) {
                <div class="meta-item">🕒 ${ex.duration}</div>
                <div class="meta-item">❓ ${ex.questions}</div>
             </div>
-            <button class="btn-start" onclick="startExercise('${ex.id}', '${ex.title.replace(/'/g, "\\'")}', ${!!ex.isCustom})">
+            <button class="btn-start" ${!isExUnlocked ? 'disabled' : ''} onclick="startExercise('${ex.id}', '${ex.title.replace(/'/g, "\\'")}', false)">
               Commencer →
             </button>
           </div>
@@ -241,6 +461,7 @@ function renderCards(gridId, list, sectionId) {
         grid.appendChild(card);
     });
 }
+
 async function deleteCommunityExo(id) {
     if (!confirm("Voulez-vous vraiment supprimer cet exercice du catalogue ?"))
         return;
@@ -270,13 +491,17 @@ function filterCards() { applyFilters(); }
 // ✅ Source de vérité pour les exos custom (remplie par l'API)
 let CUSTOM_EXERCISES_FROM_API = [];
 
+
 async function loadAndRender() {
     try {
         const res = await fetch('/api/exercises');
         if (res.ok) {
             const data = await res.json();
+            // Filtrer pour ne garder que les exercices créés par les utilisateurs (non officiels)
+            const communityOnly = data.filter(exo => !exo.is_official && !exo.official_id);
+            
             // Mapping format API → format carte
-            CUSTOM_EXERCISES_FROM_API = data.map(exo => ({
+            CUSTOM_EXERCISES_FROM_API = communityOnly.map(exo => ({
                 id: exo.id,
                 icon: '👥',
                 title: exo.title,
@@ -301,45 +526,433 @@ async function loadAndRender() {
     applyFilters();
 }
 
-function applyFilters() {
+async function applyFilters() {
+    // 1. Charger la progression utilisateur et les exos créés depuis l'API
+    await fetchProgressAndCreatedExos();
+
+    updateIntroUI();
+
     var _a;
     const q = (((_a = document.getElementById('searchInput')) === null || _a === void 0 ? void 0 : _a.value) || '').toLowerCase().trim();
     const baseExercises = [...EXERCISES];
-    // ✅ Utilise les données API au lieu de localStorage
     const formattedCustoms = [...CUSTOM_EXERCISES_FROM_API];
-    let fullList = [...baseExercises, ...formattedCustoms];
-    if (currentFilter !== 'tous') {
-        fullList = fullList.filter(e => e.difficulty === currentFilter);
-    }
-    if (q) {
-        fullList = fullList.filter(e => e.title.toLowerCase().includes(q) ||
-            (e.desc || '').toLowerCase().includes(q) ||
-            e.category.toLowerCase().includes(q));
-    }
+
+    // Mettre à jour les statistiques de la barre d'outils
     const statTotalValue = document.getElementById('statTotal');
-    if (statTotalValue)
-        statTotalValue.textContent = fullList.length;
+    if (statTotalValue) statTotalValue.textContent = baseExercises.length + formattedCustoms.length;
     const statEasyValue = document.getElementById('statEasy');
-    if (statEasyValue)
-        statEasyValue.textContent = fullList.filter(e => e.difficulty === 'easy').length;
+    if (statEasyValue) statEasyValue.textContent = baseExercises.filter(e => e.difficulty === 'easy').length + formattedCustoms.filter(e => e.difficulty === 'easy').length;
     const statMediumValue = document.getElementById('statMedium');
-    if (statMediumValue)
-        statMediumValue.textContent = fullList.filter(e => e.difficulty === 'medium').length;
+    if (statMediumValue) statMediumValue.textContent = baseExercises.filter(e => e.difficulty === 'medium').length + formattedCustoms.filter(e => e.difficulty === 'medium').length;
     const statHardValue = document.getElementById('statHard');
-    if (statHardValue)
-        statHardValue.textContent = fullList.filter(e => e.difficulty === 'hard').length;
-    const filteredBase = fullList.filter(e => !e.isCustom);
-    const filteredCustom = fullList.filter(e => e.isCustom);
-    renderCards('exGridBase', filteredBase, 'baseExercisesSection');
-    renderCards('exGridCustom', filteredCustom, 'customExercisesSection');
+    if (statHardValue) statHardValue.textContent = baseExercises.filter(e => e.difficulty === 'hard').length + formattedCustoms.filter(e => e.difficulty === 'hard').length;
+
+    // Détermination de l'état de déverrouillage de chaque section
+    const sec1Unlocked = isSection0Completed();
+    const sec1QuizCompleted = localStorage.getItem('quiz_section_1_completed') === 'true';
+
+    const sec2Unlocked = sec1Unlocked && sec1QuizCompleted;
+    const sec2QuizCompleted = localStorage.getItem('quiz_section_2_completed') === 'true';
+
+    const sec3Unlocked = sec2Unlocked && sec2QuizCompleted;
+    const sec3QuizCompleted = localStorage.getItem('quiz_section_3_completed') === 'true';
+
+    const sec4Unlocked = sec3Unlocked && sec3QuizCompleted;
+    const sec4QuizCompleted = localStorage.getItem('quiz_section_4_completed') === 'true';
+
+    const finalUnlocked = sec4Unlocked && sec4QuizCompleted;
+
+    // Configurer l'opacité et les filtres des conteneurs de section
+    updateSectionContainer('section-1-container', sec1Unlocked);
+    updateSectionContainer('section-2-container', sec2Unlocked);
+    updateSectionContainer('section-3-container', sec3Unlocked);
+    updateSectionContainer('section-4-container', sec4Unlocked);
+    updateSectionContainer('section-final-container', finalUnlocked);
+
+    // Initialiser et afficher les flèches Lottie si les quiz précédents sont complétés
+    toggleArrowLottie('arrow-0-1', sec1Unlocked, 0);
+    toggleArrowLottie('arrow-1-2', sec2Unlocked, 1);
+    toggleArrowLottie('arrow-2-3', sec3Unlocked, 2);
+    toggleArrowLottie('arrow-3-4', sec4Unlocked, 3);
+    toggleArrowLottie('arrow-4-final', finalUnlocked, 4);
+
+    // Rendu de chaque section d'exercices officiels
+    Object.keys(SECTIONS_CONFIG).forEach(secKey => {
+        const conf = SECTIONS_CONFIG[secKey];
+        const secExos = baseExercises.filter(e => conf.exos.includes(e.id));
+        
+        // Appliquer la recherche locale
+        const filteredSecExos = secExos.filter(e => {
+            if (currentFilter !== 'tous' && e.difficulty !== currentFilter) return false;
+            if (q && !e.title.toLowerCase().includes(q) && !(e.desc || '').toLowerCase().includes(q)) return false;
+            return true;
+        });
+
+        const isSecUnlocked = secKey == 1 ? sec1Unlocked : (secKey == 2 ? sec2Unlocked : (secKey == 3 ? sec3Unlocked : sec4Unlocked));
+        renderSectionCards(conf.gridId, filteredSecExos, isSecUnlocked);
+        
+        // Ajouter la carte de Quiz de Section à la fin de la grille
+        appendQuizCard(conf.gridId, secKey, isSecUnlocked);
+    });
+
+    // Rendu des exercices communautaires
+    const filteredCustom = formattedCustoms.filter(e => {
+        if (currentFilter !== 'tous' && e.difficulty !== currentFilter) return false;
+        if (q && !e.title.toLowerCase().includes(q) && !(e.desc || '').toLowerCase().includes(q)) return false;
+        return true;
+    });
+    
+    const gridCustom = document.getElementById('exGridCustom');
+    if (gridCustom) {
+        gridCustom.innerHTML = '';
+        filteredCustom.forEach(ex => {
+            const card = document.createElement('div');
+            card.className = `ex-card ${ex.difficulty}`;
+            
+            let deleteBtn = '';
+            if (isTeacher) {
+                deleteBtn = `<button class="btn-delete-exo" onclick="event.stopPropagation(); deleteCommunityExo('${ex.id}')" title="Supprimer l'exercice">
+                <span class="material-icons" style="font-size:18px; pointer-events: none;">delete_forever</span>
+              </button>`;
+            }
+
+            card.innerHTML = `
+              <div class="card-top">
+                <div class="card-icon">${ex.icon}</div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                   ${deleteBtn}
+                   <span class="badge ${ex.difficulty}">${DIFF_LABEL[ex.difficulty]}</span>
+                </div>
+              </div>
+              <div class="category-tag">${ex.category}</div>
+              <div class="card-title">${ex.title}</div>
+              <div class="card-desc">${ex.desc}</div>
+              <div class="card-footer">
+                <div class="card-meta">
+                   <div class="meta-item">🕒 ${ex.duration}</div>
+                   <div class="meta-item">❓ ${ex.questions}</div>
+                </div>
+                <button class="btn-start" onclick="startExercise('${ex.id}', '${ex.title.replace(/'/g, "\\'")}', true)">
+                  Commencer →
+                </button>
+              </div>
+            `;
+            gridCustom.appendChild(card);
+        });
+    }
+
+    // Gérer l'affichage de l'état final et des récompenses
+    updateFinalProjectStatus(finalUnlocked);
+
     const empty = document.getElementById('emptyState');
-    if (fullList.length === 0) {
+    const hasAnyExos = baseExercises.length > 0 || formattedCustoms.length > 0;
+    if (!hasAnyExos) {
         empty.classList.add('visible');
     } else {
         empty.classList.remove('visible');
     }
 }
-/* ─── LANCEMENT ─── */
+
+/* Helper pour mettre à jour l'opacité et l'accès d'une section entière */
+function updateSectionContainer(id, unlocked) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (unlocked) {
+        el.classList.remove('locked');
+        el.style.pointerEvents = 'auto';
+    } else {
+        el.classList.add('locked');
+        el.style.pointerEvents = 'none';
+    }
+}
+
+/* Helper pour instancier les flèches Lottie */
+let lottieArrows = {};
+function toggleArrowLottie(containerId, show, index) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+
+    if (show) {
+        el.style.display = 'flex';
+        if (!lottieArrows[containerId]) {
+            lottieArrows[containerId] = lottie.loadAnimation({
+                container: el,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: ARROW_LOTTIE_JSON
+            });
+        }
+    } else {
+        el.style.display = 'none';
+        if (lottieArrows[containerId]) {
+            lottieArrows[containerId].destroy();
+            delete lottieArrows[containerId];
+        }
+    }
+}
+
+/* Insère la carte Quiz à la fin de la grille d'exercices d'une section */
+function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+
+    const conf = SECTIONS_CONFIG[sectionKey];
+    const quizCompleted = localStorage.getItem(`quiz_section_${sectionKey}_completed`) === 'true';
+    
+    // Le quiz n'est disponible que si TOUS les exercices de la section sont validés
+    const allExosCompleted = conf.exos.every(id => completedOfficialIds.has(id));
+    const isQuizUnlocked = isSectionUnlocked && allExosCompleted;
+
+    const card = document.createElement('div');
+    card.className = `ex-card quiz-card medium ${!isQuizUnlocked ? 'locked-card' : ''}`;
+    
+    if (isQuizUnlocked && !quizCompleted) {
+        card.classList.add('pulsing');
+    }
+
+    const lockIcon = getLockSvg(!isQuizUnlocked);
+    const starIcon = getStarSvg(quizCompleted);
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-actions-top">
+            <span class="lock-indicator">${lockIcon}</span>
+            <span class="star-indicator">${starIcon}</span>
+        </div>
+        <span class="badge medium">Quiz</span>
+      </div>
+      <div class="category-tag">Évaluation</div>
+      <div class="card-title">Validation de la Section ${sectionKey}</div>
+      <div class="card-desc">Testez vos acquis théoriques pour débloquer la section suivante.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+           <div class="meta-item">🕒 5 min</div>
+           <div class="meta-item">❓ 2</div>
+        </div>
+        <button class="btn-start" ${!isQuizUnlocked ? 'disabled' : ''} onclick="openQuizModal(${sectionKey})">
+          ${quizCompleted ? 'Recommencer →' : 'Évaluer →'}
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+}
+
+/* Gère l'affichage des verrous du projet final et du certificat */
+function updateFinalProjectStatus(unlocked) {
+    const statusText = document.getElementById('final-creation-status');
+    const rewardCard = document.getElementById('reward-card');
+    const trophyEmoji = document.getElementById('trophy-emoji');
+    const btnCert = document.getElementById('btn-download-cert');
+
+    if (userCreatedCount > 0) {
+        statusText.innerHTML = `✅ ${userCreatedCount} exercice(s) créé(s)`;
+        statusText.style.color = "var(--green)";
+    } else {
+        statusText.innerHTML = `❌ Aucun exercice créé`;
+        statusText.style.color = "var(--red)";
+    }
+
+    const allQuizzesDone = [1, 2, 3, 4].every(sec => localStorage.getItem(`quiz_section_${sec}_completed`) === 'true');
+    const isRewardUnlocked = unlocked && allQuizzesDone && userCreatedCount > 0;
+
+    if (isRewardUnlocked) {
+        rewardCard.classList.remove('locked');
+        rewardCard.classList.add('unlocked');
+        trophyEmoji.textContent = '🏆';
+        btnCert.removeAttribute('disabled');
+    } else {
+        rewardCard.classList.add('locked');
+        rewardCard.classList.remove('unlocked');
+        trophyEmoji.textContent = '🔒';
+        btnCert.setAttribute('disabled', 'true');
+    }
+}
+
+/* === FUN FACTS WINDOWS / MODALS === */
+function showFunFact(exoId, isCompleted) {
+    if (!isCompleted) return;
+
+    const titleEl = document.getElementById('funfact-title');
+    const bodyEl = document.getElementById('funfact-content');
+    
+    titleEl.textContent = `💡 Le Saviez-vous ? (Exercice ${exoId})`;
+    bodyEl.textContent = FUN_FACTS[exoId] || "L'intelligence artificielle est pleine de surprises !";
+
+    document.getElementById('modal-overlay').style.display = 'block';
+    document.getElementById('modal-funfact').style.display = 'block';
+}
+
+/* === GESTIONNAIRE DE QUIZ === */
+function openQuizModal(sectionKey) {
+    activeQuizSection = sectionKey;
+    activeQuizAnswers = {};
+
+    const quiz = QUIZZES[sectionKey];
+    const titleEl = document.getElementById('quiz-title');
+    const bodyEl = document.getElementById('quiz-content');
+
+    titleEl.textContent = quiz.title;
+    bodyEl.innerHTML = '';
+
+    quiz.questions.forEach((qObj, qIdx) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'quiz-question';
+        qDiv.innerHTML = `<p>${qIdx + 1}. ${qObj.q}</p>`;
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'quiz-options';
+
+        qObj.options.forEach((opt, optIdx) => {
+            const optBtn = document.createElement('div');
+            optBtn.className = 'quiz-option';
+            optBtn.id = `q-${qIdx}-opt-${optIdx}`;
+            optBtn.textContent = opt;
+            optBtn.onclick = () => selectQuizOption(qIdx, optIdx);
+            optionsDiv.appendChild(optBtn);
+        });
+
+        qDiv.appendChild(optionsDiv);
+        bodyEl.appendChild(qDiv);
+    });
+
+    document.getElementById('modal-overlay').style.display = 'block';
+    document.getElementById('modal-quiz').style.display = 'block';
+}
+
+function selectQuizOption(qIdx, optionIdx) {
+    const quiz = QUIZZES[activeQuizSection];
+    const qObj = quiz.questions[qIdx];
+    
+    // Décocher les autres options
+    qObj.options.forEach((_, optIdx) => {
+        const el = document.getElementById(`q-${qIdx}-opt-${optIdx}`);
+        if (el) el.classList.remove('selected');
+    });
+
+    // Cocher l'option sélectionnée
+    const selectedEl = document.getElementById(`q-${qIdx}-opt-${optionIdx}`);
+    if (selectedEl) selectedEl.classList.add('selected');
+
+    activeQuizAnswers[qIdx] = optionIdx;
+}
+
+function submitQuiz() {
+    const quiz = QUIZZES[activeQuizSection];
+    let allCorrect = true;
+    let fallbackExo = null;
+
+    quiz.questions.forEach((qObj, qIdx) => {
+        const userAnswer = activeQuizAnswers[qIdx];
+        if (userAnswer !== qObj.answer) {
+            allCorrect = false;
+            if (fallbackExo === null) {
+                fallbackExo = qObj.fallbackExo;
+            }
+        }
+    });
+
+    closeAllModals();
+
+    if (allCorrect) {
+        localStorage.setItem(`quiz_section_${activeQuizSection}_completed`, 'true');
+        showToast(`🎉 Félicitations ! Quiz de la section ${activeQuizSection} validé.`, true);
+        applyFilters();
+    } else {
+        showToast(`❌ Certaines réponses sont incorrectes. Révisez le cours.`, false);
+        if (fallbackExo) {
+            setTimeout(() => {
+                alert(`Pour mieux comprendre vos erreurs, nous vous conseillons de réviser l'exercice ${fallbackExo}.`);
+                const link = EXERCISE_LINKS[fallbackExo];
+                if (link) window.location.href = link;
+            }, 1000);
+        }
+    }
+}
+
+function closeAllModals() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.getElementById('modal-funfact').style.display = 'none';
+    document.getElementById('modal-quiz').style.display = 'none';
+}
+
+function showToast(message, isSuccess) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.style.background = isSuccess ? 'rgba(16, 185, 129, 0.95)' : 'rgba(239, 68, 68, 0.95)';
+    toast.style.color = 'white';
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
+}
+
+/* === GENERATION DU CERTIFICAT === */
+function downloadCertificate() {
+    const canvas = document.getElementById('cert-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const user = JSON.parse(localStorage.getItem('currentUser')) || { prenom: 'Étudiant', nom: 'Neural' };
+    const fullName = `${user.prenom || ''} ${user.nom || ''}`.trim();
+
+    // Fond dégradé premium
+    const grad = ctx.createLinearGradient(0, 0, 800, 600);
+    grad.addColorStop(0, '#0b0f1a');
+    grad.addColorStop(1, '#1e1b4b');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 800, 600);
+
+    // Bordure dorée
+    ctx.strokeStyle = '#FACC15';
+    ctx.lineWidth = 15;
+    ctx.strokeRect(20, 20, 760, 560);
+    
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(35, 35, 730, 530);
+
+    // Titres & Textes
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 36px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('CERTIFICAT DE RÉUSSITE', 400, 150);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 18px Inter, sans-serif';
+    ctx.fillText('Le présent certificat est décerné à', 400, 230);
+
+    // Nom de l'étudiant
+    ctx.fillStyle = '#FACC15';
+    ctx.font = '800 42px Inter, sans-serif';
+    ctx.fillText(fullName.toUpperCase(), 400, 300);
+
+    // Texte d'attribution
+    ctx.fillStyle = '#eef2ff';
+    ctx.font = '600 16px Inter, sans-serif';
+    ctx.fillText("Pour avoir complété avec succès l'intégralité du parcours pédagogique", 400, 370);
+    ctx.fillText("et validé l'évaluation finale de Neural Playground.", 400, 400);
+
+    // Date
+    const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    ctx.fillStyle = '#64748b';
+    ctx.font = '500 14px Inter, sans-serif';
+    ctx.fillText(`Délivré le ${today}`, 400, 480);
+
+    // Signature/Logo
+    ctx.fillStyle = '#8b5cf6';
+    ctx.font = '800 22px Inter, sans-serif';
+    ctx.fillText("Hi! Paris Playground", 400, 520);
+
+    // Lancer le téléchargement
+    const link = document.createElement('a');
+    link.download = `Certificat_HiParis_${fullName.replace(/\s+/g, '_')}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
 const EXERCISE_LINKS = {
     1: '../exo1.html',
     2: '../exo2.html',
@@ -359,6 +972,7 @@ const EXERCISE_LINKS = {
     16: '../exo16.html',
     17: '../exo17.html',
 };
+
 function startExercise(id, title, isCustom) {
     if (isCustom) {
         window.location.href = `../custom_exo_template.html?id=${id}`;
@@ -373,6 +987,16 @@ function startExercise(id, title, isCustom) {
         window.location.href = `../playground/index.html?exo=${id}`;
     }
 }
+
+/* Exposer les fonctions globales */
+window.visitIntroItem = visitIntroItem;
+window.openQuizModal = openQuizModal;
+window.selectQuizOption = selectQuizOption;
+window.submitQuiz = submitQuiz;
+window.closeAllModals = closeAllModals;
+window.downloadCertificate = downloadCertificate;
+window.showFunFact = showFunFact;
+
 // ✅ Chargement initial depuis l'API
 loadAndRender();
 const backgroundContainer = document.getElementById('background-container');

@@ -19,18 +19,34 @@
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
+        pageLanguage: 'fr',
         includedLanguages: 'en,fr',
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
+    .goog-te-gadget-simple {
+      background-color: transparent !important;
+      border: none !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+    }
+
+    .goog-te-gadget-icon {
+      display: none;
+    }
+
+    body {
+      top: 0px !important;
+    }
+
+    .skiptranslate iframe {
+      display: none !important;
+    }
   </style>
 
   <!-- Conteneur pour l'animation de fond -->
@@ -87,7 +103,7 @@
 
         <!-- Widget Profil existant -->
         <div id="widget-profil-header" style="margin-left: 20px;"></div>
-        
+
         <!-- Nouveau Widget Traduction intégré au header -->
         <div id="google_translate_element" style="display: none !important;"></div>
       </div>
@@ -102,7 +118,10 @@
       <h2>Navigation</h2>
       <nav class="sidebar-menu">
         <ul>
-          <li><a href="#" class="menu-item active"><span class="icon">🏠</span> Tous les Exercices</a></li>
+          <li><a href="#" class="menu-item"><span class="icon">🏠</span> Evaluate your knowledge</a></li>
+
+          <li><a href="#" class="menu-item"><span class="icon">🏠</span> Resources to meet the prerequisites</a>
+          </li>
 
           <li><a class="menu-item" href="#" id="link-historique"
               onclick="event.preventDefault(); window.location.href = localStorage.getItem('isLoggedIn') === 'true' ? 'historique.html' : 'register.html';">
@@ -111,6 +130,9 @@
           <li><a href="../create.html" class="menu-item"><span class="icon">🚧🔨</span> Créer un exercice</a>
           </li>
           <li><a href="../statsetudiant.html" class="menu-item"><span class="icon">📈</span> Statistiques</a></li>
+
+          <li><a href="#" class="menu-item"><span class="icon">🏠</span> Tutorial</a></li>
+
         </ul>
       </nav>
 
@@ -124,7 +146,9 @@
     <main>
       <!-- Titre -->
       <div class="page-header">
-        <h1 class="page-title">📚 Bibliothèque d'exercices</h1>
+        <h1 class="page-title">💡Understand how a neural network works by adjusting its parameters and
+          observing how the
+          results change</h1>
         <p class="page-sub">Choisissez un exercice pour commencer votre apprentissage</p>
       </div>
 
@@ -171,11 +195,128 @@
         </div>
       </div>
 
-      <!-- Grille -->
-      <!-- Section 1 : Exercices de base -->
-      <div id="baseExercisesSection">
-        <h2 class="section-title">🎓 Exercices de base</h2>
-        <div class="ex-grid" id="exGridBase"></div>
+      <!-- Sections du Parcours Pédagogique -->
+      <div class="progression-path">
+
+        <!-- SECTION 0 : PREREQUIS -->
+        <div class="path-section" id="section-0-container">
+          <h2 class="section-title">🏁 Section 0 : Prerequisites & Introduction</h2>
+          <div class="section-intro-text">Complétez ces 3 étapes introductives pour débloquer le parcours :</div>
+          <div class="ex-grid">
+            <!-- Card 1 -->
+            <div class="ex-card intro-card pulsing" id="card-intro-eval" onclick="visitIntroItem('eval')">
+              <div class="card-top">
+                <div class="card-icon">📝</div>
+                <span class="badge easy">Intro</span>
+              </div>
+              <div class="card-title">Evaluate your knowledge</div>
+              <div class="card-desc">Faites le point sur vos connaissances initiales en mathématiques et programmation.
+              </div>
+              <div class="card-footer">
+                <div class="intro-status-text" id="status-intro-eval">❌ Non visité</div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="ex-card intro-card" id="card-intro-res" onclick="visitIntroItem('res')">
+              <div class="card-top">
+                <div class="card-icon">📚</div>
+                <span class="badge easy">Intro</span>
+              </div>
+              <div class="card-title">Resources to meet prerequisites</div>
+              <div class="card-desc">Accédez à des fiches récapitulatives et des cours pour vous mettre à niveau.</div>
+              <div class="card-footer">
+                <div class="intro-status-text" id="status-intro-res">❌ Non visité</div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="ex-card intro-card" id="card-intro-tuto" onclick="visitIntroItem('tuto')">
+              <div class="card-top">
+                <div class="card-icon">📖</div>
+                <span class="badge easy">Intro</span>
+              </div>
+              <div class="card-title">Tutorial</div>
+              <div class="card-desc">Découvrez comment manipuler l'interface interactive du Neural Playground.</div>
+              <div class="card-footer">
+                <div class="intro-status-text" id="status-intro-tuto">❌ Non visité</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lottie-arrow-container" id="arrow-0-1" style="display: none;"></div>
+
+        <!-- SECTION 1 -->
+        <div class="path-section locked" id="section-1-container">
+          <h2 class="section-title">🧱 Section 1 : Basic models: Foundations of neural network</h2>
+          <div class="ex-grid" id="exGridSec1"></div>
+        </div>
+
+        <div class="lottie-arrow-container" id="arrow-1-2" style="display: none;"></div>
+
+        <!-- SECTION 2 -->
+        <div class="path-section locked" id="section-2-container">
+          <h2 class="section-title">🏗️ Section 2 : The Building Blocks of Neural Networks</h2>
+          <div class="ex-grid" id="exGridSec2"></div>
+        </div>
+
+        <div class="lottie-arrow-container" id="arrow-2-3" style="display: none;"></div>
+
+        <!-- SECTION 3 -->
+        <div class="path-section locked" id="section-3-container">
+          <h2 class="section-title">⚡ Section 3 : Training & Optimization</h2>
+          <div class="ex-grid" id="exGridSec3"></div>
+        </div>
+
+        <div class="lottie-arrow-container" id="arrow-3-4" style="display: none;"></div>
+
+        <!-- SECTION 4 -->
+        <div class="path-section locked" id="section-4-container">
+          <h2 class="section-title">🔍 Section 4 : Generalization & Deep Learning Limits</h2>
+          <div class="ex-grid" id="exGridSec4"></div>
+        </div>
+
+        <div class="lottie-arrow-container" id="arrow-4-final" style="display: none;"></div>
+
+        <!-- PROJET FINAL -->
+        <div class="path-section locked" id="section-final-container">
+          <h2 class="section-title">🏆 Projet Final & Certification</h2>
+          <div class="final-flex-layout">
+            <!-- Projet final card -->
+            <div class="ex-card final-project-card" id="final-project-card">
+              <div class="card-top">
+                <div class="card-icon">🛠️</div>
+                <span class="badge hard">Projet</span>
+              </div>
+              <div class="card-title">Construis ton propre exercice</div>
+              <div class="card-desc">Utilisez le Studio pour concevoir un exercice interactif complet (énoncé, solution,
+                architecture) pour la communauté.</div>
+              <div class="card-footer">
+                <span id="final-creation-status">❌ Aucun exercice créé</span>
+                <button class="btn-start" onclick="window.location.href='../create.html'">Studio →</button>
+              </div>
+            </div>
+
+            <!-- Rotating Golden Trophy -->
+            <div class="golden-trophy-spin-container">
+              <div class="golden-trophy-spin">🏆</div>
+            </div>
+
+            <!-- Reward Card -->
+            <div class="ex-card reward-card locked" id="reward-card">
+              <div class="trophy-container">
+                <span class="trophy-icon" id="trophy-emoji">🔒</span>
+              </div>
+              <div class="card-title" style="text-align: center;">Certification de réussite</div>
+              <p class="card-desc" style="text-align: center;">Validez tous les quiz intermédiaires, le quiz final et
+                créez un exercice pour débloquer votre certificat de validation.</p>
+              <div style="text-align: center; margin-top: 10px;">
+                <button class="btn-start" id="btn-download-cert" disabled onclick="downloadCertificate()">Télécharger le
+                  Certificat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Section 2 : Communauté (exercices validés) -->
@@ -184,13 +325,46 @@
         <div class="ex-grid" id="exGridCustom"></div>
       </div>
 
-
       <!-- Empty state -->
       <div class="empty" id="emptyState">
         <div class="empty-icon">🔍</div>
         <h3>Aucun exercice trouvé</h3>
         <p>Essayez un autre mot-clé ou modifiez les filtres</p>
       </div>
+
+      <!-- Modals (Fun Facts, Quiz, etc.) -->
+      <div class="modal-overlay" id="modal-overlay" onclick="closeAllModals()"></div>
+
+      <!-- Fun Fact Modal -->
+      <div class="modal" id="modal-funfact">
+        <div class="modal-header">
+          <h3 id="funfact-title">💡 Le Saviez-vous ?</h3>
+          <span class="close-btn" onclick="closeAllModals()">&times;</span>
+        </div>
+        <div class="modal-body" id="funfact-content">
+          Loading fun fact...
+        </div>
+      </div>
+
+      <!-- Quiz Modal -->
+      <div class="modal" id="modal-quiz">
+        <div class="modal-header">
+          <h3 id="quiz-title">📝 Validation de Section</h3>
+          <span class="close-btn" onclick="closeAllModals()">&times;</span>
+        </div>
+        <div class="modal-body" id="quiz-content">
+          <!-- Dynamically loaded questions -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-start" id="btn-submit-quiz" onclick="submitQuiz()">Valider mes réponses</button>
+        </div>
+      </div>
+
+      <!-- Certificat Canvas (caché, pour export) -->
+      <canvas id="cert-canvas" width="800" height="600" style="display: none;"></canvas>
+
+      <!-- Import de Lottie Web pour les flèches animées -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
     </main>
   </div> <!-- Fin main-container -->
 
