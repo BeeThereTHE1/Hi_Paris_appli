@@ -1,0 +1,430 @@
+ body {
+     margin: 0;
+     font-family: 'Inter', sans-serif;
+     background: #0b0f1a;
+     /* Fond sombre universel */
+     color: #eef2ff;
+     min-height: 100vh;
+     overflow-x: hidden;
+ }
+
+ :root {
+     --bg-dark: #0b0f1a;
+     --border: rgba(255, 255, 255, 0.09);
+     --input-bg: rgba(255, 255, 255, 0.06);
+     --text: #eef2ff;
+     --sub: #94a3b8;
+     --accent: #6366f1;
+     --accent2: #8b5cf6;
+ }
+
+ /* --- Animation de Fond : Formules et Neurones --- */
+ #background-container {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: -1;
+     overflow: hidden;
+     pointer-events: none;
+ }
+
+ .math-formula {
+     position: absolute;
+     opacity: 0.1;
+     color: rgba(255, 255, 255, 0.05);
+     user-select: none;
+     pointer-events: none;
+ }
+
+ .neuron {
+     position: absolute;
+     border-radius: 50%;
+     z-index: -1;
+ }
+
+ .connection {
+     position: absolute;
+     z-index: -1;
+ }
+
+ .orb {
+     position: fixed;
+     border-radius: 50%;
+     filter: blur(90px);
+     opacity: .22;
+     pointer-events: none;
+     animation: drift 12s ease-in-out infinite alternate;
+     z-index: -1;
+ }
+
+ .orb-1 {
+     width: 500px;
+     height: 500px;
+     background: #6366f1;
+     top: -180px;
+     left: -150px;
+ }
+
+ .orb-2 {
+     width: 380px;
+     height: 380px;
+     background: #8b5cf6;
+     bottom: -100px;
+     right: -100px;
+     animation-delay: -5s;
+ }
+
+ .orb-3 {
+     width: 260px;
+     height: 260px;
+     background: #3b82f6;
+     top: 40%;
+     right: 20%;
+     animation-delay: -8s;
+ }
+
+ @keyframes drift {
+     from {
+         transform: translate(0, 0) scale(1);
+     }
+
+     to {
+         transform: translate(18px, 24px) scale(1.07);
+     }
+ }
+
+ /* Grille de fond */
+ body::before {
+     content: '';
+     position: fixed;
+     inset: 0;
+     background-image: linear-gradient(rgba(255, 255, 255, .02) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(255, 255, 255, .02) 1px, transparent 1px);
+     background-size: 48px 48px;
+     pointer-events: none;
+     z-index: -1;
+ }
+
+ /* ── HEADER UNIVERSEL ── */
+ header.universal-header {
+     position: sticky;
+     top: 0;
+     z-index: 1000;
+     background: var(--bg-dark);
+     border-bottom: 1px solid var(--border);
+     backdrop-filter: blur(18px);
+     padding: 0 32px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     height: 64px;
+     color: white;
+ }
+
+ .header-brand {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     text-decoration: none;
+ }
+
+ .brand-icon {
+     width: 40px;
+     height: 40px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .brand-name {
+     font-size: 16px;
+     font-weight: 800;
+     letter-spacing: -.3px;
+     background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     background-clip: text;
+ }
+
+ .header-right {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+ }
+
+ .btn-header {
+     display: flex;
+     align-items: center;
+     gap: 7px;
+     padding: 8px 16px;
+     border-radius: 10px;
+     border: 1px solid var(--border);
+     background: var(--input-bg);
+     color: var(--sub);
+     font-size: 13px;
+     font-weight: 600;
+     cursor: pointer;
+     text-decoration: none;
+     transition: all .2s;
+ }
+
+ .btn-header:hover {
+     border-color: rgba(99, 102, 241, .5);
+     color: var(--text);
+ }
+
+ .btn-header svg {
+     width: 15px;
+     height: 15px;
+ }
+
+ .exo-header {
+     background: #00467680;
+     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+     padding: 12px 24px;
+     backdrop-filter: blur(5px);
+ }
+
+ .exo-title {
+     margin: 0;
+     font-size: 28px;
+     font-weight: 800;
+     color: #fff;
+     letter-spacing: .5px;
+ }
+
+ .exo-instructions {
+     margin: 8px 0 0;
+     font-size: 16px;
+     color: white !important;
+     /* var(--sub);*/
+     line-height: 1.4;
+     border: 1px solid rgba(255, 255, 255, 0.1);
+     padding: 10px 15px;
+     background: rgba(255, 255, 255, 0.05);
+     border-radius: 12px;
+ }
+
+ .exo-main {
+     height: calc(100vh - 150px);
+     padding: 10px;
+ }
+
+ .exo-frame {
+     width: 100%;
+     height: 100%;
+     border: 0;
+     background: rgb(255, 255, 255);
+     border-radius: 8px;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
+ }
+
+ .exo-toprow {
+     display: flex;
+     gap: 12px;
+     align-items: center;
+ }
+
+ .badge {
+     width: 34px;
+     height: 34px;
+     display: grid;
+     place-items: center;
+     border-radius: 6px;
+     background: #2d5aa7;
+     color: #fff;
+     font-weight: 700;
+ }
+
+ .home-link {
+     margin-left: auto;
+     display: flex;
+     align-items: center;
+     gap: 7px;
+     padding: 8px 16px;
+     border-radius: 10px;
+     border: 1px solid #ccc;
+     background: white;
+     color: #333;
+     font-size: 13px;
+     font-weight: 600;
+     text-decoration: none;
+     transition: all 0.2s ease;
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+ }
+
+ .home-link:hover {
+     border-color: #800020;
+     color: #800020;
+     background-color: #fcebeb;
+     box-shadow: 0 4px 8px rgba(128, 0, 32, 0.2);
+ }
+
+
+ .home-link svg {
+     width: 16px;
+     height: 16px;
+ }
+
+ /* ─── ACTIONS FOOTER (BAS À DROITE) ─── */
+ .exo-actions-footer {
+     position: fixed;
+     bottom: 30px;
+     right: 40px;
+     display: flex;
+     gap: 15px;
+     z-index: 1001;
+ }
+
+ .btn-action-premium {
+     padding: 14px 28px;
+     border-radius: 14px;
+     font-family: 'Inter', sans-serif;
+     font-weight: 800;
+     font-size: 14px;
+     cursor: pointer;
+     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+     border: 1px solid rgba(255, 255, 255, 0.15);
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     color: white;
+     backdrop-filter: blur(20px);
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+ }
+
+ #btn-sauvegarder {
+     background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
+     border-color: rgba(16, 185, 129, 0.4);
+ }
+
+ #btn-sauvegarder:hover:not(:disabled) {
+     background: linear-gradient(135deg, #10b981, #3b82f6);
+     transform: translateY(-5px) scale(1.02);
+     box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+ }
+
+ #btn-realise {
+     background: rgba(255, 255, 255, 0.05);
+     border-color: rgba(255, 255, 255, 0.1);
+ }
+
+ .btn-disabled {
+     opacity: 0.2;
+     cursor: not-allowed !important;
+     filter: grayscale(1);
+ }
+
+ .btn-success-ready {
+     background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+     border-color: rgba(255, 255, 255, 0.5) !important;
+     opacity: 1 !important;
+     filter: none !important;
+     animation: pulse-glow 2s infinite;
+ }
+
+ @keyframes pulse-glow {
+     0% {
+         box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.6);
+     }
+
+     70% {
+         box-shadow: 0 0 0 20px rgba(139, 92, 246, 0);
+     }
+
+     100% {
+         box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+     }
+ }
+
+ #btn-realise:hover:not(:disabled) {
+     transform: translateY(-5px) scale(1.02);
+     box-shadow: 0 15px 35px rgba(139, 92, 246, 0.5);
+ }
+
+ /* =========================================
+   📱 RESPONSIVE DESIGN (MOBILES & TABLETTES) 
+   ========================================= */
+ @media (max-width: 768px) {
+
+     /* 1. Ajustement du Header (Menu haut) */
+     header.universal-header {
+         padding: 0 15px;
+         height: auto;
+         min-height: 60px;
+     }
+
+     .brand-name {
+         display: none;
+         /* Cache le texte du logo pour gagner de la place */
+     }
+
+     .btn-header {
+         padding: 6px 10px;
+         font-size: 11px;
+     }
+
+     /* 2. Ajustement de la zone d'instructions */
+     .exo-header {
+         padding: 15px;
+     }
+
+     .exo-title {
+         font-size: 22px;
+     }
+
+     .exo-instructions {
+         font-size: 15px;
+         padding: 12px;
+         margin-top: 10px;
+     }
+
+     .badge {
+         width: 28px;
+         height: 28px;
+         font-size: 14px;
+     }
+
+     /* 3. Ajustement de la zone principale (l'iframe) */
+     .exo-main {
+         height: 700px;
+         /* Fixe une hauteur pour forcer l'apparition du scroll si besoin */
+         padding: 5px;
+     }
+
+     /* 4. Ajustement des boutons flottants (Sauvegarder / Réalisé) */
+     .exo-actions-footer {
+         bottom: 15px;
+         right: 15px;
+         left: 15px;
+         justify-content: space-between;
+         gap: 10px;
+     }
+
+     .btn-action-premium {
+         padding: 10px;
+         font-size: 12px;
+         flex: 1;
+         /* Les boutons se partagent l'espace équitablement */
+         justify-content: center;
+     }
+ }
+
+ /* --- Boutons de navigation verrouillés --- */
+ .btn-header.btn-nav-locked {
+     background: rgba(31, 41, 55, 0.4) !important;
+     border-color: rgba(239, 68, 68, 0.3) !important;
+     color: #ef4444 !important;
+     cursor: not-allowed !important;
+     opacity: 0.65 !important;
+     box-shadow: none !important;
+ }
+
+ .btn-header.btn-nav-locked:hover {
+     background: rgba(31, 41, 55, 0.4) !important;
+     border-color: rgba(239, 68, 68, 0.3) !important;
+     color: #ef4444 !important;
+ }

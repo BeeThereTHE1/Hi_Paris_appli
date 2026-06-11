@@ -1,18 +1,20 @@
 // --- SYSTEME D'AUTO-DECONNEXION ET GESTION DE PROGRESSION/VERROUILLAGE ---
 (function () {
-    // 1. Détection et vérification de la progression/verrouillage pour les exercices (exo*.html)
+    // 1. Détection et vérification de la progression/verrouillage pour les exercices (exo*.html et exo*_quiz.html)
     async function initProgressionCheck() {
         const path = window.location.pathname;
-        const match = path.match(/exo(\d+)\.html/);
-        if (!match) return; // Pas sur un exercice, rien à faire
+        const match = path.match(/exo(\d+)(_quiz)?\.html/);
+        if (!match) return; // Pas sur un exercice ou un quiz, rien à faire
 
         const currentExoId = parseInt(match[1]);
+        const isQuizPage = !!match[2];
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
         if (!isLoggedIn || !user.email) {
             alert("🔒 Veuillez vous connecter pour accéder aux exercices.");
-            window.location.href = 'Page-demo/register.html';
+            const redirectPath = isQuizPage ? '../Page-demo/register.html' : 'Page-demo/register.html';
+            window.location.href = redirectPath;
             return;
         }
 
@@ -55,7 +57,7 @@
                     break;
                 }
             }
-            if (!sectionKey) return true; // Exercices hors parcours (communauté...) déverrouillés par défaut
+            if (!sectionKey) return true; // Hors parcours déverrouillés par défaut
 
             // Vérification des étapes de sections
             const sec1Unlocked = isSection0Completed();
@@ -86,22 +88,126 @@
             }
         }
 
-        // Si l'exercice en cours est verrouillé, on redirige
-        if (!isExerciseUnlocked(currentExoId)) {
-            alert("🔒 Cet exercice est verrouillé. Veuillez suivre la progression dans l'ordre.");
-            window.location.href = 'Page-demo/exercises.html';
-            return;
+        // Si c'est un quiz, on s'assure d'abord que l'exercice correspondant a été résolu localement dans la session
+        if (isQuizPage) {
+            const isSolved = sessionStorage.getItem(`exo_${currentExoId}_solved`) === 'true';
+            const isAlreadyCompleted = completedOfficialIds.has(currentExoId);
+            if (!isSolved && !isAlreadyCompleted) {
+                alert("🔒 Vous devez d'abord réussir l'exercice avant de pouvoir accéder au quiz d'évaluation.");
+                window.location.href = `../exo${currentExoId}.html`;
+                return;
+            }
+        } else {
+            // Si c'est l'exercice standard et qu'il est verrouillé dans le parcours
+            if (!isExerciseUnlocked(currentExoId)) {
+                alert("🔒 Cet exercice est verrouillé. Veuillez suivre la progression dans l'ordre.");
+                window.location.href = 'Page-demo/exercises.html';
+                return;
+            }
         }
 
-        // Vérification et blocage des boutons Précédent / Suivant dans le header
+        // Gestion des boutons dans le footer
+        const btnRealise = document.getElementById('btn-realise');
+        const btnSauvegarder = document.getElementById('btn-sauvegarder');
+
+        if (!isQuizPage) {
+            // PAGE D'EXERCICE
+            if (btnRealise) {
+                btnRealise.innerHTML = '<span class="icon">📝</span> Évaluer mes connaissances';
+                
+                // Si l'exercice est complété en base de données
+                const isCompletedDb = completedOfficialIds.has(currentExoId);
+                if (isCompletedDb) {
+                    btnRealise.disabled = false;
+                    btnRealise.classList.remove('btn-disabled');
+                    btnRealise.classList.add('btn-success-ready');
+                    sessionStorage.setItem(`exo_${currentExoId}_solved`, 'true');
+                } else {
+                    // Sinon, si l'exercice n'est pas résolu dans la session en cours, on s'assure qu'il est bien désactivé
+                    const isSolvedLocal = sessionStorage.getItem(`exo_${currentExoId}_solved`) === 'true';
+                    if (!isSolvedLocal) {
+                        btnRealise.disabled = true;
+                        btnRealise.classList.add('btn-disabled');
+                        btnRealise.classList.remove('btn-success-ready');
+                        sessionStorage.removeItem(`exo_${currentExoId}_solved`);
+                    } else {
+                        btnRealise.disabled = false;
+                        btnRealise.classList.remove('btn-disabled');
+                        btnRealise.classList.add('btn-success-ready');
+                    }
+                }
+
+                // Intercepter le clic pour rediriger vers le quiz
+                btnRealise.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = `exoquiz/exo${currentExoId}_quiz.html`;
+                }, true);
+            }
+
+            // Écouter le message de réussite venant de la simulation
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'EXO_SUCCESS' && event.data.exoId == currentExoId) {
+                    sessionStorage.setItem(`exo_${currentExoId}_solved`, 'true');
+                    if (btnRealise) {
+                        btnRealise.disabled = false;
+                        btnRealise.classList.remove('btn-disabled');
+                        btnRealise.classList.add('btn-success-ready');
+                    }
+                }
+            });
+
+        } else {
+            // PAGE DE QUIZ
+            if (btnSauvegarder) {
+                btnSauvegarder.style.display = 'none'; // Pas de sauvegarde de simulation sur le quiz
+            }
+            if (btnRealise) {
+                btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
+                
+                // Le bouton est actif pour le quiz
+                btnRealise.disabled = false;
+                btnRealise.classList.remove('btn-disabled');
+                btnRealise.classList.add('btn-success-ready');
+
+                btnRealise.addEventListener('click', async function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    btnRealise.disabled = true;
+                    btnRealise.innerHTML = '⚡ Enregistrement...';
+                    
+                    // Sauvegarde dans la base de données (Supabase) via le service de stockage
+                    if (window.StorageService) {
+                        const success = await window.StorageService.complete(currentExoId);
+                        if (success) {
+                            alert("🎉 Quiz réussi et progression enregistrée !");
+                            window.location.href = '../Page-demo/exercises.html';
+                        } else {
+                            btnRealise.disabled = false;
+                            btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
+                        }
+                    } else {
+                        console.error("StorageService introuvable.");
+                        alert("Erreur technique : Service de stockage manquant.");
+                        btnRealise.disabled = false;
+                        btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
+                    }
+                }, true);
+            }
+        }
+
+        // Vérification et blocage des boutons de navigation (header)
         const navButtons = document.querySelectorAll('.universal-header .btn-header, header .btn-header');
         navButtons.forEach(btn => {
             const href = btn.getAttribute('href');
             if (!href) return;
-            const btnMatch = href.match(/exo(\d+)\.html/);
+            const btnMatch = href.match(/exo(\d+)(_quiz)?\.html/);
             if (!btnMatch) return;
 
             const targetId = parseInt(btnMatch[1]);
+
+            // Pour la navigation, on vérifie si la cible est déverrouillée
             if (!isExerciseUnlocked(targetId)) {
                 btn.classList.add('btn-nav-locked');
                 if (!btn.innerHTML.includes('🔒')) {
@@ -116,9 +222,8 @@
         });
     }
 
-    // Lancement du contrôle de verrouillage
+    // Lancement du contrôle
     document.addEventListener('DOMContentLoaded', initProgressionCheck);
-    // Cas où le script charge après DOMContentLoaded
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
         initProgressionCheck();
     }
