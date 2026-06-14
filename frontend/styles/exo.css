@@ -197,7 +197,7 @@
 
  .exo-instructions {
      margin: 8px 0 0;
-     font-size: 16px;
+     font-size: 10px;
      color: white !important;
      /* var(--sub);*/
      line-height: 1.4;
@@ -428,3 +428,257 @@
      border-color: rgba(239, 68, 68, 0.3) !important;
      color: #ef4444 !important;
  }
+
+ /* --- Styles pour le Tutoriel Interactif Exo 1 --- */
+ .tutorial-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: rgba(11, 15, 26, 0.85);
+     backdrop-filter: blur(10px);
+     z-index: 10000;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     transition: opacity 0.5s ease;
+ }
+
+ .tutorial-popup {
+     background: #004676;
+     border: 1px solid rgba(255, 255, 255, 0.15);
+     border-radius: 20px;
+     padding: 40px;
+     max-width: 800px;
+     width: 90%;
+     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+     text-align: center;
+     position: relative;
+     transform: translateY(0);
+     transition: transform 0.3s ease;
+ }
+
+ .tutorial-popup h3 {
+     margin-top: 0;
+     font-size: 34px;
+     font-weight: 800;
+     background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     margin-bottom: 20px;
+ }
+
+ .tutorial-popup p {
+     font-size: 25px;
+     line-height: 1.6;
+     color: #cbd5e1;
+     margin-bottom: 30px;
+ }
+
+ .tutorial-btn {
+     background: #FF553F;
+     color: white;
+     border: none;
+     padding: 14px 30px;
+     border-radius: 12px;
+     font-weight: 800;
+     cursor: pointer;
+     font-size: 24px;
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+     transition: all 0.3s ease;
+     box-shadow: 0 10px 20px rgba(255, 85, 63, 0.3);
+ }
+
+ .tutorial-btn:hover:not(:disabled) {
+     transform: translateY(-2px);
+     box-shadow: 0 15px 25px rgba(255, 85, 63, 0.5);
+ }
+
+ .tutorial-btn:disabled {
+     background: #475569;
+     color: #94a3b8;
+     cursor: not-allowed;
+     box-shadow: none;
+     opacity: 0.6;
+ }
+
+ .tutorial-highlight-box {
+     position: absolute;
+     border: 4px solid #FF034D;
+     border-radius: 12px;
+     pointer-events: none;
+     z-index: 9999;
+     box-sizing: border-box;
+     animation: mini-zoom-glow-ff 1.5s infinite ease-in-out;
+ }
+
+ @keyframes mini-zoom-glow-ff {
+     0% {
+         transform: scale(1);
+         box-shadow: 0 0 8px #FF034D;
+     }
+
+     50% {
+         transform: scale(1.02);
+         box-shadow: 0 0 30px #FF034D;
+     }
+
+     100% {
+         transform: scale(1);
+         box-shadow: 0 0 8px #FF034D;
+     }
+ }
+
+ .tutorial-indicator-dot {
+     position: absolute;
+     width: 44px;
+     height: 44px;
+     background: #FF034D;
+     border-radius: 50%;
+     color: white;
+     font-weight: bold;
+     font-size: 32px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0 0 15px #FF034D;
+     z-index: 10001;
+     pointer-events: none;
+     transform: translate(-50%, -50%);
+ }
+
+ /* Tooltip Custom de Tutoriel */
+ .tutorial-tooltip {
+     position: absolute;
+     background: #004676;
+     color: #FFFFFF;
+     border: 1px solid rgba(255, 255, 255, 0.2);
+     border-radius: 12px;
+     padding: 24px;
+     max-width: 600px;
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+     font-size: 24px;
+     line-height: 1.5;
+     z-index: 10002;
+     transition: opacity 0.3s;
+ }
+
+ .tutorial-tooltip-arrow {
+     position: absolute;
+     width: 0;
+     height: 0;
+     border-style: solid;
+ }
+
+ /* Info popup en bas à gauche */
+ .tutorial-popup-left {
+     position: fixed;
+     bottom: 30px;
+     left: 30px;
+     background: #004676;
+     color: #FFFFFF;
+     border: 1px solid rgba(255, 255, 255, 0.2);
+     border-radius: 16px;
+     padding: 30px;
+     max-width: 600px;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+     z-index: 10005;
+     font-family: 'Inter', sans-serif;
+     animation: slide-up 0.4s ease-out;
+ }
+
+ .tutorial-popup-left h3 {
+     margin-top: 0;
+     font-size: 28px;
+     font-weight: 800;
+     margin-bottom: 15px;
+     color: #ffffff;
+ }
+
+ .tutorial-popup-left p {
+     font-size: 24px;
+     line-height: 1.5;
+     margin-bottom: 20px;
+     color: #e2e8f0;
+ }
+
+ .tutorial-popup-left .btn-right {
+     display: flex;
+     justify-content: flex-end;
+ }
+
+ .tutorial-popup-left button {
+     background: #FF553F;
+     color: white;
+     border: none;
+     padding: 12px 24px;
+     border-radius: 8px;
+     font-weight: 700;
+     cursor: pointer;
+     font-size: 22px;
+     transition: all 0.2s;
+ }
+
+ .tutorial-popup-left button:hover {
+     transform: translateY(-1px);
+     box-shadow: 0 5px 15px rgba(255, 85, 63, 0.4);
+ }
+
+ @keyframes slide-up {
+     from {
+         transform: translateY(50px);
+         opacity: 0;
+     }
+
+     to {
+         transform: translateY(0);
+         opacity: 1;
+     }
+ }
+
+  /* Style de clignotement pour les tip-info 'i' */
+  .info-tip-pulse {
+      animation: pulse-tip 1.5s infinite;
+  }
+
+  @keyframes pulse-tip {
+      0% {
+          transform: scale(1);
+          background: #3b82f6;
+      }
+
+      50% {
+          transform: scale(1.2);
+          background: #FF034D;
+          box-shadow: 0 0 10px #FF034D;
+      }
+
+      100% {
+          transform: scale(1);
+          background: #3b82f6;
+      }
+  }
+
+  @media (max-width: 992px) or (max-height: 700px) {
+      .tutorial-popup h3 { font-size: 28px !important; }
+      .tutorial-popup p { font-size: 20px !important; }
+      .tutorial-btn { font-size: 20px !important; padding: 10px 24px !important; }
+      .tutorial-tooltip { font-size: 18px !important; max-width: 90vw !important; padding: 15px !important; }
+      .tutorial-popup-left h3 { font-size: 24px !important; }
+      .tutorial-popup-left p { font-size: 18px !important; }
+      .tutorial-popup-left button { font-size: 18px !important; }
+  }
+
+  @media (max-width: 600px) or (max-height: 500px) {
+      .tutorial-popup h3 { font-size: 22px !important; }
+      .tutorial-popup p { font-size: 15px !important; }
+      .tutorial-btn { font-size: 15px !important; padding: 8px 16px !important; }
+      .tutorial-tooltip { font-size: 14px !important; max-width: 95vw !important; padding: 10px !important; }
+      .tutorial-popup-left h3 { font-size: 18px !important; }
+      .tutorial-popup-left p { font-size: 13px !important; }
+      .tutorial-popup-left button { font-size: 13px !important; }
+      .tutorial-popup { padding: 20px !important; }
+      .tutorial-popup-left { padding: 15px !important; left: 10px !important; bottom: 10px !important; max-width: 280px !important; }
+  }

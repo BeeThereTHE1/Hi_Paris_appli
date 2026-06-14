@@ -181,30 +181,680 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// --- LOGIQUE DE SAUVEGARDE ET VALIDATION (VIA STORAGE SERVICE) ---
+// --- LOGIQUE DE SAUVEGARDE ET VALIDATION ---
 const btnSauvegarder = document.getElementById('btn-sauvegarder');
 const btnRealise = document.getElementById('btn-realise');
 
+// Écouter le signal de succès venant de l'iframe
 window.addEventListener('message', (event) => {
-    if (event.data.type === 'EXO_SUCCESS' && event.data.exoId == 1) {
-        btnRealise.disabled = false;
-        btnRealise.classList.remove('btn-disabled');
-        btnRealise.classList.add('btn-success-ready');
-    }
+  console.log("Signal reçu du Playground:", event.data);
+  if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 1 || event.data.exoId == "1")) {
+    console.log("Validation confirmée pour l'exercice 1 !");
+    btnRealise.disabled = false;
+    btnRealise.classList.remove('btn-disabled');
+    btnRealise.classList.add('btn-success-ready');
+    showStep5Congrats();
+  }
 });
 
+// ce code permet de sauvegarder l'exercice dans le profil de l'utilisateur
 btnSauvegarder.onclick = async () => {
-    const success = await StorageService.save(1);
-    if (success) {
-        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-        btnSauvegarder.disabled = true;
-    }
+  const success = await StorageService.save(1);
+  if (success) {
+    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+    btnSauvegarder.style.opacity = '0.7';
+    btnSauvegarder.disabled = true;
+  }
 };
 
+// ce code permet de valider l'exercice dans le profil de l'utilisateur
 btnRealise.onclick = async () => {
-    const success = await StorageService.complete(1);
-    if (success) {
-        btnRealise.innerHTML = '✨ Validé !';
-        btnRealise.disabled = true;
-    }
+  const success = await StorageService.complete(1);
+  if (success) {
+    btnRealise.innerHTML = '✨ Redirection...';
+    btnRealise.disabled = true;
+    setTimeout(() => { 
+      window.location.href = 'exoquiz/exo1_quiz.html'; 
+    }, 800);
+  }
 };
+
+// ==========================================
+// TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 1)
+// ==========================================
+
+function startTutorial() {
+  // Step 1: Instruction Overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'tutorial-overlay';
+  overlay.id = 'exo1-tutorial-overlay';
+
+  const popup = document.createElement('div');
+  popup.className = 'tutorial-popup';
+  
+  const h3 = document.createElement('h3');
+  h3.innerText = "Exercice #1 : Séparez les données";
+
+  const p = document.createElement('p');
+  const text = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une droite qui sépare le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver dans chaque région.";
+  p.innerText = text;
+
+  const timerSpan = document.createElement('span');
+  timerSpan.style.display = 'block';
+  timerSpan.style.marginTop = '15px';
+  timerSpan.style.fontSize = '13px';
+  timerSpan.style.color = '#94a3b8';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'tutorial-btn';
+  nextBtn.innerText = "Continuer";
+  nextBtn.disabled = true;
+
+  popup.appendChild(h3);
+  popup.appendChild(p);
+  popup.appendChild(timerSpan);
+  popup.appendChild(nextBtn);
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+
+  // Word count reading time (s) = words / 200 * 60
+  const wordCount = text.split(/\s+/).length;
+  let timeLeft = Math.max(5, Math.ceil((wordCount / 200) * 60)); // around 12 seconds
+  
+  function updateTimer() {
+    if (timeLeft > 0) {
+      timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+      timeLeft--;
+      setTimeout(updateTimer, 1000);
+    } else {
+      timerSpan.style.display = 'none';
+      nextBtn.disabled = false;
+    }
+  }
+  updateTimer();
+
+  nextBtn.onclick = () => {
+    overlay.remove();
+    runStep1Highlight();
+  };
+}
+
+function runStep1Highlight() {
+  const instructions = document.querySelector('.exo-instructions');
+  if (instructions) {
+    instructions.classList.add('highlight-glow-border');
+    
+    const indicator = document.createElement('div');
+    indicator.className = 'tutorial-indicator-dot';
+    indicator.innerText = '1';
+    
+    const rect = instructions.getBoundingClientRect();
+    indicator.style.left = `${rect.left + 20}px`;
+    indicator.style.top = `${rect.top}px`;
+    document.body.appendChild(indicator);
+
+    const clickHandler = () => {
+      instructions.classList.remove('highlight-glow-border');
+      indicator.remove();
+      document.removeEventListener('click', clickHandler);
+      runStep2();
+    };
+    setTimeout(() => {
+      document.addEventListener('click', clickHandler);
+    }, 100);
+  } else {
+    runStep2();
+  }
+}
+
+let activeHighlightBox = null;
+let activeTooltip = null;
+let activeIndicator = null;
+let currentHighlightSelector = null;
+let currentHighlightLabel = null;
+let currentTooltipSelector = null;
+let currentTooltipTitle = null;
+let currentTooltipText = null;
+let currentTooltipPosition = null;
+
+function clearHighlights() {
+  if (activeHighlightBox) { activeHighlightBox.remove(); activeHighlightBox = null; }
+  if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
+  if (activeIndicator) { activeIndicator.remove(); activeIndicator = null; }
+  currentHighlightSelector = null;
+  currentHighlightLabel = null;
+  currentTooltipSelector = null;
+}
+
+function getIframeElementRect(selector) {
+  const iframe = document.querySelector('.exo-frame');
+  if (!iframe) return null;
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+  if (selector.includes(',')) {
+    const selectors = selector.split(',').map(s => s.trim());
+    let minTop = Infinity, minLeft = Infinity;
+    let maxBottom = -Infinity, maxRight = -Infinity;
+    let foundAny = false;
+
+    for (const sel of selectors) {
+      const el = iframeDoc.querySelector(sel);
+      if (el) {
+        foundAny = true;
+        const elRect = el.getBoundingClientRect();
+        if (elRect.top < minTop) minTop = elRect.top;
+        if (elRect.left < minLeft) minLeft = elRect.left;
+        if (elRect.bottom > maxBottom) maxBottom = elRect.bottom;
+        if (elRect.right > maxRight) maxRight = elRect.right;
+      }
+    }
+
+    if (!foundAny) return null;
+    const iframeRect = iframe.getBoundingClientRect();
+    return {
+      top: iframeRect.top + minTop,
+      left: iframeRect.left + minLeft,
+      bottom: iframeRect.top + maxBottom,
+      right: iframeRect.left + maxRight,
+      width: maxRight - minLeft,
+      height: maxBottom - minTop
+    };
+  }
+
+  const el = iframeDoc.querySelector(selector);
+  if (!el) return null;
+
+  const iframeRect = iframe.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+
+  return {
+    top: iframeRect.top + elRect.top,
+    left: iframeRect.left + elRect.left,
+    bottom: iframeRect.top + elRect.bottom,
+    right: iframeRect.left + elRect.right,
+    width: elRect.width,
+    height: elRect.height
+  };
+}
+
+function repositionActiveElements() {
+  if (currentHighlightSelector) {
+    let rect = null;
+    if (currentHighlightSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentHighlightSelector);
+    }
+
+    if (rect && activeHighlightBox) {
+      const padding = 15;
+      let rectLeft = rect.left - padding;
+      let rectTop = rect.top - padding;
+      let rectWidth = rect.width + padding * 2;
+      let rectHeight = rect.height + padding * 2;
+
+      activeHighlightBox.style.left = `${rectLeft + window.scrollX}px`;
+      activeHighlightBox.style.top = `${rectTop + window.scrollY}px`;
+      activeHighlightBox.style.width = `${rectWidth}px`;
+      activeHighlightBox.style.height = `${rectHeight}px`;
+
+      if (activeIndicator) {
+        activeIndicator.style.left = `${rectLeft + window.scrollX}px`;
+        activeIndicator.style.top = `${rectTop + window.scrollY}px`;
+      }
+    }
+  }
+
+  if (currentTooltipSelector && activeTooltip) {
+    let rect = null;
+    if (currentTooltipSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentTooltipSelector);
+    }
+
+    if (rect) {
+      const tooltipRect = activeTooltip.getBoundingClientRect();
+      let top = 0, left = 0;
+
+      let targetLeft = rect.left;
+      let targetTop = rect.top;
+      let targetWidth = rect.width;
+      let targetHeight = rect.height;
+      let targetBottom = rect.bottom;
+      let targetRight = rect.right;
+
+      if (currentTooltipPosition === 'bottom') {
+        top = targetBottom + window.scrollY + 10;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'top') {
+        top = targetTop - tooltipRect.height - 10 + window.scrollY;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'right') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetRight + 10 + window.scrollX;
+      } else if (currentTooltipPosition === 'left') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetLeft - tooltipRect.width - 10 + window.scrollX;
+      }
+
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) left = window.innerWidth - tooltipRect.width - 10;
+      if (top < 10) top = 10;
+
+      activeTooltip.style.top = `${top}px`;
+      activeTooltip.style.left = `${left}px`;
+    }
+  }
+}
+
+function showHighlightBox(selector, numLabel) {
+  clearHighlights();
+  currentHighlightSelector = selector;
+  currentHighlightLabel = numLabel;
+
+  activeHighlightBox = document.createElement('div');
+  activeHighlightBox.className = 'tutorial-highlight-box';
+  document.body.appendChild(activeHighlightBox);
+
+  if (numLabel) {
+    activeIndicator = document.createElement('div');
+    activeIndicator.className = 'tutorial-indicator-dot';
+    activeIndicator.innerText = numLabel;
+    document.body.appendChild(activeIndicator);
+  }
+  repositionActiveElements();
+}
+
+function showCustomTooltip(selector, title, text, position = 'bottom') {
+  if (activeTooltip) activeTooltip.remove();
+  currentTooltipSelector = selector;
+  currentTooltipTitle = title;
+  currentTooltipText = text;
+  currentTooltipPosition = position;
+
+  activeTooltip = document.createElement('div');
+  activeTooltip.className = 'tutorial-tooltip';
+  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Cliquez n'importe où pour continuer</div>`;
+  document.body.appendChild(activeTooltip);
+  repositionActiveElements();
+}
+
+function runStep2() {
+  highlightParameter('XAxis');
+}
+
+function highlightParameter(paramType) {
+  let selector = "";
+  let title = "";
+  let text = "";
+  let nextParam = null;
+  let indicatorNum = "2";
+
+  if (paramType === 'XAxis') {
+    selector = '.x.axis';
+    title = "Axe X (Abscisses)";
+    text = "Représente la première caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée horizontale de chaque point sur le plan.";
+    nextParam = 'YAxis';
+  } else if (paramType === 'YAxis') {
+    selector = '.y.axis';
+    title = "Axe Y (Ordonnées)";
+    text = "Représente la deuxième caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée verticale de chaque point sur le plan.";
+    nextParam = 'Colormap';
+  } else if (paramType === 'Colormap') {
+    selector = '#colormap';
+    title = "Palette & Options";
+    text = "La palette indique les valeurs (Orange = négatif, Bleu = positif). L'affichage des données de test et la discrétisation aident à visualiser la frontière.";
+    nextParam = 'Features';
+  } else if (paramType === 'Features') {
+    selector = '.column.features';
+    title = "Caractéristiques (Features)";
+    text = "Les caractéristiques d'entrée sont les propriétés individuelles mesurables utilisées par le modèle. Ici, nous utilisons X1 et X2. (Notez les boutons d'information 'i' à côté pour de futures définitions !)";
+    nextParam = 'Step3';
+  }
+
+  if (activeIndicator) { activeIndicator.remove(); activeIndicator = null; }
+  currentHighlightSelector = null;
+  currentHighlightLabel = null;
+  currentTooltipSelector = null;
+}
+
+function getIframeElementRect(selector) {
+  const iframe = document.querySelector('.exo-frame');
+  if (!iframe) return null;
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+  if (selector.includes(',')) {
+    const selectors = selector.split(',').map(s => s.trim());
+    let minTop = Infinity, minLeft = Infinity;
+    let maxBottom = -Infinity, maxRight = -Infinity;
+    let foundAny = false;
+
+    for (const sel of selectors) {
+      const el = iframeDoc.querySelector(sel);
+      if (el) {
+        foundAny = true;
+        const elRect = el.getBoundingClientRect();
+        if (elRect.top < minTop) minTop = elRect.top;
+        if (elRect.left < minLeft) minLeft = elRect.left;
+        if (elRect.bottom > maxBottom) maxBottom = elRect.bottom;
+        if (elRect.right > maxRight) maxRight = elRect.right;
+      }
+    }
+
+    if (!foundAny) return null;
+    const iframeRect = iframe.getBoundingClientRect();
+    return {
+      top: iframeRect.top + minTop,
+      left: iframeRect.left + minLeft,
+      bottom: iframeRect.top + maxBottom,
+      right: iframeRect.left + maxRight,
+      width: maxRight - minLeft,
+      height: maxBottom - minTop
+    };
+  }
+
+  const el = iframeDoc.querySelector(selector);
+  if (!el) return null;
+
+  const iframeRect = iframe.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+
+  return {
+    top: iframeRect.top + elRect.top,
+    left: iframeRect.left + elRect.left,
+    bottom: iframeRect.top + elRect.bottom,
+    right: iframeRect.left + elRect.right,
+    width: elRect.width,
+    height: elRect.height
+  };
+}
+
+function repositionActiveElements() {
+  if (currentHighlightSelector) {
+    let rect = null;
+    if (currentHighlightSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentHighlightSelector);
+    }
+
+    if (rect && activeHighlightBox) {
+      const padding = 15;
+      let rectLeft = rect.left - padding;
+      let rectTop = rect.top - padding;
+      let rectWidth = rect.width + padding * 2;
+      let rectHeight = rect.height + padding * 2;
+
+      activeHighlightBox.style.left = `${rectLeft + window.scrollX}px`;
+      activeHighlightBox.style.top = `${rectTop + window.scrollY}px`;
+      activeHighlightBox.style.width = `${rectWidth}px`;
+      activeHighlightBox.style.height = `${rectHeight}px`;
+
+      if (activeIndicator) {
+        activeIndicator.style.left = `${rectLeft + window.scrollX}px`;
+        activeIndicator.style.top = `${rectTop + window.scrollY}px`;
+      }
+    }
+  }
+
+  if (currentTooltipSelector && activeTooltip) {
+    let rect = null;
+    if (currentTooltipSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentTooltipSelector);
+    }
+
+    if (rect) {
+      const tooltipRect = activeTooltip.getBoundingClientRect();
+      let top = 0, left = 0;
+
+      let targetLeft = rect.left;
+      let targetTop = rect.top;
+      let targetWidth = rect.width;
+      let targetHeight = rect.height;
+      let targetBottom = rect.bottom;
+      let targetRight = rect.right;
+
+      if (currentTooltipPosition === 'bottom') {
+        top = targetBottom + window.scrollY + 10;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'top') {
+        top = targetTop - tooltipRect.height - 10 + window.scrollY;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'right') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetRight + 10 + window.scrollX;
+      } else if (currentTooltipPosition === 'left') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetLeft - tooltipRect.width - 10 + window.scrollX;
+      }
+
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) left = window.innerWidth - tooltipRect.width - 10;
+      if (top < 10) top = 10;
+
+      activeTooltip.style.top = `${top}px`;
+      activeTooltip.style.left = `${left}px`;
+    }
+  }
+}
+
+function showHighlightBox(selector, numLabel) {
+  clearHighlights();
+  currentHighlightSelector = selector;
+  currentHighlightLabel = numLabel;
+
+  activeHighlightBox = document.createElement('div');
+  activeHighlightBox.className = 'tutorial-highlight-box';
+  document.body.appendChild(activeHighlightBox);
+
+  if (numLabel) {
+    activeIndicator = document.createElement('div');
+    activeIndicator.className = 'tutorial-indicator-dot';
+    activeIndicator.innerText = numLabel;
+    document.body.appendChild(activeIndicator);
+  }
+  repositionActiveElements();
+}
+
+function showCustomTooltip(selector, title, text, position = 'bottom') {
+  if (activeTooltip) activeTooltip.remove();
+  currentTooltipSelector = selector;
+  currentTooltipTitle = title;
+  currentTooltipText = text;
+  currentTooltipPosition = position;
+
+  activeTooltip = document.createElement('div');
+  activeTooltip.className = 'tutorial-tooltip';
+  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Cliquez n'importe où pour continuer</div>`;
+  document.body.appendChild(activeTooltip);
+  repositionActiveElements();
+}
+
+function runStep2() {
+  highlightParameter('XAxis');
+}
+
+function highlightParameter(paramType) {
+  let selector = "";
+  let title = "";
+  let text = "";
+  let nextParam = null;
+  let indicatorNum = "2";
+
+  if (paramType === 'XAxis') {
+    selector = '.x.axis';
+    title = "Axe X (Abscisses)";
+    text = "Représente la première caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée horizontale de chaque point sur le plan.";
+    nextParam = 'YAxis';
+  } else if (paramType === 'YAxis') {
+    selector = '.y.axis';
+    title = "Axe Y (Ordonnées)";
+    text = "Représente la deuxième caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée verticale de chaque point sur le plan.";
+    nextParam = 'Colormap';
+  } else if (paramType === 'Colormap') {
+    selector = '#colormap';
+    title = "Palette & Options";
+    text = "La palette indique les valeurs (Orange = négatif, Bleu = positif). L'affichage des données de test et la discrétisation aident à visualiser la frontière.";
+    nextParam = 'Features';
+  } else if (paramType === 'Features') {
+    selector = '.column.features';
+    title = "Caractéristiques (Features)";
+    text = "Les caractéristiques d'entrée sont les propriétés individuelles mesurables utilisées par le modèle. Ici, nous utilisons X1 et X2. (Notez les boutons d'information 'i' à côté pour de futures définitions !)";
+    nextParam = 'Step3';
+  }
+
+  let el = null;
+  if (selector) {
+    const iframe = document.querySelector('.exo-frame');
+    if (iframe) {
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      el = iframeDoc.querySelector(selector);
+    }
+  }
+
+  if (el) {
+    showHighlightBox(selector, indicatorNum);
+    showCustomTooltip(selector, title, text, 'bottom');
+
+    const clickHandler = () => {
+      document.removeEventListener('click', clickHandler);
+      if (nextParam === 'Step3') {
+        clearHighlights();
+        runStep3();
+      } else {
+        highlightParameter(nextParam);
+      }
+    };
+    setTimeout(() => {
+      document.addEventListener('click', clickHandler);
+    }, 100);
+  } else {
+    if (nextParam === 'Step3') {
+      runStep3();
+    } else {
+      highlightParameter(nextParam);
+    }
+  }
+}
+
+function runStep3() {
+  const leftPopup = document.createElement('div');
+  leftPopup.className = 'tutorial-popup-left';
+  leftPopup.id = 'exo1-step3-leftpopup';
+
+  const h3 = document.createElement('h3');
+  h3.innerText = "Let’s Start! [3]";
+
+  const p = document.createElement('p');
+  p.innerText = "Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
+
+  const btnDiv = document.createElement('div');
+  btnDiv.className = 'btn-right';
+  const nextBtn = document.createElement('button');
+  nextBtn.innerText = "Next >>";
+
+  btnDiv.appendChild(nextBtn);
+  leftPopup.appendChild(h3);
+  leftPopup.appendChild(p);
+  leftPopup.appendChild(btnDiv);
+  document.body.appendChild(leftPopup);
+
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    leftPopup.remove();
+    runStep4();
+  };
+}
+
+function runStep4() {
+  showHighlightBox('#custom-weight-editor-x, #custom-weight-editor-y', '4');
+  showCustomTooltip('#custom-weight-editor-x, #custom-weight-editor-y', "Modifier les Poids", "Faites glisser les curseurs ou cliquez sur les liaisons entre X1, X2 et la sortie pour modifier leurs poids.", 'right');
+
+  const clickHandler = () => {
+    document.removeEventListener('click', clickHandler);
+    clearHighlights();
+  };
+  setTimeout(() => {
+    document.addEventListener('click', clickHandler);
+  }, 100);
+}
+
+function showStep5Congrats() {
+  const overlay = document.createElement('div');
+  overlay.className = 'tutorial-overlay';
+  overlay.id = 'exo1-step5-overlay';
+
+  const popup = document.createElement('div');
+  popup.className = 'tutorial-popup';
+  popup.style.background = '#004676';
+
+  const h3 = document.createElement('h3');
+  h3.style.color = '#FFFFFF';
+  h3.innerText = "Great job! [5]";
+
+  const p = document.createElement('p');
+  p.style.color = '#FFFFFF';
+  p.innerText = "Your settings lead to a good classification of our data into two clusters.\nLet's review together what you’ve learned from this exercise.";
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'tutorial-btn';
+  nextBtn.style.background = '#FF553F';
+  nextBtn.innerText = "Suivant";
+
+  popup.appendChild(h3);
+  popup.appendChild(p);
+  popup.appendChild(nextBtn);
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+
+  const dismiss = () => {
+    overlay.remove();
+    document.removeEventListener('click', dismiss);
+  };
+
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    dismiss();
+  };
+
+  setTimeout(() => {
+    document.addEventListener('click', dismiss);
+  }, 100);
+}
+
+window.addEventListener('resize', repositionActiveElements);
+window.addEventListener('scroll', repositionActiveElements);
+setInterval(repositionActiveElements, 100);
+
+// Lancer le tutoriel après chargement de l'iframe
+const iframe = document.querySelector('.exo-frame');
+if (iframe) {
+  iframe.addEventListener('load', () => {
+    setTimeout(() => {
+      // Remplacer les boutons '?' en 'i' d'informations dans l'iframe
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.querySelectorAll('.info-tip').forEach(el => {
+          if (el.innerText === '?') {
+            el.innerText = 'i';
+            el.classList.add('info-tip-pulse');
+            // Arrêter le clignotement après clic
+            el.addEventListener('click', () => {
+              el.classList.remove('info-tip-pulse');
+            });
+          }
+        });
+      } catch (e) {
+        console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
+      }
+      startTutorial();
+    }, 1200);
+  });
+}
