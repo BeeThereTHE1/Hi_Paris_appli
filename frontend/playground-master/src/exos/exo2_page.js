@@ -183,3 +183,347 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
+
+// ==========================================
+// TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 2)
+// ==========================================
+
+let activeHighlightBox = null;
+let activeTooltip = null;
+let activeIndicator = null;
+let currentHighlightSelector = null;
+let currentHighlightLabel = null;
+let currentTooltipSelector = null;
+let currentTooltipTitle = null;
+let currentTooltipText = null;
+let currentTooltipPosition = 'bottom';
+
+function clearHighlights() {
+  if (activeHighlightBox) { activeHighlightBox.remove(); activeHighlightBox = null; }
+  if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
+  if (activeIndicator) { activeIndicator.remove(); activeIndicator = null; }
+  currentHighlightSelector = null;
+  currentHighlightLabel = null;
+  currentTooltipSelector = null;
+}
+
+function getIframeElementRect(selector) {
+  const iframe = document.querySelector('.exo-frame');
+  if (!iframe) return null;
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+  if (selector.includes(',')) {
+    const selectors = selector.split(',').map(s => s.trim());
+    let minTop = Infinity, minLeft = Infinity;
+    let maxBottom = -Infinity, maxRight = -Infinity;
+    let foundAny = false;
+
+    for (const sel of selectors) {
+      const el = iframeDoc.querySelector(sel);
+      if (el) {
+        foundAny = true;
+        const elRect = el.getBoundingClientRect();
+        if (elRect.top < minTop) minTop = elRect.top;
+        if (elRect.left < minLeft) minLeft = elRect.left;
+        if (elRect.bottom > maxBottom) maxBottom = elRect.bottom;
+        if (elRect.right > maxRight) maxRight = elRect.right;
+      }
+    }
+
+    if (!foundAny) return null;
+    const iframeRect = iframe.getBoundingClientRect();
+    return {
+      top: iframeRect.top + minTop,
+      left: iframeRect.left + minLeft,
+      bottom: iframeRect.top + maxBottom,
+      right: iframeRect.left + maxRight,
+      width: maxRight - minLeft,
+      height: maxBottom - minTop
+    };
+  }
+
+  const el = iframeDoc.querySelector(selector);
+  if (!el) return null;
+
+  const iframeRect = iframe.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+
+  return {
+    top: iframeRect.top + elRect.top,
+    left: iframeRect.left + elRect.left,
+    bottom: iframeRect.top + elRect.bottom,
+    right: iframeRect.left + elRect.right,
+    width: elRect.width,
+    height: elRect.height
+  };
+}
+
+function repositionActiveElements() {
+  if (currentHighlightSelector) {
+    let rect = null;
+    if (currentHighlightSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentHighlightSelector);
+    }
+
+    if (rect && activeHighlightBox) {
+      const padding = 15;
+      let rectLeft = rect.left - padding;
+      let rectTop = rect.top - padding;
+      let rectWidth = rect.width + padding * 2;
+      let rectHeight = rect.height + padding * 2;
+
+      activeHighlightBox.style.left = `${rectLeft + window.scrollX}px`;
+      activeHighlightBox.style.top = `${rectTop + window.scrollY}px`;
+      activeHighlightBox.style.width = `${rectWidth}px`;
+      activeHighlightBox.style.height = `${rectHeight}px`;
+
+      if (activeIndicator) {
+        activeIndicator.style.left = `${rectLeft + window.scrollX}px`;
+        activeIndicator.style.top = `${rectTop + window.scrollY}px`;
+      }
+    }
+  }
+
+  if (currentTooltipSelector && activeTooltip) {
+    let rect = null;
+    if (currentTooltipSelector === '.exo-instructions') {
+      const el = document.querySelector('.exo-instructions');
+      if (el) rect = el.getBoundingClientRect();
+    } else {
+      rect = getIframeElementRect(currentTooltipSelector);
+    }
+
+    if (rect) {
+      const tooltipRect = activeTooltip.getBoundingClientRect();
+      let top = 0, left = 0;
+
+      let targetLeft = rect.left;
+      let targetTop = rect.top;
+      let targetWidth = rect.width;
+      let targetHeight = rect.height;
+      let targetBottom = rect.bottom;
+      let targetRight = rect.right;
+
+      if (currentTooltipPosition === 'bottom') {
+        top = targetBottom + window.scrollY + 10;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'top') {
+        top = targetTop - tooltipRect.height - 10 + window.scrollY;
+        left = targetLeft + targetWidth / 2 - tooltipRect.width / 2 + window.scrollX;
+      } else if (currentTooltipPosition === 'right') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetRight + 10 + window.scrollX;
+      } else if (currentTooltipPosition === 'left') {
+        top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
+        left = targetLeft - tooltipRect.width - 10 + window.scrollX;
+      }
+
+      if (left < 10) left = 10;
+      if (left + tooltipRect.width > window.innerWidth - 10) left = window.innerWidth - tooltipRect.width - 10;
+      if (top < 10) top = 10;
+
+      activeTooltip.style.top = `${top}px`;
+      activeTooltip.style.left = `${left}px`;
+    }
+  }
+}
+
+function showHighlightBox(selector, numLabel) {
+  clearHighlights();
+  currentHighlightSelector = selector;
+  currentHighlightLabel = numLabel;
+
+  activeHighlightBox = document.createElement('div');
+  activeHighlightBox.className = 'tutorial-highlight-box';
+  document.body.appendChild(activeHighlightBox);
+
+  if (numLabel) {
+    activeIndicator = document.createElement('div');
+    activeIndicator.className = 'tutorial-indicator-dot';
+    activeIndicator.innerText = numLabel;
+    document.body.appendChild(activeIndicator);
+  }
+  repositionActiveElements();
+}
+
+function showCustomTooltip(selector, title, text, position = 'bottom') {
+  if (activeTooltip) activeTooltip.remove();
+  currentTooltipSelector = selector;
+  currentTooltipTitle = title;
+  currentTooltipText = text;
+  currentTooltipPosition = position;
+
+  activeTooltip = document.createElement('div');
+  activeTooltip.className = 'tutorial-tooltip';
+  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Cliquez n'importe où pour continuer</div>`;
+  document.body.appendChild(activeTooltip);
+  repositionActiveElements();
+}
+
+function startTutorial() {
+  const overlay = document.createElement('div');
+  overlay.className = 'tutorial-overlay';
+  overlay.id = 'exo2-tutorial-overlay';
+
+  const popup = document.createElement('div');
+  popup.className = 'tutorial-popup';
+
+  const h3 = document.createElement('h3');
+  h3.innerText = "Exercice #2 : Entraînez le réseau";
+
+  const p = document.createElement('p');
+  const text = "Dans cet exercice, vous allez apprendre à lancer l'entraînement du réseau de neurones et suivre ses performances à l'aide de l'affichage des époques, de la perte (loss) et de sa courbe d'évolution.";
+  p.innerText = text;
+
+  const timerSpan = document.createElement('span');
+  timerSpan.style.display = 'block';
+  timerSpan.style.marginTop = '15px';
+  timerSpan.style.fontSize = '13px';
+  timerSpan.style.color = '#94a3b8';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'tutorial-btn';
+  nextBtn.innerText = "Continuer";
+  nextBtn.disabled = true;
+
+  popup.appendChild(h3);
+  popup.appendChild(p);
+  popup.appendChild(timerSpan);
+  popup.appendChild(nextBtn);
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+
+  const wordCount = text.split(/\s+/).length;
+  let timeLeft = Math.max(5, Math.ceil((wordCount / 200) * 60)); // ~10s
+
+  function updateTimer() {
+    if (timeLeft > 0) {
+      timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+      timeLeft--;
+      setTimeout(updateTimer, 1000);
+    } else {
+      timerSpan.style.display = 'none';
+      nextBtn.disabled = false;
+    }
+  }
+  updateTimer();
+
+  nextBtn.onclick = () => {
+    overlay.remove();
+    runStep1Highlight();
+  };
+}
+
+function runStep1Highlight() {
+  const instructions = document.querySelector('.exo-instructions');
+  if (instructions) {
+    instructions.classList.add('highlight-glow-border');
+
+    const indicator = document.createElement('div');
+    indicator.className = 'tutorial-indicator-dot';
+    indicator.innerText = '1';
+
+    const rect = instructions.getBoundingClientRect();
+    indicator.style.left = `${rect.left + 20}px`;
+    indicator.style.top = `${rect.top}px`;
+    document.body.appendChild(indicator);
+
+    const clickHandler = () => {
+      instructions.classList.remove('highlight-glow-border');
+      indicator.remove();
+      document.removeEventListener('click', clickHandler);
+      runStep2();
+    };
+    setTimeout(() => {
+      document.addEventListener('click', clickHandler);
+    }, 100);
+  } else {
+    runStep2();
+  }
+}
+
+function runStep2() {
+  showHighlightBox('.timeline-controls', '2');
+  showCustomTooltip('.timeline-controls', "Contrôles de Simulation", "Cliquez sur le bouton Play pour lancer l'apprentissage, ou utilisez les boutons Étape et Réinitialiser.", 'bottom');
+
+  const clickHandler = () => {
+    document.removeEventListener('click', clickHandler);
+    runStep3();
+  };
+  setTimeout(() => {
+    document.addEventListener('click', clickHandler);
+  }, 100);
+}
+
+function runStep3() {
+  showHighlightBox('.control.ui-epoch', '3');
+  showCustomTooltip('.control.ui-epoch', "Nombre d'Époques", "Ce compteur indique combien de fois l'ensemble du jeu de données a traversé le réseau de neurones.", 'bottom');
+
+  const clickHandler = () => {
+    document.removeEventListener('click', clickHandler);
+    runStep4();
+  };
+  setTimeout(() => {
+    document.addEventListener('click', clickHandler);
+  }, 100);
+}
+
+function runStep4() {
+  showHighlightBox('.output-stats.train.ui-trainLoss', '4');
+  showCustomTooltip('.output-stats.train.ui-trainLoss', "Perte d'Entraînement (Training Loss)", "Cette valeur mesure l'erreur du modèle. Plus elle baisse et se rapproche de 0, plus le réseau apprend à classer correctement.", 'left');
+
+  const clickHandler = () => {
+    document.removeEventListener('click', clickHandler);
+    runStep5();
+  };
+  setTimeout(() => {
+    document.addEventListener('click', clickHandler);
+  }, 100);
+}
+
+function runStep5() {
+  showHighlightBox('#linechart', '5');
+  showCustomTooltip('#linechart', "Graphique d'Évolution de la Perte", "Visualisez en temps réel la courbe de perte d'entraînement (et de test). Elle doit descendre progressivement pendant la simulation.", 'left');
+
+  const clickHandler = () => {
+    document.removeEventListener('click', clickHandler);
+    clearHighlights();
+  };
+  setTimeout(() => {
+    document.addEventListener('click', clickHandler);
+  }, 100);
+}
+
+window.addEventListener('resize', repositionActiveElements);
+window.addEventListener('scroll', repositionActiveElements);
+setInterval(repositionActiveElements, 100);
+
+const iframe = document.querySelector('.exo-frame');
+if (iframe) {
+  iframe.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('completed') === 'true') {
+      return;
+    }
+    setTimeout(() => {
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.querySelectorAll('.info-tip').forEach(el => {
+          if (el.innerText === '?') {
+            el.innerText = 'i';
+            el.classList.add('info-tip-pulse');
+            el.addEventListener('click', () => {
+              el.classList.remove('info-tip-pulse');
+            });
+          }
+        });
+      } catch (e) {
+        console.error("Erreur d'initialisation des info-tips:", e);
+      }
+      startTutorial();
+    }, 1200);
+  });
+}
