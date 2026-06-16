@@ -428,3 +428,688 @@
      border-color: rgba(239, 68, 68, 0.3) !important;
      color: #ef4444 !important;
  }
+
+ /* --- Styles de mise en page Quiz (3/4 - 1/4) --- */
+ .quiz-layout-container {
+     display: flex !important;
+     flex-direction: row !important;
+     gap: 20px !important;
+     height: calc(100vh - 180px) !important;
+     width: 100% !important;
+     box-sizing: border-box !important;
+     padding: 10px 20px !important;
+ }
+
+ .simulator-container {
+     width: 75% !important;
+     height: 100% !important;
+ }
+
+ .quiz-panel-container {
+     width: 25% !important;
+     height: 100% !important;
+     display: flex !important;
+     flex-direction: column !important;
+     gap: 16px !important;
+ }
+
+ .quiz-div-1 {
+     flex: 2 !important;
+     background: #004676 !important;
+     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+     border-radius: 16px !important;
+     padding: 24px !important;
+     box-sizing: border-box !important;
+     overflow-y: auto !important;
+     backdrop-filter: blur(10px) !important;
+     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+ }
+
+ .quiz-div-2 {
+     flex: 1 !important;
+     background: rgba(255, 255, 255, 0.03) !important;
+     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+     border-radius: 12px !important;
+     padding: 20px !important;
+     box-sizing: border-box !important;
+     overflow-y: auto !important;
+     backdrop-filter: blur(10px) !important;
+ }
+
+ /* --- Quiz Component Inner Styles --- */
+ .quiz-question-wrapper {
+     position: relative;
+     margin-top: 15px;
+ }
+
+ .quiz-question-badge {
+     position: absolute;
+     top: -14px;
+     left: 50%;
+     transform: translateX(-50%);
+     background: #FF034D;
+     color: #ffffff;
+     font-size: 11px;
+     font-weight: 800;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     padding: 6px 16px;
+     border-radius: 20px;
+     box-shadow: 0 4px 10px rgba(255, 3, 77, 0.3);
+     z-index: 2;
+ }
+
+ .quiz-question-card {
+     background: #ffffff;
+     color: #0b0f1a;
+     padding: 24px 20px;
+     border-radius: 12px;
+     font-size: 15px;
+     font-weight: 600;
+     text-align: center;
+     line-height: 1.5;
+     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+ }
+
+ .quiz-options-container {
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+ }
+
+ .quiz-option-btn {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     background: #003052;
+     border: 1px solid rgba(255, 255, 255, 0.1);
+     color: #ffffff;
+     padding: 14px 16px;
+     border-radius: 10px;
+     cursor: pointer;
+     font-family: 'Inter', sans-serif;
+     font-size: 13px;
+     font-weight: 500;
+     text-align: left;
+     transition: all 0.25s ease;
+     width: 100%;
+ }
+
+ .quiz-option-btn:hover {
+     background: #FF034D;
+     border-color: #FF034D;
+     transform: translateY(-2px);
+     box-shadow: 0 4px 12px rgba(255, 3, 77, 0.25);
+ }
+
+ .quiz-option-checkbox {
+     width: 18px;
+     height: 18px;
+     border: 2px solid rgba(255, 255, 255, 0.6);
+     border-radius: 4px;
+     display: inline-block;
+     position: relative;
+     flex-shrink: 0;
+     transition: all 0.2s ease;
+ }
+
+ .quiz-option-btn:hover .quiz-option-checkbox {
+     border-color: #ffffff;
+     background: rgba(255, 255, 255, 0.2);
+ }
+
+ .quiz-option-text {
+     line-height: 1.3;
+ }
+
+ /* Selected Option State */
+ .quiz-option-btn.selected {
+     background: #FF034D !important;
+     border-color: #FF034D !important;
+     box-shadow: 0 4px 12px rgba(255, 3, 77, 0.25) !important;
+ }
+
+ .quiz-option-btn.selected .quiz-option-checkbox {
+     border-color: #ffffff !important;
+     background: #ffffff !important;
+ }
+
+ .quiz-option-btn.selected .quiz-option-checkbox::after {
+     content: '\2713';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #FF034D;
+     font-size: 14px;
+     font-weight: 900;
+ }
+
+ /* Overlay for Centered Feedback Popup - Transparent to prevent graying the simulator */
+ .feedback-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: rgba(11, 15, 26, 0.2); /* Very light to keep simulator visible */
+     backdrop-filter: none; /* No blur over the simulator */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 2000;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.3s ease;
+ }
+
+ .feedback-overlay.show {
+     opacity: 1;
+     pointer-events: auto;
+ }
+
+ /* Speech bubble styling with border and shadow */
+ .feedback-bubble {
+     background: #004676;
+     border: 2px solid #FF034D;
+     border-radius: 20px;
+     padding: 30px;
+     width: 90%;
+     max-width: 450px;
+     color: #ffffff;
+     position: relative;
+     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+     transform: scale(0.8);
+     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 15px;
+     text-align: center;
+ }
+
+ .feedback-overlay.show .feedback-bubble {
+     transform: scale(1);
+ }
+
+ /* Blinking speech bubble animation */
+ .feedback-bubble.blinking {
+     animation: border-blink 1.5s infinite alternate;
+ }
+
+ @keyframes border-blink {
+     0% {
+         border-color: #FF034D;
+         box-shadow: 0 10px 30px rgba(255, 3, 77, 0.4);
+     }
+     100% {
+         border-color: #ffffff;
+         box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
+     }
+ }
+
+ /* Speech Bubble Tail */
+ .feedback-bubble::after {
+     content: '';
+     position: absolute;
+     bottom: -15px;
+     right: 50px;
+     width: 0;
+     height: 0;
+     border-left: 15px solid transparent;
+     border-right: 15px solid transparent;
+     border-top: 15px solid #004676;
+     z-index: 1;
+ }
+
+ .feedback-bubble::before {
+     content: '';
+     position: absolute;
+     bottom: -18px;
+     right: 48px;
+     width: 0;
+     height: 0;
+     border-left: 17px solid transparent;
+     border-right: 17px solid transparent;
+     border-top: 17px solid #FF034D;
+     z-index: 0;
+ }
+
+ .feedback-status-badge {
+     font-size: 18px;
+     font-weight: 800;
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+ }
+
+ .feedback-status-badge.correct {
+     color: #10b981;
+ }
+
+ .feedback-status-badge.incorrect {
+     color: #FF034D;
+ }
+
+ .feedback-text {
+     font-size: 14px;
+     line-height: 1.6;
+     color: rgba(255, 255, 255, 0.9);
+ }
+
+ .feedback-invite-msg {
+     font-size: 13px;
+     background: rgba(255, 255, 255, 0.08);
+     padding: 10px 14px;
+     border-radius: 8px;
+     border-left: 3px solid #FF034D;
+     text-align: left;
+     margin-top: 5px;
+     line-height: 1.4;
+     color: #eef2ff;
+ }
+
+ .feedback-next-btn {
+     background: #FF034D;
+     color: white;
+     border: none;
+     padding: 10px 24px;
+     border-radius: 8px;
+     font-weight: 700;
+     cursor: pointer;
+     font-family: 'Inter', sans-serif;
+     font-size: 14px;
+     transition: all 0.2s ease;
+     box-shadow: 0 4px 10px rgba(255, 3, 77, 0.3);
+     margin-top: 10px;
+ }
+
+ .feedback-next-btn:hover {
+     transform: scale(1.05);
+     box-shadow: 0 6px 15px rgba(255, 3, 77, 0.5);
+ }
+
+ /* Inline Speech Bubble for quiz-div-2 */
+ .quiz-feedback-bubble {
+     background: #7a848aff;
+     border: 2px solid #58303cff;
+     border-radius: 16px;
+     padding: 16px 20px;
+     color: #ffffff;
+     position: relative;
+     box-sizing: border-box;
+     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+     margin-bottom: 15px;
+ }
+
+ /* Tail pointing downwards/sideways for the inline bubble */
+ .quiz-feedback-bubble::after {
+     content: '';
+     position: absolute;
+     bottom: -12px;
+     left: 30px;
+     width: 0;
+     height: 0;
+     border-left: 10px solid transparent;
+     border-right: 10px solid transparent;
+     border-top: 10px solid #7a848aff;
+     z-index: 1;
+ }
+
+ .quiz-feedback-bubble::before {
+     content: '';
+     position: absolute;
+     bottom: -15px;
+     left: 29px;
+     width: 0;
+     height: 0;
+     border-left: 11px solid transparent;
+     border-right: 11px solid transparent;
+     border-top: 11px solid #58303cff;
+     z-index: 0;
+ }
+
+ /* Drag and Drop Quiz Overlay */
+ .dragdrop-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: rgba(11, 15, 26, 0.85);
+     backdrop-filter: blur(8px);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 2500;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.3s ease;
+ }
+
+ .dragdrop-overlay.show {
+     opacity: 1;
+     pointer-events: auto;
+ }
+
+ /* Modal Box */
+ .dragdrop-container {
+     background: #004676;
+     border: 2px solid #FF034D;
+     border-radius: 20px;
+     padding: 30px;
+     width: 90%;
+     max-width: 600px;
+     color: #ffffff;
+     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+     text-align: center;
+ }
+
+ .dragdrop-header {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 5px;
+ }
+
+ .dragdrop-badge {
+     background: #FF034D;
+     color: white;
+     font-weight: 800;
+     padding: 4px 12px;
+     border-radius: 12px;
+     font-size: 14px;
+     display: inline-block;
+ }
+
+ .dragdrop-container h2 {
+     margin: 5px 0 0 0;
+     font-size: 24px;
+     font-weight: 800;
+ }
+
+ .dragdrop-container h3 {
+     margin: 0;
+     font-size: 14px;
+     color: rgba(255, 255, 255, 0.7);
+     text-transform: uppercase;
+     letter-spacing: 1px;
+ }
+
+ /* Cards Source Area */
+ .dragdrop-cards-area {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     gap: 12px;
+     background: rgba(0, 0, 0, 0.15);
+     padding: 16px;
+     border-radius: 12px;
+     min-height: 120px;
+ }
+
+ /* Draggable Cards style */
+ .drag-card {
+     background: #ffffff;
+     color: #0b0f1a;
+     padding: 12px 14px;
+     border-radius: 8px;
+     font-size: 12px;
+     font-weight: 600;
+     cursor: grab;
+     user-select: none;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+     transition: transform 0.2s ease, opacity 0.2s ease;
+     border: 1px solid rgba(0, 0, 0, 0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     line-height: 1.4;
+ }
+
+ .drag-card:active {
+     cursor: grabbing;
+ }
+
+ .drag-card.dragging {
+     opacity: 0.5;
+     transform: scale(0.95);
+ }
+
+ /* Dropzones Containers */
+ .dragdrop-zones-container {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     gap: 20px;
+ }
+
+ .drop-zone {
+     background: rgba(255, 255, 255, 0.04);
+     border: 2px dashed rgba(255, 255, 255, 0.2);
+     border-radius: 12px;
+     padding: 16px;
+     min-height: 160px;
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+     transition: all 0.2s ease;
+ }
+
+ .drop-zone h4 {
+     margin: 0 0 5px 0;
+     font-size: 16px;
+     font-weight: 700;
+     text-transform: uppercase;
+ }
+
+ .drop-zone#zone-true h4 {
+     color: #10b981;
+ }
+
+ .drop-zone#zone-false h4 {
+     color: #FF034D;
+ }
+
+ .drop-zone.hovered {
+     background: rgba(255, 255, 255, 0.1);
+     border-color: #ffffff;
+ }
+
+ .zone-cards {
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+     height: 100%;
+ }
+
+ /* Success Messaging */
+ .dragdrop-success-msg {
+     margin-top: 10px;
+     background: rgba(16, 185, 129, 0.15);
+     border: 1px solid #10b981;
+     border-radius: 10px;
+     padding: 15px;
+ }
+
+ .dragdrop-success-msg h4 {
+     margin: 0 0 10px 0;
+     color: #10b981;
+ }
+
+ .dragdrop-close-btn {
+     background: #10b981;
+     color: white;
+     border: none;
+     padding: 10px 24px;
+     border-radius: 8px;
+     font-weight: 700;
+     cursor: pointer;
+     font-family: 'Inter', sans-serif;
+     font-size: 14px;
+     transition: all 0.2s ease;
+     box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+ }
+
+ .dragdrop-close-btn:hover {
+     transform: scale(1.05);
+     box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
+ }
+
+ /* ─── DRAG CARD ERROR SHAKE ─────────────────────────────────────────────── */
+ @keyframes shake {
+     0%, 100% { transform: translateX(0); }
+     20% { transform: translateX(-6px); }
+     40% { transform: translateX(6px); }
+     60% { transform: translateX(-4px); }
+     80% { transform: translateX(4px); }
+ }
+ .drag-card.shake-error {
+     animation: shake 0.5s ease;
+     background: #ff2d55;
+     color: #fff;
+ }
+
+ /* ─── COMPLETION SCREEN ──────────────────────────────────────────────────── */
+ .completion-overlay {
+     position: fixed;
+     inset: 0;
+     background: rgba(4, 10, 22, 0.92);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 3000;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.5s ease;
+ }
+ .completion-overlay.show {
+     opacity: 1;
+     pointer-events: auto;
+ }
+
+ .completion-card {
+     position: relative;
+     background: #004676;
+     border: 2px solid #FF034D;
+     border-radius: 24px;
+     padding: 48px 40px 40px;
+     width: 90%;
+     max-width: 480px;
+     text-align: center;
+     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 3, 77, 0.2);
+     overflow: hidden;
+ }
+
+ /* Canvas confetti fills the card background */
+ .confetti-canvas {
+     position: absolute;
+     inset: 0;
+     width: 100%;
+     height: 100%;
+     pointer-events: none;
+     border-radius: 24px;
+ }
+
+ /* Star animation: scale from 0 to 1 with bounce */
+ .completion-star-wrap {
+     position: relative;
+     z-index: 1;
+     margin-bottom: 16px;
+ }
+ .completion-star {
+     display: inline-block;
+     font-size: 80px;
+     line-height: 1;
+     animation: star-zoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+     filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+ }
+ @keyframes star-zoom {
+     0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+     60%  { transform: scale(1.2) rotate(5deg);  opacity: 1; }
+     100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+ }
+
+ .completion-title {
+     position: relative;
+     z-index: 1;
+     font-size: 32px;
+     font-weight: 900;
+     color: #ffffff;
+     margin: 0 0 12px;
+     letter-spacing: -0.5px;
+     text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+ }
+
+ .completion-msg {
+     position: relative;
+     z-index: 1;
+     font-size: 15px;
+     color: rgba(255, 255, 255, 0.85);
+     line-height: 1.7;
+     margin: 0 0 28px;
+ }
+ .completion-msg strong {
+     color: #FFD700;
+ }
+
+ /* CTA Buttons row */
+ .completion-actions {
+     position: relative;
+     z-index: 1;
+     display: flex;
+     gap: 16px;
+     justify-content: center;
+     flex-wrap: wrap;
+ }
+
+ /* Pulse animation for "Next Exercise" button */
+ @keyframes pulse-scale {
+     0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255, 3, 77, 0.6); }
+     50%       { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(255, 3, 77, 0);  }
+ }
+ .completion-btn-next {
+     display: inline-block;
+     padding: 14px 32px;
+     background: #FF034D;
+     color: #ffffff;
+     font-size: 15px;
+     font-weight: 800;
+     border-radius: 12px;
+     text-decoration: none;
+     letter-spacing: 0.3px;
+     transition: transform 0.2s ease;
+ }
+ .pulse-btn {
+     animation: pulse-scale 1.6s ease-in-out infinite;
+ }
+ .completion-btn-next:hover {
+     background: #e0003f;
+ }
+
+ /* Fixed Home Icon — bottom-right, blinking */
+ @keyframes blink-opacity {
+     0%, 100% { opacity: 1; }
+     50%       { opacity: 0.35; }
+ }
+ .completion-home-icon {
+     position: fixed;
+     bottom: 32px;
+     right: 36px;
+     font-size: 40px;
+     text-decoration: none;
+     z-index: 3001;
+     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+     animation: blink-opacity 1.2s ease-in-out infinite;
+     cursor: pointer;
+     transition: transform 0.2s ease;
+ }
+ .completion-home-icon:hover {
+     transform: scale(1.2);
+     animation: none;
+     opacity: 1;
+ }

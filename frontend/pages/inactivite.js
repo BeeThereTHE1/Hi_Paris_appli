@@ -1,7 +1,11 @@
 // --- SYSTEME D'AUTO-DECONNEXION ET GESTION DE PROGRESSION/VERROUILLAGE ---
 (function () {
+    // 🔧 DEV_MODE : mettre à false pour réactiver le verrouillage en production
+    const DEV_MODE = true;
+
     // 1. Détection et vérification de la progression/verrouillage pour les exercices (exo*.html et exo*_quiz.html)
     async function initProgressionCheck() {
+        if (DEV_MODE) return; // Court-circuit total : aucun verrouillage en mode dev
         const path = window.location.pathname;
         const match = path.match(/exo(\d+)(_quiz)?\.html/);
         if (!match) return; // Pas sur un exercice ou un quiz, rien à faire

@@ -1,4 +1,6 @@
 // @ts-nocheck
+// 🔧 DEV_MODE : mettre à false pour réactiver le verrouillage en production
+const DEV_MODE = true;
 (function () {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -415,9 +417,11 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
         const card = document.createElement('div');
         
         // Déterminer le statut de verrouillage
-        // L'exercice 0 d'une section déverrouillée est ouvert. L'exercice K est ouvert si l'exercice K-1 est terminé.
+        // 🔧 DEV_MODE : tous les exercices sont déverrouillés
         let isExUnlocked = false;
-        if (isSectionUnlocked) {
+        if (DEV_MODE) {
+            isExUnlocked = true;
+        } else if (isSectionUnlocked) {
             if (index === 0) {
                 isExUnlocked = true;
             } else {
@@ -548,19 +552,20 @@ async function applyFilters() {
     if (statHardValue) statHardValue.textContent = baseExercises.filter(e => e.difficulty === 'hard').length + formattedCustoms.filter(e => e.difficulty === 'hard').length;
 
     // Détermination de l'état de déverrouillage de chaque section
-    const sec1Unlocked = isSection0Completed();
-    const sec1QuizCompleted = localStorage.getItem('quiz_section_1_completed') === 'true';
+    // 🔧 En DEV_MODE, tout est déverrouillé
+    const sec1Unlocked = DEV_MODE ? true : isSection0Completed();
+    const sec1QuizCompleted = DEV_MODE ? true : localStorage.getItem('quiz_section_1_completed') === 'true';
 
-    const sec2Unlocked = sec1Unlocked && sec1QuizCompleted;
-    const sec2QuizCompleted = localStorage.getItem('quiz_section_2_completed') === 'true';
+    const sec2Unlocked = DEV_MODE ? true : (sec1Unlocked && sec1QuizCompleted);
+    const sec2QuizCompleted = DEV_MODE ? true : localStorage.getItem('quiz_section_2_completed') === 'true';
 
-    const sec3Unlocked = sec2Unlocked && sec2QuizCompleted;
-    const sec3QuizCompleted = localStorage.getItem('quiz_section_3_completed') === 'true';
+    const sec3Unlocked = DEV_MODE ? true : (sec2Unlocked && sec2QuizCompleted);
+    const sec3QuizCompleted = DEV_MODE ? true : localStorage.getItem('quiz_section_3_completed') === 'true';
 
-    const sec4Unlocked = sec3Unlocked && sec3QuizCompleted;
-    const sec4QuizCompleted = localStorage.getItem('quiz_section_4_completed') === 'true';
+    const sec4Unlocked = DEV_MODE ? true : (sec3Unlocked && sec3QuizCompleted);
+    const sec4QuizCompleted = DEV_MODE ? true : localStorage.getItem('quiz_section_4_completed') === 'true';
 
-    const finalUnlocked = sec4Unlocked && sec4QuizCompleted;
+    const finalUnlocked = DEV_MODE ? true : (sec4Unlocked && sec4QuizCompleted);
 
     // Configurer l'opacité et les filtres des conteneurs de section
     updateSectionContainer('section-1-container', sec1Unlocked);
