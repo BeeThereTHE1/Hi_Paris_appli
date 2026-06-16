@@ -190,10 +190,18 @@ function initQuiz() {
         if (allCorrect) {
           // 1. Close drag & drop modal
           ddOverlay.classList.remove("show");
-          setTimeout(() => {
+          setTimeout(async () => {
             ddOverlay.remove();
-            // 2. Show gamified completion screen
-            showCompletionScreen();
+            
+            // 2. Mark exercise as COMPLETED in DB — now recorded immediately at quiz success
+            const exoId = window.__currentQuizExoId || 1;
+            if (window.StorageService) {
+              await window.StorageService.complete(exoId);
+              console.log(`✅ Exercice ${exoId} marqué COMPLETED.`);
+            }
+
+            // 3. Revenir à la page principale de l'exercice avec l'état complété
+            window.location.href = `../exo${exoId}.html?completed=true`;
           }, 400);
         } else {
           // Wrong placement — shake feedback then reset
@@ -264,9 +272,14 @@ function initQuiz() {
     // Launch confetti
     requestAnimationFrame(() => launchConfetti());
 
-    // Mark exercise as completed
-    const btnRealise = document.getElementById("btn-realise");
-    if (btnRealise) btnRealise.click();
+    // Mark exercise as COMPLETED in DB — only fires here, at the very end of the full flow
+    (async () => {
+      const exoId = window.__currentQuizExoId;
+      if (exoId && window.StorageService) {
+        await window.StorageService.complete(exoId);
+        console.log(`✅ Exercice ${exoId} marqué COMPLETED.`);
+      }
+    })();
   }
 
   // ─── CONFETTI ENGINE ─────────────────────────────────────────────────────────
