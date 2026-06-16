@@ -783,10 +783,14 @@
      display: flex;
      justify-content: center;
      align-items: center;
+     gap: 30px;
      z-index: 2500;
      opacity: 0;
      pointer-events: none;
      transition: opacity 0.3s ease;
+     flex-wrap: wrap;
+     overflow-y: auto;
+     padding: 20px;
  }
 
  .dragdrop-overlay.show {
@@ -1112,4 +1116,81 @@
      transform: scale(1.2);
      animation: none;
      opacity: 1;
- }
+ }
+
+ /* ─── DRAG & DROP INDIVIDUAL CARD FEEDBACK BUBBLE ───────────────────────── */
+ .dd-feedback-overlay {
+     position: fixed;
+     inset: 0;
+     background: rgba(4, 10, 22, 0.7);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 4000;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.3s ease;
+ }
+ .dd-feedback-overlay.show {
+     opacity: 1;
+     pointer-events: auto;
+ }
+
+ .dd-feedback-bubble {
+     background: #ffffff;
+     color: #004676;
+     border-radius: 18px;
+     padding: 28px;
+     width: 90%;
+     max-width: 380px;
+     text-align: center;
+     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+     transform: scale(0.9);
+     opacity: 0;
+     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+     display: flex;
+     flex-direction: column;
+     gap: 16px;
+     z-index: 2600;
+ }
+ .dd-feedback-bubble.show {
+     transform: scale(1);
+     opacity: 1;
+ }
+
+ .dd-feedback-status {
+     font-size: 20px;
+     font-weight: 800;
+     text-transform: uppercase;
+ }
+ .dd-feedback-bubble.correct .dd-feedback-status {
+     color: #10b981;
+ }
+ .dd-feedback-bubble.incorrect .dd-feedback-status {
+     color: #FF034D;
+ }
+
+ .dd-feedback-statement {
+     font-size: 13px;
+     font-style: italic;
+     color: #555555;
+     background: rgba(0, 70, 118, 0.05);
+     padding: 10px;
+     border-radius: 8px;
+     border-left: 3px solid #004676;
+ }
+
+ .dd-feedback-explanation {
+     font-size: 14px;
+     line-height: 1.5;
+     font-weight: 500;
+     color: #222222;
+ }
+
+ .dd-feedback-click-tip {
+     font-size: 11px;
+     color: #7a848a;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     margin-top: 10px;
+ }

@@ -663,6 +663,11 @@ setInterval(repositionActiveElements, 100);
 const iframe = document.querySelector('.exo-frame');
 if (iframe) {
   iframe.addEventListener('load', () => {
+    // Ne pas lancer le tutoriel si l'exercice vient d'être marqué complété
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('completed') === 'true') {
+      return;
+    }
     setTimeout(() => {
       // Remplacer les boutons '?' en 'i' d'informations dans l'iframe
       try {
