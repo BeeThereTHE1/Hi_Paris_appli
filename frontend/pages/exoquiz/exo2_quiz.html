@@ -7,8 +7,122 @@
   <title>Exercice 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="../../styles/exo.css" />
-  <link rel="stylesheet" href="../../styles/exo_quiz.css" /></head>
+  <link rel="stylesheet" href="../../styles/exo_quiz.css" />
+  <style>
+    /* Styling for the step card inside the quiz panel */
+    .quiz-step-card {
+      border: 4px solid #065f46; /* Active border = dark green */
+      background: rgba(0, 70, 118, 0.9); /* #004676 with transparency */
+      border-radius: 16px;
+      padding: 24px;
+      box-sizing: border-box;
+      box-shadow: 0 10px 30px rgba(6, 95, 70, 0.3);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    
+    .quiz-step-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quiz-step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-step-badge {
+      background: #FF034D;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(255, 3, 77, 0.3);
+    }
+
+    .quiz-step-card h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .quiz-step-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      margin: 0;
+    }
+
+    .quiz-step-preview {
+      margin-top: 5px;
+      background: rgba(11, 15, 26, 0.5);
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+    
+    /* Green highlight style inside the iframe */
+    .tutorial-highlight-box.green-highlight {
+      border: 4px solid #065f46 !important;
+      box-shadow: 0 0 25px rgba(6, 95, 70, 0.6) !important;
+      animation: green-zoom-glow 1.5s infinite ease-in-out !important;
+    }
+
+    @keyframes green-zoom-glow {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 8px #065f46;
+      }
+      50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 30px #065f46;
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 8px #065f46;
+      }
+    }
+    
+    /* Info tip and badge styles inside previews */
+    .info-tip {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+    
+    .info-tip-pulse {
+      background: #FF034D !important;
+      animation: info-pulse 1.5s infinite alternate;
+    }
+    
+    @keyframes info-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 3, 77, 0.7); }
+      100% { box-shadow: 0 0 0 8px rgba(255, 3, 77, 0); }
+    }
+  </style>
+</head>
 
 <body>
 
@@ -73,10 +187,10 @@
   <section class="exo-header">
     <div class="exo-toprow">
       <div class="badge">2</div>
-      <h1 class="exo-title">Exercice #2</h1>
+      <h1 class="exo-title">Quiz d'explication pédagogique</h1>
     </div>
     <p class="exo-instructions">
-      Cliquer sur entrainement
+      Suivez les différentes étapes du processus d'entraînement. Cliquez n'importe où sur l'écran pour passer à l'étape suivante.
     </p>
   </section>
 
@@ -84,18 +198,13 @@
     <div class="simulator-container">
       <iframe class="exo-frame" src="../playground/index.html?exo=2"></iframe>
     </div>
-    <div class="quiz-panel-container">
-      <div class="quiz-div-1">
-        <!-- Contenu de la partie haute du quiz -->
-      </div>
-      <div class="quiz-div-2">
-        <!-- Contenu de la partie basse du quiz -->
-      </div>
+    <div class="quiz-panel-container" id="quiz-step-panel">
+      <!-- Les étapes dynamiques du quiz seront injectées ici -->
     </div>
   </main>
 
   <script src="../inactivite.js"></script>
-  <script src="../../playground-master/src/exos/storage_service.js"></script>
-  <script src="../../playground-master/src/exoquizjs/exo2_quiz_page.js"></script>
+  <script src="../playground-master/src/exos/storage_service.js"></script>
+  <script src="./exo2_quiz_page.js"></script>
 </body>
 </html>
