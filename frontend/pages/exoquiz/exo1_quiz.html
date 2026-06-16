@@ -8,7 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../../styles/exo.css" />
-  <link rel="stylesheet" href="../../styles/quiz.css" /></head>
+  <link rel="stylesheet" href="../../styles/exo_quiz.css" />
+</head>
 
 <body>
 
@@ -19,18 +20,34 @@
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
+        pageLanguage: 'fr',
         includedLanguages: 'en,fr',
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
     }
   </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
+    .goog-te-gadget-simple {
+      background-color: transparent !important;
+      border: none !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+    }
+
+    .goog-te-gadget-icon {
+      display: none;
+    }
+
+    body {
+      top: 0px !important;
+    }
+
+    .skiptranslate iframe {
+      display: none !important;
+    }
   </style>
 
   <div id="background-container"></div>
@@ -56,7 +73,8 @@
         </svg>
         Retour vers page des exercices
       </a>
-      <a class="btn-header" href="exo2_quiz.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">
+      <a class="btn-header" href="exo2_quiz.html"
+        style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">
         Exercice suivant ⏭️
       </a>
       <a class="btn-header" href="../Page-demo/historique.html">Mon historique</a>
@@ -85,13 +103,48 @@
     </p>
   </section>
 
-  <main class="exo-main">
-    <iframe class="exo-frame" src="../playground/index.html?exo=1"></iframe>
-  </main>
+  <div id="main-part">
+    <main class="quiz-layout-container">
+      <div class="simulator-container">
+        <iframe class="exo-frame" src="../playground/index.html?exo=1"></iframe>
+      </div>
+      <div class="quiz-panel-container">
+        <div class="quiz-div-1">
+          <div class="quiz-question-wrapper">
+            <div class="quiz-question-badge">Question</div>
+            <div class="quiz-question-card">
+              How did you adjust the weights of X1 and X2 to get a good classification?
+            </div>
+          </div>
+          <div class="quiz-options-container">
+            <button class="quiz-option-btn">
+              <span class="quiz-option-checkbox"></span>
+              <span class="quiz-option-text">X1 had to be lower than X2</span>
+            </button>
+            <button class="quiz-option-btn">
+              <span class="quiz-option-checkbox"></span>
+              <span class="quiz-option-text">I randomly chose the weight</span>
+            </button>
+            <button class="quiz-option-btn">
+              <span class="quiz-option-checkbox"></span>
+              <span class="quiz-option-text">X1 and X2 had to be equivalent</span>
+            </button>
+            <button class="quiz-option-btn">
+              <span class="quiz-option-checkbox"></span>
+              <span class="quiz-option-text">X1 had to be bigger than X2</span>
+            </button>
+          </div>
+        </div>
+        <div class="quiz-div-2">
+          <!-- Contenu de la partie basse du quiz -->
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script src="../inactivite.js"></script>
-  <script src="../../playground-master/src/exos/storage_service.js"></script>
-  <script src="../../playground-master/src/exoquizjs/exo1_quiz_page.js"></script>
+  <script src="../playground-master/src/exos/storage_service.js"></script>
+  <script src="./exo1_quiz_page.js"></script>
 </body>
 
 </html>
