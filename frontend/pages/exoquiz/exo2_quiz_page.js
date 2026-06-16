@@ -116,6 +116,14 @@
     }
   ];
 
+  const quizStatements = [
+    { id: 1, text: "Initialize basic parameters (weights & bias) randomly." },
+    { id: 2, text: "Make predictions on the training data." },
+    { id: 3, text: "Compute training loss to measure error." },
+    { id: 4, text: "Adjust weights & bias using gradient descent." },
+    { id: 5, text: "Start a new training step with updated parameters." }
+  ];
+
   let currentStep = 0;
   let activeHighlightBox = null;
   let currentHighlightSelector = null;
@@ -178,20 +186,8 @@
     repositionActiveElements();
   }
 
-  async function finishQuiz() {
-    clearHighlights();
-    
-    if (window.StorageService) {
-      await window.StorageService.complete(2);
-      console.log("✅ Exercice 2 marqué COMPLETED.");
-    }
-    
-    window.location.href = `../exo2.html?completed=true`;
-  }
-
   function showStep(index) {
     if (index >= stepsData.length) {
-      finishQuiz();
       return;
     }
 
@@ -222,19 +218,301 @@
     // Apply entry transition
     setTimeout(() => {
       card.classList.add('show');
-      // Scroll to the bottom of the panel
       panel.scrollTop = panel.scrollHeight;
     }, 50);
 
     // Highlight the target element inside the iframe
     showHighlightBox(step.selector);
+
+    // If we reached step 5, enable the "Faire le quiz suivant" button in footer
+    if (index === 5) {
+      const btnRealise = document.getElementById('btn-realise');
+      if (btnRealise) {
+        btnRealise.disabled = false;
+        btnRealise.classList.remove('btn-disabled');
+        btnRealise.classList.add('btn-success-ready');
+        btnRealise.innerHTML = 'Faire le quiz suivant';
+        btnRealise.onclick = () => {
+          openDragDropQuizModal();
+        };
+      }
+    }
   }
 
   function nextStep() {
+    if (currentStep >= 5) return;
     currentStep++;
     showStep(currentStep);
   }
 
+  // INTERACTIVE DRAG & DROP MODAL FOR ORDERING QUIZ
+  function openDragDropQuizModal() {
+    clearHighlights();
+
+    // Create the overlay container
+    const overlay = document.createElement('div');
+    overlay.className = 'dd-quiz-overlay';
+    overlay.id = 'dd-quiz-overlay';
+
+    // Shuffle statements
+    const shuffled = [...quizStatements].sort(() => Math.random() - 0.5);
+
+    overlay.innerHTML = `
+      <div class="dd-quiz-container">
+        <!-- Column Left: Step 3-5 explanations -->
+        <div class="dd-quiz-left">
+          <h3 style="margin: 0 0 15px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; font-weight: 800;">Review Steps 3 - 5</h3>
+          
+          <div>
+            <h4>Step 3 - The training loss is calculated</h4>
+            <p>After making predictions using the current parameters, the model computes the training loss. This value measures the difference between the model's predictions and the expected outputs.</p>
+          </div>
+          
+          <div>
+            <h4>Step 4 - Gradient descent updates the parameters</h4>
+            <p>The gradient descent algorithm uses the training loss to compute how the model's parameters should be adjusted. It updates the weights and bias in a direction that reduces the loss.</p>
+          </div>
+          
+          <div>
+            <h4>Step 5 - A new training step begins</h4>
+            <p>With the updated parameters, the model starts a new training step. This cycle—prediction, loss calculation, and parameter update—is repeated until the loss stabilizes.</p>
+          </div>
+        </div>
+
+        <!-- Column Right: Drag and Drop sorting -->
+        <div class="dd-quiz-right">
+          <h3 class="dd-quiz-title">Rearrange the statements to reflect the training process</h3>
+          
+          <div class="dd-slots-list" id="dd-slots-list">
+            ${shuffled.map((item, idx) => `
+              <div class="dd-slot" data-slot="${idx + 1}">
+                <div class="dd-card" draggable="true" data-id="${item.id}">
+                  <span class="dd-card-num">${item.id}</span>
+                  <span class="dd-card-text">${item.text}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <button class="dd-quiz-validate-btn" id="dd-quiz-validate-btn">OK</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Trigger overlay fade-in
+    setTimeout(() => {
+      overlay.classList.add('show');
+    }, 10);
+
+    // Setup Drag and Drop events
+    let draggedCard = null;
+
+    function checkCurrentCardsOrder() {
+      const slots = document.querySelectorAll('.dd-slot');
+      slots.forEach((slot) => {
+        const expectedOrder = parseInt(slot.dataset.slot, 10);
+        const card = slot.querySelector('.dd-card');
+        if (card) {
+          const cardId = parseInt(card.dataset.id, 10);
+          if (cardId === expectedOrder) {
+            card.classList.add('correct');
+          } else {
+            card.classList.remove('correct');
+          }
+        }
+      });
+    }
+
+    // Call order check initially
+    checkCurrentCardsOrder();
+
+    const cards = overlay.querySelectorAll('.dd-card');
+    const slots = overlay.querySelectorAll('.dd-slot');
+
+    cards.forEach(card => {
+      card.addEventListener('dragstart', (e) => {
+        draggedCard = card;
+        e.dataTransfer.setData('text/plain', card.dataset.id);
+        card.style.opacity = '0.5';
+      });
+
+      card.addEventListener('dragend', () => {
+        card.style.opacity = '1';
+        draggedCard = null;
+      });
+    });
+
+    slots.forEach(slot => {
+      slot.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      slot.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (!draggedCard) return;
+
+        const targetCard = slot.querySelector('.dd-card');
+        const sourceSlot = draggedCard.parentElement;
+
+        if (targetCard) {
+          // Swap the elements inside the slots
+          slot.appendChild(draggedCard);
+          sourceSlot.appendChild(targetCard);
+        } else {
+          slot.appendChild(draggedCard);
+        }
+
+        checkCurrentCardsOrder();
+      });
+    });
+
+    // Handle OK button click validation
+    const validateBtn = document.getElementById('dd-quiz-validate-btn');
+    validateBtn.addEventListener('click', () => {
+      const slotsList = document.querySelectorAll('.dd-slot');
+      let isCorrectOrder = true;
+
+      slotsList.forEach(slot => {
+        const slotNum = parseInt(slot.dataset.slot, 10);
+        const card = slot.querySelector('.dd-card');
+        if (card) {
+          const cardId = parseInt(card.dataset.id, 10);
+          if (cardId !== slotNum) {
+            isCorrectOrder = false;
+            card.classList.add('shake-error');
+            setTimeout(() => card.classList.remove('shake-error'), 600);
+          }
+        } else {
+          isCorrectOrder = false;
+        }
+      });
+
+      if (isCorrectOrder) {
+        // Correct answers! Hide D&D and display Loop Animation
+        showSuccessAnimationScreen(overlay);
+      }
+    });
+  }
+
+  // RENDER THE SUCCESS ANIMATION AND FINAL PROGRESS REDIRECT
+  function showSuccessAnimationScreen(overlay) {
+    const rightCol = overlay.querySelector('.dd-quiz-right');
+    if (!rightCol) return;
+
+    // Clear right column contents
+    rightCol.innerHTML = `
+      <div class="success-message-card">
+        <h2>🎉 Well done!</h2>
+        <p>You have correctly identified the steps.</p>
+      </div>
+
+      <!-- Loops Animation Container -->
+      <div class="anim-container">
+        <div class="anim-init">Parameters initialized</div>
+        
+        <div class="anim-step-row" id="anim-step-1">
+          <span class="anim-step-num">1</span>
+          <div class="anim-step-text"><strong>PREDICTION</strong> → Model makes predictions</div>
+        </div>
+
+        <div class="anim-step-row" id="anim-step-2">
+          <span class="anim-step-num">2</span>
+          <div class="anim-step-text"><strong>EVALUATION</strong> → Training loss is computed</div>
+        </div>
+
+        <div class="anim-step-row" id="anim-step-3">
+          <span class="anim-step-num">3</span>
+          <div class="anim-step-text"><strong>OPTIMIZATION</strong> → Gradient descent updates parameters</div>
+        </div>
+
+        <div class="anim-loop-arrow" id="anim-loop-arrow">
+          <span>🔁 repeat to reduce loss</span>
+        </div>
+      </div>
+
+      <!-- Container for congrats final badges & next actions -->
+      <div id="success-footer-container"></div>
+    `;
+
+    // Loop animation mechanics
+    let currentCycle = 0;
+    let currentAnimStep = 1;
+
+    const step1 = document.getElementById('anim-step-1');
+    const step2 = document.getElementById('anim-step-2');
+    const step3 = document.getElementById('anim-step-3');
+    const loopArrow = document.getElementById('anim-loop-arrow');
+
+    function playLoop() {
+      // Clear active highlights
+      step1.classList.remove('highlight');
+      step2.classList.remove('highlight');
+      step3.classList.remove('highlight');
+      loopArrow.classList.remove('highlight');
+
+      if (currentCycle >= 3) {
+        // Freeze everything lit up on the screen
+        step1.classList.add('highlight');
+        step2.classList.add('highlight');
+        step3.classList.add('highlight');
+        showFinalSuccessFooter();
+        return;
+      }
+
+      if (currentAnimStep === 1) {
+        step1.classList.add('highlight');
+        currentAnimStep = 2;
+        setTimeout(playLoop, 1000);
+      } else if (currentAnimStep === 2) {
+        step2.classList.add('highlight');
+        currentAnimStep = 3;
+        setTimeout(playLoop, 1000);
+      } else if (currentAnimStep === 3) {
+        step3.classList.add('highlight');
+        loopArrow.classList.add('highlight');
+        currentAnimStep = 1;
+        currentCycle++;
+        setTimeout(playLoop, 1200);
+      }
+    }
+
+    function showFinalSuccessFooter() {
+      const footerContainer = document.getElementById('success-footer-container');
+      if (!footerContainer) return;
+
+      footerContainer.innerHTML = `
+        <div class="success-footer">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span class="success-footer-badge">Badge [5]</span>
+            <span style="font-size: 13px; color: #cbd5e1;">You can now return to the dashboard...</span>
+          </div>
+          <button class="success-footer-btn" id="dd-success-finish-btn">Retour au Dashboard</button>
+        </div>
+      `;
+
+      const finishBtn = document.getElementById('dd-success-finish-btn');
+      finishBtn.addEventListener('click', async () => {
+        overlay.classList.remove('show');
+        setTimeout(async () => {
+          overlay.remove();
+          
+          // Save completion state and redirect
+          if (window.StorageService) {
+            await window.StorageService.complete(2);
+            console.log("✅ Exercice 2 marqué COMPLETED.");
+          }
+          window.location.href = `../exo2.html?completed=true`;
+        }, 400);
+      });
+    }
+
+    // Start loop animation
+    playLoop();
+  }
+
+  // Setup the global click listener for early steps
   document.addEventListener('click', (e) => {
     if (
       e.target.closest('header') || 
@@ -248,10 +526,12 @@
     nextStep();
   });
 
+  // Attach positioning listeners
   window.addEventListener('resize', repositionActiveElements);
   window.addEventListener('scroll', repositionActiveElements);
   setInterval(repositionActiveElements, 100);
 
+  // Initialize once iframe is loaded
   const iframe = document.querySelector('.exo-frame');
   if (iframe) {
     iframe.addEventListener('load', () => {
