@@ -490,11 +490,31 @@ function runStep5() {
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
-    clearHighlights();
+    runFinalStep();
   };
   setTimeout(() => {
     document.addEventListener('click', clickHandler);
   }, 100);
+}
+
+function runFinalStep() {
+  showHighlightBox('.timeline-controls', '1');
+  
+  if (activeTooltip) activeTooltip.remove();
+  currentTooltipSelector = '.timeline-controls';
+  currentTooltipTitle = "Ready to start the training?";
+  currentTooltipText = "";
+  currentTooltipPosition = 'bottom';
+
+  activeTooltip = document.createElement('div');
+  activeTooltip.className = 'tutorial-tooltip';
+  activeTooltip.innerHTML = `<h4 style="margin:0; font-size:15px; font-weight:800; color:#fff; text-align:center; padding: 5px 10px;">Ready to start the training?</h4>`;
+  document.body.appendChild(activeTooltip);
+  repositionActiveElements();
+
+  setTimeout(() => {
+    clearHighlights();
+  }, 4000);
 }
 
 window.addEventListener('resize', repositionActiveElements);
