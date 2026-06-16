@@ -67,11 +67,66 @@ document.querySelectorAll('a[href="Page-demo/historique.html"]').forEach(link =>
 const btnSauvegarder = document.getElementById('btn-sauvegarder');
 const btnRealise = document.getElementById('btn-realise');
 
+function showExerciseSuccessCongrats() {
+  const overlay = document.createElement('div');
+  overlay.className = 'tutorial-overlay';
+  overlay.id = 'exo2-success-overlay';
+
+  const popup = document.createElement('div');
+  popup.className = 'tutorial-popup';
+  popup.style.background = '#004676';
+
+  const h3 = document.createElement('h3');
+  h3.style.color = '#FFFFFF';
+  h3.innerText = "Great!!";
+
+  const p = document.createElement('p');
+  p.style.color = '#FFFFFF';
+  p.innerText = "the model has successsfully learned to classify the data. Now let's go back and review the different training steps.";
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'tutorial-btn';
+  nextBtn.style.background = '#FF553F';
+  nextBtn.innerText = "Go to Quiz";
+
+  popup.appendChild(h3);
+  popup.appendChild(p);
+  popup.appendChild(nextBtn);
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+
+  const dismiss = () => {
+    overlay.remove();
+    document.removeEventListener('click', dismiss);
+  };
+
+  nextBtn.onclick = async (e) => {
+    e.stopPropagation();
+    dismiss();
+    
+    const success = await StorageService.complete(2);
+    if (success) {
+      btnRealise.innerHTML = '✨ Redirection...';
+      btnRealise.disabled = true;
+      setTimeout(() => {
+        window.location.href = 'exoquiz/exo2_quiz.html';
+      }, 800);
+    } else {
+      window.location.href = 'exoquiz/exo2_quiz.html';
+    }
+  };
+
+  setTimeout(() => {
+    document.addEventListener('click', dismiss);
+  }, 100);
+}
+
 window.addEventListener('message', (event) => {
     if (event.data.type === 'EXO_SUCCESS' && event.data.exoId == 2) {
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
+        showExerciseSuccessCongrats();
     }
 });
 
@@ -86,8 +141,11 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const success = await StorageService.complete(2);
     if (success) {
-        btnRealise.innerHTML = '✨ Validé !';
+        btnRealise.innerHTML = '✨ Redirection...';
         btnRealise.disabled = true;
+        setTimeout(() => {
+            window.location.href = 'exoquiz/exo2_quiz.html';
+        }, 800);
     }
 };
 

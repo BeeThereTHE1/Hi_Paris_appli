@@ -48,8 +48,62 @@
       })();
 
       // ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
-      const btnSauvegarder = document.getElementById('btn-sauvegarder');
-      const btnRealise = document.getElementById('btn-realise');
+      const btnSauvegarder = document.getElementById('btn-sauvegarder') as HTMLButtonElement;
+      const btnRealise = document.getElementById('btn-realise') as HTMLButtonElement;
+
+      function showExerciseSuccessCongrats() {
+        const overlay = document.createElement('div');
+        overlay.className = 'tutorial-overlay';
+        overlay.id = 'exo2-success-overlay';
+
+        const popup = document.createElement('div');
+        popup.className = 'tutorial-popup';
+        popup.style.background = '#004676';
+
+        const h3 = document.createElement('h3');
+        h3.style.color = '#FFFFFF';
+        h3.innerText = "Great!!";
+
+        const p = document.createElement('p');
+        p.style.color = '#FFFFFF';
+        p.innerText = "the model has successsfully learned to classify the data. Now let's go back and review the different training steps.";
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'tutorial-btn';
+        nextBtn.style.background = '#FF553F';
+        nextBtn.innerText = "Go to Quiz";
+
+        popup.appendChild(h3);
+        popup.appendChild(p);
+        popup.appendChild(nextBtn);
+        overlay.appendChild(popup);
+        document.body.appendChild(overlay);
+
+        const dismiss = () => {
+          overlay.remove();
+          document.removeEventListener('click', dismiss);
+        };
+
+        nextBtn.onclick = async (e) => {
+          e.stopPropagation();
+          dismiss();
+          
+          const success = await (window as any).StorageService.complete(2);
+          if (success) {
+            btnRealise.innerHTML = '✨ Redirection...';
+            btnRealise.disabled = true;
+            setTimeout(() => {
+              window.location.href = 'exoquiz/exo2_quiz.html';
+            }, 800);
+          } else {
+            window.location.href = 'exoquiz/exo2_quiz.html';
+          }
+        };
+
+        setTimeout(() => {
+          document.addEventListener('click', dismiss);
+        }, 100);
+      }
 
       window.addEventListener('message', (event) => {
         if (event.data.type === 'EXO_SUCCESS' && event.data.exoId == 2) {
@@ -57,45 +111,27 @@
           btnRealise.classList.remove('btn-disabled');
           btnRealise.classList.add('btn-success-ready');
           btnRealise.innerHTML = '✨ Exercice Réussi !!';
+          showExerciseSuccessCongrats();
         }
       });
 
-      function saveToStorage(key, exoData) {
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        if (!user || !user.email) return false;
-        const userKey = `${key}_${user.email}`;
-        const list = JSON.parse(localStorage.getItem(userKey) || '[]');
-        if (!list.find(e => e.id === exoData.id)) {
-          list.push(exoData);
-          localStorage.setItem(userKey, JSON.stringify(list));
-          return true;
-        }
-        return false;
-      }
-
-      btnSauvegarder.onclick = () => {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-        const now = new Date().toLocaleDateString('fr-FR');
-        const saved = saveToStorage('saved_exercises', { id: 2, date: now });
-        if (saved) {
+      btnSauvegarder.onclick = async () => {
+        const success = await (window as any).StorageService.save(2);
+        if (success) {
           btnSauvegarder.innerHTML = '✅ Sauvegardé !';
           btnSauvegarder.style.opacity = '0.7';
           btnSauvegarder.disabled = true;
-        } else {
-          alert("Cet exercice est déjà dans votre profil.");
         }
       };
 
-      btnRealise.onclick = () => {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-        const now = new Date().toLocaleDateString('fr-FR');
-        const saved = saveToStorage('completed_exercises', { id: 2, date: now });
-        if (saved) {
-          btnRealise.innerHTML = '✨ Validé !';
+      btnRealise.onclick = async () => {
+        const success = await (window as any).StorageService.complete(2);
+        if (success) {
+          btnRealise.innerHTML = '✨ Redirection...';
           btnRealise.disabled = true;
-          setTimeout(() => { window.location.href = 'Page-demo/historique.html#completed'; }, 1000);
+          setTimeout(() => {
+            window.location.href = 'exoquiz/exo2_quiz.html';
+          }, 800);
         }
       };
 
