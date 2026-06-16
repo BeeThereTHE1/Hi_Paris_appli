@@ -12,25 +12,41 @@
   <link rel="stylesheet" href="../../styles/exo_quiz.css" />
   <style>
     /* Styling for the step card inside the quiz panel */
+    .quiz-panel-container {
+      overflow-y: auto !important;
+      max-height: 100% !important;
+      scroll-behavior: smooth;
+    }
+
     .quiz-step-card {
-      border: 4px solid #065f46; /* Active border = dark green */
-      background: rgba(0, 70, 118, 0.9); /* #004676 with transparency */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 70, 118, 0.4);
       border-radius: 16px;
       padding: 24px;
       box-sizing: border-box;
-      box-shadow: 0 10px 30px rgba(6, 95, 70, 0.3);
-      color: #ffffff;
+      color: rgba(255, 255, 255, 0.6);
       display: flex;
       flex-direction: column;
       gap: 15px;
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(15px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .quiz-step-card.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .quiz-step-card.active {
+      border: 4px solid #065f46; /* Active border = dark green */
+      background: rgba(0, 70, 118, 0.9); /* #004676 with transparency */
+      box-shadow: 0 10px 30px rgba(6, 95, 70, 0.3);
+      color: #ffffff;
+    }
+
+    .quiz-step-card.active .quiz-step-desc {
+      color: #cbd5e1;
     }
 
     .quiz-step-header {

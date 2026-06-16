@@ -60,7 +60,7 @@
     {
       badge: "Step 3",
       title: "The training loss is calculated",
-      desc: "After making predictions using the current parameters, the model computes the **training loss. This value measures the difference between the model’s predictions and the expected outputs, providing a numerical indication of how wrong the model currently is.",
+      desc: "After making predictions using the current parameters, the model computes the training loss. This value measures the difference between the model’s predictions and the expected outputs, providing a numerical indication of how wrong the model currently is.",
       selector: ".output-stats.train.ui-trainLoss",
       html: `
         <div class="output-stats train ui-trainLoss" title="The training loss measures how well the model fits the training dataset." style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; max-width: 220px; margin: 0 auto;">
@@ -73,28 +73,44 @@
       badge: "Step 4",
       title: "Gradient descent updates the parameters",
       desc: "The gradient descent algorithm uses the training loss to compute how the model’s parameters should be adjusted. It updates the weights and bias in a direction that reduces the loss, improving the model’s predictions.",
-      selector: ".column.hidden-layers",
+      selector: "g.core",
       html: `
-        <div class="column hidden-layers" style="visibility: visible; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); max-width: 250px; margin: 0 auto; text-align: center;">
-          <h4 style="margin: 0 0 10px 0; font-size: 13px; color: #cbd5e1;">
-            <span id="num-layers">0</span>
-            <span id="layers-label">Hidden layers</span>
-            <span class="info-tip" style="background:rgba(255,255,255,0.2); color:#fff; border-radius:50%; width:14px; height:14px; display:inline-flex; align-items:center; justify-content:center; font-size:9px;">?</span>
-          </h4>
-          <div class="bracket" style="border: 2px solid rgba(255,255,255,0.2); border-top: none; width: 60px; height: 10px; border-radius: 0 0 6px 6px;"></div>
-        </div>
+        <svg width="100%" height="110" viewBox="0 0 600 110" style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px;">
+          <g class="core" transform="translate(3,3)">
+            <path class="link" id="linky-1" d="M82,70C311,70 311,18 540,18" style="stroke-dashoffset: -42.6667; stroke-width: 2.27785; stroke: rgb(73, 152, 202); fill: none;"></path>
+            <path class="link" id="linkx-1" d="M82,15C311,15 311,12 540,12" style="stroke-dashoffset: -42.6667; stroke-width: 2.53604; stroke: rgb(41, 136, 196); fill: none;"></path>
+            <g class="node active" id="nodex" transform="translate(50,0)">
+              <rect x="0" y="0" width="30" height="30" fill="#004676" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" rx="4"></rect>
+              <text class="main-label" x="15" y="20" text-anchor="middle" fill="#fff" style="font-family: Inter, sans-serif; font-weight: bold; font-size: 11px;">X1</text>
+            </g>
+            <g class="node active" id="nodey" transform="translate(50,55)">
+              <rect x="0" y="0" width="30" height="30" fill="#004676" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" rx="4"></rect>
+              <text class="main-label" x="15" y="20" text-anchor="middle" fill="#fff" style="font-family: Inter, sans-serif; font-weight: bold; font-size: 11px;">X2</text>
+            </g>
+          </g>
+        </svg>
       `
     },
     {
       badge: "Step 5",
       title: "A new training step begins",
       desc: "With the updated parameters, the model starts a new training step. This cycle—prediction, loss calculation, and parameter update—is repeated over many steps and epochs until the loss stabilizes.",
-      selector: ".column.features",
+      selector: ".timeline-controls",
       html: `
-        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); max-width: 220px; margin: 0 auto; text-align: center;">
-          <h4 style="margin: 0; color: #ffffff; font-size: 14px; font-weight: 700;">
-            Caractéristiques <span class="info-tip info-tip-pulse" style="background:#FF034D; color:#fff; border-radius:50%; width:14px; height:14px; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:bold;">i</span>
-          </h4>
+        <div class="timeline-controls" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+          <div class="ui-resetButton">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialiser le réseau" style="color:#fff; background:none; border:none; cursor:pointer;">
+              <i class="material-icons">replay</i>
+            </button>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Lancer/Mettre en pause" style="background:#FF034D; color:#fff; border-radius: 50%; width: 40px; height: 40px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+            <i class="material-icons">play_arrow</i>
+          </button>
+          <div class="ui-stepButton">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Étape par étape" style="color:#fff; background:none; border:none; cursor:pointer;">
+              <i class="material-icons">skip_next</i>
+            </button>
+          </div>
         </div>
       `
     }
@@ -156,7 +172,6 @@
     currentHighlightSelector = selector;
 
     activeHighlightBox = document.createElement('div');
-    // Green highlight class defined in exo2_quiz.html styles
     activeHighlightBox.className = 'tutorial-highlight-box green-highlight';
     document.body.appendChild(activeHighlightBox);
 
@@ -166,13 +181,11 @@
   async function finishQuiz() {
     clearHighlights();
     
-    // Save completion state in database
     if (window.StorageService) {
       await window.StorageService.complete(2);
-      console.log("✅ Exercice 2 marqué COMPLETED dans la base de données.");
+      console.log("✅ Exercice 2 marqué COMPLETED.");
     }
     
-    // Redirect back to exercise page with completed parameter
     window.location.href = `../exo2.html?completed=true`;
   }
 
@@ -186,12 +199,13 @@
     const panel = document.getElementById('quiz-step-panel');
     if (!panel) return;
 
-    // Clear previous card
-    panel.innerHTML = '';
+    // Remove active styles from previous cards
+    const previousActive = panel.querySelectorAll('.quiz-step-card.active');
+    previousActive.forEach(card => card.classList.remove('active'));
 
     // Create the step card
     const card = document.createElement('div');
-    card.className = 'quiz-step-card';
+    card.className = 'quiz-step-card active';
     card.innerHTML = `
       <div class="quiz-step-header">
         <span class="quiz-step-badge">${step.badge}</span>
@@ -205,9 +219,11 @@
 
     panel.appendChild(card);
 
-    // Apply fade/appearance transition
+    // Apply entry transition
     setTimeout(() => {
       card.classList.add('show');
+      // Scroll to the bottom of the panel
+      panel.scrollTop = panel.scrollHeight;
     }, 50);
 
     // Highlight the target element inside the iframe
@@ -219,9 +235,7 @@
     showStep(currentStep);
   }
 
-  // Setup the global click listener
   document.addEventListener('click', (e) => {
-    // Avoid proceeding when clicking headers, footers, or action elements
     if (
       e.target.closest('header') || 
       e.target.closest('.universal-header') || 
@@ -234,12 +248,10 @@
     nextStep();
   });
 
-  // Attach positioning listeners
   window.addEventListener('resize', repositionActiveElements);
   window.addEventListener('scroll', repositionActiveElements);
   setInterval(repositionActiveElements, 100);
 
-  // Initialize once iframe is loaded
   const iframe = document.querySelector('.exo-frame');
   if (iframe) {
     iframe.addEventListener('load', () => {
