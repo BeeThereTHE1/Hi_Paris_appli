@@ -3,15 +3,123 @@
     // 🔧 DEV_MODE : mettre à false pour réactiver le verrouillage en production
     const DEV_MODE = true;
 
+    // Helper pour afficher l'écran de complétion avec confettis sur la page principale de l'exercice
+    function showCompletionScreen(exoId) {
+        // Enlever les overlays de complétion restants
+        document.querySelectorAll(".completion-overlay").forEach(el => el.remove());
+
+        const overlay = document.createElement("div");
+        overlay.className = "completion-overlay";
+
+        // Déterminer le lien de l'exercice suivant (max 17 exercices)
+        const nextExoId = exoId + 1;
+        const nextExoExists = nextExoId <= 17;
+        const nextExoLink = nextExoExists ? `exo${nextExoId}.html` : `Page-demo/exercises.html`;
+        const nextButtonText = nextExoExists ? "🚀 Next Exercise" : "🏠 Return to Dashboard";
+
+        overlay.innerHTML = `
+          <div class="completion-card">
+            <!-- Canvas pour l'effet confettis -->
+            <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+            <!-- Grande étoile animée (zoom + rotation) -->
+            <div class="completion-star-wrap">
+              <span class="completion-star">⭐</span>
+            </div>
+
+            <!-- Titre et message de félicitations -->
+            <h2 class="completion-title">Well Done!</h2>
+            <p class="completion-msg">You have finished this exercise.<br>
+              Go back home to the dashboard,<br>
+              <strong>next exercise has been unlocked!</strong>
+            </p>
+
+            <!-- Actions -->
+            <div class="completion-actions">
+              <a class="completion-btn-next pulse-btn" href="${nextExoLink}">
+                ${nextButtonText}
+              </a>
+            </div>
+          </div>
+
+          <!-- Bouton Maison clignotant en bas à droite -->
+          <a class="completion-home-icon blink-btn" href="Page-demo/exercises.html" title="Back to Dashboard">
+            🏠
+          </a>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Transition d'apparition (opacity 0 -> 1)
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => overlay.classList.add("show"));
+        });
+
+        // Lancement des confettis animés
+        requestAnimationFrame(() => launchConfetti());
+    }
+
+    function launchConfetti() {
+        const canvas = document.getElementById("confetti-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+
+        const COLORS = ["#FF034D", "#FFD700", "#10b981", "#6366f1", "#ffffff", "#FF6B35"];
+        const pieces = Array.from({ length: 120 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            speed: Math.random() * 3 + 1.5,
+            spin: (Math.random() - 0.5) * 0.15,
+            angle: Math.random() * Math.PI * 2,
+            drift: (Math.random() - 0.5) * 1.5
+        }));
+
+        let frame = 0;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => {
+                p.y += p.speed;
+                p.x += p.drift;
+                p.angle += p.spin;
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 2);
+                ctx.restore();
+                if (p.y > canvas.height) {
+                    p.y = -10;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+            frame++;
+            if (frame < 300) requestAnimationFrame(draw); // ~5s
+        }
+        draw();
+    }
+
     // 1. Détection et vérification de la progression/verrouillage pour les exercices (exo*.html et exo*_quiz.html)
     async function initProgressionCheck() {
-        if (DEV_MODE) return; // Court-circuit total : aucun verrouillage en mode dev
         const path = window.location.pathname;
         const match = path.match(/exo(\d+)(_quiz)?\.html/);
         if (!match) return; // Pas sur un exercice ou un quiz, rien à faire
 
         const currentExoId = parseInt(match[1]);
         const isQuizPage = !!match[2];
+
+        // Afficher l'écran de complétion si l'exercice vient d'être terminé
+        if (!isQuizPage) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('completed') === 'true') {
+                showCompletionScreen(currentExoId);
+            }
+        }
+
+        if (DEV_MODE) return; // Court-circuit total : aucun verrouillage en mode dev
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 

@@ -99,10 +99,10 @@ function initQuiz() {
         </div>
         
         <div class="dragdrop-cards-area" id="cards-source">
-          <div class="drag-card" draggable="true" id="card-1" data-answer="true">Increasing X1 weight rotates the decision boundary.</div>
-          <div class="drag-card" draggable="true" id="card-2" data-answer="true">Negative weights invert the active input signal.</div>
-          <div class="drag-card" draggable="true" id="card-3" data-answer="false">A higher learning rate always avoids local minima.</div>
-          <div class="drag-card" draggable="true" id="card-4" data-answer="false">A single linear neuron can classify spiral datasets.</div>
+          <div class="drag-card" draggable="true" id="card-1" data-answer="true">The basics of a neural network is a linear classifier</div>
+          <div class="drag-card" draggable="true" id="card-2" data-answer="true">A simple logistic regression can only separate data that is linearly separable.</div>
+          <div class="drag-card" draggable="true" id="card-3" data-answer="false">Hidden layers are necessary to classify a linear binary dataset</div>
+          <div class="drag-card" draggable="true" id="card-4" data-answer="false">If a dataset has two clusters, it is always possible to draw a straight boundary between them.</div>
         </div>
         
         <div class="dragdrop-zones-container">
@@ -150,6 +150,59 @@ function initQuiz() {
       });
     });
 
+    const cardExplanations = {
+      "card-1": "A neural network without hidden layers behaves like a linear model. It becomes non‑linear only when hidden layers and activation functions are added.",
+      "card-2": "Logistic regression creates a straight decision boundary. It can only work when the classes can be separated by a straight line (or hyperplane).",
+      "card-3": "Hidden layers are not required for linear binary classification because the problem can be solved entirely using a linear model. They become necessary only when the dataset is non-linear.",
+      "card-4": "Even if a dataset has only two clusters, their shape and position matter. If the clusters are arranged in a curved or interleaved way (for example circles or moons), no straight line can separate them without making errors."
+    };
+
+    function showDropFeedback(cardId, cardText, isCorrect, onClose) {
+      // Remove any existing D&D feedback bubble
+      document.querySelectorAll(".dd-feedback-bubble").forEach(el => el.remove());
+
+      const bubble = document.createElement("div");
+      bubble.className = `dd-feedback-bubble ${isCorrect ? 'correct' : 'incorrect'}`;
+
+      const explanation = cardExplanations[cardId] || "";
+
+      bubble.innerHTML = `
+        <div class="dd-feedback-status">
+          ${isCorrect ? '✔ Correct!' : '✖ Incorrect'}
+        </div>
+        <div class="dd-feedback-statement">
+          "${cardText}"
+        </div>
+        <div class="dd-feedback-explanation">
+          ${explanation}
+        </div>
+        <div class="dd-feedback-click-tip">
+          Click anywhere to continue
+        </div>
+      `;
+
+      ddOverlay.appendChild(bubble);
+
+      setTimeout(() => {
+        bubble.classList.add("show");
+      }, 10);
+
+      // Fermeture au clic n'importe où
+      const closeFeedback = () => {
+        bubble.classList.remove("show");
+        setTimeout(() => {
+          bubble.remove();
+          document.removeEventListener("click", closeFeedback);
+          if (onClose) onClose();
+        }, 300);
+      };
+
+      // Attendre un instant avant d'écouter pour ne pas intercepter le clic de drop
+      setTimeout(() => {
+        document.addEventListener("click", closeFeedback);
+      }, 50);
+    }
+
     zones.forEach(zone => {
       const zoneCards = zone.querySelector(".zone-cards");
 
@@ -167,8 +220,28 @@ function initQuiz() {
         zone.classList.remove("hovered");
         
         if (draggedCard) {
-          zoneCards.appendChild(draggedCard);
-          checkQuizCompletion();
+          const cardElement = draggedCard;
+          const expected = zone.getAttribute("data-expected");
+          const cardAnswer = cardElement.getAttribute("data-answer");
+          const isCorrect = (cardAnswer === expected);
+
+          // Append to zone temporarily so they see where it landed
+          zoneCards.appendChild(cardElement);
+
+          showDropFeedback(cardElement.id, cardElement.textContent, isCorrect, () => {
+            if (isCorrect) {
+              // Correct: stays in zone, check completion
+              checkQuizCompletion();
+            } else {
+              // Incorrect: shake and return to source pool
+              cardElement.classList.add("shake-error");
+              setTimeout(() => {
+                cardElement.classList.remove("shake-error");
+                const sourceArea = ddOverlay.querySelector("#cards-source");
+                sourceArea.appendChild(cardElement);
+              }, 600);
+            }
+          });
         }
       });
     });
@@ -178,39 +251,20 @@ function initQuiz() {
       const remainingCards = sourceArea.querySelectorAll(".drag-card");
 
       if (remainingCards.length === 0) {
-        let allCorrect = true;
+        ddOverlay.classList.remove("show");
+        setTimeout(async () => {
+          ddOverlay.remove();
+          
+          // Mark exercise as COMPLETED in DB — only fires here, at the very end of the full flow
+          const exoId = window.__currentQuizExoId || 1;
+          if (window.StorageService) {
+            await window.StorageService.complete(exoId);
+            console.log(`✅ Exercice ${exoId} marqué COMPLETED.`);
+          }
 
-        zones.forEach(zone => {
-          const expected = zone.getAttribute("data-expected");
-          zone.querySelectorAll(".drag-card").forEach(card => {
-            if (card.getAttribute("data-answer") !== expected) allCorrect = false;
-          });
-        });
-
-        if (allCorrect) {
-          // 1. Close drag & drop modal
-          ddOverlay.classList.remove("show");
-          setTimeout(() => {
-            ddOverlay.remove();
-            // 2. Show gamified completion screen
-            showCompletionScreen();
-          }, 400);
-        } else {
-          // Wrong placement — shake feedback then reset
-          zones.forEach(zone => {
-            zone.querySelectorAll(".drag-card").forEach(card => {
-              card.classList.add("shake-error");
-              setTimeout(() => card.classList.remove("shake-error"), 600);
-            });
-          });
-          setTimeout(() => {
-            zones.forEach(zone => {
-              zone.querySelectorAll(".drag-card").forEach(card => {
-                sourceArea.appendChild(card);
-              });
-            });
-          }, 700);
-        }
+          // Revenir à la page principale de l'exercice avec l'état complété
+          window.location.href = `../exo${exoId}.html?completed=true`;
+        }, 400);
       }
     }
   }
