@@ -1598,3 +1598,179 @@
         transform: translateY(0);
     }
 }
+
+/* ─── EXTRA QCM SELECTION FEEDBACK COLORS ───────────────────────────────── */
+.quiz-option-btn.selected-correct {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+}
+
+.quiz-option-btn.selected-correct .quiz-option-checkbox {
+    border-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+.quiz-option-btn.selected-correct .quiz-option-checkbox::after {
+    content: '\2713';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #10b981;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.quiz-option-btn.selected-incorrect {
+    background: #FF034D !important;
+    border-color: #FF034D !important;
+    box-shadow: 0 4px 12px rgba(255, 3, 77, 0.25) !important;
+}
+
+.quiz-option-btn.selected-incorrect .quiz-option-checkbox {
+    border-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+.quiz-option-btn.selected-incorrect .quiz-option-checkbox::after {
+    content: '\2717'; /* Cross mark ✗ */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FF034D;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+/* ─── DRAG CARD ERROR SHAKE ─────────────────────────────────────────────── */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+.drag-card.shake-error {
+    animation: shake 0.5s ease;
+    background: #ff2d55;
+    color: #fff;
+}
+
+/* ─── COMPLETION SCREEN ──────────────────────────────────────────────────── */
+.completion-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 10, 22, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.completion-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.completion-card {
+    position: relative;
+    background: #004676;
+    border: 2px solid #FF034D;
+    border-radius: 24px;
+    padding: 48px 40px 40px;
+    width: 90%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 3, 77, 0.2);
+    overflow: hidden;
+}
+
+/* Canvas confetti fills the card background */
+.confetti-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border-radius: 24px;
+}
+
+/* Star animation: scale from 0 to 1 with bounce */
+.completion-star-wrap {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 16px;
+}
+.completion-star {
+    display: inline-block;
+    font-size: 80px;
+    line-height: 1;
+    animation: star-zoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+}
+@keyframes star-zoom {
+    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+    60%  { transform: scale(1.2) rotate(5deg);  opacity: 1; }
+    100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+}
+
+.completion-title {
+    position: relative;
+    z-index: 1;
+    font-size: 32px;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.completion-msg {
+    position: relative;
+    z-index: 1;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin: 0 0 28px;
+}
+.completion-msg strong {
+    color: #FFD700;
+}
+
+/* CTA Buttons row */
+.completion-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Pulse animation for "Next Exercise" button */
+@keyframes pulse-scale {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255, 3, 77, 0.6); }
+    50%       { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(255, 3, 77, 0);  }
+}
+.completion-btn-next {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #FF034D;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 12px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: transform 0.2s ease;
+}
+.pulse-btn {
+    animation: pulse-scale 1.6s ease-in-out infinite;
+}
+.completion-btn-next:hover {
+    background: #e0003f;
+}

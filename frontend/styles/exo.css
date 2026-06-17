@@ -531,23 +531,45 @@
      }
  }
 
- .tutorial-indicator-dot {
-     position: absolute;
-     width: 44px;
-     height: 44px;
-     background: #FF034D;
-     border-radius: 50%;
-     color: white;
-     font-weight: bold;
-     font-size: 32px;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     box-shadow: 0 0 15px #FF034D;
-     z-index: 10001;
-     pointer-events: none;
-     transform: translate(-50%, -50%);
- }
+  .tutorial-indicator-dot {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      background: #FF034D;
+      border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px #FF034D;
+      z-index: 10001;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: indicator-pulse 1.5s infinite ease-in-out;
+  }
+
+  @keyframes indicator-pulse {
+      0% {
+          transform: translate(-50%, -50%) scale(1);
+          box-shadow: 0 0 15px #FF034D;
+      }
+      50% {
+          transform: translate(-50%, -50%) scale(1.12);
+          box-shadow: 0 0 35px #FF034D;
+      }
+      100% {
+          transform: translate(-50%, -50%) scale(1);
+          box-shadow: 0 0 15px #FF034D;
+      }
+  }
+
+  .highlight-glow-border {
+      border: 3px solid #FF034D !important;
+      animation: mini-zoom-glow-ff 1.5s infinite ease-in-out;
+  }
+
 
  /* Tooltip Custom de Tutoriel */
  .tutorial-tooltip {

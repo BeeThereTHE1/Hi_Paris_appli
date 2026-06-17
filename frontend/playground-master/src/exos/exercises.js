@@ -116,9 +116,9 @@ const EXERCISES = [
         difficulty: 'easy', category: 'Optimisation', duration: '20 min', questions: 10
     },
     {
-        id: 3, icon: '🔢', title: 'Exercice 3 : Entrainé le modèle pour classifier les données circulaires.',
-        desc: 'ReLU, Sigmoid, Tanh et leur impact sur l\'apprentissage.',
-        difficulty: 'easy', category: 'Fondamentaux', duration: '12 min', questions: 6
+        id: 3, icon: '🔢', title: 'Exercice 3+5 : Classification des données circulaires.',
+        desc: 'Découvrez les limites d\'un modèle linéaire simple sur des données circulaires, puis utilisez des caractéristiques quadratiques (X² et Y²) pour réussir.',
+        difficulty: 'easy', category: 'Fondamentaux', duration: '15 min', questions: 6
     },
     {
         id: 4, icon: '⚡', title: 'Exercice 4 : Modifiaction du Biais.',

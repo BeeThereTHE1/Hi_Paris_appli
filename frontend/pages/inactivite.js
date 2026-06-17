@@ -271,42 +271,14 @@
 
         } else {
             // PAGE DE QUIZ
-            if (btnSauvegarder) {
-                btnSauvegarder.style.display = 'none'; // Pas de sauvegarde de simulation sur le quiz
-            }
-            if (btnRealise) {
-                btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
-                
-                // Le bouton est actif pour le quiz
-                btnRealise.disabled = false;
-                btnRealise.classList.remove('btn-disabled');
-                btnRealise.classList.add('btn-success-ready');
+            // Les boutons du footer sont cachés sur les pages quiz :
+            // la progression COMPLETED n'est enregistrée QU'À LA FIN du popup de félicitation,
+            // déclenchée par le JS du quiz lui-même (exo*_quiz_page.js → showCompletionScreen).
+            if (btnSauvegarder) btnSauvegarder.style.display = 'none';
+            if (btnRealise)    btnRealise.style.display = 'none';
 
-                btnRealise.addEventListener('click', async function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    btnRealise.disabled = true;
-                    btnRealise.innerHTML = '⚡ Enregistrement...';
-                    
-                    // Sauvegarde dans la base de données (Supabase) via le service de stockage
-                    if (window.StorageService) {
-                        const success = await window.StorageService.complete(currentExoId);
-                        if (success) {
-                            alert("🎉 Quiz réussi et progression enregistrée !");
-                            window.location.href = '../Page-demo/exercises.html';
-                        } else {
-                            btnRealise.disabled = false;
-                            btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
-                        }
-                    } else {
-                        console.error("StorageService introuvable.");
-                        alert("Erreur technique : Service de stockage manquant.");
-                        btnRealise.disabled = false;
-                        btnRealise.innerHTML = '<span class="icon">⏭️</span> Quiz suivant';
-                    }
-                }, true);
-            }
+            // Exposer l'exoId courant pour que le quiz JS puisse appeler StorageService.complete()
+            window.__currentQuizExoId = currentExoId;
         }
 
         // Vérification et blocage des boutons de navigation (header)

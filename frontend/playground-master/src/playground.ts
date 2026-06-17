@@ -688,8 +688,7 @@ function makeGUI() {
         message = "Veillez relire la consigne! 😤";
       }
     } else if (exoId === 3) {
-      // On vérifie manuellement si le compteur d'itérations a franchi les 1000
-      if (iter >= 1000) {
+      if (iter >= 1000 && lossTrain < 0.005) {
         success = true;
       } else {
         message = "Veillez relire la consigne! 😤";
