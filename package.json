@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "prep": "shx mkdir -p dist/playground/images && concat node_modules/material-design-lite/material.min.js node_modules/seedrandom/seedrandom.min.js > dist/playground/lib.js && shx cp dist/playground/lib.js dist/lib.js",
     "build-css": "concat node_modules/material-design-lite/material.min.css frontend/styles/style.css frontend/playground-master/styles.css > dist/playground/bundle.css && shx cp dist/playground/bundle.css dist/bundle.css",
-    "build-html": "copyfiles -u 2 \"frontend/pages/**/*.html\" \"frontend/pages/**/*.js\" \"frontend/pages/**/Image/*\" dist && copyfiles -u 1 \"frontend/styles/*.css\" dist && copyfiles -u 1 \"frontend/playground-master/src/exos/*.js\" dist && shx cp frontend/playground-master/OLD_index.html dist/playground/index.html && copyfiles -j \"frontend/playground-master/images/*\" dist/playground/images && shx cp -r frontend/assets dist/",
+    "build-html": "copyfiles -u 2 \"frontend/pages/**/*.html\" \"frontend/pages/**/*.js\" \"frontend/pages/**/*.json\" \"frontend/pages/**/Image/*\" dist && copyfiles -u 1 \"frontend/styles/*.css\" dist && copyfiles -u 1 \"frontend/playground-master/src/exos/*.js\" dist && shx cp frontend/playground-master/OLD_index.html dist/playground/index.html && copyfiles -j \"frontend/playground-master/images/*\" dist/playground/images && shx cp -r frontend/assets dist/",
     "build-js": "browserify frontend/playground-master/src/playground.ts -p [tsify] | uglifyjs -c > dist/playground/bundle.js && shx cp dist/playground/bundle.js dist/bundle.js",
     "build": "npm run clean && npm run prep && npm run build-js && npm run build-css && npm run build-html",
     "serve": "npx serve dist/"

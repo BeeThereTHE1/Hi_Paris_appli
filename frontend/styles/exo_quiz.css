@@ -566,6 +566,50 @@
  }
 
  /* Selected Option State */
+ .quiz-option-btn.selected-correct {
+     background: #10b981 !important;
+     border-color: #10b981 !important;
+     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+ }
+
+ .quiz-option-btn.selected-correct .quiz-option-checkbox {
+     border-color: #ffffff !important;
+     background: #ffffff !important;
+ }
+
+ .quiz-option-btn.selected-correct .quiz-option-checkbox::after {
+     content: '\2713';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #10b981;
+     font-size: 14px;
+     font-weight: 900;
+ }
+
+ .quiz-option-btn.selected-incorrect {
+     background: #FF034D !important;
+     border-color: #FF034D !important;
+     box-shadow: 0 4px 12px rgba(255, 3, 77, 0.25) !important;
+ }
+
+ .quiz-option-btn.selected-incorrect .quiz-option-checkbox {
+     border-color: #ffffff !important;
+     background: #ffffff !important;
+ }
+
+ .quiz-option-btn.selected-incorrect .quiz-option-checkbox::after {
+     content: '\2717'; /* Cross mark ✗ */
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #FF034D;
+     font-size: 14px;
+     font-weight: 900;
+ }
+
  .quiz-option-btn.selected {
      background: #FF034D !important;
      border-color: #FF034D !important;
@@ -575,6 +619,7 @@
  .quiz-option-btn.selected .quiz-option-checkbox {
      border-color: #ffffff !important;
      background: #ffffff !important;
+     margin-right: 0px;
  }
 
  .quiz-option-btn.selected .quiz-option-checkbox::after {
