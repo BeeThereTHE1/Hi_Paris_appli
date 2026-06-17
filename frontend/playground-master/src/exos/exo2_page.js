@@ -376,7 +376,7 @@ function repositionActiveElements() {
         left = targetRight + 10 + window.scrollX;
       } else if (currentTooltipPosition === 'left') {
         top = targetTop + targetHeight / 2 - tooltipRect.height / 2 + window.scrollY;
-        left = targetLeft - tooltipRect.width - 10 + window.scrollX;
+        left = targetLeft - tooltipRect.width - 50 + window.scrollX;
       }
 
       if (left < 10) left = 10;
