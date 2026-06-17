@@ -303,6 +303,94 @@ let runsCountExo11 = 0;
 let divergenceObservedExo11 = false;
 let divergenceObservedExo12 = false;
 
+let trainedLinearDatasetsExo3: {[key: string]: boolean} = {};
+
+function isQuadraticUnlockedExo3(): boolean {
+  if (exoId !== 3) return true;
+  const keys = ["circle", "xor", "gauss", "spiral"];
+  return keys.every(k => trainedLinearDatasetsExo3[k] === true);
+}
+
+function updateQuadraticFeaturesExo3() {
+  const locked = !isQuadraticUnlockedExo3();
+  const opacity = locked ? "0.2" : "1.0";
+  const cursor = locked ? "not-allowed" : "pointer";
+  
+  d3.select("#canvas-xSquared").style("opacity", opacity).style("cursor", cursor);
+  d3.select("#canvas-ySquared").style("opacity", opacity).style("cursor", cursor);
+  d3.select("#nodexSquared").style("opacity", opacity);
+  d3.select("#nodeySquared").style("opacity", opacity);
+
+  const msgBoxLinear = d3.select("#msg-box-linear");
+  const msgBoxQuadratic = d3.select("#msg-box-quadratic");
+  
+  if (locked) {
+    if (msgBoxLinear.size() > 0) {
+      const keys = ["circle", "xor", "gauss", "spiral"];
+      const count = keys.filter(k => trainedLinearDatasetsExo3[k]).length;
+      msgBoxLinear.style("display", "block");
+      msgBoxLinear.select("#msg-box-linear-count").text(count);
+    }
+    msgBoxQuadratic.style("display", "none");
+  } else {
+    msgBoxLinear.style("display", "none");
+    msgBoxQuadratic.style("display", "block");
+  }
+}
+
+function initExo3Boxes() {
+  if (exoId !== 3) return;
+
+  // 1. Box Step 1 under datasets selector
+  const datasetDiv = d3.select(".ui-dataset");
+  datasetDiv.selectAll("#msg-box-linear").remove();
+  
+  const msgBoxLinear = datasetDiv.append("div")
+    .attr("id", "msg-box-linear")
+    .attr("class", "exo3-msg-box")
+    .style({
+      "background-color": "rgba(0, 70, 118, 0.1)",
+      "border": "1px solid #004676",
+      "border-radius": "8px",
+      "padding": "12px",
+      "margin-top": "15px",
+      "font-size": "13px",
+      "color": "#fff",
+      "line-height": "1.4"
+    });
+    
+  msgBoxLinear.html(`
+    <strong>💡 Étape 1 :</strong> Entraîne le modèle sur chaque jeu de données (X et Y) pour observer ses limites.<br>
+    <span style="font-size: 12px; color: #94a3b8;">Progression : <span id="msg-box-linear-count" style="font-weight: bold; color: #FF034D;">0</span> / 4 jeux de données entraînés.</span>
+  `);
+
+  // 2. Box Step 2 under the network SVG
+  const networkDiv = d3.select("#network");
+  networkDiv.selectAll("#msg-box-quadratic").remove();
+
+  const msgBoxQuadratic = networkDiv.insert("div", "#hovercard")
+    .attr("id", "msg-box-quadratic")
+    .attr("class", "exo3-msg-box")
+    .style({
+      "background-color": "rgba(16, 185, 129, 0.1)",
+      "border": "1px solid #10b981",
+      "border-radius": "8px",
+      "padding": "12px",
+      "margin-top": "15px",
+      "font-size": "13px",
+      "color": "#fff",
+      "line-height": "1.4",
+      "position": "relative",
+      "display": "none"
+    });
+    
+  msgBoxQuadratic.html(`
+    <strong>🎉 Étape 2 :</strong> Maintenant, active les caractéristiques <strong>X²</strong> et <strong>Y²</strong> et entraîne à nouveau pour réussir la classification !
+  `);
+
+  updateQuadraticFeaturesExo3();
+}
+
 function makeGUI() {
   // Slider pour modifier le poids
   weightSlider.on("input", function () {
@@ -688,10 +776,25 @@ function makeGUI() {
         message = "Veillez relire la consigne! 😤";
       }
     } else if (exoId === 3) {
-      if (iter >= 1000 && lossTrain < 0.005) {
-        success = true;
+      const isCircle = getKeyFromValue(datasets, state.dataset) === "circle";
+      const hasCorrectFeatures = state.x && state.y && state.xSquared && state.ySquared && 
+        !state.xTimesY && !state.sinX && !state.sinY;
+      const noHidden = state.numHiddenLayers === 0;
+
+      if (!isQuadraticUnlockedExo3()) {
+        message = "Vous devez d'abord entraîner le modèle sur les 4 jeux de données en mode linéaire.";
+      } else if (!isCircle) {
+        message = "Veuillez sélectionner le jeu de données Cercle.";
+      } else if (!hasCorrectFeatures) {
+        message = "Activez uniquement les caractéristiques X, Y, X² et Y².";
+      } else if (!noHidden) {
+        message = "Veuillez configurer le réseau sans aucune couche cachée (0 couche cachée).";
+      } else if (iter < 1000) {
+        message = "L'entraînement doit atteindre au moins 1000 époques (Epochs).";
+      } else if (lossTrain >= 0.005) {
+        message = "La perte d'entraînement (loss) doit être inférieure à 0.005.";
       } else {
-        message = "Veillez relire la consigne! 😤";
+        success = true;
       }
     } else if (exoId === 7) {
       // Condition Exo 7 : Toutes les fonctions d'activation testées
@@ -982,11 +1085,24 @@ function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean,
     });
   if (isInput) {
     div.on("click", function () {
+      if (exoId === 3 && (nodeId === "xSquared" || nodeId === "ySquared") && !isQuadraticUnlockedExo3()) {
+        showToast("Entraînez d'abord le modèle sur chacun des 4 jeux de données en mode linéaire pour observer leurs limites.", "error");
+        return;
+      }
       state[nodeId] = !state[nodeId];
       parametersChanged = true;
       reset();
     });
-    div.style("cursor", "pointer");
+    
+    if (exoId === 3 && (nodeId === "xSquared" || nodeId === "ySquared") && !isQuadraticUnlockedExo3()) {
+      div.style("cursor", "not-allowed");
+      div.style("opacity", "0.2");
+      nodeGroup.style("opacity", "0.2");
+    } else {
+      div.style("cursor", "pointer");
+      div.style("opacity", null);
+      nodeGroup.style("opacity", null);
+    }
   }
   if (isInput) {
     div.classed(activeOrNotClass, true);
@@ -1510,6 +1626,20 @@ function constructInput(x: number, y: number): number[] {
 function oneStep(): void {
   iter++;
 
+  // Record training activity for Exercise 3
+  if (exoId === 3) {
+    if (state.x && state.y && !state.xSquared && !state.ySquared && !state.xTimesY && !state.sinX && !state.sinY) {
+      let dsKey = getKeyFromValue(datasets, state.dataset);
+      if (dsKey && !trainedLinearDatasetsExo3[dsKey]) {
+        trainedLinearDatasetsExo3[dsKey] = true;
+        updateQuadraticFeaturesExo3();
+        if (isQuadraticUnlockedExo3()) {
+          showToast("Félicitations ! Vous avez entraîné le modèle sur les 4 jeux de données linéaires. Les entrées X² et Y² sont maintenant déverrouillées !", "success");
+        }
+      }
+    }
+  }
+
   // Record training activity for Exercise 4
   if (exoId === 4) {
     hasTrainedInExo4 = true;
@@ -1652,7 +1782,7 @@ function drawDatasetThumbnails() {
       let canvas: any =
         document.querySelector(`canvas[data-dataset=${dataset}]`);
       let dataGenerator = datasets[dataset];
-      if (exoId > 0 && dataGenerator !== state.dataset) {
+      if (exoId > 0 && exoId !== 3 && dataGenerator !== state.dataset) {
         continue;
       }
       renderThumbnail(canvas, dataGenerator);
@@ -1778,6 +1908,7 @@ makeGUI();
 generateData(true);
 reset(true);
 hideControls();
+initExo3Boxes();
 
 // --- POST-INITIALIZATION SYNC FOR EXERCISES ---
 if (exoId > 0 && exoConfig) {
