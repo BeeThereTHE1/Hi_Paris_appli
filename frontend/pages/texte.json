@@ -183,7 +183,7 @@
             }
         },
         "exercise_3": {
-            "title": "Exercise #3/5",
+            "title": "Exercise #3+5",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will observe the limitations of a linear model and the role of non-linear features in learning complex patterns.",

@@ -10,8 +10,6 @@ export const exo3 = {
     "showTestData",
     "discretize",
     "xTimesY",
-    "xSquared",
-    "ySquared",
     "cosX",
     "sinX",
     "cosY",
@@ -19,13 +17,11 @@ export const exo3 = {
     "activation",
     "learningRate",
     "problem",
-    "dataset",
     "regularization",
     "regularizationRate",
     "biasEditor",
     "doubleRunButton",
-    "seedControl",
-    "testLoss"
+    "seedControl"
   ],
 
   forcedState: {
