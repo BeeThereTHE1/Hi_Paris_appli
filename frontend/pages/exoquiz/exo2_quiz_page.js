@@ -1,4 +1,17 @@
 (function () {
+  let translations = null;
+
+  async function loadTranslations() {
+    try {
+      const response = await fetch('../texte.json');
+      if (!response.ok) throw new Error("Failed to load translations");
+      const data = await response.json();
+      translations = data.exercises.exercise_2;
+    } catch (error) {
+      console.warn("Could not load translations, using hardcoded fallbacks.", error);
+    }
+  }
+
   const stepsData = [
     {
       badge: "Step 0",
@@ -189,9 +202,13 @@
   let shuffledStatements = [];
 
   function initShuffledStatements() {
-    do {
-      shuffledStatements = [...correctStatements].sort(() => Math.random() - 0.5);
-    } while (shuffledStatements.every((stmt, index) => stmt.id === correctStatements[index].id));
+    if (correctStatements.length > 0 && typeof correctStatements[0].displayed_order === 'number') {
+      shuffledStatements = [...correctStatements].sort((a, b) => a.displayed_order - b.displayed_order);
+    } else {
+      do {
+        shuffledStatements = [...correctStatements].sort(() => Math.random() - 0.5);
+      } while (shuffledStatements.every((stmt, index) => stmt.id === correctStatements[index].id));
+    }
   }
 
   async function finishQuiz() {
@@ -275,9 +292,10 @@
     const bloc2Panel = document.getElementById('bloc2-panel');
     if (bloc2Panel) {
       bloc2Panel.style.display = 'flex';
+      const placeholderText = translations ? "Solve the ordering activity on the right to unlock the training schema..." : "Résolvez l'activité d'ordonnancement à droite pour débloquer le schéma d'entraînement...";
       bloc2Panel.innerHTML = `
         <div style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); padding: 40px 20px; text-align: center; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 16px; width:100%; max-width:450px; box-sizing:border-box;">
-          Résolvez l'activité d'ordonnancement à droite pour débloquer le schéma d'entraînement...
+          ${placeholderText}
         </div>
       `;
     }
@@ -295,10 +313,11 @@
     // Clear step panel and setup Drag & Drop interface
     const panel = document.getElementById('quiz-step-panel');
     if (panel) {
+      const quizTitle = translations && translations.rearrange_quiz && translations.rearrange_quiz.instruction ? translations.rearrange_quiz.instruction : "Rearrange the statements to reflect the order of the training process";
       panel.innerHTML = `
         <div class="dd-quiz-container">
           <div class="dd-quiz-header">
-            <h3 class="dd-quiz-title">Rearrange the statements to reflect the order of the training process</h3>
+            <h3 class="dd-quiz-title">${quizTitle}</h3>
           </div>
           <div class="dd-slots-list" id="dd-slots-list"></div>
         </div>
@@ -449,11 +468,13 @@
       // Display Bloc 2fin (Final card)
       const finalContainer = document.getElementById("bloc2-final-container");
       if (finalContainer) {
+        const finalMessage = translations ? "You can now return to the dashboard to continue with the next exercise." : "Vous pouvez maintenant retourner au tableau de bord pour continuer avec l'exercice suivant.";
+        const btnDashboardText = translations ? "Return to Dashboard" : "Retour au Dashboard";
         finalContainer.innerHTML = `
           <div class="bloc2-final-card">
             <div class="bloc2-final-badge">[ 5 ]</div>
-            <p class="bloc2-final-text">You can now return to the dashboard to continue with the next exercise.</p>
-            <button class="bloc2-final-btn" id="btn-final-dashboard">Retour au Dashboard</button>
+            <p class="bloc2-final-text">${finalMessage}</p>
+            <button class="bloc2-final-btn" id="btn-final-dashboard">${btnDashboardText}</button>
           </div>
         `;
 
@@ -551,7 +572,32 @@
   if (iframe) {
     iframe.addEventListener('load', () => {
       setTimeout(() => {
-        showStep(currentStep);
+        loadTranslations().then(() => {
+          if (translations) {
+            // 1. Traduire les étapes (stepsData)
+            if (translations.explanations && Array.isArray(translations.explanations)) {
+              translations.explanations.forEach(exp => {
+                const step = stepsData.find(s => s.badge === `Step ${exp.step}`);
+                if (step) {
+                  step.title = exp.title;
+                  step.desc = exp.description;
+                }
+              });
+            }
+
+            // 2. Traduire le Drag & Drop (correctStatements)
+            if (translations.rearrange_quiz && Array.isArray(translations.rearrange_quiz.statements)) {
+              translations.rearrange_quiz.statements.forEach(stmt => {
+                const index = stmt.correct_order - 1;
+                if (index >= 0 && index < correctStatements.length) {
+                  correctStatements[index].text = stmt.statement;
+                  correctStatements[index].displayed_order = stmt.displayed_order;
+                }
+              });
+            }
+          }
+          showStep(currentStep);
+        });
       }, 1000);
     });
   }

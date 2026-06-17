@@ -62,16 +62,16 @@
 
         const h3 = document.createElement('h3');
         h3.style.color = '#FFFFFF';
-        h3.innerText = "Great!!";
+        h3.innerText = translations ? "Great!" : "Great!!";
 
         const p = document.createElement('p');
         p.style.color = '#FFFFFF';
-        p.innerText = "the model has successsfully learned to classify the data. Now let's go back and review the different training steps.";
+        p.innerText = translations && translations.target_achieved ? translations.target_achieved : "the model has successsfully learned to classify the data. Now let's go back and review the different training steps.";
 
         const nextBtn = document.createElement('button');
         nextBtn.className = 'tutorial-btn';
         nextBtn.style.background = '#FF553F';
-        nextBtn.innerText = "Go to Quiz";
+        nextBtn.innerText = translations ? "Go to Quiz" : "Go to Quiz";
 
         popup.appendChild(h3);
         popup.appendChild(p);
@@ -90,7 +90,7 @@
           
           const success = await (window as any).StorageService.complete(2);
           if (success) {
-            btnRealise.innerHTML = '✨ Redirection...';
+            btnRealise.innerHTML = translations ? '✨ Redirecting...' : '✨ Redirection...';
             btnRealise.disabled = true;
             setTimeout(() => {
               window.location.href = 'exoquiz/exo2_quiz.html';
@@ -110,7 +110,7 @@
           btnRealise.disabled = false;
           btnRealise.classList.remove('btn-disabled');
           btnRealise.classList.add('btn-success-ready');
-          btnRealise.innerHTML = '✨ Exercice Réussi !!';
+          btnRealise.innerHTML = translations ? '✨ Exercise Completed!!' : '✨ Exercice Réussi !!';
           showExerciseSuccessCongrats();
         }
       });
@@ -118,7 +118,7 @@
       btnSauvegarder.onclick = async () => {
         const success = await (window as any).StorageService.save(2);
         if (success) {
-          btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+          btnSauvegarder.innerHTML = translations ? '✅ Saved!' : '✅ Sauvegardé !';
           btnSauvegarder.style.opacity = '0.7';
           btnSauvegarder.disabled = true;
         }
@@ -127,7 +127,7 @@
       btnRealise.onclick = async () => {
         const success = await (window as any).StorageService.complete(2);
         if (success) {
-          btnRealise.innerHTML = '✨ Redirection...';
+          btnRealise.innerHTML = translations ? '✨ Redirecting...' : '✨ Redirection...';
           btnRealise.disabled = true;
           setTimeout(() => {
             window.location.href = 'exoquiz/exo2_quiz.html';
@@ -205,6 +205,37 @@ const backgroundContainer = document.getElementById('background-container');
 // ==========================================
 // TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 2)
 // ==========================================
+
+let translations: any = null;
+
+async function loadTranslations() {
+  try {
+    const response = await fetch('texte.json');
+    if (!response.ok) throw new Error("Failed to load translation json");
+    const data = await response.json();
+    translations = data.exercises.exercise_2;
+
+    if (translations) {
+      if (translations.title) {
+        document.title = translations.title;
+        const titleEl = document.querySelector('.exo-title');
+        if (titleEl) titleEl.innerText = translations.title;
+      }
+      if (translations.instructions && translations.instructions.text) {
+        const instrEl = document.querySelector('.exo-instructions');
+        if (instrEl) instrEl.innerText = translations.instructions.text;
+      }
+      const saveBtn = document.getElementById('btn-sauvegarder');
+      if (saveBtn) saveBtn.innerHTML = '<span class="icon">💾</span> SAVE';
+      const completeBtn = document.getElementById('btn-realise');
+      if (completeBtn && completeBtn.classList.contains('btn-disabled')) {
+        completeBtn.innerHTML = '<span class="icon">✅</span> Exercise Completed';
+      }
+    }
+  } catch (error) {
+    console.warn("Could not load translations from JSON, using fallback/default texts.", error);
+  }
+}
 
 let activeHighlightBox: HTMLDivElement | null = null;
 let activeTooltip: HTMLDivElement | null = null;
@@ -391,10 +422,11 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = "Exercice #2 : Entraînez le réseau";
+  h3.innerText = translations && translations.title ? translations.title : "Exercice #2 : Entraînez le réseau";
 
   const p = document.createElement('p');
-  const text = "Dans cet exercice, vous allez apprendre à lancer l'entraînement du réseau de neurones et suivre ses performances à l'aide de l'affichage des époques, de la perte (loss) et de sa courbe d'évolution.";
+  const defaultText = "Dans cet exercice, vous allez apprendre à lancer l'entraînement du réseau de neurones et suivre ses performances à l'aide de l'affichage des époques, de la perte (loss) et de sa courbe d'évolution.";
+  const text = translations && translations.instructions && translations.instructions.text ? translations.instructions.text : defaultText;
   p.innerText = text;
 
   const timerSpan = document.createElement('span');
@@ -405,7 +437,7 @@ function startTutorial() {
 
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
-  nextBtn.innerText = "Continuer";
+  nextBtn.innerText = translations ? "Continue" : "Continuer";
   nextBtn.disabled = true;
 
   popup.appendChild(h3);
@@ -420,7 +452,7 @@ function startTutorial() {
 
   function updateTimer() {
     if (timeLeft > 0) {
-      timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+      timerSpan.innerText = translations ? `Reading time remaining: ${timeLeft}s` : `Temps de lecture restant : ${timeLeft}s`;
       timeLeft--;
       setTimeout(updateTimer, 1000);
     } else {
@@ -466,7 +498,9 @@ function runStep1Highlight() {
 
 function runStep2() {
   showHighlightBox('.timeline-controls', '2');
-  showCustomTooltip('.timeline-controls', "Contrôles de Simulation", "Cliquez sur le bouton Play pour lancer l'apprentissage, ou utilisez les boutons Étape et Réinitialiser.", 'bottom');
+  const title = translations && translations.tooltips && translations.tooltips.buttons ? translations.tooltips.buttons : "Contrôles de Simulation";
+  const desc = translations ? "Click Play to start training, or use Step/Reset buttons." : "Cliquez sur le bouton Play pour lancer l'apprentissage, ou utilisez les boutons Étape et Réinitialiser.";
+  showCustomTooltip('.timeline-controls', title, desc, 'bottom');
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
@@ -479,7 +513,9 @@ function runStep2() {
 
 function runStep3() {
   showHighlightBox('.control.ui-epoch', '3');
-  showCustomTooltip('.control.ui-epoch', "Nombre d'Époques", "Ce compteur indique combien de fois l'ensemble du jeu de données a traversé le réseau de neurones.", 'bottom');
+  const title = translations ? "Epochs" : "Nombre d'Époques";
+  const desc = translations && translations.tooltips && translations.tooltips.epoch ? translations.tooltips.epoch : "Ce compteur indique combien de fois l'ensemble du jeu de données a traversé le réseau de neurones.";
+  showCustomTooltip('.control.ui-epoch', title, desc, 'bottom');
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
@@ -492,7 +528,9 @@ function runStep3() {
 
 function runStep4() {
   showHighlightBox('.output-stats.train.ui-trainLoss', '4');
-  showCustomTooltip('.output-stats.train.ui-trainLoss', "Perte d'Entraînement (Training Loss)", "Cette valeur mesure l'erreur du modèle. Plus elle baisse et se rapproche de 0, plus le réseau apprend à classer correctement.", 'left');
+  const title = translations ? "Training Loss" : "Perte d'Entraînement (Training Loss)";
+  const desc = translations && translations.tooltips && translations.tooltips.training_loss ? translations.tooltips.training_loss : "Cette valeur mesure l'erreur du modèle. Plus elle baisse et se rapproche de 0, plus le réseau apprend à classer correctement.";
+  showCustomTooltip('.output-stats.train.ui-trainLoss', title, desc, 'left');
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
@@ -505,7 +543,9 @@ function runStep4() {
 
 function runStep5() {
   showHighlightBox('#linechart', '5');
-  showCustomTooltip('#linechart', "Graphique d'Évolution de la Perte", "Visualisez en temps réel la courbe de perte d'entraînement (et de test). Elle doit descendre progressivement pendant la simulation.", 'left');
+  const title = translations ? "Loss Evolution Chart" : "Graphique d'Évolution de la Perte";
+  const desc = translations && translations.tooltips && translations.tooltips.gradient_descent ? translations.tooltips.gradient_descent : "Visualisez en temps réel la courbe de perte d'entraînement (et de test). Elle doit descendre progressivement pendant la simulation.";
+  showCustomTooltip('#linechart', title, desc, 'left');
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
@@ -521,13 +561,13 @@ function runFinalStep() {
   
   if (activeTooltip) activeTooltip.remove();
   currentTooltipSelector = '.timeline-controls';
-  currentTooltipTitle = "Ready to start the training?";
+  currentTooltipTitle = translations && translations.start_marker ? translations.start_marker.replace('\n', ' ') : "Ready to start the training?";
   currentTooltipText = "";
   currentTooltipPosition = 'bottom';
 
   activeTooltip = document.createElement('div');
   activeTooltip.className = 'tutorial-tooltip';
-  activeTooltip.innerHTML = `<h4 style="margin:0; font-size:15px; font-weight:800; color:#fff; text-align:center; padding: 5px 10px;">Ready to start the training?</h4>`;
+  activeTooltip.innerHTML = `<h4 style="margin:0; font-size:15px; font-weight:800; color:#fff; text-align:center; padding: 5px 10px;">${currentTooltipTitle}</h4>`;
   document.body.appendChild(activeTooltip);
   repositionActiveElements();
 
@@ -547,7 +587,7 @@ if (iframe) {
     if (urlParams.get('completed') === 'true') {
       return;
     }
-    setTimeout(() => {
+    setTimeout(async () => {
       try {
         const iframeDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
         if (iframeDoc) {
@@ -563,6 +603,19 @@ if (iframe) {
         }
       } catch (e) {
         console.error("Erreur d'initialisation des info-tips:", e);
+      }
+      await loadTranslations();
+      // Set training loss advanced info-tip title inside iframe
+      try {
+        const iframeDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+        if (iframeDoc && translations && translations.tooltips && translations.tooltips.training_loss_more_info) {
+          const lossTip = iframeDoc.querySelector('.output-stats.train.ui-trainLoss .info-tip');
+          if (lossTip) {
+            lossTip.setAttribute('title', translations.tooltips.training_loss_more_info);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not set training loss info-tip title inside iframe:", e);
       }
       startTutorial();
     }, 1200);
