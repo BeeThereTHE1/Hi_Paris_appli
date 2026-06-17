@@ -208,7 +208,7 @@ if (!exo && !exoId) {
 }
 var isSavedDraft = exo && allSaved.some(function (e) { return String(e.id) === String(exo.id); });
 var isAuthor = exo && exo.authorEmail && String(exo.authorEmail).toLowerCase().trim() === currentEmail;
-var isDraft = isSavedDraft || (isAuthor && !allOfficial.some(function (e) { return String(e.id) === String(exo.id); })) || (exo ? .id === 'preview' : );
+var isDraft = isSavedDraft || (isAuthor && !allOfficial.some(function (e) { return String(e.id) === String(exo.id); })) || (exo && exo.id === 'preview');
 console.log("--- Debug Mode Édition ---");
 console.log("Email actuel:", currentEmail);
 console.log("ID Exo:", exo ? exo.id : 'aucun');
