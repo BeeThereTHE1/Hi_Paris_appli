@@ -192,12 +192,16 @@
             },
             "feedback": {
                 "quiz_1": {
-                    "question": "What kind of decision boundary was each model able to draw?",
+                    "question_1a": "What kind of decision boundary was the model with only X\u2081 and X\u2082 (linear features) able to draw?",
+                    "question_1b": "What kind of decision boundary was the model with X\u2081, X\u2082, X\u2081\u00b2 and X\u2082\u00b2 (quadratic features) able to draw?",
                     "options": {
-                        "x1_x2": "X1 ; X2 (True response = linear)",
-                        "x1_x2_x1sq_x2sq": "X1 ; X2 ; X1² ; X2² (linear and circle true)",
-                        "alternating_quadrant": "alternating quadrant: Linear, Circle, spirals"
-                    }
+                        "alternating_quadrant": "Alternating quadrant",
+                        "linear": "Linear",
+                        "circle": "Circle",
+                        "spirals": "Spirals"
+                    },
+                    "correct_1a": "linear",
+                    "correct_1b": "circle"
                 },
                 "general_feedback": "When a model uses only linear features (X1, X2), it can combine them only in a linear way. This means it can draw only a straight decision boundary. As a result, only linearly separable datasets can be correctly classified.",
                 "last_check": {

@@ -11,7 +11,8 @@ const StorageService = {
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
         if (!isLoggedIn || !user.email) {
             alert("Veuillez vous connecter pour sauvegarder cet exercice.");
-            window.location.href = 'Page-demo/register.html';
+            const redirectPath = window.location.pathname.includes('/exoquiz/') ? '../Page-demo/register.html' : 'Page-demo/register.html';
+            window.location.href = redirectPath;
             return false;
         }
 
@@ -54,7 +55,8 @@ const StorageService = {
         
         if (!isLoggedIn || !user.email) {
             alert("Veuillez vous connecter pour enregistrer votre progression.");
-            window.location.href = 'Page-demo/register.html';
+            const redirectPath = window.location.pathname.includes('/exoquiz/') ? '../Page-demo/register.html' : 'Page-demo/register.html';
+            window.location.href = redirectPath;
             return false;
         }
 

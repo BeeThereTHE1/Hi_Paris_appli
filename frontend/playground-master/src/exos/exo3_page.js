@@ -1,8 +1,51 @@
 // @ts-nocheck
 
+// ——— TRANSLATIONS (scope global pour être accessible en dehors de l'IIFE) ———
+let translations = null;
+
+async function loadTranslations() {
+  try {
+    const response = await fetch('texte.json');
+    if (!response.ok) throw new Error("Failed to load translation json");
+    const data = await response.json();
+    translations = data.exercises.exercise_3;
+
+    if (translations) {
+      if (translations.title) {
+        document.title = translations.title;
+        const titleEl = document.querySelector('.exo-title');
+        if (titleEl) titleEl.innerText = translations.title;
+      }
+      if (translations.instructions) {
+        const instrEl = document.querySelector('.exo-instructions');
+        if (instrEl) {
+          instrEl.innerHTML = `${translations.instructions.general}<br><br>` +
+            `<strong>1.</strong> ${translations.instructions.activity_1}<br>` +
+            `<strong>2.</strong> ${translations.instructions.activity_2}`;
+        }
+      }
+      if (translations.visible_parameters) {
+        const visibleParamsEl = document.getElementById('exo-visible-params');
+        if (visibleParamsEl) visibleParamsEl.innerText = translations.visible_parameters;
+      }
+      const btnSauvegarder = document.getElementById('btn-sauvegarder');
+      if (btnSauvegarder) {
+        btnSauvegarder.innerHTML = '<span class="icon">💾</span> SAVE';
+      }
+      const btnRealise = document.getElementById('btn-realise');
+      if (btnRealise) {
+        btnRealise.innerHTML = '✨ Exercise Completed !!';
+      }
+    }
+  } catch (error) {
+    console.warn("Could not load translations from JSON, using fallback/default texts.", error);
+  }
+}
+
 (function () {
       const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
       const user = JSON.parse(localStorage.getItem('currentUser'));
+
       const container = document.getElementById('widget-profil-header');
       if (!container) return;
       container.style.cssText = 'position: relative; font-family: "Inter", sans-serif; perspective: 1000px; display: flex; align-items: center;';
@@ -62,16 +105,20 @@
 
       const h3 = document.createElement('h3');
       h3.style.color = '#FFFFFF';
-      h3.innerText = "Excellent !";
+      h3.innerText = (translations && translations.feedback && translations.feedback.validation)
+        ? translations.feedback.validation
+        : "Excellent !";
 
       const p = document.createElement('p');
       p.style.color = '#FFFFFF';
-      p.innerText = "Le modèle a réussi à classifier les données circulaires sans couche cachée grâce aux caractéristiques quadratiques (X² et Y²). Passons maintenant au quiz pour valider vos connaissances.";
+      p.innerText = translations
+        ? "The model successfully classified the circular data without hidden layers using quadratic features (X² and Y²). Let's take the quiz now to validate your knowledge."
+        : "Le modèle a réussi à classifier les données circulaires sans couche cachée grâce aux caractéristiques quadratiques (X² et Y²). Passons maintenant au quiz pour valider vos connaissances.";
 
       const nextBtn = document.createElement('button');
       nextBtn.className = 'tutorial-btn';
       nextBtn.style.background = '#FF553F';
-      nextBtn.innerText = "Aller au Quiz";
+      nextBtn.innerText = translations ? "Go to Quiz" : "Aller au Quiz";
 
       popup.appendChild(h3);
       popup.appendChild(p);
@@ -110,7 +157,7 @@
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '✨ Exercice Réussi !!';
+        btnRealise.innerHTML = translations ? '✨ Exercise Completed !!' : '✨ Exercice Réussi !!';
         showExerciseSuccessCongrats();
       }
     });
@@ -224,10 +271,15 @@ const backgroundContainer = document.getElementById('background-container');
       popup.className = 'tutorial-popup';
 
       const h3 = document.createElement('h3');
-      h3.innerText = "Exercice #3+5 : Linéaire vs Non-linéaire";
+      h3.innerText = (translations && translations.title)
+        ? translations.title + " : Linear vs Non-linear"
+        : "Exercice #3+5 : Linéaire vs Non-linéaire";
 
       const p = document.createElement('p');
-      const text = "Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision. Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte < 0.005 et au moins 1000 époques).";
+      const defaultText = "Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision. Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte < 0.005 et au moins 1000 époques).";
+      const text = translations
+        ? `${translations.instructions.general}\n\n1. ${translations.instructions.activity_1}\n2. ${translations.instructions.activity_2}`
+        : defaultText;
       p.innerText = text;
 
       const timerSpan = document.createElement('span');
@@ -235,7 +287,7 @@ const backgroundContainer = document.getElementById('background-container');
 
       const nextBtn = document.createElement('button');
       nextBtn.className = 'tutorial-btn';
-      nextBtn.innerText = "Continuer";
+      nextBtn.innerText = translations ? "Continue" : "Continuer";
       nextBtn.disabled = true;
 
       popup.appendChild(h3);
@@ -250,7 +302,9 @@ const backgroundContainer = document.getElementById('background-container');
 
       function updateTimer() {
         if (timeLeft > 0) {
-          timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+          timerSpan.innerText = translations
+            ? `Reading time remaining: ${timeLeft}s`
+            : `Temps de lecture restant : ${timeLeft}s`;
           timeLeft--;
           setTimeout(updateTimer, 1000);
         } else {
@@ -265,4 +319,6 @@ const backgroundContainer = document.getElementById('background-container');
       };
     }
 
-    startTutorial();
+    loadTranslations().then(() => {
+      startTutorial();
+    });

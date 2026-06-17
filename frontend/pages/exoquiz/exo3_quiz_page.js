@@ -27,60 +27,87 @@ function renderStep() {
   feedbackPanel.innerHTML = ""; // Clear feedback
 
   if (quizStep === "1a") {
+    const qText = (translations && translations.feedback && translations.feedback.quiz_1 && translations.feedback.quiz_1.question_1a)
+      ? translations.feedback.quiz_1.question_1a
+      : "Quel type de frontière de décision le modèle avec uniquement <strong>X₁ et X₂</strong> (caractéristiques linéaires) a-t-il pu tracer ?";
+    const opts = (translations && translations.feedback && translations.feedback.quiz_1 && translations.feedback.quiz_1.options)
+      ? translations.feedback.quiz_1.options
+      : { alternating_quadrant: "Quadrant alternant", linear: "Linéaire", circle: "Cercle", spirals: "Spirales" };
+
     questionPanel.innerHTML = `
       <div class="quiz-question-wrapper">
         <div class="quiz-question-badge">Question 1/2</div>
         <div class="quiz-question-card">
-          Quel type de frontière de décision le modèle avec uniquement <strong>X₁ et X₂</strong> (caractéristiques linéaires) a-t-il pu tracer ?
-        </div>
-      </div>
-      <div class="quiz-options-container">
-        <button class="quiz-option-btn" data-correct="true" data-index="0">
-          <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une ligne droite séparatrice)</span>
-        </button>
-        <button class="quiz-option-btn" data-correct="false" data-index="1">
-          <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Circulaire (un cercle entourant les points)</span>
-        </button>
-        <button class="quiz-option-btn" data-correct="false" data-index="2">
-          <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Aucune frontière possible</span>
-        </button>
-      </div>
-    `;
-    setupOptionListeners();
-  } else if (quizStep === "1b") {
-    questionPanel.innerHTML = `
-      <div class="quiz-question-wrapper">
-        <div class="quiz-question-badge">Question 1/2</div>
-        <div class="quiz-question-card">
-          Quel type de frontière de décision le modèle avec <strong>X₁, X₂, X₁² et X₂²</strong> (caractéristiques quadratiques) a-t-il pu tracer ?
+          ${qText}
         </div>
       </div>
       <div class="quiz-options-container">
         <button class="quiz-option-btn" data-correct="false" data-index="0">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une ligne droite séparatrice)</span>
+          <span class="quiz-option-text">${opts.alternating_quadrant}</span>
         </button>
         <button class="quiz-option-btn" data-correct="true" data-index="1">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Circulaire (un cercle entourant les points)</span>
+          <span class="quiz-option-text">${opts.linear}</span>
         </button>
         <button class="quiz-option-btn" data-correct="false" data-index="2">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Une forme en spirale complexe</span>
+          <span class="quiz-option-text">${opts.circle}</span>
+        </button>
+        <button class="quiz-option-btn" data-correct="false" data-index="3">
+          <span class="quiz-option-checkbox"></span>
+          <span class="quiz-option-text">${opts.spirals}</span>
+        </button>
+      </div>
+    `;
+    setupOptionListeners();
+  } else if (quizStep === "1b") {
+    const qText = (translations && translations.feedback && translations.feedback.quiz_1 && translations.feedback.quiz_1.question_1b)
+      ? translations.feedback.quiz_1.question_1b
+      : "Quel type de frontière de décision le modèle avec <strong>X₁, X₂, X₁² et X₂²</strong> (caractéristiques quadratiques) a-t-il pu tracer ?";
+    const opts = (translations && translations.feedback && translations.feedback.quiz_1 && translations.feedback.quiz_1.options)
+      ? translations.feedback.quiz_1.options
+      : { alternating_quadrant: "Quadrant alternant", linear: "Linéaire", circle: "Cercle", spirals: "Spirales" };
+
+    questionPanel.innerHTML = `
+      <div class="quiz-question-wrapper">
+        <div class="quiz-question-badge">Question 2/2</div>
+        <div class="quiz-question-card">
+          ${qText}
+        </div>
+      </div>
+      <div class="quiz-options-container">
+        <button class="quiz-option-btn" data-correct="false" data-index="0">
+          <span class="quiz-option-checkbox"></span>
+          <span class="quiz-option-text">${opts.alternating_quadrant}</span>
+        </button>
+        <button class="quiz-option-btn" data-correct="false" data-index="1">
+          <span class="quiz-option-checkbox"></span>
+          <span class="quiz-option-text">${opts.linear}</span>
+        </button>
+        <button class="quiz-option-btn" data-correct="true" data-index="2">
+          <span class="quiz-option-checkbox"></span>
+          <span class="quiz-option-text">${opts.circle}</span>
+        </button>
+        <button class="quiz-option-btn" data-correct="false" data-index="3">
+          <span class="quiz-option-checkbox"></span>
+          <span class="quiz-option-text">${opts.spirals}</span>
         </button>
       </div>
     `;
     setupOptionListeners();
   } else if (quizStep === "2") {
+    const finalTitle = translations ? "Final step unlocked!" : "Étape finale débloquée !";
+    const finalDesc = translations 
+      ? "Answer the floating question to complete the exercise. You can drag the box if it covers the playground."
+      : "Répondez à la question flottante pour terminer l'exercice. Vous pouvez déplacer la boîte si elle cache le playground.";
+
     // Render static indicator in right panel
     questionPanel.innerHTML = `
       <div style="text-align: center; padding: 40px 20px; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 16px;">
-        <h3 style="color: #cbd5e1; margin-bottom: 15px;">Étape finale débloquée !</h3>
+        <h3 style="color: #cbd5e1; margin-bottom: 15px;">${finalTitle}</h3>
         <p style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
-          Répondez à la question flottante pour terminer l'exercice. Vous pouvez déplacer la boîte si elle cache le playground.
+          ${finalDesc}
         </p>
       </div>
     `;
@@ -104,17 +131,34 @@ function setupOptionListeners() {
         btn.classList.add("selected-incorrect");
       }
 
-      let feedbackTitle = isCorrect ? "✔ Correct !" : "✖ Incorrect";
+      let feedbackTitle = "";
+      if (isCorrect) {
+        feedbackTitle = translations ? "✔ Correct!" : "✔ Correct !";
+      } else {
+        feedbackTitle = translations ? "✖ Incorrect" : "✖ Incorrect";
+      }
       let feedbackText = "";
 
       if (quizStep === "1a") {
-        feedbackText = isCorrect 
-          ? "Excellent ! Avec uniquement X₁ et X₂, le modèle ne peut effectuer que des combinaisons linéaires, ce qui limite la frontière à une ligne droite séparatrice."
-          : "Pas tout à fait. X₁ et X₂ sont des coordonnées cartésiennes linéaires. Sans couches cachées ou transformations, la frontière reste rectiligne.";
+        if (isCorrect) {
+          feedbackText = (translations && translations.feedback && translations.feedback.general_feedback)
+            ? translations.feedback.general_feedback
+            : "Excellent ! Avec uniquement X₁ et X₂, le modèle ne peut effectuer que des combinaisons linéaires, ce qui limite la frontière à une ligne droite séparatrice.";
+        } else {
+          feedbackText = translations
+            ? "Not quite. X1 and X2 are linear coordinates. Without hidden layers or transformations, the boundary remains straight."
+            : "Pas tout à fait. X₁ et X₂ sont des coordonnées cartésiennes linéaires. Sans couches cachées ou transformations, la frontière reste rectiligne.";
+        }
       } else if (quizStep === "1b") {
-        feedbackText = isCorrect 
-          ? "Exact ! L'introduction de X₁² et X₂² permet au modèle d'exprimer des termes quadratiques, traçant ainsi des cercles ou ellipses pour séparer le dataset."
-          : "Rappelez-vous des équations mathématiques de cercle (x² + y² = r²). Les caractéristiques quadratiques sont indispensables pour tracer des frontières courbes.";
+        if (isCorrect) {
+          feedbackText = translations
+            ? "Exactly! Introducing X1² and X2² allows the model to express quadratic terms, drawing circles or ellipses to separate the dataset."
+            : "Exact ! L'introduction de X₁² et X₂² permet au modèle d'exprimer des termes quadratiques, traçant ainsi des cercles ou ellipses pour séparer le dataset.";
+        } else {
+          feedbackText = translations
+            ? "Remember the mathematical equations of a circle (x² + y² = r²). Quadratic features are essential to draw curved boundaries."
+            : "Rappelez-vous des équations mathématiques de cercle (x² + y² = r²). Les caractéristiques quadratiques sont indispensables pour tracer des frontières courbes.";
+        }
       }
 
       feedbackPanel.innerHTML = `
@@ -157,30 +201,55 @@ function showQuiz2Overlay() {
   container.className = "dragdrop-container";
   container.style.cssText = "background: #004676; border: 2px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 25px; max-width: 480px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); transition: box-shadow 0.2s;";
 
+  // Determine translations
+  const title = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.title)
+    ? translations.feedback.last_check.title + " (Draggable ↕️)"
+    : "Last Check! (Déplaçable ↕️)";
+  
+  const subtitle = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.subtitle)
+    ? translations.feedback.last_check.subtitle
+    : "Ici, nous avons comparé les caractéristiques linéaires et non-linéaires. Quelle proposition décrit le mieux une caractéristique non-linéaire (non-linear feature) ?";
+
+  const optionA = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.quiz_2 && translations.feedback.last_check.quiz_2.options)
+    ? "A) " + translations.feedback.last_check.quiz_2.options.A
+    : "A) Une caractéristique combinée avec d'autres entrées par des poids linéaires.";
+  
+  const optionB = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.quiz_2 && translations.feedback.last_check.quiz_2.options)
+    ? "B) " + translations.feedback.last_check.quiz_2.options.B
+    : "B) Une caractéristique créée en appliquant une transformation non-linéaire à une entrée.";
+
+  const optionC = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.quiz_2 && translations.feedback.last_check.quiz_2.options)
+    ? "C) " + translations.feedback.last_check.quiz_2.options.C
+    : "C) Une caractéristique qui produit des sorties aléatoires et irrégulières.";
+
+  const optionD = (translations && translations.feedback && translations.feedback.last_check && translations.feedback.last_check.quiz_2 && translations.feedback.last_check.quiz_2.options)
+    ? "D) " + translations.feedback.last_check.quiz_2.options.D
+    : "D) Une caractéristique utilisable uniquement dans les réseaux profonds.";
+
   container.innerHTML = `
     <div class="dragdrop-header" style="cursor: move; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
       <span style="background: #FF034D; color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">2</span>
-      <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #fff;">Last Check! (Déplaçable ↕️)</h3>
+      <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #fff;">${title}</h3>
     </div>
     <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px;">
-      Ici, nous avons comparé les caractéristiques linéaires et non-linéaires. Quelle proposition décrit le mieux une caractéristique non-linéaire (non-linear feature) ?
+      ${subtitle}
     </p>
     <div class="quiz-options-container" style="display: flex; flex-direction: column; gap: 10px;">
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">A) Une caractéristique combinée avec d'autres entrées par des poids linéaires.</span>
+        <span class="quiz-option-text">${optionA}</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="true">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">B) Une caractéristique créée en appliquant une transformation non-linéaire à une entrée.</span>
+        <span class="quiz-option-text">${optionB}</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">C) Une caractéristique qui produit des sorties aléatoires et irrégulières.</span>
+        <span class="quiz-option-text">${optionC}</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">D) Une caractéristique utilisable uniquement dans les réseaux profonds.</span>
+        <span class="quiz-option-text">${optionD}</span>
       </button>
     </div>
     <div id="q2-feedback" style="margin-top: 15px; font-size: 12px; border-radius: 8px; padding: 10px; display: none; color: #fff;"></div>
@@ -207,7 +276,10 @@ function showQuiz2Overlay() {
         q2Feedback.style.display = "block";
         q2Feedback.style.backgroundColor = "rgba(16, 185, 129, 0.2)";
         q2Feedback.style.border = "1px solid #10b981";
-        q2Feedback.innerHTML = "<strong>Félicitations !</strong> Vous avez identifié qu'une transformation non-linéaire (ex: x²) permet de projeter les données dans un espace où elles deviennent séparables linéairement.";
+        
+        q2Feedback.innerHTML = translations
+          ? "<strong>Congratulations!</strong> You have identified that a non-linear transformation (e.g. x²) allows projecting the data into a space where it becomes linearly separable."
+          : "<strong>Félicitations !</strong> Vous avez identifié qu'une transformation non-linéaire (ex: x²) permet de projeter les données dans un espace où elles deviennent séparables linéairement.";
 
         setTimeout(() => {
           ddOverlay.remove();
@@ -218,11 +290,17 @@ function showQuiz2Overlay() {
         q2Feedback.style.display = "block";
         q2Feedback.style.backgroundColor = "rgba(255, 3, 77, 0.2)";
         q2Feedback.style.border = "1px solid #FF034D";
-        q2Feedback.innerHTML = "<strong>Incorrect.</strong> Réfléchissez au passage de X à X² : nous appliquons une fonction non-linéaire (la puissance 2) pour changer l'espace de la caractéristique.";
+        
+        q2Feedback.innerHTML = translations
+          ? "<strong>Incorrect.</strong> Think about changing from X to X²: we apply a non-linear function (power 2) to change the feature space."
+          : "<strong>Incorrect.</strong> Réfléchissez au passage de X à X² : nous appliquons une fonction non-linéaire (la puissance 2) pour changer l'espace de la caractéristique.";
       }
     });
   });
 }
+
+
+
 
 function makeElementDraggable(elmnt, header) {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -277,6 +355,18 @@ function showCompletionScreen() {
   const overlay = document.createElement("div");
   overlay.className = "completion-overlay";
 
+  const title = (translations && translations.feedback && translations.feedback.validation)
+    ? translations.feedback.validation
+    : "Bravo !";
+
+  const message = translations
+    ? "You have successfully completed Exercise 3+5.<br>The analysis of linear and non-linear features is now acquired.<br><strong>The next exercise has been unlocked!</strong>"
+    : "Vous avez terminé l'exercice 3+5 avec succès.<br>L'analyse des frontières linéaires et non-linéaires est maintenant acquise.<br><strong>L'exercice suivant a été déverrouillé !</strong>";
+
+  const nextBtnText = translations
+    ? "🚀 Next Exercise"
+    : "🚀 Exercice Suivant";
+
   overlay.innerHTML = `
     <div class="completion-card">
       <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
@@ -285,15 +375,12 @@ function showCompletionScreen() {
         <span class="completion-star">⭐</span>
       </div>
 
-      <h2 class="completion-title">Bravo !</h2>
-      <p class="completion-msg">Vous avez terminé l'exercice 3+5 avec succès.<br>
-        L'analyse des frontières linéaires et non-linéaires est maintenant acquise.<br>
-        <strong>L'exercice suivant a été déverrouillé !</strong>
-      </p>
+      <h2 class="completion-title">${title}</h2>
+      <p class="completion-msg">${message}</p>
 
       <div class="completion-actions">
         <a class="completion-btn-next pulse-btn" href="exo4_quiz.html">
-          🚀 Exercice Suivant
+          ${nextBtnText}
         </a>
       </div>
     </div>
