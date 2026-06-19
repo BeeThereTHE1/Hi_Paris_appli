@@ -303,7 +303,7 @@ let runsCountExo11 = 0;
 let divergenceObservedExo11 = false;
 let divergenceObservedExo12 = false;
 
-let trainedLinearDatasetsExo3: {[key: string]: boolean} = {};
+let trainedLinearDatasetsExo3: { [key: string]: boolean } = {};
 
 function isQuadraticUnlockedExo3(): boolean {
   if (exoId !== 3) return true;
@@ -315,7 +315,7 @@ function updateQuadraticFeaturesExo3() {
   const locked = !isQuadraticUnlockedExo3();
   const opacity = locked ? "0.2" : "1.0";
   const cursor = locked ? "not-allowed" : "pointer";
-  
+
   d3.select("#canvas-xSquared").style("opacity", opacity).style("cursor", cursor);
   d3.select("#canvas-ySquared").style("opacity", opacity).style("cursor", cursor);
   d3.select("#nodexSquared").style("opacity", opacity);
@@ -323,7 +323,7 @@ function updateQuadraticFeaturesExo3() {
 
   const msgBoxLinear = d3.select("#msg-box-linear");
   const msgBoxQuadratic = d3.select("#msg-box-quadratic");
-  
+
   if (locked) {
     if (msgBoxLinear.size() > 0) {
       const keys = ["circle", "xor", "gauss", "spiral"];
@@ -344,7 +344,7 @@ function initExo3Boxes() {
   // 1. Box Step 1 under datasets selector
   const datasetDiv = d3.select(".ui-dataset");
   datasetDiv.selectAll("#msg-box-linear").remove();
-  
+
   const msgBoxLinear = datasetDiv.append("div")
     .attr("id", "msg-box-linear")
     .attr("class", "exo3-msg-box")
@@ -358,7 +358,7 @@ function initExo3Boxes() {
       "color": "#fff",
       "line-height": "1.4"
     });
-    
+
   msgBoxLinear.html(`
     <strong>💡 Étape 1 :</strong> Entraîne le modèle sur chaque jeu de données (X et Y) pour observer ses limites.<br>
     <span style="font-size: 12px; color: #94a3b8;">Progression : <span id="msg-box-linear-count" style="font-weight: bold; color: #FF034D;">0</span> / 4 jeux de données entraînés.</span>
@@ -383,7 +383,7 @@ function initExo3Boxes() {
       "position": "relative",
       "display": "none"
     });
-    
+
   msgBoxQuadratic.html(`
     <strong>🎉 Étape 2 :</strong> Maintenant, active les caractéristiques <strong>X²</strong> et <strong>Y²</strong> et entraîne à nouveau pour réussir la classification !
   `);
@@ -601,7 +601,7 @@ function makeGUI() {
   d3.select("label[for='percTrainData'] .value").text(state.percTrainData);
 
   let noise = d3.select("#noise").on("input", function () {
-    state.noise = this.value;
+    state.noise = +this.value;
     d3.select("label[for='noise'] .value").text(this.value);
     generateData();
     parametersChanged = true;
@@ -777,7 +777,7 @@ function makeGUI() {
       }
     } else if (exoId === 3) {
       const isCircle = getKeyFromValue(datasets, state.dataset) === "circle";
-      const hasCorrectFeatures = state.x && state.y && state.xSquared && state.ySquared && 
+      const hasCorrectFeatures = state.x && state.y && state.xSquared && state.ySquared &&
         !state.xTimesY && !state.sinX && !state.sinY;
       const noHidden = state.numHiddenLayers === 0;
 
@@ -827,7 +827,20 @@ function makeGUI() {
       } else {
         message = "Veillez relire la consigne! 😤";
       }
-    } else if (exoId === 9 || exoId === 10) {
+    } else if (exoId === 9) {
+      if (!snapshotBoundary) {
+        message = "Cliquez sur double run afin de comparer";
+      } else if (Math.abs(state.noise - 50) > 0.001) {
+        message = "Le niveau de bruit doit être réglé à 50.";
+      } else {
+        const diff = Math.abs(lossTrain - snapshotLossTrainVal);
+        if (diff < 0.001) {
+          success = true;
+        } else {
+          message = `Les deux runs doivent converger (diff < 0.001). Diff actuelle = ${diff.toFixed(3)}`;
+        }
+      }
+    } else if (exoId === 10) {
       if (!snapshotBoundary) {
         message = "Cliquez sur double run afin de comparer";
       } else {
@@ -1093,7 +1106,7 @@ function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean,
       parametersChanged = true;
       reset();
     });
-    
+
     if (exoId === 3 && (nodeId === "xSquared" || nodeId === "ySquared") && !isQuadraticUnlockedExo3()) {
       div.style("cursor", "not-allowed");
       div.style("opacity", "0.2");
@@ -1457,9 +1470,9 @@ function drawLink(
         let mouseY = mouseContainer[1];
         let newY = Math.max(sliderY - 30, Math.min(sliderY + 30, mouseY));
         let weight = 5.0 - 10.0 * (newY - (sliderY - 30)) / 60.0;
-        
+
         weight = Math.round(weight * 10) / 10;
-        
+
         input.weight = weight;
         handle.attr("y", (sliderY - (weight / 5.0) * 30) - 3);
         valSpan.text(weight.toFixed(1).replace(".", ","));
@@ -1475,24 +1488,24 @@ function drawLink(
       });
 
     handle.call(drag);
-    
+
     // Allow clicking track to set weight
-    track.on("click", function() {
+    track.on("click", function () {
       let mouseContainer = d3.mouse(container.node());
       let mouseY = mouseContainer[1];
       let newY = Math.max(sliderY - 30, Math.min(sliderY + 30, mouseY));
       let weight = 5.0 - 10.0 * (newY - (sliderY - 30)) / 60.0;
       weight = Math.round(weight * 10) / 10;
-      
+
       input.weight = weight;
       handle.attr("y", (sliderY - (weight / 5.0) * 30) - 3);
       valSpan.text(weight.toFixed(1).replace(".", ","));
-      
+
       if (selectedLinkForSlider === input) {
         weightSlider.property("value", weight);
         weightValue.text(weight.toFixed(2));
       }
-      
+
       lossTrain = getLoss(network, trainData);
       lossTest = getLoss(network, testData);
       updateUI();
