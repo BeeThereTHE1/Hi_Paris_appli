@@ -35,8 +35,8 @@ export class HeatMap {
     showAxes: false,
     noSvg: false
   };
-  private xScale;
-  private yScale;
+  public xScale;
+  public yScale;
   private numSamples: number;
   private color;
   private canvas;

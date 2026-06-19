@@ -296,6 +296,41 @@ let biasModifiedInExo4 = false;
 let weightModifiedInExo4 = false;
 let hasTrainedInExo4 = false;
 
+let boundaryHistory: { x1: number; y1: number; x2: number; y2: number; biasValue: number }[] = [];
+
+function getBoundaryLinePoints(w1: number, w2: number, b: number) {
+  let points: [number, number][] = [];
+  // Check intersection with x1 = -6
+  if (Math.abs(w2) > 1e-5) {
+    let x2 = (6 * w1 - b) / w2;
+    if (x2 >= -6 && x2 <= 6) points.push([-6, x2]);
+  }
+  // Check intersection with x1 = 6
+  if (Math.abs(w2) > 1e-5) {
+    let x2 = (-6 * w1 - b) / w2;
+    if (x2 >= -6 && x2 <= 6) points.push([6, x2]);
+  }
+  // Check intersection with x2 = -6
+  if (Math.abs(w1) > 1e-5) {
+    let x1 = (6 * w2 - b) / w1;
+    if (x1 >= -6 && x1 <= 6) {
+      if (!points.some(p => Math.abs(p[0] - x1) < 1e-4 && Math.abs(p[1] - (-6)) < 1e-4)) {
+        points.push([x1, -6]);
+      }
+    }
+  }
+  // Check intersection with x2 = 6
+  if (Math.abs(w1) > 1e-5) {
+    let x1 = (-6 * w2 - b) / w1;
+    if (x1 >= -6 && x1 <= 6) {
+      if (!points.some(p => Math.abs(p[0] - x1) < 1e-4 && Math.abs(p[1] - 6) < 1e-4)) {
+        points.push([x1, 6]);
+      }
+    }
+  }
+  return points;
+}
+
 let compareUsedInExo8 = false;
 let postSnapshotRunInExo8 = false;
 
@@ -1033,28 +1068,150 @@ function drawNode(cx: number, cy: number, nodeId: string, isInput: boolean,
     nodeGroup.classed(activeOrNotClass, true);
   }
   if (!isInput) {
-    // Draw the node's bias.
-    nodeGroup.append("rect")
-      .attr({
-        id: `bias-${nodeId}`,
-        x: -BIAS_SIZE - 4,
-        y: RECT_SIZE + 2,
-        width: BIAS_SIZE,
-        height: BIAS_SIZE,
-      }).on("mouseenter", function () {
-        updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
-      }).on("mouseleave", function () {
-        updateHoverCard(null);
-      }).on("click", function () {
-        selectedNodeForBiasSlider = node;
+    if (exoId === 4) {
+      // Draw the custom bias editor inside container (SVG space)
+      let sliderX = cx - 38;
+      let sliderY = cy + 85; // positioned below the node's canvas
+      
+      let biasGroup = container.append("g")
+        .attr("class", "custom-weight-editor-group")
+        .attr("id", "custom-bias-editor-group");
 
-        selectedNodeLabel.text(
-          "Neurone : " + node.id
-        );
-        biasSlider.property("value", node.bias);
-        biasValue.text((+node.bias).toFixed(2));
-        console.log("biais séléctionné:", node.id, "bias = ", node.bias);
-      });
+      // Track line
+      let track = biasGroup.append("line")
+        .attr({
+          x1: sliderX,
+          y1: sliderY - 30,
+          x2: sliderX,
+          y2: sliderY + 30,
+          stroke: "#1e293b",
+          "stroke-width": 4,
+          "stroke-linecap": "round",
+          cursor: "pointer"
+        });
+
+      let handleColor = "#8b5cf6";
+      let badgeColor = "#5b21b6";
+
+      // Badge (rounded rect)
+      let badge = biasGroup.append("g")
+        .attr("transform", `translate(${sliderX - 60}, ${sliderY - 18})`);
+
+      badge.append("rect")
+        .attr({
+          x: 0,
+          y: 0,
+          width: 48,
+          height: 36,
+          rx: 6,
+          ry: 6,
+          fill: badgeColor,
+          stroke: "rgba(255,255,255,0.1)",
+          "stroke-width": 1
+        });
+
+      let badgeText = badge.append("text")
+        .attr("text-anchor", "middle")
+        .attr("fill", "white")
+        .style("font-family", "'Inter', sans-serif");
+
+      badgeText.append("tspan")
+        .attr({ x: 24, y: 14 })
+        .style({ "font-size": "8px", "font-weight": "700", "text-transform": "uppercase", "letter-spacing": "0.5px", "opacity": "0.8" })
+        .text("Biais");
+
+      let valSpan = badgeText.append("tspan")
+        .attr({ x: 24, y: 28 })
+        .style({ "font-size": "12px", "font-weight": "800" })
+        .text(node.bias.toFixed(2).replace(".", ","));
+
+      // Handle (thumb)
+      let initialY = sliderY - (node.bias / 5.0) * 30;
+      let handle = biasGroup.append("rect")
+        .attr({
+          x: sliderX - 8,
+          y: initialY - 3,
+          width: 16,
+          height: 6,
+          rx: 2,
+          ry: 2,
+          fill: handleColor,
+          cursor: "ns-resize",
+          stroke: "#ffffff",
+          "stroke-width": 1
+        });
+
+      // Drag behavior
+      let drag = (d3.behavior as any).drag()
+        .on("drag", function () {
+          let mouseContainer = d3.mouse(container.node());
+          let mouseY = mouseContainer[1];
+          let newY = Math.max(sliderY - 30, Math.min(sliderY + 30, mouseY));
+          let bias = 5.0 - 10.0 * (newY - (sliderY - 30)) / 60.0;
+          bias = Math.round(bias * 100) / 100;
+
+          // Track changes for ghost boundaries
+          if (node.bias !== bias) {
+            let firstHiddenNode = network[1][0];
+            let w1 = firstHiddenNode.inputLinks[0].weight;
+            let w2 = firstHiddenNode.inputLinks[1].weight;
+            let linePoints = getBoundaryLinePoints(w1, w2, node.bias);
+            if (linePoints.length >= 2) {
+              let x1 = heatMap.xScale(linePoints[0][0]);
+              let y1 = heatMap.yScale(linePoints[0][1]);
+              let x2 = heatMap.xScale(linePoints[1][0]);
+              let y2 = heatMap.yScale(linePoints[1][1]);
+              
+              if (boundaryHistory.length === 0 || 
+                  Math.abs(boundaryHistory[boundaryHistory.length - 1].biasValue - node.bias) > 0.05) {
+                boundaryHistory.push({ x1, y1, x2, y2, biasValue: node.bias });
+                if (boundaryHistory.length > 5) {
+                  boundaryHistory.shift();
+                }
+              }
+            }
+
+            node.bias = bias;
+            handle.attr("y", (sliderY - (bias / 5.0) * 30) - 3);
+            valSpan.text(bias.toFixed(2).replace(".", ","));
+
+            // Sync with default bias slider
+            biasSlider.property("value", bias);
+            biasValue.text(bias.toFixed(2));
+            biasModifiedInExo4 = true;
+
+            lossTrain = getLoss(network, trainData);
+            lossTest = getLoss(network, testData);
+            updateUI();
+          }
+        });
+
+      handle.call(drag);
+      track.call(drag);
+    } else {
+      // Draw the default node's bias.
+      nodeGroup.append("rect")
+        .attr({
+          id: `bias-${nodeId}`,
+          x: -BIAS_SIZE - 4,
+          y: RECT_SIZE + 2,
+          width: BIAS_SIZE,
+          height: BIAS_SIZE,
+        }).on("mouseenter", function () {
+          updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
+        }).on("mouseleave", function () {
+          updateHoverCard(null);
+        }).on("click", function () {
+          selectedNodeForBiasSlider = node;
+
+          selectedNodeLabel.text(
+            "Neurone : " + node.id
+          );
+          biasSlider.property("value", node.bias);
+          biasValue.text((+node.bias).toFixed(2));
+          console.log("biais séléctionné:", node.id, "bias = ", node.bias);
+        });
+    }
   }
 
   // Draw the node's canvas.
@@ -1223,6 +1380,9 @@ function drawNetwork(network: nn.Node[][]): void {
       node.inputLinks.length);
   }
   // Adjust the height of the svg.
+  if (exoId === 4) {
+    maxY = Math.max(maxY, 160);
+  }
   svg.attr("height", maxY);
 
   // Adjust the height of the features column.
@@ -1600,6 +1760,68 @@ function updateUI(firstStep = false) {
   d3.select("#iter-number").text(addCommas(zeroPad(iter)));
   lineChart.addDataPoint([lossTrain, lossTest]);
   lineChart.setLineVisibility(1, !state.testLoss_hide);
+
+  if (exoId === 4) {
+    let svgG = d3.select("#heatmap svg g");
+    let highlightGroup = svgG.select("g.boundary-highlight");
+    if (highlightGroup.empty()) {
+      highlightGroup = svgG.append("g").attr("class", "boundary-highlight");
+    } else {
+      highlightGroup.selectAll("*").remove();
+    }
+
+    // 1. Draw ghost boundaries from history
+    boundaryHistory.forEach((histLine, index) => {
+      let opacity = 0.05 + 0.15 * ((index + 1) / boundaryHistory.length);
+      highlightGroup.append("line")
+        .attr({
+          x1: histLine.x1,
+          y1: histLine.y1,
+          x2: histLine.x2,
+          y2: histLine.y2,
+          stroke: "#FF034D",
+          "stroke-width": 2,
+          "stroke-dasharray": "4,4"
+        })
+        .style("opacity", opacity);
+    });
+
+    // 2. Draw current boundary line
+    let firstHiddenNode = network[1][0];
+    let w1 = firstHiddenNode.inputLinks[0].weight;
+    let w2 = firstHiddenNode.inputLinks[1].weight;
+    let b = firstHiddenNode.bias;
+    let linePoints = getBoundaryLinePoints(w1, w2, b);
+    if (linePoints.length >= 2) {
+      let x1 = heatMap.xScale(linePoints[0][0]);
+      let y1 = heatMap.yScale(linePoints[0][1]);
+      let x2 = heatMap.xScale(linePoints[1][0]);
+      let y2 = heatMap.yScale(linePoints[1][1]);
+      
+      highlightGroup.append("line")
+        .attr({
+          x1: x1,
+          y1: y1,
+          x2: x2,
+          y2: y2,
+          stroke: "#FF034D",
+          "stroke-width": 4
+        });
+
+      highlightGroup.append("text")
+        .attr({
+          x: (x1 + x2) / 2 + 10,
+          y: (y1 + y2) / 2 - 10,
+          fill: "#FF034D"
+        })
+        .style({
+          "font-family": "'Inter', sans-serif",
+          "font-size": "11px",
+          "font-weight": "800"
+        })
+        .text(`b = ${b.toFixed(2)}`);
+    }
+  }
 }
 
 
@@ -1703,6 +1925,7 @@ export function getOutputWeights(network: nn.Node[][]): number[] {
 }
 
 function reset(onStartup = false) {
+  boundaryHistory = [];
   lineChart.reset();
   state.serialize();
   if (!onStartup) {
