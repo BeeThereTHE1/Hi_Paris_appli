@@ -1926,6 +1926,16 @@ function oneStep(): void {
       }, '*');
     }
   }
+  if (exoId === 11) {
+    if (window.parent) {
+      window.parent.postMessage({
+        type: 'EXO11_STEP',
+        learningRate: state.learningRate,
+        lossTrain: lossTrain,
+        iter: iter
+      }, '*');
+    }
+  }
 }
 
 export function getOutputWeights(network: nn.Node[][]): number[] {
@@ -1989,6 +1999,14 @@ function reset(onStartup = false) {
       window.parent.postMessage({
         type: 'EXO8_RESET',
         modelId: modelId
+      }, '*');
+    }
+  }
+  if (exoId === 11) {
+    if (window.parent) {
+      window.parent.postMessage({
+        type: 'EXO11_RESET',
+        learningRate: state.learningRate
       }, '*');
     }
   }
