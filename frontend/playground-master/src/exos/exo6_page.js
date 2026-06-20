@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -79,7 +78,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 window.addEventListener('message', function (event) {
@@ -95,8 +93,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(6)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(6)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -105,7 +103,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -117,10 +115,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(6)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(6)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -131,7 +129,7 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -228,11 +226,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject dynamic CSS style for arrows & animations
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n";
 document.head.appendChild(styleEl);
-// ——— TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 6) ———
 var translations = null;
 var activeHighlightBox = null;
 var activeTooltip = null;
@@ -249,12 +245,12 @@ function loadTranslations() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('texte.json')];
+                    return [4, fetch('texte.json')];
                 case 1:
                     response = _a.sent();
                     if (!response.ok)
                         throw new Error("Failed to load translation json");
-                    return [4 /*yield*/, response.json()];
+                    return [4, response.json()];
                 case 2:
                     data = _a.sent();
                     translations = data.exercises.exercise_6;
@@ -272,12 +268,12 @@ function loadTranslations() {
                             }
                         }
                     }
-                    return [3 /*break*/, 4];
+                    return [3, 4];
                 case 3:
                     error_1 = _a.sent();
                     console.warn("Could not load translations from JSON.", error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3, 4];
+                case 4: return [2];
             }
         });
     });
@@ -307,7 +303,7 @@ function startTutorial() {
     popup.appendChild(nextBtn);
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-    var timeLeft = 15; // Strict 15s lock
+    var timeLeft = 15;
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
@@ -322,7 +318,6 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
-        // Step 2: Show red oblique arrow flashing to timelines controls
         showFlashingArrow('.timeline-controls', 4);
     };
 }
@@ -402,7 +397,6 @@ function clearHighlights() {
 }
 function showHighlightBox(target, padding) {
     if (padding === void 0) { padding = 15; }
-    // No-op: user requested removal of flashing red highlight boxes
 }
 function showCustomTooltip(target, title, text, position, onDismiss) {
     if (position === void 0) { position = 'bottom'; }
@@ -470,7 +464,6 @@ function repositionActiveElements() {
         }
     }
 }
-// Show Warning Banner under #top-controls in iframe
 function showWarningBanner() {
     var iframe = document.querySelector('.exo-frame');
     if (!iframe)
@@ -499,16 +492,13 @@ function removeWarningBanner() {
     if (banner)
         banner.remove();
 }
-// Sequential mathematical overlays (A -> B -> C -> D)
 var mathSequenceStarted = false;
 function runMathSequence() {
     if (mathSequenceStarted)
         return;
     mathSequenceStarted = true;
-    // Clean warning banner and indicators
     removeWarningBanner();
     clearHighlights();
-    // Wait 2 seconds before Overlay A
     setTimeout(function () {
         var linkA = getIframeElement('#linkx-1');
         if (!linkA) {
@@ -574,10 +564,8 @@ function runStepD() {
         clearHighlights();
     });
 }
-// Listen for messages from iframe
 window.addEventListener('message', function (event) {
     if (event.data.type === 'EXO6_EPOCH_300') {
-        // 300 epochs reached with 0 layers: halt player and warn
         showWarningBanner();
         setTimeout(function () {
             showFlashingArrow('.ui-numHiddenLayers', 4);
@@ -586,11 +574,9 @@ window.addEventListener('message', function (event) {
     if (event.data.type === 'EXO6_STATE_CHANGE') {
         var numLayers = event.data.numHiddenLayers;
         var shape = event.data.networkShape;
-        // Immediately remove warning banner when layer is added
         if (numLayers > 0) {
             removeWarningBanner();
         }
-        // Check if network configured with exactly 1 hidden layer of 4 neurons
         if (numLayers === 1 && shape && shape[0] === 4) {
             runMathSequence();
         }
@@ -609,11 +595,11 @@ if (iframe) {
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, loadTranslations()];
+                    case 0: return [4, loadTranslations()];
                     case 1:
                         _a.sent();
                         startTutorial();
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         }); }, 1200);

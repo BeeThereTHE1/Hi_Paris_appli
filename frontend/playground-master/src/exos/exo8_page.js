@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -79,7 +78,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -87,8 +85,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(8)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(8)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -97,7 +95,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -109,10 +107,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(8)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(8)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -123,11 +121,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
-// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -220,11 +217,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject dynamic CSS style for arrows & custom components
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 60px;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
 document.head.appendChild(styleEl);
-// ——— LOGIQUE DE DÉROULEMENT PÉDAGOGIQUE ———
 var translations = null;
 var activeArrows = [];
 function loadTranslations() {
@@ -234,12 +229,12 @@ function loadTranslations() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('texte.json')];
+                    return [4, fetch('texte.json')];
                 case 1:
                     response = _a.sent();
                     if (!response.ok)
                         throw new Error("Failed to load translation json");
-                    return [4 /*yield*/, response.json()];
+                    return [4, response.json()];
                 case 2:
                     data = _a.sent();
                     translations = data.exercises.exercise_8;
@@ -257,12 +252,12 @@ function loadTranslations() {
                             }
                         }
                     }
-                    return [3 /*break*/, 4];
+                    return [3, 4];
                 case 3:
                     error_1 = _a.sent();
                     console.warn("Could not load translations from JSON.", error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3, 4];
+                case 4: return [2];
             }
         });
     });
@@ -363,9 +358,9 @@ function showFlashingArrows() {
         document.removeEventListener('click', dismissArrows);
         ['iframe-model1', 'iframe-model2'].forEach(function (iframeId) {
             try {
-                var iframe = document.getElementById(iframeId);
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.document.removeEventListener('click', dismissArrows);
+                var iframe_1 = document.getElementById(iframeId);
+                if (iframe_1 && iframe_1.contentWindow) {
+                    iframe_1.contentWindow.document.removeEventListener('click', dismissArrows);
                 }
             }
             catch (e) { }
@@ -375,16 +370,15 @@ function showFlashingArrows() {
         document.addEventListener('click', dismissArrows);
         ['iframe-model1', 'iframe-model2'].forEach(function (iframeId) {
             try {
-                var iframe = document.getElementById(iframeId);
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.document.addEventListener('click', dismissArrows);
+                var iframe_2 = document.getElementById(iframeId);
+                if (iframe_2 && iframe_2.contentWindow) {
+                    iframe_2.contentWindow.document.addEventListener('click', dismissArrows);
                 }
             }
             catch (e) { }
         });
     }, 100);
 }
-// Activity 0: Waiting for models to run
 function renderActivity0() {
     var qPanel = document.getElementById('quiz-question-panel');
     var fPanel = document.getElementById('quiz-feedback-panel');
@@ -393,7 +387,6 @@ function renderActivity0() {
     qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                Lancez les deux mod\u00E8les en cliquant sur le bouton de lecture (play) de chacun d'eux, et attendez que les pertes d'entra\u00EEnement (loss) diminuent sous 0.01.\n            </div>\n        </div>\n        <div style=\"margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:10px; font-size:13.5px;\">\n                <span>Mod\u00E8le 1 (Graine A) :</span>\n                <span id=\"model1-status-text\" style=\"font-weight:700; color:#ef4444;\">Non lanc\u00E9 \u23F3</span>\n            </div>\n            <div style=\"display:flex; justify-content:space-between; font-size:13.5px;\">\n                <span>Mod\u00E8le 2 (Graine B) :</span>\n                <span id=\"model2-status-text\" style=\"font-weight:700; color:#ef4444;\">Non lanc\u00E9 \u23F3</span>\n            </div>\n        </div>\n    ";
     fPanel.innerHTML = '';
 }
-// Activity 1: Q1 options
 var q1Answers = {
     weights: false,
     features: false,
@@ -434,7 +427,6 @@ function renderActivity1() {
     }
     var validateBtn = document.getElementById('btn-validate-act1');
     validateBtn.onclick = function () {
-        // Correct answers: weights = true, boundaries = true, others = false
         var isCorrect = q1Answers.weights && !q1Answers.features && !q1Answers.stops && q1Answers.boundaries;
         if (isCorrect) {
             fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                    <strong>That\u2019s right!</strong> The models use the same data and settings, but their results differ (boundaries and weights).\n                    <button class=\"btn-validate\" id=\"btn-ok-act1\" style=\"margin-top:10px; padding:6px 12px; font-size:12px;\">OK</button>\n                </div>\n            ";
@@ -444,7 +436,6 @@ function renderActivity1() {
             };
         }
         else {
-            // Find feedback details
             var fbMsg = "";
             if (q1Answers.features) {
                 fbMsg = "The input features change: The input features remain the same in both models.";
@@ -463,7 +454,6 @@ function renderActivity1() {
         }
     };
 }
-// Activity 2: Q2 options
 var q2Answers = {
     starts: false,
     dataset: false,
@@ -503,7 +493,6 @@ function renderActivity2() {
     }
     var validateBtn = document.getElementById('btn-validate-act2');
     validateBtn.onclick = function () {
-        // Correct answers: starts = true, random = true, dataset = false
         var isCorrect = q2Answers.starts && !q2Answers.dataset && q2Answers.random;
         if (isCorrect) {
             fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                    <strong>That\u2019s correct!</strong> Each run starts with randomly initialized weights, so the model begins learning from a different starting point and converges to a different solution (different boundary and final weights).\n                    <button class=\"btn-validate\" id=\"btn-ok-act2\" style=\"margin-top:10px; padding:6px 12px; font-size:12px;\">OK</button>\n                </div>\n            ";
@@ -525,7 +514,6 @@ function renderActivity2() {
         }
     };
 }
-// Final Summary Modal
 function showFinalSummary() {
     var overlay = document.createElement('div');
     overlay.className = 'tutorial-overlay';
@@ -548,7 +536,6 @@ function showFinalSummary() {
     document.body.appendChild(overlay);
     okBtn.onclick = function () {
         overlay.remove();
-        // Enable validation/success button
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
@@ -559,7 +546,6 @@ function showFinalSummary() {
         }
     };
 }
-// ——— COMMUNICATING WITH DUAL IFRAMES ———
 var model1Started = false;
 var model2Started = false;
 var model1MinLoss = Infinity;
@@ -600,12 +586,10 @@ window.addEventListener('message', function (event) {
                 }
             }
         }
-        // Auto transition once both reach <= 0.001
         if (model1Started && model2Started && model1MinLoss <= 0.01 && model2MinLoss <= 0.01 && !activity1Rendered) {
             activity1Rendered = true;
             activeArrows.forEach(function (a) { return a.remove(); });
             activeArrows = [];
-            // Short delay to let user see "Prêt" status before transition
             setTimeout(function () {
                 renderActivity1();
             }, 1000);
@@ -633,7 +617,6 @@ window.addEventListener('message', function (event) {
         }
     }
 });
-// Reposition arrow if frame scrolls or window resizes
 window.addEventListener('resize', function () {
     if (activeArrows.length > 0) {
         showFlashingArrows();
@@ -644,7 +627,6 @@ window.addEventListener('scroll', function () {
         showFlashingArrows();
     }
 });
-// Load translations and trigger overlay when first iframe is loaded
 var iframe1 = document.getElementById('iframe-model1');
 if (iframe1) {
     iframe1.addEventListener('load', function () {
@@ -663,11 +645,11 @@ if (iframe1) {
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, loadTranslations()];
+                    case 0: return [4, loadTranslations()];
                     case 1:
                         _a.sent();
                         startTutorial();
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         }); }, 1200);

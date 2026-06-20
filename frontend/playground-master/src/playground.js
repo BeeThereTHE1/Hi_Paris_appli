@@ -25,6 +25,7 @@ var exo16_1 = require("./exos/exo16");
 var exo17_1 = require("./exos/exo17");
 var params = new URLSearchParams(window.location.search);
 var exoIdStr = params.get("exo");
+var modelId = params.get("model") || "1";
 if (!exoIdStr) {
     try {
         var parentPath = window.parent.location.pathname;
@@ -1568,6 +1569,26 @@ function oneStep() {
         }
     }
     updateUI();
+    if (exoId === 8) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO8_STEP',
+                modelId: modelId,
+                lossTrain: lossTrain,
+                iter: iter
+            }, '*');
+        }
+    }
+    if (exoId === 11) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO11_STEP',
+                learningRate: state.learningRate,
+                lossTrain: lossTrain,
+                iter: iter
+            }, '*');
+        }
+    }
 }
 function getOutputWeights(network) {
     var weights = [];
@@ -1618,6 +1639,22 @@ function reset(onStartup) {
             }, '*');
         }
     }
+    if (exoId === 8) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO8_RESET',
+                modelId: modelId
+            }, '*');
+        }
+    }
+    if (exoId === 11) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO11_RESET',
+                learningRate: state.learningRate
+            }, '*');
+        }
+    }
 }
 ;
 function initTutorial() {
@@ -1662,7 +1699,7 @@ function drawDatasetThumbnails() {
         for (var dataset in state_1.datasets) {
             var canvas = document.querySelector("canvas[data-dataset=" + dataset + "]");
             var dataGenerator = state_1.datasets[dataset];
-            if (exoId > 0 && exoId !== 3 && dataGenerator !== state.dataset) {
+            if (exoId > 0 && exoId !== 3 && exoId !== 7 && dataGenerator !== state.dataset) {
                 continue;
             }
             renderThumbnail(canvas, dataGenerator);

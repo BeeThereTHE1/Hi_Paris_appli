@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -76,7 +75,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -84,8 +82,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(11)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(11)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -94,7 +92,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -106,10 +104,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(11)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(11)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -120,11 +118,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
-// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -217,11 +214,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject dynamic CSS style for arrows & custom components
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 70px;\n    text-align: center;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n\n  .true-false-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-top: 15px;\n  }\n  .true-false-table th {\n    text-align: center;\n    padding: 8px;\n    font-size: 12px;\n    color: #94a3b8;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n  }\n  .true-false-table th:first-child {\n    text-align: left;\n  }\n  .true-false-table td {\n    padding: 10px 8px;\n    font-size: 13.5px;\n    color: #f1f5f9;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n    vertical-align: middle;\n  }\n  .true-false-table td:not(:first-child) {\n    text-align: center;\n  }\n  .true-false-row-card {\n    background: rgba(255,255,255,0.02);\n    border: 1px solid rgba(255,255,255,0.05);\n    border-radius: 6px;\n    padding: 10px;\n    margin-bottom: 10px;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 15px;\n  }\n  .true-false-row-card .statement-text {\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n  }\n  .true-false-row-card .button-group {\n    display: flex;\n    gap: 6px;\n  }\n";
 document.head.appendChild(styleEl);
-// ——— LOGIQUE DE DÉROULEMENT PÉDAGOGIQUE ———
 var translations = null;
 var activeArrow = null;
 function loadTranslations() {
@@ -231,12 +226,12 @@ function loadTranslations() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('texte.json')];
+                    return [4, fetch('texte.json')];
                 case 1:
                     response = _a.sent();
                     if (!response.ok)
                         throw new Error("Failed to load translation json");
-                    return [4 /*yield*/, response.json()];
+                    return [4, response.json()];
                 case 2:
                     data = _a.sent();
                     translations = data.exercises.exercise_11;
@@ -253,12 +248,12 @@ function loadTranslations() {
                                 instrEl.innerText = translations.instructions.general;
                         }
                     }
-                    return [3 /*break*/, 4];
+                    return [3, 4];
                 case 3:
                     e_1 = _a.sent();
                     console.warn("Could not load translations from JSON.", e_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3, 4];
+                case 4: return [2];
             }
         });
     });
@@ -287,7 +282,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
     var wordCount = text.split(/\s+/).length;
-    var timeLeft = Math.max(10, Math.ceil((wordCount / 200) * 60)); // ~10s
+    var timeLeft = Math.max(10, Math.ceil((wordCount / 200) * 60));
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
@@ -302,7 +297,6 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
-        // Give 1s transition, then guide user to the definition
         setTimeout(function () {
             showFlashingArrow('.ui-learningRate .info-tip');
             listenForDefinitionClick();
@@ -362,7 +356,6 @@ function listenForDefinitionClick() {
                         activeArrow = null;
                     }
                     clearInterval(checkClick);
-                    // Show definition overlay popup
                     showDefinitionPopup();
                 });
             }
@@ -395,13 +388,11 @@ function showDefinitionPopup() {
     document.body.appendChild(overlay);
     okBtn.onclick = function () {
         overlay.remove();
-        // Transition to Activity 1
         setTimeout(function () {
             renderActivity1();
         }, 800);
     };
 }
-// Activity 1: True or False checklist
 var statementCorrectStatesAct1 = [false, false, false, false, false, false];
 var questionsAct1 = [
     { id: 1, statement: "Training loss measures the error on the data used to train the model.", answer: true, feedback_true: "Correct — training loss is computed on the training dataset.", feedback_false: "Incorrect — this is exactly the definition of training loss." },
@@ -416,7 +407,6 @@ function renderActivity1() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    // Use translations if loaded
     var statements = questionsAct1;
     if (translations && translations.activity_1 && translations.activity_1.statements) {
         statements = translations.activity_1.statements;
@@ -433,7 +423,6 @@ function renderActivity1() {
         var handleAnswer = function (userChoice) {
             var isCorrect = userChoice === stmt.answer;
             if (isCorrect) {
-                // Lock selection
                 statementCorrectStatesAct1[idx] = true;
                 row.classList.add('correct-locked');
                 trueBtn.disabled = true;
@@ -448,20 +437,16 @@ function renderActivity1() {
                 }
                 var feedbackText = userChoice ? stmt.feedback_true : stmt.feedback_false;
                 fPanel.innerHTML = "<div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">" + feedbackText + "</div>";
-                // Check if all are correct
                 var allDone = statementCorrectStatesAct1.every(function (s) { return s; });
                 if (allDone) {
-                    // Success! Enable validation in outer footer
                     btnRealise.removeAttribute('disabled');
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
                     btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-                    // Show final message
                     fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Faire le quiz\" en bas \u00E0 droite pour continuer.\n                        </div>\n                    ";
                 }
             }
             else {
-                // Visual feedback of error
                 if (userChoice) {
                     trueBtn.classList.add('active-no');
                     setTimeout(function () {
@@ -485,7 +470,6 @@ function renderActivity1() {
         _loop_1(i);
     }
 }
-// Reposition arrow if frame scrolls or window resizes
 window.addEventListener('resize', function () {
     if (activeArrow) {
         showFlashingArrow('.ui-learningRate .info-tip');
@@ -496,7 +480,6 @@ window.addEventListener('scroll', function () {
         showFlashingArrow('.ui-learningRate .info-tip');
     }
 });
-// Load translations and trigger overlay when iframe is loaded
 var iframe = document.getElementById('iframe-playground');
 if (iframe) {
     iframe.addEventListener('load', function () {
@@ -506,7 +489,6 @@ if (iframe) {
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
             btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-            // Pulse the home button if completed
             var backBtn = document.querySelector('.universal-header .btn-header');
             if (backBtn) {
                 backBtn.style.animation = 'pulse-button 1.5s infinite';
@@ -525,7 +507,6 @@ if (iframe) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        // Pulse info-tip inside iframe to call user attention
                         try {
                             iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
                             infoTip_1 = iframeDoc.querySelector('.ui-learningRate .info-tip');
@@ -540,11 +521,11 @@ if (iframe) {
                             }
                         }
                         catch (e) { }
-                        return [4 /*yield*/, loadTranslations()];
+                        return [4, loadTranslations()];
                     case 1:
                         _a.sent();
                         startTutorial();
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         }); }, 1200);

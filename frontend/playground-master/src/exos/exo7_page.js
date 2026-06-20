@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -79,7 +78,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -87,8 +85,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(7)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(7)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -97,7 +95,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -109,10 +107,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(7)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(7)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -123,11 +121,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
-// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -220,11 +217,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject dynamic CSS style for arrows & custom components
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .yes-no-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-top: 15px;\n    font-family: 'Inter', sans-serif;\n  }\n  .yes-no-table th, .yes-no-table td {\n    padding: 10px;\n    text-align: center;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n  }\n  .yes-no-table th {\n    color: #94a3b8;\n    font-weight: 600;\n    font-size: 13px;\n    text-transform: uppercase;\n  }\n  .yes-no-table td:first-child {\n    text-align: left;\n    font-weight: 700;\n    color: #e2e8f0;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 60px;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n  .statement-container {\n    margin-top: 15px;\n    display: flex;\n    flex-direction: column;\n    gap: 15px;\n  }\n  .statement-row {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid rgba(255, 255, 255, 0.05);\n    padding: 12px;\n    border-radius: 8px;\n    display: flex;\n    flex-direction: column;\n    gap: 10px;\n    transition: border-color 0.3s;\n  }\n  .statement-row.correct-locked {\n    border-color: rgba(16, 185, 129, 0.4);\n    background: rgba(16, 185, 129, 0.03);\n  }\n  .statement-text {\n    font-size: 13.5px;\n    color: #cbd5e1;\n    line-height: 1.4;\n  }\n  .statement-actions {\n    display: flex;\n    justify-content: flex-end;\n    gap: 10px;\n  }\n  \n  .tutorial-overlay {\n    position: fixed;\n    top: 0; left: 0; right: 0; bottom: 0;\n    background: rgba(15, 23, 42, 0.85);\n    backdrop-filter: blur(8px);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    z-index: 9999;\n  }\n  .tutorial-popup {\n    background: #0f172a;\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    border-radius: 16px;\n    padding: 30px;\n    max-width: 500px;\n    width: 90%;\n    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);\n    text-align: center;\n  }\n  .tutorial-popup h3 {\n    margin-top: 0;\n    font-size: 20px;\n    font-weight: 800;\n    color: #fff;\n  }\n  .tutorial-popup p {\n    font-size: 14.5px;\n    color: #94a3b8;\n    line-height: 1.6;\n    margin-bottom: 20px;\n  }\n  .tutorial-btn {\n    background: #ff034d;\n    border: none;\n    color: white;\n    padding: 10px 24px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .tutorial-btn:disabled {\n    background: #475569;\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n  \n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
 document.head.appendChild(styleEl);
-// ——— LOGIQUE DE DÉROULEMENT PÉDAGOGIQUE ———
 var translations = null;
 var activeArrow = null;
 function loadTranslations() {
@@ -234,12 +229,12 @@ function loadTranslations() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('texte.json')];
+                    return [4, fetch('texte.json')];
                 case 1:
                     response = _a.sent();
                     if (!response.ok)
                         throw new Error("Failed to load translation json");
-                    return [4 /*yield*/, response.json()];
+                    return [4, response.json()];
                 case 2:
                     data = _a.sent();
                     translations = data.exercises.exercise_7;
@@ -257,12 +252,12 @@ function loadTranslations() {
                             }
                         }
                     }
-                    return [3 /*break*/, 4];
+                    return [3, 4];
                 case 3:
                     error_1 = _a.sent();
                     console.warn("Could not load translations from JSON.", error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3, 4];
+                case 4: return [2];
             }
         });
     });
@@ -292,7 +287,7 @@ function startTutorial() {
     popup.appendChild(nextBtn);
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-    var timeLeft = 15; // Strict 15s locked intro screen
+    var timeLeft = 15;
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
@@ -307,7 +302,6 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
-        // Delay before showing the arrow and rendering activity 1
         setTimeout(function () {
             showFlashingArrow('.ui-activation');
             renderActivity1();
@@ -345,7 +339,6 @@ function showFlashingArrow(targetSelector) {
     activeArrow.style.left = rect.left + rect.width / 2 + window.scrollX + "px";
     activeArrow.style.top = rect.top - 60 + window.scrollY + "px";
     document.body.appendChild(activeArrow);
-    // Dismiss arrow when user clicks anywhere in the document or iframe
     var dismissArrow = function () {
         if (activeArrow) {
             activeArrow.remove();
@@ -371,7 +364,6 @@ function showFlashingArrow(targetSelector) {
         catch (e) { }
     }, 100);
 }
-// Activity 1: YES/NO table logic
 var selectedAnswersAct1 = {
     relu: null,
     tanh: null,
@@ -384,7 +376,6 @@ function renderActivity1() {
     if (!qPanel || !fPanel)
         return;
     qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset.\n            </div>\n        </div>\n        <table class=\"yes-no-table\">\n            <thead>\n                <tr>\n                    <th>Activation</th>\n                    <th>YES</th>\n                    <th>NO</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr data-activation=\"relu\">\n                    <td>ReLU</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"tanh\">\n                    <td>Tanh</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"sigmoid\">\n                    <td>Sigmoid</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"linear\">\n                    <td>Linear</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n            </tbody>\n        </table>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Valider</button>\n    ";
-    // Click handlers for YES/NO buttons
     var rows = qPanel.querySelectorAll('tbody tr');
     var _loop_1 = function (i) {
         var row = rows[i];
@@ -407,7 +398,6 @@ function renderActivity1() {
     }
     var validateBtn = document.getElementById('btn-validate-act1');
     validateBtn.onclick = function () {
-        // Correct answer: relu=yes, tanh=yes, sigmoid=yes, linear=no
         var isCorrect = selectedAnswersAct1.relu === 'yes' &&
             selectedAnswersAct1.tanh === 'yes' &&
             selectedAnswersAct1.sigmoid === 'yes' &&
@@ -422,7 +412,6 @@ function renderActivity1() {
         }
         else {
             fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    \u274C Incorrect. Testez \u00E0 nouveau les fonctions dans le simulateur. Certains choix erron\u00E9s ont \u00E9t\u00E9 r\u00E9initialis\u00E9s.\n                </div>\n            ";
-            // Reset incorrect selections to gray
             if (selectedAnswersAct1.relu !== 'yes') {
                 selectedAnswersAct1.relu = null;
                 var row = qPanel.querySelector('tr[data-activation="relu"]');
@@ -474,7 +463,6 @@ function renderActivity1() {
         }
     };
 }
-// Activity 2: True/False logic
 var answeredStatementsCount = 0;
 var totalStatements = 4;
 var statementCorrectStates = [false, false, false, false];
@@ -483,7 +471,7 @@ function renderActivity2() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    fPanel.innerHTML = ''; // Clean feedback panel
+    fPanel.innerHTML = '';
     var statementsData = [
         {
             id: 1,
@@ -525,7 +513,6 @@ function renderActivity2() {
         var handleAnswer = function (userChoice) {
             var isCorrect = userChoice === stmt.correct;
             if (isCorrect) {
-                // Lock selection
                 statementCorrectStates[idx] = true;
                 row.classList.add('correct-locked');
                 trueBtn.disabled = true;
@@ -539,20 +526,16 @@ function renderActivity2() {
                     trueBtn.classList.remove('active-yes');
                 }
                 fPanel.innerHTML = "<div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">" + stmt.feedback_correct + "</div>";
-                // Check if all are correct
                 var allDone = statementCorrectStates.every(function (s) { return s; });
                 if (allDone) {
-                    // Success! Enable validation in outer footer
                     btnRealise.removeAttribute('disabled');
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
                     btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-                    // Show final message
                     fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Faire le quiz\" en bas \u00E0 droite pour continuer.\n                        </div>\n                    ";
                 }
             }
             else {
-                // Visual feedback of error
                 if (userChoice) {
                     trueBtn.classList.add('active-no');
                     setTimeout(function () {
@@ -575,7 +558,6 @@ function renderActivity2() {
         _loop_2(i);
     }
 }
-// Reposition arrow if frame scrolls or window resizes
 window.addEventListener('resize', function () {
     if (activeArrow) {
         showFlashingArrow('.ui-activation');
@@ -586,13 +568,11 @@ window.addEventListener('scroll', function () {
         showFlashingArrow('.ui-activation');
     }
 });
-// Load translations and trigger overlay when iframe is ready
 var iframe = document.querySelector('.exo-frame');
 if (iframe) {
     iframe.addEventListener('load', function () {
         var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('completed') === 'true') {
-            // Already completed, enable quiz button and show success without locking
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
@@ -602,11 +582,11 @@ if (iframe) {
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, loadTranslations()];
+                    case 0: return [4, loadTranslations()];
                     case 1:
                         _a.sent();
                         startTutorial();
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         }); }, 1200);

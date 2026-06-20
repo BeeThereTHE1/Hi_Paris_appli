@@ -1,35 +1,13 @@
 "use strict";
-/* Copyright 2016 Google Inc. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================*/
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var d3 = require("d3");
-/**
- * Shuffles the array using Fisher-Yates algorithm. Uses the seedrandom
- * library as the random generator.
- */
 function shuffle(array) {
     var counter = array.length;
     var temp = 0;
     var index = 0;
-    // While there are elements in the array
     while (counter > 0) {
-        // Pick a random index
         index = Math.floor(Math.random() * counter);
-        // Decrease counter by 1
         counter--;
-        // And swap the last element with it
         temp = array[counter];
         array[counter] = array[index];
         array[index] = temp;
@@ -47,8 +25,8 @@ function classifyTwoGaussData(numSamples, noise) {
             points.push({ x: x, y: y, label: label });
         }
     }
-    genGauss(2, 2, 1); // Gaussian with positive examples.
-    genGauss(-2, -2, -1); // Gaussian with negative examples.
+    genGauss(2, 2, 1);
+    genGauss(-2, -2, -1);
     return points;
 }
 exports.classifyTwoGaussData = classifyTwoGaussData;
@@ -85,7 +63,6 @@ function regressGaussian(numSamples, noise) {
         [4, -2.5, -1]
     ];
     function getLabel(x, y) {
-        // Choose the one that is maximum in abs value.
         var label = 0;
         gaussians.forEach(function (_a) {
             var cx = _a[0], cy = _a[1], sign = _a[2];
@@ -121,8 +98,8 @@ function classifySpiralData(numSamples, noise) {
             points.push({ x: x, y: y, label: label });
         }
     }
-    genSpiral(0, 1); // Positive examples.
-    genSpiral(Math.PI, -1); // Negative examples.
+    genSpiral(0, 1);
+    genSpiral(Math.PI, -1);
     return points;
 }
 exports.classifySpiralData = classifySpiralData;
@@ -132,7 +109,6 @@ function classifyCircleData(numSamples, noise) {
     function getCircleLabel(p, center) {
         return (dist(p, center) < (radius * 0.5)) ? 1 : -1;
     }
-    // Generate positive points inside the circle.
     for (var i = 0; i < numSamples / 2; i++) {
         var r = randUniform(0, radius * 0.5);
         var angle = randUniform(0, 2 * Math.PI);
@@ -143,7 +119,6 @@ function classifyCircleData(numSamples, noise) {
         var label = getCircleLabel({ x: x + noiseX, y: y + noiseY }, { x: 0, y: 0 });
         points.push({ x: x, y: y, label: label });
     }
-    // Generate negative points outside the circle.
     for (var i = 0; i < numSamples / 2; i++) {
         var r = randUniform(radius * 0.7, radius);
         var angle = randUniform(0, 2 * Math.PI);
@@ -163,7 +138,7 @@ function classifyXORData(numSamples, noise) {
     for (var i = 0; i < numSamples; i++) {
         var x = randUniform(-5, 5);
         var padding = 0.3;
-        x += x > 0 ? padding : -padding; // Padding.
+        x += x > 0 ? padding : -padding;
         var y = randUniform(-5, 5);
         y += y > 0 ? padding : -padding;
         var noiseX = randUniform(-5, 5) * noise;
@@ -174,20 +149,9 @@ function classifyXORData(numSamples, noise) {
     return points;
 }
 exports.classifyXORData = classifyXORData;
-/**
- * Returns a sample from a uniform [a, b] distribution.
- * Uses the seedrandom library as the random generator.
- */
 function randUniform(a, b) {
     return Math.random() * (b - a) + a;
 }
-/**
- * Samples from a normal distribution. Uses the seedrandom library as the
- * random generator.
- *
- * @param mean The mean. Default is 0.
- * @param variance The variance. Default is 1.
- */
 function normalRandom(mean, variance) {
     if (mean === void 0) { mean = 0; }
     if (variance === void 0) { variance = 1; }
@@ -200,7 +164,6 @@ function normalRandom(mean, variance) {
     var result = Math.sqrt(-2 * Math.log(s) / s) * v1;
     return mean + Math.sqrt(variance) * result;
 }
-/** Returns the eucledian distance between two points in space. */
 function dist(a, b) {
     var dx = a.x - b.x;
     var dy = a.y - b.y;
