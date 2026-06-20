@@ -8,6 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
+  <link rel="stylesheet" href="../styles/exo_quiz.css" />
+  <style>
+    html body main.quiz-layout-container .simulator-container {
+      width: 50% !important;
+    }
+    html body main.quiz-layout-container .quiz-panel-container {
+      width: 50% !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -81,8 +90,19 @@
     </p>
   </section>
 
-  <main class="exo-main">
-    <iframe class="exo-frame" src="./playground/index.html?exo=8"></iframe>
+  <main class="quiz-layout-container">
+    <div class="simulator-container" style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+      <iframe class="exo-frame" id="iframe-model1" src="./playground/index.html?exo=8&model=1" style="height: calc(50% - 5px); flex-shrink: 0;"></iframe>
+      <iframe class="exo-frame" id="iframe-model2" src="./playground/index.html?exo=8&model=2" style="height: calc(50% - 5px); flex-shrink: 0;"></iframe>
+    </div>
+    <div class="quiz-panel-container">
+      <div class="quiz-div-1" id="quiz-question-panel">
+        <!-- Dynamically populated activity cards -->
+      </div>
+      <div class="quiz-div-2" id="quiz-feedback-panel">
+        <!-- Dynamically populated explanation feedback bubbles -->
+      </div>
+    </div>
   </main>
 
   <script src="inactivite.js"></script>

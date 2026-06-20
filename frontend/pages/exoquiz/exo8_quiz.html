@@ -82,21 +82,31 @@
   </section>
 
   <main class="quiz-layout-container">
-    <div class="simulator-container">
-      <iframe class="exo-frame" src="../playground/index.html?exo=8"></iframe>
+    <div class="simulator-container" style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+      <iframe class="exo-frame" id="iframe-model1" src="../playground/index.html?exo=8&model=1" style="height: calc(50% - 5px); flex-shrink: 0;"></iframe>
+      <iframe class="exo-frame" id="iframe-model2" src="../playground/index.html?exo=8&model=2" style="height: calc(50% - 5px); flex-shrink: 0;"></iframe>
     </div>
     <div class="quiz-panel-container">
-      <div class="quiz-div-1">
+      <div class="quiz-div-1" id="quiz-question-panel">
         <!-- Contenu de la partie haute du quiz -->
       </div>
-      <div class="quiz-div-2">
+      <div class="quiz-div-2" id="quiz-feedback-panel">
         <!-- Contenu de la partie basse du quiz -->
       </div>
     </div>
   </main>
 
+  <style>
+    html body main.quiz-layout-container .simulator-container {
+      width: 50% !important;
+    }
+    html body main.quiz-layout-container .quiz-panel-container {
+      width: 50% !important;
+    }
+  </style>
+
   <script src="../inactivite.js"></script>
   <script src="../../playground-master/src/exos/storage_service.js"></script>
-  <script src="../../playground-master/src/exoquizjs/exo8_quiz_page.js"></script>
+  <script src="./exo8_quiz_page.js"></script>
 </body>
 </html>
