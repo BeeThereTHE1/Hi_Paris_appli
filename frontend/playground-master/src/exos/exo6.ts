@@ -29,8 +29,8 @@ export const exo6 = {
   forcedState: {
     dataset: datasets["circle"],
     activation: activations["sigmoid"],
-    numHiddenLayers: 1,
-    networkShape: [4],
+    numHiddenLayers: 0,
+    networkShape: [],
     x: true,
     y: true,
     xSquared: false,

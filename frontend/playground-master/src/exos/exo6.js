@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var state_1 = require("../state");
 var d3 = require("d3");
 exports.exo6 = {
@@ -29,8 +29,8 @@ exports.exo6 = {
     forcedState: {
         dataset: state_1.datasets["circle"],
         activation: state_1.activations["sigmoid"],
-        numHiddenLayers: 1,
-        networkShape: [4],
+        numHiddenLayers: 0,
+        networkShape: [],
         x: true,
         y: true,
         xSquared: false,
@@ -42,6 +42,9 @@ exports.exo6 = {
         sinY: false
     }
 };
+/**
+ * Initialise la popup d'introduction de l'exercice 6 (2 pages).
+ */
 function initExo6Popups() {
     var overlay = d3.select("#exo6-popup-overlay");
     var page1 = d3.select("#exo6-page1");

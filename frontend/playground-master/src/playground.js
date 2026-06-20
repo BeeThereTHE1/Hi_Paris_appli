@@ -220,6 +220,37 @@ var selectedNodeLabel = d3.select("#selected-node-label");
 var biasModifiedInExo4 = false;
 var weightModifiedInExo4 = false;
 var hasTrainedInExo4 = false;
+var boundaryHistory = [];
+function getBoundaryLinePoints(w1, w2, b) {
+    var points = [];
+    if (Math.abs(w2) > 1e-5) {
+        var x2 = (6 * w1 - b) / w2;
+        if (x2 >= -6 && x2 <= 6)
+            points.push([-6, x2]);
+    }
+    if (Math.abs(w2) > 1e-5) {
+        var x2 = (-6 * w1 - b) / w2;
+        if (x2 >= -6 && x2 <= 6)
+            points.push([6, x2]);
+    }
+    if (Math.abs(w1) > 1e-5) {
+        var x1_1 = (6 * w2 - b) / w1;
+        if (x1_1 >= -6 && x1_1 <= 6) {
+            if (!points.some(function (p) { return Math.abs(p[0] - x1_1) < 1e-4 && Math.abs(p[1] - (-6)) < 1e-4; })) {
+                points.push([x1_1, -6]);
+            }
+        }
+    }
+    if (Math.abs(w1) > 1e-5) {
+        var x1_2 = (-6 * w2 - b) / w1;
+        if (x1_2 >= -6 && x1_2 <= 6) {
+            if (!points.some(function (p) { return Math.abs(p[0] - x1_2) < 1e-4 && Math.abs(p[1] - 6) < 1e-4; })) {
+                points.push([x1_2, 6]);
+            }
+        }
+    }
+    return points;
+}
 var compareUsedInExo8 = false;
 var postSnapshotRunInExo8 = false;
 var runsCountExo11 = 0;
@@ -856,24 +887,124 @@ function drawNode(cx, cy, nodeId, isInput, container, node) {
         nodeGroup.classed(activeOrNotClass, true);
     }
     if (!isInput) {
-        nodeGroup.append("rect")
-            .attr({
-            id: "bias-" + nodeId,
-            x: -BIAS_SIZE - 4,
-            y: RECT_SIZE + 2,
-            width: BIAS_SIZE,
-            height: BIAS_SIZE
-        }).on("mouseenter", function () {
-            updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
-        }).on("mouseleave", function () {
-            updateHoverCard(null);
-        }).on("click", function () {
-            selectedNodeForBiasSlider = node;
-            selectedNodeLabel.text("Neurone : " + node.id);
-            biasSlider.property("value", node.bias);
-            biasValue.text((+node.bias).toFixed(2));
-            console.log("biais séléctionné:", node.id, "bias = ", node.bias);
-        });
+        if (exoId === 4) {
+            var sliderX = cx - 38;
+            var sliderY_1 = cy + 85;
+            var biasGroup = container.append("g")
+                .attr("class", "custom-weight-editor-group")
+                .attr("id", "custom-bias-editor-group");
+            var track = biasGroup.append("line")
+                .attr({
+                x1: sliderX,
+                y1: sliderY_1 - 30,
+                x2: sliderX,
+                y2: sliderY_1 + 30,
+                stroke: "#1e293b",
+                "stroke-width": 4,
+                "stroke-linecap": "round",
+                cursor: "pointer"
+            });
+            var handleColor = "#8b5cf6";
+            var badgeColor = "#5b21b6";
+            var badge = biasGroup.append("g")
+                .attr("transform", "translate(" + (sliderX - 60) + ", " + (sliderY_1 - 18) + ")");
+            badge.append("rect")
+                .attr({
+                x: 0,
+                y: 0,
+                width: 48,
+                height: 36,
+                rx: 6,
+                ry: 6,
+                fill: badgeColor,
+                stroke: "rgba(255,255,255,0.1)",
+                "stroke-width": 1
+            });
+            var badgeText = badge.append("text")
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .style("font-family", "'Inter', sans-serif");
+            badgeText.append("tspan")
+                .attr({ x: 24, y: 14 })
+                .style({ "font-size": "8px", "font-weight": "700", "text-transform": "uppercase", "letter-spacing": "0.5px", "opacity": "0.8" })
+                .text("Biais");
+            var valSpan_1 = badgeText.append("tspan")
+                .attr({ x: 24, y: 28 })
+                .style({ "font-size": "12px", "font-weight": "800" })
+                .text(node.bias.toFixed(2).replace(".", ","));
+            var initialY = sliderY_1 - (node.bias / 5.0) * 30;
+            var handle_1 = biasGroup.append("rect")
+                .attr({
+                x: sliderX - 8,
+                y: initialY - 3,
+                width: 16,
+                height: 6,
+                rx: 2,
+                ry: 2,
+                fill: handleColor,
+                cursor: "ns-resize",
+                stroke: "#ffffff",
+                "stroke-width": 1
+            });
+            var drag = d3.behavior.drag()
+                .on("drag", function () {
+                var mouseContainer = d3.mouse(container.node());
+                var mouseY = mouseContainer[1];
+                var newY = Math.max(sliderY_1 - 30, Math.min(sliderY_1 + 30, mouseY));
+                var bias = 5.0 - 10.0 * (newY - (sliderY_1 - 30)) / 60.0;
+                bias = Math.round(bias * 100) / 100;
+                if (node.bias !== bias) {
+                    var firstHiddenNode = network[1][0];
+                    var w1 = firstHiddenNode.inputLinks[0].weight;
+                    var w2 = firstHiddenNode.inputLinks[1].weight;
+                    var linePoints = getBoundaryLinePoints(w1, w2, node.bias);
+                    if (linePoints.length >= 2) {
+                        var x1 = heatMap.xScale(linePoints[0][0]);
+                        var y1 = heatMap.yScale(linePoints[0][1]);
+                        var x2 = heatMap.xScale(linePoints[1][0]);
+                        var y2 = heatMap.yScale(linePoints[1][1]);
+                        if (boundaryHistory.length === 0 ||
+                            Math.abs(boundaryHistory[boundaryHistory.length - 1].biasValue - node.bias) > 0.05) {
+                            boundaryHistory.push({ x1: x1, y1: y1, x2: x2, y2: y2, biasValue: node.bias });
+                            if (boundaryHistory.length > 5) {
+                                boundaryHistory.shift();
+                            }
+                        }
+                    }
+                    node.bias = bias;
+                    handle_1.attr("y", (sliderY_1 - (bias / 5.0) * 30) - 3);
+                    valSpan_1.text(bias.toFixed(2).replace(".", ","));
+                    biasSlider.property("value", bias);
+                    biasValue.text(bias.toFixed(2));
+                    biasModifiedInExo4 = true;
+                    lossTrain = getLoss(network, trainData);
+                    lossTest = getLoss(network, testData);
+                    updateUI();
+                }
+            });
+            handle_1.call(drag);
+            track.call(drag);
+        }
+        else {
+            nodeGroup.append("rect")
+                .attr({
+                id: "bias-" + nodeId,
+                x: -BIAS_SIZE - 4,
+                y: RECT_SIZE + 2,
+                width: BIAS_SIZE,
+                height: BIAS_SIZE
+            }).on("mouseenter", function () {
+                updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
+            }).on("mouseleave", function () {
+                updateHoverCard(null);
+            }).on("click", function () {
+                selectedNodeForBiasSlider = node;
+                selectedNodeLabel.text("Neurone : " + node.id);
+                biasSlider.property("value", node.bias);
+                biasValue.text((+node.bias).toFixed(2));
+                console.log("biais séléctionné:", node.id, "bias = ", node.bias);
+            });
+        }
     }
     var div = d3.select("#network").insert("div", ":first-child")
         .attr({
@@ -1011,6 +1142,9 @@ function drawNetwork(network) {
         var link = node.inputLinks[i];
         drawLink(link, node2coord, network, container, i === 0, i, node.inputLinks.length);
     }
+    if (exoId === 4) {
+        maxY = Math.max(maxY, 160);
+    }
     svg.attr("height", maxY);
     var height = Math.max(getRelativeHeight(calloutThumb), getRelativeHeight(calloutWeights), getRelativeHeight(d3.select("#network")));
     d3.select(".column.features").style("height", height + "px");
@@ -1136,16 +1270,16 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
         var totalLength = pathEl.getTotalLength();
         var point = pathEl.getPointAtLength(totalLength * 0.35);
         var sliderX = point.x;
-        var sliderY_1 = point.y;
+        var sliderY_2 = point.y;
         var group = container.append("g")
             .attr("class", "custom-weight-editor-group")
             .attr("id", "custom-weight-editor-" + input.source.id);
         var track = group.append("line")
             .attr({
             x1: sliderX,
-            y1: sliderY_1 - 30,
+            y1: sliderY_2 - 30,
             x2: sliderX,
-            y2: sliderY_1 + 30,
+            y2: sliderY_2 + 30,
             stroke: "#1e293b",
             "stroke-width": 4,
             "stroke-linecap": "round",
@@ -1153,9 +1287,9 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
         });
         var handleColor = input.source.id === "x" ? "#ef4444" : "#8b5cf6";
         var badgeColor = input.source.id === "x" ? "#b91c1c" : "#5b21b6";
-        var initialY = sliderY_1 - (input.weight / 5.0) * 30;
+        var initialY = sliderY_2 - (input.weight / 5.0) * 30;
         var badge = group.append("g")
-            .attr("transform", "translate(" + (sliderX - 60) + ", " + (sliderY_1 - 18) + ")");
+            .attr("transform", "translate(" + (sliderX - 60) + ", " + (sliderY_2 - 18) + ")");
         badge.append("rect")
             .attr({
             x: 0,
@@ -1176,11 +1310,11 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             .attr({ x: 24, y: 14 })
             .style({ "font-size": "8px", "font-weight": "700", "text-transform": "uppercase", "letter-spacing": "0.5px", "opacity": "0.8" })
             .text("Weight");
-        var valSpan_1 = badgeText.append("tspan")
+        var valSpan_2 = badgeText.append("tspan")
             .attr({ x: 24, y: 28 })
             .style({ "font-size": "12px", "font-weight": "800" })
             .text(input.weight.toFixed(1).replace(".", ","));
-        var handle_1 = group.append("rect")
+        var handle_2 = group.append("rect")
             .attr({
             x: sliderX - 8,
             y: initialY - 3,
@@ -1197,12 +1331,12 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             .on("drag", function () {
             var mouseContainer = d3.mouse(container.node());
             var mouseY = mouseContainer[1];
-            var newY = Math.max(sliderY_1 - 30, Math.min(sliderY_1 + 30, mouseY));
-            var weight = 5.0 - 10.0 * (newY - (sliderY_1 - 30)) / 60.0;
+            var newY = Math.max(sliderY_2 - 30, Math.min(sliderY_2 + 30, mouseY));
+            var weight = 5.0 - 10.0 * (newY - (sliderY_2 - 30)) / 60.0;
             weight = Math.round(weight * 10) / 10;
             input.weight = weight;
-            handle_1.attr("y", (sliderY_1 - (weight / 5.0) * 30) - 3);
-            valSpan_1.text(weight.toFixed(1).replace(".", ","));
+            handle_2.attr("y", (sliderY_2 - (weight / 5.0) * 30) - 3);
+            valSpan_2.text(weight.toFixed(1).replace(".", ","));
             if (selectedLinkForSlider === input) {
                 weightSlider.property("value", weight);
                 weightValue.text(weight.toFixed(2));
@@ -1211,16 +1345,16 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             lossTest = getLoss(network, testData);
             updateUI();
         });
-        handle_1.call(drag);
+        handle_2.call(drag);
         track.on("click", function () {
             var mouseContainer = d3.mouse(container.node());
             var mouseY = mouseContainer[1];
-            var newY = Math.max(sliderY_1 - 30, Math.min(sliderY_1 + 30, mouseY));
-            var weight = 5.0 - 10.0 * (newY - (sliderY_1 - 30)) / 60.0;
+            var newY = Math.max(sliderY_2 - 30, Math.min(sliderY_2 + 30, mouseY));
+            var weight = 5.0 - 10.0 * (newY - (sliderY_2 - 30)) / 60.0;
             weight = Math.round(weight * 10) / 10;
             input.weight = weight;
-            handle_1.attr("y", (sliderY_1 - (weight / 5.0) * 30) - 3);
-            valSpan_1.text(weight.toFixed(1).replace(".", ","));
+            handle_2.attr("y", (sliderY_2 - (weight / 5.0) * 30) - 3);
+            valSpan_2.text(weight.toFixed(1).replace(".", ","));
             if (selectedLinkForSlider === input) {
                 weightSlider.property("value", weight);
                 weightValue.text(weight.toFixed(2));
@@ -1307,6 +1441,62 @@ function updateUI(firstStep) {
     d3.select("#iter-number").text(addCommas(zeroPad(iter)));
     lineChart.addDataPoint([lossTrain, lossTest]);
     lineChart.setLineVisibility(1, !state.testLoss_hide);
+    if (exoId === 4) {
+        var svgG = d3.select("#heatmap svg g");
+        var highlightGroup_1 = svgG.select("g.boundary-highlight");
+        if (highlightGroup_1.empty()) {
+            highlightGroup_1 = svgG.append("g").attr("class", "boundary-highlight");
+        }
+        else {
+            highlightGroup_1.selectAll("*").remove();
+        }
+        boundaryHistory.forEach(function (histLine, index) {
+            var opacity = 0.05 + 0.15 * ((index + 1) / boundaryHistory.length);
+            highlightGroup_1.append("line")
+                .attr({
+                x1: histLine.x1,
+                y1: histLine.y1,
+                x2: histLine.x2,
+                y2: histLine.y2,
+                stroke: "#FF034D",
+                "stroke-width": 2,
+                "stroke-dasharray": "4,4"
+            })
+                .style("opacity", opacity);
+        });
+        var firstHiddenNode = network[1][0];
+        var w1 = firstHiddenNode.inputLinks[0].weight;
+        var w2 = firstHiddenNode.inputLinks[1].weight;
+        var b = firstHiddenNode.bias;
+        var linePoints = getBoundaryLinePoints(w1, w2, b);
+        if (linePoints.length >= 2) {
+            var x1 = heatMap.xScale(linePoints[0][0]);
+            var y1 = heatMap.yScale(linePoints[0][1]);
+            var x2 = heatMap.xScale(linePoints[1][0]);
+            var y2 = heatMap.yScale(linePoints[1][1]);
+            highlightGroup_1.append("line")
+                .attr({
+                x1: x1,
+                y1: y1,
+                x2: x2,
+                y2: y2,
+                stroke: "#FF034D",
+                "stroke-width": 4
+            });
+            highlightGroup_1.append("text")
+                .attr({
+                x: (x1 + x2) / 2 + 10,
+                y: (y1 + y2) / 2 - 10,
+                fill: "#FF034D"
+            })
+                .style({
+                "font-family": "'Inter', sans-serif",
+                "font-size": "11px",
+                "font-weight": "800"
+            })
+                .text("b = " + b.toFixed(2));
+        }
+    }
 }
 function constructInputIds() {
     var result = [];
@@ -1328,6 +1518,12 @@ function constructInput(x, y) {
 }
 function oneStep() {
     iter++;
+    if (exoId === 6 && state.numHiddenLayers === 0 && iter === 300) {
+        player.pause();
+        if (window.parent) {
+            window.parent.postMessage({ type: 'EXO6_EPOCH_300' }, '*');
+        }
+    }
     if (exoId === 3) {
         if (state.x && state.y && !state.xSquared && !state.ySquared && !state.xTimesY && !state.sinX && !state.sinY) {
             var dsKey = state_1.getKeyFromValue(state_1.datasets, state.dataset);
@@ -1390,6 +1586,7 @@ function getOutputWeights(network) {
 exports.getOutputWeights = getOutputWeights;
 function reset(onStartup) {
     if (onStartup === void 0) { onStartup = false; }
+    boundaryHistory = [];
     lineChart.reset();
     state.serialize();
     if (!onStartup) {
@@ -1412,6 +1609,15 @@ function reset(onStartup) {
     }
     drawNetwork(network);
     updateUI(true);
+    if (exoId === 6) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO6_STATE_CHANGE',
+                numHiddenLayers: state.numHiddenLayers,
+                networkShape: state.networkShape
+            }, '*');
+        }
+    }
 }
 ;
 function initTutorial() {

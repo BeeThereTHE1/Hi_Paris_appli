@@ -1,19 +1,18 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -34,21 +33,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-// @ts-nocheck
 (function () {
     var _this = this;
     var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     var user = JSON.parse(localStorage.getItem('currentUser'));
-    // On cible la boîte qu'on a créée dans le header !
     var container = document.getElementById('widget-profil-header');
     if (!container)
         return;
@@ -64,11 +52,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
         return;
     }
     var initiales = (user.prenom ? user.prenom[0] : '') + (user.nom ? user.nom[0] : '');
-    // Bouton Avatar Lumineux
     var avatar = document.createElement('div');
     avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(255,255,255,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;';
     avatar.innerText = initiales.toUpperCase();
-    // --- NOUVEAU : Notifications ---
     (function () { return __awaiter(_this, void 0, void 0, function () {
         var count, r, res, data, res, subs, badge, e_1;
         return __generator(this, function (_b) {
@@ -77,19 +63,19 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                     _b.trys.push([0, 7, , 8]);
                     count = 0;
                     r = (user.role || user.profil || '').toUpperCase();
-                    if (!(r.includes('TEACH') || r.includes('ENS'))) return [3 /*break*/, 3];
-                    return [4 /*yield*/, fetch("/api/submissions/teacher/".concat(user.id, "/count"), { headers: { 'x-user-email': user.email } })];
+                    if (!(r.includes('TEACH') || r.includes('ENS'))) return [3, 3];
+                    return [4, fetch("/api/submissions/teacher/" + user.id + "/count", { headers: { 'x-user-email': user.email } })];
                 case 1:
                     res = _b.sent();
-                    return [4 /*yield*/, res.json()];
+                    return [4, res.json()];
                 case 2:
                     data = _b.sent();
                     count = data.count || 0;
-                    return [3 /*break*/, 6];
-                case 3: return [4 /*yield*/, fetch("/api/submissions/student/".concat(user.id))];
+                    return [3, 6];
+                case 3: return [4, fetch("/api/submissions/student/" + user.id)];
                 case 4:
                     res = _b.sent();
-                    return [4 /*yield*/, res.json()];
+                    return [4, res.json()];
                 case 5:
                     subs = _b.sent();
                     count = subs.filter(function (s) { return s.status !== 'PENDING'; }).length;
@@ -101,24 +87,22 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                         badge.innerText = count;
                         avatar.appendChild(badge);
                     }
-                    return [3 /*break*/, 8];
+                    return [3, 8];
                 case 7:
                     e_1 = _b.sent();
                     console.error("Badge error:", e_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3, 8];
+                case 8: return [2];
             }
         });
     }); })();
     avatar.onmouseover = function () { return avatar.style.transform = 'scale(1.1) rotate(5deg)'; };
     avatar.onmouseout = function () { return avatar.style.transform = 'scale(1) rotate(0deg)'; };
-    // Menu Premium (ajusté pour descendre proprement sous le header)
     var menu = document.createElement('div');
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset; overflow: hidden; transform-origin: top right; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: scale(0.9) translateY(-10px); pointer-events: none;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;\">".concat(user.prenom || '', " ").concat(user.nom || '', "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">").concat(user.email || '', "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;\">\uD83D\uDFE2 Profil ").concat(typeProfil, "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCCA</span> Mon Historique\n          </a>\n          <a href=\"../statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCC8</span> Mes Statistiques\n          </a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;\" onmouseover=\"this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDEAA</span> D\u00E9connexion\n          </div>\n        </div>\n      ");
-    // Animation d'ouverture magique
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCCA</span> Mon Historique\n          </a>\n          <a href=\"../statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCC8</span> Mes Statistiques\n          </a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;\" onmouseover=\"this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDEAA</span> D\u00E9connexion\n          </div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -149,7 +133,6 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-/* ─── DONNÉES ─── */
 var EXERCISES = [
     {
         id: 1, icon: '🧠', title: ' Exercice 1 : Modification des poids.',
@@ -239,32 +222,27 @@ var EXERCISES = [
 ];
 var DIFF_LABEL = { easy: 'Facile', medium: 'Intermédiaire', hard: 'Difficile' };
 var currentFilter = 'tous';
-/* ─── Controle et suppresison des exos ─── */
 var user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 var role = (user.role || user.profil || user.profile || 'ETUDIANT').toUpperCase();
 var isTeacher = role.includes('TEACH') || role.includes('ENS') || role.includes('PROF');
-/* ─── RENDU ─── */
-/* ─── RENDU ─── */
-/* === CODES SVG DES CADENAS & ETOILES === */
 function getLockSvg(locked, size) {
     if (size === void 0) { size = 35; }
     var color = locked ? "#EF4444" : "#10B981";
     var opacity = locked ? 1 : 0.65;
     var lockClass = locked ? "locked-svg" : "unlocked-svg";
     if (locked) {
-        return "<svg class=\"".concat(lockClass, "\" width=\"").concat(size, "\" height=\"").concat(size, "\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"").concat(color, "\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity: ").concat(opacity, "; transition: all 0.3s ease;\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" fill=\"").concat(color, "\" />\n            <path d=\"M7 11V7a5 5 0 0110 0v4\" fill=\"none\" />\n        </svg>");
+        return "<svg class=\"" + lockClass + "\" width=\"" + size + "\" height=\"" + size + "\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"" + color + "\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity: " + opacity + "; transition: all 0.3s ease;\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" fill=\"" + color + "\" />\n            <path d=\"M7 11V7a5 5 0 0110 0v4\" fill=\"none\" />\n        </svg>";
     }
     else {
-        return "<svg class=\"".concat(lockClass, "\" width=\"").concat(size, "\" height=\"").concat(size, "\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"").concat(color, "\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity: ").concat(opacity, "; transition: all 0.3s ease;\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" fill=\"").concat(color, "\" />\n            <path d=\"M7 11V7a5 5 0 019-3\" fill=\"none\" />\n        </svg>");
+        return "<svg class=\"" + lockClass + "\" width=\"" + size + "\" height=\"" + size + "\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"" + color + "\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity: " + opacity + "; transition: all 0.3s ease;\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" fill=\"" + color + "\" />\n            <path d=\"M7 11V7a5 5 0 019-3\" fill=\"none\" />\n        </svg>";
     }
 }
 function getStarSvg(active, size) {
     if (size === void 0) { size = 38; }
     var color = active ? "#FACC15" : "#4B5563";
     var fillClass = active ? "validated" : "unvalidated";
-    return "<svg class=\"star-interactive ".concat(fillClass, "\" width=\"").concat(size, "\" height=\"").concat(size, "\" viewBox=\"0 0 24 24\" fill=\"").concat(color, "\" stroke=\"none\" style=\"transition: transform 0.2s ease, fill 0.3s ease;\">\n        <path d=\"M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z\" />\n    </svg>");
+    return "<svg class=\"star-interactive " + fillClass + "\" width=\"" + size + "\" height=\"" + size + "\" viewBox=\"0 0 24 24\" fill=\"" + color + "\" stroke=\"none\" style=\"transition: transform 0.2s ease, fill 0.3s ease;\">\n        <path d=\"M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z\" />\n    </svg>";
 }
-/* === MAPPINGS DE SECTIONS ET D'EXERCICES === */
 var SECTIONS_CONFIG = {
     1: { name: "Basic models: Foundations of neural network", exos: [1, 2, 3, 5], gridId: "exGridSec1", containerId: "section-1-container" },
     2: { name: "The Building Blocks of Neural Networks", exos: [6, 4, 7, 8], gridId: "exGridSec2", containerId: "section-2-container" },
@@ -360,23 +338,18 @@ var QUIZZES = {
         ]
     }
 };
-/* Lottie Arrow JSON Data */
 var ARROW_LOTTIE_JSON = { "nm": "Main Scene", "ddd": 0, "h": 200, "w": 200, "meta": { "g": "@lottiefiles/creator@1.94.0" }, "layers": [{ "ty": 4, "nm": "Shape Layer 7", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.833, "y": 1 }, "s": [50, 50, 100], "t": 0 }, { "s": [50, 50, 100], "t": 24 }], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, -1, 0], "t": 0, "ti": [0, -31.667, 0], "to": [0, 31.667, 0] }, { "s": [100, 94, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.833, "y": 1 }, "s": [0], "t": 0 }, { "s": [100], "t": 24 }], "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 1 }, { "ty": 4, "nm": "Shape Layer 6", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 0, "k": [50, 50, 100], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, 94, 0], "t": 0, "ti": [0, -15, 0], "to": [0, 15, 0] }, { "s": [100, 139, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 0, "k": 100, "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 2 }, { "ty": 4, "nm": "Shape Layer 5", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [50, 50, 100], "t": 0 }, { "s": [25, 25, 100], "t": 24 }], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, 139, 0], "t": 0, "ti": [0, -20.333, 0], "to": [0, 20.333, 0] }, { "s": [100, 200, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100], "t": 0 }, { "s": [0], "t": 24 }], "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 3 }], "v": "5.7.0", "fr": 24, "op": 24, "ip": 0, "assets": [] };
-/* === VARIABLES DE PROGRESSION GLOBALES === */
 var completedOfficialIds = new Set();
 var userCreatedCount = 0;
 var activeQuizSection = null;
 var activeQuizAnswers = {};
-/* Initialisation des variables intro de Section 0 */
 var introState = JSON.parse(localStorage.getItem('section0_visited') || '{"eval":false,"res":false,"tuto":false}');
 function visitIntroItem(type) {
     introState[type] = true;
     localStorage.setItem('section0_visited', JSON.stringify(introState));
-    // Enlever le clignotement de la carte cliquée
-    var clickedCard = document.getElementById("card-intro-".concat(type));
+    var clickedCard = document.getElementById("card-intro-" + type);
     if (clickedCard)
         clickedCard.classList.remove('pulsing');
-    // Faire clignoter la carte suivante non visitée
     if (type === 'eval' && !introState.res) {
         document.getElementById('card-intro-res').classList.add('pulsing');
     }
@@ -384,12 +357,12 @@ function visitIntroItem(type) {
         document.getElementById('card-intro-tuto').classList.add('pulsing');
     }
     updateIntroUI();
-    applyFilters(); // Recalculer l'état global et verrous
+    applyFilters();
 }
 function updateIntroUI() {
     var keys = ['eval', 'res', 'tuto'];
     keys.forEach(function (k) {
-        var el = document.getElementById("status-intro-".concat(k));
+        var el = document.getElementById("status-intro-" + k);
         if (el) {
             if (introState[k]) {
                 el.innerHTML = "✅ Visité";
@@ -405,7 +378,6 @@ function updateIntroUI() {
 function isSection0Completed() {
     return introState.eval && introState.res && introState.tuto;
 }
-/* === RECUPERATION DES STATUTS DEPUIS L'API SUPABASE === */
 function fetchProgressAndCreatedExos() {
     return __awaiter(this, void 0, void 0, function () {
         var user, progressRes, progressData, exercisesRes, exercisesData, createdByUser, err_1;
@@ -414,15 +386,15 @@ function fetchProgressAndCreatedExos() {
                 case 0:
                     user = JSON.parse(localStorage.getItem('currentUser'));
                     if (!user || !user.email)
-                        return [2 /*return*/];
+                        return [2];
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 8, , 9]);
-                    return [4 /*yield*/, fetch("/api/progress/".concat(user.email))];
+                    return [4, fetch("/api/progress/" + user.email)];
                 case 2:
                     progressRes = _b.sent();
-                    if (!progressRes.ok) return [3 /*break*/, 4];
-                    return [4 /*yield*/, progressRes.json()];
+                    if (!progressRes.ok) return [3, 4];
+                    return [4, progressRes.json()];
                 case 3:
                     progressData = _b.sent();
                     completedOfficialIds = new Set(progressData
@@ -430,27 +402,26 @@ function fetchProgressAndCreatedExos() {
                         .map(function (p) { return p.exercises ? p.exercises.official_id : null; })
                         .filter(function (id) { return id !== null; }));
                     _b.label = 4;
-                case 4: return [4 /*yield*/, fetch("/api/exercises")];
+                case 4: return [4, fetch("/api/exercises")];
                 case 5:
                     exercisesRes = _b.sent();
-                    if (!exercisesRes.ok) return [3 /*break*/, 7];
-                    return [4 /*yield*/, exercisesRes.json()];
+                    if (!exercisesRes.ok) return [3, 7];
+                    return [4, exercisesRes.json()];
                 case 6:
                     exercisesData = _b.sent();
                     createdByUser = exercisesData.filter(function (exo) { return exo.creator_id === user.id; });
                     userCreatedCount = createdByUser.length;
                     _b.label = 7;
-                case 7: return [3 /*break*/, 9];
+                case 7: return [3, 9];
                 case 8:
                     err_1 = _b.sent();
                     console.error("Erreur lors de la récupération de la progression :", err_1);
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3, 9];
+                case 9: return [2];
             }
         });
     });
 }
-/* === RENDU DES CARTES D'EXERCICES AVEC PROGRESSION === */
 function renderSectionCards(gridId, list, isSectionUnlocked) {
     var grid = document.getElementById(gridId);
     if (!grid)
@@ -458,18 +429,15 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
     grid.innerHTML = '';
     list.forEach(function (ex, index) {
         var card = document.createElement('div');
-        // Déterminer le statut de verrouillage
-        // L'exercice 0 d'une section déverrouillée est ouvert. L'exercice K est ouvert si l'exercice K-1 est terminé.
-        var isExUnlocked = true; // TEMP UNLOCK FOR TESTING
+        var isExUnlocked = true;
         var isCompleted = completedOfficialIds.has(ex.id);
         var lockIcon = getLockSvg(!isExUnlocked);
         var starIcon = getStarSvg(isCompleted);
-        card.className = "ex-card ".concat(ex.difficulty, " ").concat(!isExUnlocked ? 'locked-card' : '');
-        // Ajouter un effet de clignotement sur le premier exercice disponible non complété
+        card.className = "ex-card " + ex.difficulty + " " + (!isExUnlocked ? 'locked-card' : '');
         if (isSectionUnlocked && isExUnlocked && !isCompleted && (index === 0 || completedOfficialIds.has(list[index - 1].id))) {
             card.classList.add('pulsing');
         }
-        card.innerHTML = "\n          <div class=\"card-top\">\n            <div class=\"card-actions-top\">\n                <span class=\"lock-indicator\">".concat(lockIcon, "</span>\n                <span class=\"star-indicator\" onclick=\"event.stopPropagation(); showFunFact(").concat(ex.id, ", ").concat(isCompleted, ")\">").concat(starIcon, "</span>\n            </div>\n            <span class=\"badge ").concat(ex.difficulty, "\">").concat(DIFF_LABEL[ex.difficulty], "</span>\n          </div>\n          <div class=\"category-tag\">").concat(ex.category, "</div>\n          <div class=\"card-title\">").concat(ex.title, "</div>\n          <div class=\"card-desc\">").concat(ex.desc, "</div>\n          <div class=\"card-footer\">\n            <div class=\"card-meta\">\n               <div class=\"meta-item\">\uD83D\uDD52 ").concat(ex.duration, "</div>\n               <div class=\"meta-item\">\u2753 ").concat(ex.questions, "</div>\n            </div>\n            <button class=\"btn-start\" ").concat(!isExUnlocked ? 'disabled' : '', " onclick=\"startExercise('").concat(ex.id, "', '").concat(ex.title.replace(/'/g, "\\'"), "', false)\">\n              Commencer \u2192\n            </button>\n          </div>\n        ");
+        card.innerHTML = "\n          <div class=\"card-top\">\n            <div class=\"card-actions-top\">\n                <span class=\"lock-indicator\">" + lockIcon + "</span>\n                <span class=\"star-indicator\" onclick=\"event.stopPropagation(); showFunFact(" + ex.id + ", " + isCompleted + ")\">" + starIcon + "</span>\n            </div>\n            <span class=\"badge " + ex.difficulty + "\">" + DIFF_LABEL[ex.difficulty] + "</span>\n          </div>\n          <div class=\"category-tag\">" + ex.category + "</div>\n          <div class=\"card-title\">" + ex.title + "</div>\n          <div class=\"card-desc\">" + ex.desc + "</div>\n          <div class=\"card-footer\">\n            <div class=\"card-meta\">\n               <div class=\"meta-item\">\uD83D\uDD52 " + ex.duration + "</div>\n               <div class=\"meta-item\">\u2753 " + ex.questions + "</div>\n            </div>\n            <button class=\"btn-start\" " + (!isExUnlocked ? 'disabled' : '') + " onclick=\"startExercise('" + ex.id + "', '" + ex.title.replace(/'/g, "\\'") + "', false)\">\n              Commencer \u2192\n            </button>\n          </div>\n        ";
         grid.appendChild(card);
     });
 }
@@ -480,36 +448,35 @@ function deleteCommunityExo(id) {
             switch (_b.label) {
                 case 0:
                     if (!confirm("Voulez-vous vraiment supprimer cet exercice du catalogue ?"))
-                        return [2 /*return*/];
+                        return [2];
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 7, , 8]);
-                    return [4 /*yield*/, fetch("/api/exercises/".concat(id), { method: 'DELETE' })];
+                    return [4, fetch("/api/exercises/" + id, { method: 'DELETE' })];
                 case 2:
                     res = _b.sent();
-                    if (!res.ok) return [3 /*break*/, 4];
+                    if (!res.ok) return [3, 4];
                     alert("L'exercice a été retiré du catalogue.");
-                    return [4 /*yield*/, loadAndRender()];
+                    return [4, loadAndRender()];
                 case 3:
-                    _b.sent(); // Recharge depuis l'API
-                    return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, res.json()];
+                    _b.sent();
+                    return [3, 6];
+                case 4: return [4, res.json()];
                 case 5:
                     err = _b.sent();
                     alert("Erreur : " + (err.error || 'Impossible de supprimer'));
                     _b.label = 6;
-                case 6: return [3 /*break*/, 8];
+                case 6: return [3, 8];
                 case 7:
                     err_2 = _b.sent();
                     console.error('Erreur suppression:', err_2);
                     alert("Erreur réseau lors de la suppression.");
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3, 8];
+                case 8: return [2];
             }
         });
     });
 }
-/* ─── FILTRES ─── */
 function setFilter(diff, btn) {
     currentFilter = diff;
     document.querySelectorAll('.filter-btn').forEach(function (b) { return b.classList.remove('active'); });
@@ -518,7 +485,6 @@ function setFilter(diff, btn) {
     applyFilters();
 }
 function filterCards() { applyFilters(); }
-// ✅ Source de vérité pour les exos custom (remplie par l'API)
 var CUSTOM_EXERCISES_FROM_API = [];
 function loadAndRender() {
     return __awaiter(this, void 0, void 0, function () {
@@ -527,15 +493,14 @@ function loadAndRender() {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 4, , 5]);
-                    return [4 /*yield*/, fetch('/api/exercises')];
+                    return [4, fetch('/api/exercises')];
                 case 1:
                     res = _b.sent();
-                    if (!res.ok) return [3 /*break*/, 3];
-                    return [4 /*yield*/, res.json()];
+                    if (!res.ok) return [3, 3];
+                    return [4, res.json()];
                 case 2:
                     data = _b.sent();
                     communityOnly = data.filter(function (exo) { return !exo.is_official && !exo.official_id; });
-                    // Mapping format API → format carte
                     CUSTOM_EXERCISES_FROM_API = communityOnly.map(function (exo) { return ({
                         id: exo.id,
                         icon: '👥',
@@ -549,7 +514,7 @@ function loadAndRender() {
                         creator_id: exo.creator_id
                     }); });
                     _b.label = 3;
-                case 3: return [3 /*break*/, 5];
+                case 3: return [3, 5];
                 case 4:
                     err_3 = _b.sent();
                     console.warn('⚠️ API indisponible pour les exos custom:', err_3.message);
@@ -558,10 +523,10 @@ function loadAndRender() {
                         id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
                         difficulty: 'easy', category: 'Communauté', duration: 'Auto', questions: '?', isCustom: true
                     }); });
-                    return [3 /*break*/, 5];
+                    return [3, 5];
                 case 5:
                     applyFilters();
-                    return [2 /*return*/];
+                    return [2];
             }
         });
     });
@@ -571,16 +536,13 @@ function applyFilters() {
         var _a, q, baseExercises, formattedCustoms, statTotalValue, statEasyValue, statMediumValue, statHardValue, sec1Unlocked, sec1QuizCompleted, sec2Unlocked, sec2QuizCompleted, sec3Unlocked, sec3QuizCompleted, sec4Unlocked, sec4QuizCompleted, finalUnlocked, filteredCustom, gridCustom, empty, hasAnyExos;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: 
-                // 1. Charger la progression utilisateur et les exos créés depuis l'API
-                return [4 /*yield*/, fetchProgressAndCreatedExos()];
+                case 0: return [4, fetchProgressAndCreatedExos()];
                 case 1:
-                    // 1. Charger la progression utilisateur et les exos créés depuis l'API
                     _b.sent();
                     updateIntroUI();
                     q = (((_a = document.getElementById('searchInput')) === null || _a === void 0 ? void 0 : _a.value) || '').toLowerCase().trim();
-                    baseExercises = __spreadArray([], EXERCISES, true);
-                    formattedCustoms = __spreadArray([], CUSTOM_EXERCISES_FROM_API, true);
+                    baseExercises = EXERCISES.slice();
+                    formattedCustoms = CUSTOM_EXERCISES_FROM_API.slice();
                     statTotalValue = document.getElementById('statTotal');
                     if (statTotalValue)
                         statTotalValue.textContent = baseExercises.length + formattedCustoms.length;
@@ -602,23 +564,19 @@ function applyFilters() {
                     sec4Unlocked = true;
                     sec4QuizCompleted = true;
                     finalUnlocked = true;
-                    // Configurer l'opacité et les filtres des conteneurs de section
                     updateSectionContainer('section-1-container', sec1Unlocked);
                     updateSectionContainer('section-2-container', sec2Unlocked);
                     updateSectionContainer('section-3-container', sec3Unlocked);
                     updateSectionContainer('section-4-container', sec4Unlocked);
                     updateSectionContainer('section-final-container', finalUnlocked);
-                    // Initialiser et afficher les flèches Lottie si les quiz précédents sont complétés
                     toggleArrowLottie('arrow-0-1', sec1Unlocked, 0);
                     toggleArrowLottie('arrow-1-2', sec2Unlocked, 1);
                     toggleArrowLottie('arrow-2-3', sec3Unlocked, 2);
                     toggleArrowLottie('arrow-3-4', sec4Unlocked, 3);
                     toggleArrowLottie('arrow-4-final', finalUnlocked, 4);
-                    // Rendu de chaque section d'exercices officiels
                     Object.keys(SECTIONS_CONFIG).forEach(function (secKey) {
                         var conf = SECTIONS_CONFIG[secKey];
                         var secExos = baseExercises.filter(function (e) { return conf.exos.includes(e.id); });
-                        // Appliquer la recherche locale
                         var filteredSecExos = secExos.filter(function (e) {
                             if (currentFilter !== 'tous' && e.difficulty !== currentFilter)
                                 return false;
@@ -628,7 +586,6 @@ function applyFilters() {
                         });
                         var isSecUnlocked = secKey == 1 ? sec1Unlocked : (secKey == 2 ? sec2Unlocked : (secKey == 3 ? sec3Unlocked : sec4Unlocked));
                         renderSectionCards(conf.gridId, filteredSecExos, isSecUnlocked);
-                        // Ajouter la carte de Quiz de Section à la fin de la grille
                         appendQuizCard(conf.gridId, secKey, isSecUnlocked);
                     });
                     filteredCustom = formattedCustoms.filter(function (e) {
@@ -643,16 +600,15 @@ function applyFilters() {
                         gridCustom.innerHTML = '';
                         filteredCustom.forEach(function (ex) {
                             var card = document.createElement('div');
-                            card.className = "ex-card ".concat(ex.difficulty);
+                            card.className = "ex-card " + ex.difficulty;
                             var deleteBtn = '';
                             if (isTeacher) {
-                                deleteBtn = "<button class=\"btn-delete-exo\" onclick=\"event.stopPropagation(); deleteCommunityExo('".concat(ex.id, "')\" title=\"Supprimer l'exercice\">\n                <span class=\"material-icons\" style=\"font-size:18px; pointer-events: none;\">delete_forever</span>\n              </button>");
+                                deleteBtn = "<button class=\"btn-delete-exo\" onclick=\"event.stopPropagation(); deleteCommunityExo('" + ex.id + "')\" title=\"Supprimer l'exercice\">\n                <span class=\"material-icons\" style=\"font-size:18px; pointer-events: none;\">delete_forever</span>\n              </button>";
                             }
-                            card.innerHTML = "\n              <div class=\"card-top\">\n                <div class=\"card-icon\">".concat(ex.icon, "</div>\n                <div style=\"display:flex; align-items:center; gap:8px;\">\n                   ").concat(deleteBtn, "\n                   <span class=\"badge ").concat(ex.difficulty, "\">").concat(DIFF_LABEL[ex.difficulty], "</span>\n                </div>\n              </div>\n              <div class=\"category-tag\">").concat(ex.category, "</div>\n              <div class=\"card-title\">").concat(ex.title, "</div>\n              <div class=\"card-desc\">").concat(ex.desc, "</div>\n              <div class=\"card-footer\">\n                <div class=\"card-meta\">\n                   <div class=\"meta-item\">\uD83D\uDD52 ").concat(ex.duration, "</div>\n                   <div class=\"meta-item\">\u2753 ").concat(ex.questions, "</div>\n                </div>\n                <button class=\"btn-start\" onclick=\"startExercise('").concat(ex.id, "', '").concat(ex.title.replace(/'/g, "\\'"), "', true)\">\n                  Commencer \u2192\n                </button>\n              </div>\n            ");
+                            card.innerHTML = "\n              <div class=\"card-top\">\n                <div class=\"card-icon\">" + ex.icon + "</div>\n                <div style=\"display:flex; align-items:center; gap:8px;\">\n                   " + deleteBtn + "\n                   <span class=\"badge " + ex.difficulty + "\">" + DIFF_LABEL[ex.difficulty] + "</span>\n                </div>\n              </div>\n              <div class=\"category-tag\">" + ex.category + "</div>\n              <div class=\"card-title\">" + ex.title + "</div>\n              <div class=\"card-desc\">" + ex.desc + "</div>\n              <div class=\"card-footer\">\n                <div class=\"card-meta\">\n                   <div class=\"meta-item\">\uD83D\uDD52 " + ex.duration + "</div>\n                   <div class=\"meta-item\">\u2753 " + ex.questions + "</div>\n                </div>\n                <button class=\"btn-start\" onclick=\"startExercise('" + ex.id + "', '" + ex.title.replace(/'/g, "\\'") + "', true)\">\n                  Commencer \u2192\n                </button>\n              </div>\n            ";
                             gridCustom.appendChild(card);
                         });
                     }
-                    // Gérer l'affichage de l'état final et des récompenses
                     updateFinalProjectStatus(finalUnlocked);
                     empty = document.getElementById('emptyState');
                     hasAnyExos = baseExercises.length > 0 || formattedCustoms.length > 0;
@@ -662,12 +618,11 @@ function applyFilters() {
                     else {
                         empty.classList.remove('visible');
                     }
-                    return [2 /*return*/];
+                    return [2];
             }
         });
     });
 }
-/* Helper pour mettre à jour l'opacité et l'accès d'une section entière */
 function updateSectionContainer(id, unlocked) {
     var el = document.getElementById(id);
     if (!el)
@@ -681,7 +636,6 @@ function updateSectionContainer(id, unlocked) {
         el.style.pointerEvents = 'none';
     }
 }
-/* Helper pour instancier les flèches Lottie */
 var lottieArrows = {};
 function toggleArrowLottie(containerId, show, index) {
     var el = document.getElementById(containerId);
@@ -707,41 +661,38 @@ function toggleArrowLottie(containerId, show, index) {
         }
     }
 }
-/* Insère la carte Quiz à la fin de la grille d'exercices d'une section */
 function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
     var grid = document.getElementById(gridId);
     if (!grid)
         return;
     var conf = SECTIONS_CONFIG[sectionKey];
-    var quizCompleted = localStorage.getItem("quiz_section_".concat(sectionKey, "_completed")) === 'true';
-    // Le quiz n'est disponible que si TOUS les exercices de la section sont validés
+    var quizCompleted = localStorage.getItem("quiz_section_" + sectionKey + "_completed") === 'true';
     var allExosCompleted = conf.exos.every(function (id) { return completedOfficialIds.has(id); });
-    var isQuizUnlocked = true; // TEMP UNLOCK FOR TESTING
+    var isQuizUnlocked = true;
     var card = document.createElement('div');
-    card.className = "ex-card quiz-card medium ".concat(!isQuizUnlocked ? 'locked-card' : '', " ").concat(quizCompleted ? 'quiz-completed' : '');
+    card.className = "ex-card quiz-card medium " + (!isQuizUnlocked ? 'locked-card' : '') + " " + (quizCompleted ? 'quiz-completed' : '');
     if (isQuizUnlocked && !quizCompleted) {
         card.classList.add('pulsing');
     }
     var lockIcon = getLockSvg(!isQuizUnlocked);
     var starIcon = getStarSvg(quizCompleted);
-    card.innerHTML = "\n      <div class=\"card-top\">\n        <div class=\"card-actions-top\">\n            <span class=\"lock-indicator\">".concat(lockIcon, "</span>\n            <span class=\"star-indicator\">").concat(starIcon, "</span>\n        </div>\n        <span class=\"badge medium quiz-badge\">\uD83C\uDFC5 Quiz</span>\n      </div>\n      <div class=\"category-tag\">\u00C9valuation</div>\n      <div class=\"card-title\">Validation de la Section ").concat(sectionKey, "</div>\n      <div class=\"card-desc\">Testez vos acquis th\u00E9oriques pour d\u00E9bloquer la section suivante.</div>\n      <div class=\"card-footer\">\n        <div class=\"card-meta\">\n           <div class=\"meta-item\">\uD83D\uDD52 5 min</div>\n           <div class=\"meta-item\">\u2753 2</div>\n        </div>\n        <button class=\"btn-start\" ").concat(!isQuizUnlocked ? 'disabled' : '', " onclick=\"openQuizModal(").concat(sectionKey, ")\">\n          ").concat(quizCompleted ? 'Recommencer →' : 'Évaluer →', "\n        </button>\n      </div>\n    ");
+    card.innerHTML = "\n      <div class=\"card-top\">\n        <div class=\"card-actions-top\">\n            <span class=\"lock-indicator\">" + lockIcon + "</span>\n            <span class=\"star-indicator\">" + starIcon + "</span>\n        </div>\n        <span class=\"badge medium quiz-badge\">\uD83C\uDFC5 Quiz</span>\n      </div>\n      <div class=\"category-tag\">\u00C9valuation</div>\n      <div class=\"card-title\">Validation de la Section " + sectionKey + "</div>\n      <div class=\"card-desc\">Testez vos acquis th\u00E9oriques pour d\u00E9bloquer la section suivante.</div>\n      <div class=\"card-footer\">\n        <div class=\"card-meta\">\n           <div class=\"meta-item\">\uD83D\uDD52 5 min</div>\n           <div class=\"meta-item\">\u2753 2</div>\n        </div>\n        <button class=\"btn-start\" " + (!isQuizUnlocked ? 'disabled' : '') + " onclick=\"openQuizModal(" + sectionKey + ")\">\n          " + (quizCompleted ? 'Recommencer →' : 'Évaluer →') + "\n        </button>\n      </div>\n    ";
     grid.appendChild(card);
 }
-/* Gère l'affichage des verrous du projet final et du certificat */
 function updateFinalProjectStatus(unlocked) {
     var statusText = document.getElementById('final-creation-status');
     var rewardCard = document.getElementById('reward-card');
     var trophyEmoji = document.getElementById('trophy-emoji');
     var btnCert = document.getElementById('btn-download-cert');
     if (userCreatedCount > 0) {
-        statusText.innerHTML = "\u2705 ".concat(userCreatedCount, " exercice(s) cr\u00E9\u00E9(s)");
+        statusText.innerHTML = "\u2705 " + userCreatedCount + " exercice(s) cr\u00E9\u00E9(s)";
         statusText.style.color = "var(--green)";
     }
     else {
         statusText.innerHTML = "\u274C Aucun exercice cr\u00E9\u00E9";
         statusText.style.color = "var(--red)";
     }
-    var allQuizzesDone = [1, 2, 3, 4].every(function (sec) { return localStorage.getItem("quiz_section_".concat(sec, "_completed")) === 'true'; });
+    var allQuizzesDone = [1, 2, 3, 4].every(function (sec) { return localStorage.getItem("quiz_section_" + sec + "_completed") === 'true'; });
     var isRewardUnlocked = unlocked && allQuizzesDone && userCreatedCount > 0;
     if (isRewardUnlocked) {
         rewardCard.classList.remove('locked');
@@ -756,18 +707,16 @@ function updateFinalProjectStatus(unlocked) {
         btnCert.setAttribute('disabled', 'true');
     }
 }
-/* === FUN FACTS WINDOWS / MODALS === */
 function showFunFact(exoId, isCompleted) {
     if (!isCompleted)
         return;
     var titleEl = document.getElementById('funfact-title');
     var bodyEl = document.getElementById('funfact-content');
-    titleEl.textContent = "\uD83D\uDCA1 Le Saviez-vous ? (Exercice ".concat(exoId, ")");
+    titleEl.textContent = "\uD83D\uDCA1 Le Saviez-vous ? (Exercice " + exoId + ")";
     bodyEl.textContent = FUN_FACTS[exoId] || "L'intelligence artificielle est pleine de surprises !";
     document.getElementById('modal-overlay').style.display = 'block';
     document.getElementById('modal-funfact').style.display = 'block';
 }
-/* === GESTIONNAIRE DE QUIZ === */
 var SECTION_QUIZ_CONFIG = {
     1: {
         title: "QUIZ Section 1 : Basic models: Foundations of neural network",
@@ -1052,7 +1001,7 @@ var SECTION_QUIZ_CONFIG = {
             { id: 'overfitting', def: 'When a model performs extremely well on training data but poorly on unseen data, what issue does it illustrate?', jalonIndex: 10, fallbackExo: 12 },
             { id: 'non_lin', def: 'Why are activation functions essential for learning complex patterns?', jalonIndex: 11, fallbackExo: 7 }
         ],
-        statements: [] // No Quiz 2 statements
+        statements: []
     }
 };
 var customQuizErrors = 0;
@@ -1082,8 +1031,8 @@ function initCustomQuizTicks() {
         line.setAttribute('x2', x2.toString());
         line.setAttribute('y2', y2.toString());
         line.setAttribute('class', 'gauge-tick');
-        line.setAttribute('id', "gauge-tick-".concat(i));
-        line.setAttribute('stroke', '#4B5563'); // default gray
+        line.setAttribute('id', "gauge-tick-" + i);
+        line.setAttribute('stroke', '#4B5563');
         ticksGroup.appendChild(line);
     }
 }
@@ -1097,8 +1046,8 @@ function updateCustomQuizGauge() {
     var total = config ? config.totalItems : 13;
     var score = Math.max(0, total - customQuizErrors);
     var percent = Math.round((score / total) * 100);
-    percentEl.textContent = "".concat(percent, "%");
-    scoreEl.textContent = "".concat(score, "/").concat(total);
+    percentEl.textContent = percent + "%";
+    scoreEl.textContent = score + "/" + total;
     var circ = 282.74;
     var offset = circ - (percent / 100) * circ;
     fillEl.style.strokeDashoffset = offset.toString();
@@ -1110,7 +1059,7 @@ function updateCustomQuizGauge() {
     }
 }
 function updateTickColor(i, success) {
-    var tick = document.getElementById("gauge-tick-".concat(i));
+    var tick = document.getElementById("gauge-tick-" + i);
     if (tick) {
         tick.setAttribute('stroke', success ? '#10B981' : '#FF034D');
     }
@@ -1146,7 +1095,7 @@ function openQuizModal(sectionKey) {
         customQuiz2CurrentIndex = 0;
         customQuizIncorrectExos.clear();
         selectedDraggableId = null;
-        bodyEl.innerHTML = "\n            <div class=\"quiz-split-container\">\n              <div class=\"quiz-left-panel\" id=\"quiz-left-panel\"></div>\n              <div class=\"quiz-right-panel\">\n                <div class=\"gauge-container\">\n                  <svg class=\"gauge-svg\" viewBox=\"0 0 100 100\">\n                    <circle class=\"gauge-bg\" cx=\"50\" cy=\"50\" r=\"45\"></circle>\n                    <circle class=\"gauge-fill\" id=\"quiz-gauge-fill\" cx=\"50\" cy=\"50\" r=\"45\"></circle>\n                    <g id=\"quiz-gauge-ticks\"></g>\n                  </svg>\n                  <div class=\"gauge-text\">\n                    <span class=\"gauge-percent\" id=\"quiz-gauge-percent\">100%</span>\n                    <span class=\"gauge-score\" id=\"quiz-gauge-score\">".concat(config.totalItems, "/").concat(config.totalItems, "</span>\n                  </div>\n                </div>\n                <div class=\"gauge-info-text\" id=\"quiz-gauge-status\">Seuil requis : 80%</div>\n                <button class=\"btn-quit-quiz\" onclick=\"closeAllModals()\">\n                  \uD83D\uDEAA Retour aux exercices\n                </button>\n              </div>\n            </div>\n        ");
+        bodyEl.innerHTML = "\n            <div class=\"quiz-split-container\">\n              <div class=\"quiz-left-panel\" id=\"quiz-left-panel\"></div>\n              <div class=\"quiz-right-panel\">\n                <div class=\"gauge-container\">\n                  <svg class=\"gauge-svg\" viewBox=\"0 0 100 100\">\n                    <circle class=\"gauge-bg\" cx=\"50\" cy=\"50\" r=\"45\"></circle>\n                    <circle class=\"gauge-fill\" id=\"quiz-gauge-fill\" cx=\"50\" cy=\"50\" r=\"45\"></circle>\n                    <g id=\"quiz-gauge-ticks\"></g>\n                  </svg>\n                  <div class=\"gauge-text\">\n                    <span class=\"gauge-percent\" id=\"quiz-gauge-percent\">100%</span>\n                    <span class=\"gauge-score\" id=\"quiz-gauge-score\">" + config.totalItems + "/" + config.totalItems + "</span>\n                  </div>\n                </div>\n                <div class=\"gauge-info-text\" id=\"quiz-gauge-status\">Seuil requis : 80%</div>\n                <button class=\"btn-quit-quiz\" onclick=\"closeAllModals()\">\n                  \uD83D\uDEAA Retour aux exercices\n                </button>\n              </div>\n            </div>\n        ";
         initCustomQuizTicks();
         updateCustomQuizGauge();
         renderCustomQuiz1Matching();
@@ -1160,13 +1109,13 @@ function openQuizModal(sectionKey) {
         quiz.questions.forEach(function (qObj, qIdx) {
             var qDiv = document.createElement('div');
             qDiv.className = 'quiz-question';
-            qDiv.innerHTML = "<p>".concat(qIdx + 1, ". ").concat(qObj.q, "</p>");
+            qDiv.innerHTML = "<p>" + (qIdx + 1) + ". " + qObj.q + "</p>";
             var optionsDiv = document.createElement('div');
             optionsDiv.className = 'quiz-options';
             qObj.options.forEach(function (opt, optIdx) {
                 var optBtn = document.createElement('div');
                 optBtn.className = 'quiz-option';
-                optBtn.id = "q-".concat(qIdx, "-opt-").concat(optIdx);
+                optBtn.id = "q-" + qIdx + "-opt-" + optIdx;
                 optBtn.textContent = opt;
                 optBtn.onclick = function () { return selectQuizOption(qIdx, optIdx); };
                 optionsDiv.appendChild(optBtn);
@@ -1182,11 +1131,11 @@ function selectQuizOption(qIdx, optionIdx) {
     var quiz = QUIZZES[activeQuizSection];
     var qObj = quiz.questions[qIdx];
     qObj.options.forEach(function (_, optIdx) {
-        var el = document.getElementById("q-".concat(qIdx, "-opt-").concat(optIdx));
+        var el = document.getElementById("q-" + qIdx + "-opt-" + optIdx);
         if (el)
             el.classList.remove('selected');
     });
-    var selectedEl = document.getElementById("q-".concat(qIdx, "-opt-").concat(optionIdx));
+    var selectedEl = document.getElementById("q-" + qIdx + "-opt-" + optionIdx);
     if (selectedEl)
         selectedEl.classList.add('selected');
     activeQuizAnswers[qIdx] = optionIdx;
@@ -1206,15 +1155,15 @@ function submitQuiz() {
     });
     closeAllModals();
     if (allCorrect) {
-        localStorage.setItem("quiz_section_".concat(activeQuizSection, "_completed"), 'true');
-        showToast("\uD83C\uDF89 F\u00E9licitations ! Quiz de la section ".concat(activeQuizSection, " valid\u00E9."), true);
+        localStorage.setItem("quiz_section_" + activeQuizSection + "_completed", 'true');
+        showToast("\uD83C\uDF89 F\u00E9licitations ! Quiz de la section " + activeQuizSection + " valid\u00E9.", true);
         applyFilters();
     }
     else {
         showToast("\u274C Certaines r\u00E9ponses sont incorrectes. R\u00E9visez le cours.", false);
         if (fallbackExo) {
             setTimeout(function () {
-                alert("Pour mieux comprendre vos erreurs, nous vous conseillons de r\u00E9viser l'exercice ".concat(fallbackExo, "."));
+                alert("Pour mieux comprendre vos erreurs, nous vous conseillons de r\u00E9viser l'exercice " + fallbackExo + ".");
                 var link = EXERCISE_LINKS[fallbackExo];
                 if (link)
                     window.location.href = link;
@@ -1234,11 +1183,11 @@ function renderCustomQuiz1Matching() {
     var config = SECTION_QUIZ_CONFIG[activeQuizSection];
     var terms = config.terms;
     var targets = config.targets;
-    var shuffledTerms = __spreadArray([], terms, true).sort(function () { return Math.random() - 0.5; });
+    var shuffledTerms = terms.slice().sort(function () { return Math.random() - 0.5; });
     shuffledTerms.forEach(function (t) {
         var item = document.createElement('div');
         item.className = 'draggable-item';
-        item.id = "drag-".concat(t.id);
+        item.id = "drag-" + t.id;
         item.textContent = t.name;
         item.draggable = true;
         item.ondragstart = function (e) {
@@ -1263,13 +1212,13 @@ function renderCustomQuiz1Matching() {
         };
         deck.appendChild(item);
     });
-    var shuffledTargets = __spreadArray([], targets, true).sort(function () { return Math.random() - 0.5; });
+    var shuffledTargets = targets.slice().sort(function () { return Math.random() - 0.5; });
     shuffledTargets.forEach(function (tgt) {
         var row = document.createElement('div');
         row.className = 'matching-target-row';
-        row.id = "row-".concat(tgt.id);
-        row.innerHTML = "\n            <div class=\"matching-zone\" id=\"zone-".concat(tgt.id, "\">D\u00E9pose ici</div>\n            <div class=\"matching-definition\">").concat(tgt.def, "</div>\n        ");
-        var zone = row.querySelector("#zone-".concat(tgt.id));
+        row.id = "row-" + tgt.id;
+        row.innerHTML = "\n            <div class=\"matching-zone\" id=\"zone-" + tgt.id + "\">D\u00E9pose ici</div>\n            <div class=\"matching-definition\">" + tgt.def + "</div>\n        ";
+        var zone = row.querySelector("#zone-" + tgt.id);
         zone.ondragover = function (e) {
             e.preventDefault();
             zone.classList.add('dragover');
@@ -1298,9 +1247,9 @@ function renderCustomQuiz1Matching() {
 function handleMatchingDrop(termId, targetId, jalonIndex, fallbackExo) {
     if (customQuiz1Matches[targetId] !== null)
         return;
-    var row = document.getElementById("row-".concat(targetId));
-    var zone = document.getElementById("zone-".concat(targetId));
-    var dragItem = document.getElementById("drag-".concat(termId));
+    var row = document.getElementById("row-" + targetId);
+    var zone = document.getElementById("zone-" + targetId);
+    var dragItem = document.getElementById("drag-" + termId);
     if (!row || !zone || !dragItem)
         return;
     if (termId === targetId) {
@@ -1353,7 +1302,6 @@ function renderCustomQuiz2Sorting() {
     customQuiz2CurrentIndex = 0;
     selectedDraggableId = null;
     leftPanel.innerHTML = "\n        <h4 style=\"margin:0; font-size:20px; color:#fff; font-weight: 700;\">Quiz 2 : Vrai ou Faux ?</h4>\n        <p style=\"margin:4px 0 16px 0; font-size:15px; color:#94a3b8; line-height:1.4;\">\n            Glissez-d\u00E9posez chaque affirmation dans la zone VRAI ou FAUX correspondante, ou cliquez sur une carte puis sur une zone.\n        </p>\n\n        <div class=\"dragdrop-source\" id=\"dragdrop-source\"></div>\n\n        <div class=\"dragdrop-drop-zones\">\n            <div class=\"dragdrop-drop-zone drop-zone-true\" id=\"drop-zone-true\">\n                <div class=\"dragdrop-zone-header true-header\">\uD83D\uDC4D VRAI</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-true-cards\"></div>\n            </div>\n            <div class=\"dragdrop-drop-zone drop-zone-false\" id=\"drop-zone-false\">\n                <div class=\"dragdrop-zone-header false-header\">\uD83D\uDC4E FAUX</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-false-cards\"></div>\n            </div>\n        </div>\n    ";
-    // Add feedback area to the right panel below the gauge
     var rightPanel = document.querySelector('.quiz-right-panel');
     if (rightPanel) {
         var feedbackArea = document.getElementById('quiz2-feedback-area');
@@ -1369,13 +1317,12 @@ function renderCustomQuiz2Sorting() {
     if (!source)
         return;
     var config = SECTION_QUIZ_CONFIG[activeQuizSection];
-    // Shuffle the statements for variety
     var shuffledIndices = config.statements.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; });
     shuffledIndices.forEach(function (idx) {
         var stmt = config.statements[idx];
         var card = document.createElement('div');
         card.className = 'drag-statement-card';
-        card.id = "stmt-card-".concat(idx);
+        card.id = "stmt-card-" + idx;
         card.draggable = true;
         card.textContent = stmt.text;
         card.setAttribute('data-idx', idx.toString());
@@ -1390,7 +1337,6 @@ function renderCustomQuiz2Sorting() {
         card.ondragend = function () {
             card.classList.remove('dragging');
         };
-        // Click-to-select fallback
         card.onclick = function (e) {
             e.stopPropagation();
             if (card.classList.contains('placed'))
@@ -1408,7 +1354,6 @@ function renderCustomQuiz2Sorting() {
         };
         source.appendChild(card);
     });
-    // Setup drop zones
     setupQuiz2DropZone('drop-zone-true', true);
     setupQuiz2DropZone('drop-zone-false', false);
 }
@@ -1431,7 +1376,6 @@ function setupQuiz2DropZone(zoneId, isTrue) {
             handleQuiz2Drop(stmtIdx, isTrue);
         }
     };
-    // Click-to-place fallback
     zone.onclick = function () {
         if (selectedDraggableId !== null) {
             var stmtIdx = parseInt(selectedDraggableId);
@@ -1450,12 +1394,11 @@ function handleQuiz2Drop(stmtIdx, chosenTrue) {
     var statement = config.statements[stmtIdx];
     if (!statement)
         return;
-    var card = document.getElementById("stmt-card-".concat(stmtIdx));
+    var card = document.getElementById("stmt-card-" + stmtIdx);
     if (!card || card.classList.contains('placed'))
         return;
     var isCorrect = chosenTrue === statement.isTrue;
     var jalonIndex = config.terms.length + stmtIdx;
-    // Move card to the target zone
     var targetCards = document.getElementById(chosenTrue ? 'dropped-true-cards' : 'dropped-false-cards');
     if (targetCards) {
         card.classList.add('placed');
@@ -1469,7 +1412,6 @@ function handleQuiz2Drop(stmtIdx, chosenTrue) {
         }
         targetCards.appendChild(card);
     }
-    // Update gauge ticks and score
     if (isCorrect) {
         updateTickColor(jalonIndex, true);
     }
@@ -1480,13 +1422,11 @@ function handleQuiz2Drop(stmtIdx, chosenTrue) {
         updateCustomQuizGauge();
         updateTickColor(jalonIndex, false);
     }
-    // Show feedback in the right panel area
     var feedbackArea = document.getElementById('quiz2-feedback-area');
     if (feedbackArea) {
-        feedbackArea.className = "quiz2-feedback-area ".concat(isCorrect ? 'fb-correct' : 'fb-incorrect');
-        feedbackArea.innerHTML = "\n            <div class=\"quiz2-fb-icon\">".concat(isCorrect ? '✅' : '❌', "</div>\n            <div class=\"quiz2-fb-text\">").concat(isCorrect ? 'Correct !' : 'Faux !', " ").concat(statement.feedback, "</div>\n        ");
+        feedbackArea.className = "quiz2-feedback-area " + (isCorrect ? 'fb-correct' : 'fb-incorrect');
+        feedbackArea.innerHTML = "\n            <div class=\"quiz2-fb-icon\">" + (isCorrect ? '✅' : '❌') + "</div>\n            <div class=\"quiz2-fb-text\">" + (isCorrect ? 'Correct !' : 'Faux !') + " " + statement.feedback + "</div>\n        ";
     }
-    // Check if all cards are placed
     var totalPlaced = document.querySelectorAll('.drag-statement-card.placed').length;
     if (totalPlaced === config.statements.length) {
         setTimeout(function () {
@@ -1494,7 +1434,6 @@ function handleQuiz2Drop(stmtIdx, chosenTrue) {
         }, 2500);
     }
 }
-// Keep for backward compat — no longer used
 function loadNextSortingStatement() { }
 function handleSortingDecision(chosenTrue) { }
 function startFireworks() {
@@ -1519,7 +1458,7 @@ function startFireworks() {
     });
     var particles = [];
     var colors = ['#FF034D', '#FACC15', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#06B6D4'];
-    var Particle = /** @class */ (function () {
+    var Particle = (function () {
         function Particle(x, y, color) {
             this.x = x;
             this.y = y;
@@ -1535,7 +1474,7 @@ function startFireworks() {
         Particle.prototype.update = function () {
             this.x += this.vx;
             this.y += this.vy;
-            this.vy += 0.05; // gravity
+            this.vy += 0.05;
             this.alpha -= this.decay;
         };
         Particle.prototype.draw = function () {
@@ -1549,7 +1488,7 @@ function startFireworks() {
         };
         return Particle;
     }());
-    var Firework = /** @class */ (function () {
+    var Firework = (function () {
         function Firework() {
             this.x = Math.random() * width;
             this.y = height;
@@ -1634,14 +1573,14 @@ function renderCustomQuizResults() {
     var percent = Math.round((score / total) * 100);
     var passed = percent >= 80;
     if (passed) {
-        localStorage.setItem("quiz_section_".concat(activeQuizSection, "_completed"), 'true');
+        localStorage.setItem("quiz_section_" + activeQuizSection + "_completed", 'true');
         try {
             startFireworks();
         }
         catch (e) {
             console.error(e);
         }
-        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px; animation: bounce 1s infinite alternate;\">\uD83C\uDFC6</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;\">Section ".concat(activeQuizSection, " Valid\u00E9e !</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;\">\n                    F\u00E9licitations, vous avez obtenu un score de <strong>").concat(score, "/").concat(total, " (").concat(percent, "%)</strong>. \n                    Vous ma\u00EEtrisez parfaitement les concepts de cette section ! Le parcours suivant est d\u00E9bloqu\u00E9.\n                </p>\n                <button class=\"btn-start\" onclick=\"closeAndApplyFilters()\" style=\"background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Continuer le Parcours\n                </button>\n            </div>\n        ");
+        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px; animation: bounce 1s infinite alternate;\">\uD83C\uDFC6</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;\">Section " + activeQuizSection + " Valid\u00E9e !</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;\">\n                    F\u00E9licitations, vous avez obtenu un score de <strong>" + score + "/" + total + " (" + percent + "%)</strong>. \n                    Vous ma\u00EEtrisez parfaitement les concepts de cette section ! Le parcours suivant est d\u00E9bloqu\u00E9.\n                </p>\n                <button class=\"btn-start\" onclick=\"closeAndApplyFilters()\" style=\"background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Continuer le Parcours\n                </button>\n            </div>\n        ";
     }
     else {
         var recommendationHTML_1 = '';
@@ -1649,12 +1588,12 @@ function renderCustomQuizResults() {
             recommendationHTML_1 = "\n                <div style=\"text-align: left; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 15px; margin: 20px 0;\">\n                    <h5 style=\"margin: 0 0 8px 0; color: #ef4444; font-size: 13.5px; font-weight: 700;\">\uD83D\uDCDA Recommandations de r\u00E9vision (V3) :</h5>\n                    <p style=\"margin: 0 0 10px 0; font-size: 12px; color: #94a3b8; line-height: 1.4;\">\n                        En analysant vos erreurs, nous vous conseillons vivement de refaire les exercices suivants pour ma\u00EEtriser ces concepts :\n                    </p>\n                    <ul style=\"margin: 0; padding-left: 20px; font-size: 12.5px; color: #cbd5e1; line-height: 1.6;\">\n            ";
             customQuizIncorrectExos.forEach(function (exId) {
                 var exoObj = EXERCISES.find(function (e) { return e.id === exId; });
-                var exoTitle = exoObj ? exoObj.title : "Exercice ".concat(exId);
-                recommendationHTML_1 += "<li>".concat(exoTitle, "</li>");
+                var exoTitle = exoObj ? exoObj.title : "Exercice " + exId;
+                recommendationHTML_1 += "<li>" + exoTitle + "</li>";
             });
             recommendationHTML_1 += "\n                    </ul>\n                </div>\n            ";
         }
-        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px;\">\u274C</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #FF034D; margin: 0 0 10px 0;\">Score insuffisant (".concat(percent, "%)</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 15px 0;\">\n                    Vous avez obtenu <strong>").concat(score, "/").concat(total, "</strong>. Le seuil requis pour valider cette section est de <strong>80% (").concat(Math.ceil(total * 0.8), "/").concat(total, ")</strong>.\n                </p>\n                \n                ").concat(recommendationHTML_1, "\n                \n                <button class=\"btn-start\" onclick=\"openQuizModal(").concat(activeQuizSection, ")\" style=\"background:#FF034D; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Recommencer le Quiz\n                </button>\n            </div>\n        ");
+        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px;\">\u274C</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #FF034D; margin: 0 0 10px 0;\">Score insuffisant (" + percent + "%)</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 15px 0;\">\n                    Vous avez obtenu <strong>" + score + "/" + total + "</strong>. Le seuil requis pour valider cette section est de <strong>80% (" + Math.ceil(total * 0.8) + "/" + total + ")</strong>.\n                </p>\n                \n                " + recommendationHTML_1 + "\n                \n                <button class=\"btn-start\" onclick=\"openQuizModal(" + activeQuizSection + ")\" style=\"background:#FF034D; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Recommencer le Quiz\n                </button>\n            </div>\n        ";
     }
 }
 function closeAndApplyFilters() {
@@ -1678,28 +1617,24 @@ function showToast(message, isSuccess) {
         toast.classList.remove('show');
     }, 4000);
 }
-/* === GENERATION DU CERTIFICAT === */
 function downloadCertificate() {
     var canvas = document.getElementById('cert-canvas');
     if (!canvas)
         return;
     var ctx = canvas.getContext('2d');
     var user = JSON.parse(localStorage.getItem('currentUser')) || { prenom: 'Étudiant', nom: 'Neural' };
-    var fullName = "".concat(user.prenom || '', " ").concat(user.nom || '').trim();
-    // Fond dégradé premium
+    var fullName = ((user.prenom || '') + " " + (user.nom || '')).trim();
     var grad = ctx.createLinearGradient(0, 0, 800, 600);
     grad.addColorStop(0, '#0b0f1a');
     grad.addColorStop(1, '#1e1b4b');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 800, 600);
-    // Bordure dorée
     ctx.strokeStyle = '#FACC15';
     ctx.lineWidth = 15;
     ctx.strokeRect(20, 20, 760, 560);
     ctx.strokeStyle = 'rgba(255,255,255,0.05)';
     ctx.lineWidth = 1;
     ctx.strokeRect(35, 35, 730, 530);
-    // Titres & Textes
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 36px Inter, sans-serif';
     ctx.textAlign = 'center';
@@ -1707,27 +1642,22 @@ function downloadCertificate() {
     ctx.fillStyle = '#94a3b8';
     ctx.font = '500 18px Inter, sans-serif';
     ctx.fillText('Le présent certificat est décerné à', 400, 230);
-    // Nom de l'étudiant
     ctx.fillStyle = '#FACC15';
     ctx.font = '800 42px Inter, sans-serif';
     ctx.fillText(fullName.toUpperCase(), 400, 300);
-    // Texte d'attribution
     ctx.fillStyle = '#eef2ff';
     ctx.font = '600 16px Inter, sans-serif';
     ctx.fillText("Pour avoir complété avec succès l'intégralité du parcours pédagogique", 400, 370);
     ctx.fillText("et validé l'évaluation finale de Neural Playground.", 400, 400);
-    // Date
     var today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     ctx.fillStyle = '#64748b';
     ctx.font = '500 14px Inter, sans-serif';
-    ctx.fillText("D\u00E9livr\u00E9 le ".concat(today), 400, 480);
-    // Signature/Logo
+    ctx.fillText("D\u00E9livr\u00E9 le " + today, 400, 480);
     ctx.fillStyle = '#8b5cf6';
     ctx.font = '800 22px Inter, sans-serif';
     ctx.fillText("Hi! Paris Playground", 400, 520);
-    // Lancer le téléchargement
     var link = document.createElement('a');
-    link.download = "Certificat_HiParis_".concat(fullName.replace(/\s+/g, '_'), ".png");
+    link.download = "Certificat_HiParis_" + fullName.replace(/\s+/g, '_') + ".png";
     link.href = canvas.toDataURL();
     link.click();
 }
@@ -1748,11 +1678,11 @@ var EXERCISE_LINKS = {
     14: '../exo14.html',
     15: '../exo15.html',
     16: '../exo16.html',
-    17: '../exo17.html',
+    17: '../exo17.html'
 };
 function startExercise(id, title, isCustom) {
     if (isCustom) {
-        window.location.href = "../custom_exo_template.html?id=".concat(id);
+        window.location.href = "../custom_exo_template.html?id=" + id;
         return;
     }
     var link = EXERCISE_LINKS[id];
@@ -1760,11 +1690,9 @@ function startExercise(id, title, isCustom) {
         window.location.href = link;
     }
     else {
-        // Redirection vers le playground par défaut pour les exercices sans wrapper
-        window.location.href = "../playground/index.html?exo=".concat(id);
+        window.location.href = "../playground/index.html?exo=" + id;
     }
 }
-/* Exposer les fonctions globales */
 window.visitIntroItem = visitIntroItem;
 window.openQuizModal = openQuizModal;
 window.selectQuizOption = selectQuizOption;
@@ -1773,7 +1701,6 @@ window.closeAllModals = closeAllModals;
 window.downloadCertificate = downloadCertificate;
 window.showFunFact = showFunFact;
 window.closeAndApplyFilters = closeAndApplyFilters;
-// ✅ Chargement initial depuis l'API
 loadAndRender();
 var backgroundContainer = document.getElementById('background-container');
 var formulas = [
@@ -1781,19 +1708,17 @@ var formulas = [
     '\\frac{dy}{dx}', '\\lim_{x \\to \\infty}', '\\binom{n}{k}',
     '\\alpha', '\\beta', '\\gamma', '\\delta', '\\epsilon', '\\zeta', '\\eta', '\\theta',
     '\\sin(t)', '\\cos(t)', 'e^{-t}', 't^2',
-    'x(t) = r \\cos(t), y(t) = r \\sin(t)' // Arc paramétrique
+    'x(t) = r \\cos(t), y(t) = r \\sin(t)'
 ];
-var numFormulas = 25; // Augmentation du nombre de formules
-var numNeurons = 30; // Augmentation du nombre de neurones
-var numConnections = 50; // Augmentation du nombre de connexions
+var numFormulas = 25;
+var numNeurons = 30;
+var numConnections = 50;
 var neurons = [];
 var connections = [];
 var formulasElements = [];
-// Fonction pour obtenir un nombre aléatoire dans une plage
 function getRandom(min, max) {
     return Math.random() * (max - min) + min;
 }
-// Fonction pour créer un élément (formule ou neurone)
 function createAnimatedElement(type, elementClass, styleProperties) {
     if (styleProperties === void 0) { styleProperties = {}; }
     var element = document.createElement('div');
@@ -1802,29 +1727,28 @@ function createAnimatedElement(type, elementClass, styleProperties) {
     Object.assign(element.style, styleProperties);
     if (type === 'formula') {
         element.textContent = formulas[Math.floor(Math.random() * formulas.length)];
-        element.style.fontSize = "clamp(".concat(getRandom(0.8, 1.2), "rem, ").concat(getRandom(3, 7), "vw, ").concat(getRandom(2, 4), "rem)");
+        element.style.fontSize = "clamp(" + getRandom(0.8, 1.2) + "rem, " + getRandom(3, 7) + "vw, " + getRandom(2, 4) + "rem)";
         element.style.opacity = getRandom(0.04, 0.12);
-        element.style.color = "rgba(255, 255, 255, ".concat(element.style.opacity, ")");
-        element.style.left = "".concat(getRandom(-20, 120), "vw"); // Permet aux formules d'entrer et sortir
-        element.style.top = "".concat(getRandom(-20, 120), "vh");
-        element.style.transform = "rotate(".concat(getRandom(-30, 30), "deg)");
+        element.style.color = "rgba(255, 255, 255, " + element.style.opacity + ")";
+        element.style.left = getRandom(-20, 120) + "vw";
+        element.style.top = getRandom(-20, 120) + "vh";
+        element.style.transform = "rotate(" + getRandom(-30, 30) + "deg)";
         formulasElements.push(element);
     }
     else if (type === 'neuron') {
-        element.style.width = "".concat(getRandom(10, 25), "px");
+        element.style.width = getRandom(10, 25) + "px";
         element.style.height = element.style.width;
-        element.style.backgroundColor = "hsl(".concat(getRandom(190, 250), ", 70%, 50%)");
-        element.style.boxShadow = "0 0 15px rgba(139, 92, 246, 0.5), 0 0 25px ".concat(element.style.backgroundColor);
-        element.style.left = "".concat(getRandom(-10, 110), "vw");
-        element.style.top = "".concat(getRandom(-10, 110), "vh");
-        element.style.opacity = 0; // Commence invisible
+        element.style.backgroundColor = "hsl(" + getRandom(190, 250) + ", 70%, 50%)";
+        element.style.boxShadow = "0 0 15px rgba(139, 92, 246, 0.5), 0 0 25px " + element.style.backgroundColor;
+        element.style.left = getRandom(-10, 110) + "vw";
+        element.style.top = getRandom(-10, 110) + "vh";
+        element.style.opacity = 0;
         element.style.transform = 'scale(0)';
-        neurons.push({ element: element, size: parseFloat(element.style.width), x: 0, y: 0, opacity: 0, scale: 0 }); // Stockage pour l'animation
+        neurons.push({ element: element, size: parseFloat(element.style.width), x: 0, y: 0, opacity: 0, scale: 0 });
     }
     backgroundContainer.appendChild(element);
     return element;
 }
-// Fonction pour créer une connexion entre deux neurones
 function createConnection(neuron1, neuron2) {
     var connection = document.createElement('div');
     connection.className = 'connection';
@@ -1837,20 +1761,16 @@ function createConnection(neuron1, neuron2) {
     connections.push({ element: connection, neuron1: neuron1, neuron2: neuron2, opacity: 0 });
     backgroundContainer.appendChild(connection);
 }
-// Initialisation des éléments
 function initializeBackground() {
-    // Création des formules
     for (var i = 0; i < numFormulas; i++) {
-        createAnimatedElement('formula', "math-formula formula-".concat(i + 1), {
-            animationDuration: "".concat(getRandom(20, 40), "s"),
-            animationDelay: "".concat(getRandom(-10, 0), "s")
+        createAnimatedElement('formula', "math-formula formula-" + (i + 1), {
+            animationDuration: getRandom(20, 40) + "s",
+            animationDelay: getRandom(-10, 0) + "s"
         });
     }
-    // Création des neurones (initialement invisibles)
     for (var i = 0; i < numNeurons; i++) {
-        createAnimatedElement('neuron', "neuron neuron-".concat(i));
+        createAnimatedElement('neuron', "neuron neuron-" + i);
     }
-    // Création des connexions initiales (elles seront animées pour apparaître)
     for (var i = 0; i < numConnections; i++) {
         if (neurons.length < 2)
             continue;
@@ -1861,50 +1781,40 @@ function initializeBackground() {
         }
     }
 }
-// Animation des éléments
 function animateBackground() {
     var windowWidth = window.innerWidth;
     var windowHeight = window.innerHeight;
-    // Animation des formules
     formulasElements.forEach(function (formula) {
         var currentX = parseFloat(formula.style.left);
         var currentY = parseFloat(formula.style.top);
-        // Légère dérive et rotation continue
-        formula.style.transform = "translate(".concat(currentX + Math.sin(Date.now() * 0.0001) * 5, "px, ").concat(currentY + Math.cos(Date.now() * 0.0001) * 5, "px) rotate(").concat(parseFloat(formula.style.transform.split(' ')[1].replace('rotate(', '').replace('deg)', '')) + Math.sin(Date.now() * 0.0002) * 0.1, "deg)");
-        // Faire "sortir" les formules du cadre pour qu'elles réapparaissent de l'autre côté
+        formula.style.transform = "translate(" + (currentX + Math.sin(Date.now() * 0.0001) * 5) + "px, " + (currentY + Math.cos(Date.now() * 0.0001) * 5) + "px) rotate(" + (parseFloat(formula.style.transform.split(' ')[1].replace('rotate(', '').replace('deg)', '')) + Math.sin(Date.now() * 0.0002) * 0.1) + "deg)";
         if (currentX > windowWidth * 1.1)
-            formula.style.left = "".concat(getRandom(-20, 0), "vw");
+            formula.style.left = getRandom(-20, 0) + "vw";
         if (currentX < -windowWidth * 0.1)
-            formula.style.left = "".concat(getRandom(windowWidth, windowWidth * 1.2), "vw");
+            formula.style.left = getRandom(windowWidth, windowWidth * 1.2) + "vw";
         if (currentY > windowHeight * 1.1)
-            formula.style.top = "".concat(getRandom(-20, 0), "vh");
+            formula.style.top = getRandom(-20, 0) + "vh";
         if (currentY < -windowHeight * 0.1)
-            formula.style.top = "".concat(getRandom(windowHeight, windowHeight * 1.2), "vh");
+            formula.style.top = getRandom(windowHeight, windowHeight * 1.2) + "vh";
     });
-    // Animation des neurones (apparition progressive) et mise à jour des positions
     var time = Date.now() * 0.0005;
     neurons.forEach(function (neuron, index) {
         var element = neuron.element;
         var angle = index * (2 * Math.PI / numNeurons) + time;
         var radius = Math.min(windowWidth, windowHeight) * 0.3;
-        // Positionnement en cercle et déplacement sinusoïdal
         var targetX = windowWidth / 2 + radius * Math.cos(angle) + Math.sin(time * 0.5 + index * 0.1) * 50;
         var targetY = windowHeight / 2 + radius * Math.sin(angle) + Math.cos(time * 0.5 + index * 0.1) * 50;
-        // Animation d'apparition (scale et opacity)
-        var appearanceFactor = Math.min(1, Math.max(0, (time * 2 - index * 0.1))); // Apparaît plus tard pour les neurones suivants
+        var appearanceFactor = Math.min(1, Math.max(0, (time * 2 - index * 0.1)));
         element.style.opacity = neuron.opacity = Math.max(neuron.opacity, appearanceFactor * 0.1);
-        element.style.transform = "scale(".concat(neuron.scale = Math.max(neuron.scale, appearanceFactor), ") rotate(").concat(appearanceFactor * 10, "deg)");
-        // Mouvement fluide vers la nouvelle position
-        element.style.left = "".concat(neuron.x = lerp(neuron.x, targetX - neuron.size / 2, 0.05), "px");
-        element.style.top = "".concat(neuron.y = lerp(neuron.y, targetY - neuron.size / 2, 0.05), "px");
+        element.style.transform = "scale(" + (neuron.scale = Math.max(neuron.scale, appearanceFactor)) + ") rotate(" + appearanceFactor * 10 + "deg)";
+        element.style.left = (neuron.x = lerp(neuron.x, targetX - neuron.size / 2, 0.05)) + "px";
+        element.style.top = (neuron.y = lerp(neuron.y, targetY - neuron.size / 2, 0.05)) + "px";
     });
-    // Animation des connexions (apparition et pulsation)
     connections.forEach(function (conn, index) {
-        var timeFactor = Date.now() * 0.0001; // Vitesse de pulsation
-        var appearanceFactor = Math.min(1, Math.max(0, (timeFactor * 2 - neurons.findIndex(function (n) { return n.element === conn.neuron1.element; }) * 0.1))); // Apparaît après les neurones
-        conn.element.style.opacity = conn.opacity = Math.max(conn.opacity, appearanceFactor * 0.3); // Apparition progressive
-        conn.element.style.transform = "scale(".concat(appearanceFactor * 1.1, ")"); // Légère pulsation lors de l'apparition
-        // Calcul dynamique de la position et de la taille de la connexion
+        var timeFactor = Date.now() * 0.0001;
+        var appearanceFactor = Math.min(1, Math.max(0, (timeFactor * 2 - neurons.findIndex(function (n) { return n.element === conn.neuron1.element; }) * 0.1)));
+        conn.element.style.opacity = conn.opacity = Math.max(conn.opacity, appearanceFactor * 0.3);
+        conn.element.style.transform = "scale(" + appearanceFactor * 1.1 + ")";
         var connElem = conn.element, neuron1 = conn.neuron1, neuron2 = conn.neuron2;
         var rect1 = neuron1.element.getBoundingClientRect();
         var rect2 = neuron2.element.getBoundingClientRect();
@@ -1914,29 +1824,24 @@ function animateBackground() {
         var y2 = neuron2.y + neuron2.size / 2;
         var length = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         var angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-        connElem.style.width = "".concat(length, "px");
-        connElem.style.left = "".concat(x1, "px");
-        connElem.style.top = "".concat(y1, "px");
-        connElem.style.transform = "rotate(".concat(angle, "deg) scale(").concat(appearanceFactor, ")"); // Ajustement rotation et échelle
-        // Effet de pulsation simple
+        connElem.style.width = length + "px";
+        connElem.style.left = x1 + "px";
+        connElem.style.top = y1 + "px";
+        connElem.style.transform = "rotate(" + angle + "deg) scale(" + appearanceFactor + ")";
         var pulse = 1 + Math.sin(timeFactor * 2 + index * 0.2) * 0.1;
-        connElem.style.transform = "rotate(".concat(angle, "deg) scale(").concat(appearanceFactor * pulse, ")");
+        connElem.style.transform = "rotate(" + angle + "deg) scale(" + appearanceFactor * pulse + ")";
     });
     requestAnimationFrame(animateBackground);
 }
-// Fonction de lerp (interpolation linéaire) pour un mouvement fluide
 function lerp(start, end, amount) {
     return (1 - amount) * start + amount * end;
 }
-// Initialisation et lancement de l'animation
 initializeBackground();
 animateBackground();
-// Recalcul des connexions lors du redimensionnement (plus robuste)
 var resizeTimeout;
 window.addEventListener('resize', function () {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function () {
-        // Vider et recréer les connexions pour s'adapter à la nouvelle taille
         connections.forEach(function (conn) { return conn.element.remove(); });
         connections = [];
         if (neurons.length >= 2) {
@@ -1948,11 +1853,9 @@ window.addEventListener('resize', function () {
                 }
             }
         }
-    }, 100); // Délai pour éviter les calculs répétitifs pendant le redimensionnement
+    }, 100);
 });
-// Initialisation finale
 applyFilters();
-// Expose functions to global window object for HTML onclick/oninput events
 window.startExercise = startExercise;
 window.filterCards = filterCards;
 window.setFilter = setFilter;
