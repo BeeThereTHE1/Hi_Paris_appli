@@ -208,7 +208,7 @@ limitations under the License.
       </div>
       <div class="ui-dataset">
         <h4>
-          <span>Jeu de données</span>
+          <span>Jeu de données</span> <span class="info-tip" onclick="showTip(event, 'Un jeu de données (dataset) est une collection d\'exemples utilisée pour entraîner et tester le modèle. Il est composé de données d\'entraînement (pour apprendre) et de données de test (pour évaluer la généralisation).')">?</span>
         </h4>
         <p>Quel jeu de données voulez-vous utiliser ?</p>
         <div class="dataset-list">
@@ -404,7 +404,7 @@ limitations under the License.
         <div style="display:flex;">
           <label class="ui-showTestData mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-test-data">
             <input type="checkbox" id="show-test-data" class="mdl-checkbox__input" checked>
-            <span class="mdl-checkbox__label label">Afficher les données de test</span>
+            <span class="mdl-checkbox__label label">Afficher les données de test <span class="info-tip" onclick="showTip(event, 'Afficher les données de test : Permet d\'afficher ou de masquer les points du jeu de test (translucides) afin d\'évaluer visuellement la généralisation du modèle.')">?</span></span>
           </label>
           <label class="ui-discretize mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="discretize">
             <input type="checkbox" id="discretize" class="mdl-checkbox__input" checked>

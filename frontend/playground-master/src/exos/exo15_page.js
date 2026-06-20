@@ -1,3 +1,40 @@
+// @ts-nocheck
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var _this = this;
 (function () {
     var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     var user = JSON.parse(localStorage.getItem('currentUser'));
@@ -6,57 +43,90 @@
         return;
     container.style.cssText = 'position: relative; font-family: "Inter", sans-serif; perspective: 1000px; display: flex; align-items: center;';
     if (!isLoggedIn || !user) {
-        var visitorBtn_1 = document.createElement('a');
-        visitorBtn_1.href = 'Page-demo/register.html';
-        visitorBtn_1.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn_1.onmouseover = function () { return visitorBtn_1.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)'; };
-        visitorBtn_1.onmouseout = function () { return visitorBtn_1.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)'; };
-        visitorBtn_1.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
-        container.appendChild(visitorBtn_1);
+        var visitorBtn = document.createElement('a');
+        visitorBtn.href = 'Page-demo/register.html';
+        visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        container.appendChild(visitorBtn);
         return;
     }
     var initiales = (user.prenom ? user.prenom[0] : '') + (user.nom ? user.nom[0] : '');
     var avatar = document.createElement('div');
-    avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(255,255,255,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);';
+    avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 200px rgba(16, 185, 129, 0.4); transition: 0.3s;';
     avatar.innerText = initiales.toUpperCase();
-    avatar.onmouseover = function () { return avatar.style.transform = 'scale(1.1) rotate(5deg)'; };
-    avatar.onmouseout = function () { return avatar.style.transform = 'scale(1) rotate(0deg)'; };
     var menu = document.createElement('div');
-    menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset; overflow: hidden; transform-origin: top right; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: scale(0.9) translateY(-10px); pointer-events: none; z-index: 1001;';
+    menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCCA</span> Mon Historique\n          </a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCC8</span> Mes Statistiques\n          </a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;\" onmouseover=\"this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDEAA</span> D\u00E9connexion\n          </div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
         if (isOpen) {
             menu.style.display = 'block';
-            setTimeout(function () {
-                menu.style.opacity = '1';
-                menu.style.transform = 'scale(1) translateY(0)';
-                menu.style.pointerEvents = 'auto';
-            }, 10);
+            setTimeout(function () { menu.style.opacity = '1'; menu.style.transform = 'scale(1) translateY(0)'; }, 10);
         }
         else {
             menu.style.opacity = '0';
             menu.style.transform = 'scale(0.9) translateY(-10px)';
-            menu.style.pointerEvents = 'none';
             setTimeout(function () { return menu.style.display = 'none'; }, 300);
         }
     };
-    menu.querySelector('#btnFuturLogout').onclick = function () {
-        localStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
-    };
-    document.addEventListener('click', function (e) {
-        if (!container.contains(e.target) && isOpen)
-            avatar.onclick();
-    });
+    menu.querySelector('#btnFuturLogout').onclick = function () { localStorage.removeItem('isLoggedIn'); window.location.href = 'index.html'; };
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
+// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
+var btnSauvegarder = document.getElementById('btn-sauvegarder');
+var btnRealise = document.getElementById('btn-realise');
+btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!window.StorageService) return [3 /*break*/, 2];
+                return [4 /*yield*/, window.StorageService.save(15)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.style.opacity = '0.7';
+                    btnSauvegarder.disabled = true;
+                }
+                _a.label = 2;
+            case 2: return [2 /*return*/];
+        }
+    });
+}); };
+btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var isLoggedIn, success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                    window.location.href = 'Page-demo/register.html';
+                    return [2 /*return*/];
+                }
+                if (!window.StorageService) return [3 /*break*/, 2];
+                return [4 /*yield*/, window.StorageService.complete(15)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.disabled = true;
+                    setTimeout(function () {
+                        window.location.href = 'exoquiz/exo15_quiz.html';
+                    }, 800);
+                }
+                _a.label = 2;
+            case 2: return [2 /*return*/];
+        }
+    });
+}); };
+// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
-var formulas = ['\\sqrt{x}', '\\int_{a}^{b} f(x) dx', 'f(x) = ax^2 + bx + c', '\\frac{dy}{dx}', '\\alpha', '\\beta', '\\gamma', '\\sin(t)', '\\cos(t)', 'e^{-t}'];
+var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
 var numNeurons = 30;
 var numConnections = 50;
@@ -64,16 +134,14 @@ var neurons = [];
 var connections = [];
 var formulasElements = [];
 function getRandom(min, max) { return Math.random() * (max - min) + min; }
-function createAnimatedElement(type, elementClass, styleProperties) {
-    if (styleProperties === void 0) { styleProperties = {}; }
+function createAnimatedElement(type, elementClass) {
     var element = document.createElement('div');
     element.className = elementClass;
     element.style.position = 'absolute';
-    Object.assign(element.style, styleProperties);
     if (type === 'formula') {
         element.textContent = formulas[Math.floor(Math.random() * formulas.length)];
         element.style.fontSize = "clamp(1rem, 5vw, 2.5rem)";
-        element.style.opacity = getRandom(0.04, 0.12);
+        element.style.opacity = String(getRandom(0.04, 0.12));
         element.style.color = "rgba(255, 255, 255, " + element.style.opacity + ")";
         element.style.left = getRandom(-20, 120) + "vw";
         element.style.top = getRandom(-20, 120) + "vh";
@@ -88,23 +156,21 @@ function createAnimatedElement(type, elementClass, styleProperties) {
         element.style.boxShadow = "0 0 15px rgba(139, 92, 246, 0.5), 0 0 25px " + element.style.backgroundColor;
         element.style.left = getRandom(-10, 110) + "vw";
         element.style.top = getRandom(-10, 110) + "vh";
-        element.style.opacity = 0;
+        element.style.opacity = '0';
         element.style.transform = 'scale(0)';
         neurons.push({ element: element, size: size, x: 0, y: 0, opacity: 0, scale: 0 });
     }
     backgroundContainer.appendChild(element);
 }
-function createConnection(neuron1, neuron2) {
-    var connection = document.createElement('div');
-    connection.className = 'connection';
-    connection.style.position = 'absolute';
-    connection.style.height = '1.5px';
-    connection.style.background = "linear-gradient(to right, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.2))";
-    connection.style.opacity = 0;
-    connection.style.transformOrigin = '0 0';
-    connection.style.filter = 'blur(4px)';
-    connections.push({ element: connection, neuron1: neuron1, neuron2: neuron2, opacity: 0 });
-    backgroundContainer.appendChild(connection);
+function createConnection(n1, n2) {
+    var conn = document.createElement('div');
+    conn.className = 'connection';
+    conn.style.position = 'absolute';
+    conn.style.height = '1.5px';
+    conn.style.background = "linear-gradient(to right, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.2))";
+    conn.style.filter = 'blur(4px)';
+    connections.push({ element: conn, neuron1: n1, neuron2: n2, opacity: 0 });
+    backgroundContainer.appendChild(conn);
 }
 function lerp(start, end, amount) { return (1 - amount) * start + amount * end; }
 function initializeBackground() {
@@ -128,7 +194,7 @@ function animateBackground() {
         var radius = Math.min(windowWidth, windowHeight) * 0.3;
         var targetX = windowWidth / 2 + radius * Math.cos(angle) + Math.sin(time * 0.5 + index * 0.1) * 50;
         var targetY = windowHeight / 2 + radius * Math.sin(angle) + Math.cos(time * 0.5 + index * 0.1) * 50;
-        neuron.element.style.opacity = neuron.opacity = Math.max(neuron.opacity, 0.15);
+        neuron.element.style.opacity = String(neuron.opacity = Math.max(neuron.opacity, 0.15));
         neuron.element.style.transform = "scale(" + (neuron.scale = Math.max(neuron.scale, 1)) + ")";
         neuron.element.style.left = (neuron.x = lerp(neuron.x, targetX - neuron.size / 2, 0.05)) + "px";
         neuron.element.style.top = (neuron.y = lerp(neuron.y, targetY - neuron.size / 2, 0.05)) + "px";
@@ -141,7 +207,7 @@ function animateBackground() {
         var y2 = neuron2.y + neuron2.size / 2;
         var length = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         var angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
-        element.style.opacity = 0.3;
+        element.style.opacity = '0.3';
         element.style.width = length + "px";
         element.style.left = x1 + "px";
         element.style.top = y1 + "px";
@@ -151,58 +217,325 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-var btnSauvegarder = document.getElementById('btn-sauvegarder');
-var btnRealise = document.getElementById('btn-realise');
-window.addEventListener('message', function (event) {
-    console.log("Signal reçu du Playground:", event.data);
-    if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 15 || event.data.exoId == "15")) {
-        console.log("Validation confirmée pour l'exercice 15 !");
-        btnRealise.disabled = false;
-        btnRealise.classList.remove('btn-disabled');
-        btnRealise.classList.add('btn-success-ready');
+// Inject Custom CSS Styles for drag and drop
+var styleEl = document.createElement('style');
+styleEl.textContent = "\n  .drag-card {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    padding: 10px 12px;\n    font-size: 12px;\n    color: #e2e8f0;\n    cursor: grab;\n    user-select: none;\n    transition: all 0.2s;\n    margin-bottom: 8px;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);\n    line-height: 1.35;\n  }\n  .drag-card:hover {\n    background: rgba(255, 255, 255, 0.12);\n    border-color: rgba(255, 255, 255, 0.25);\n    transform: translateY(-2px);\n  }\n  .drag-card:active {\n    cursor: grabbing;\n  }\n  .drag-card.dragging {\n    opacity: 0.4;\n  }\n  .drag-card.selected-for-match {\n    border: 2px solid #8b5cf6 !important;\n    background: rgba(139, 92, 246, 0.15) !important;\n    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);\n  }\n\n  .drop-zone-wrapper {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px dashed rgba(255, 255, 255, 0.15);\n    border-radius: 8px;\n    padding: 12px;\n    margin-bottom: 12px;\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n    min-height: 140px;\n    transition: all 0.2s;\n    cursor: pointer;\n  }\n  .drop-zone-wrapper:hover {\n    background: rgba(255, 255, 255, 0.04);\n    border-color: rgba(255, 255, 255, 0.25);\n  }\n  .drop-zone-wrapper.dragover {\n    background: rgba(139, 92, 246, 0.1) !important;\n    border-color: #8b5cf6 !important;\n    border-style: solid !important;\n  }\n  .drop-zone-concept {\n    font-weight: 700;\n    font-size: 14px;\n    color: #a78bfa;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n    padding-bottom: 4px;\n  }\n  .drop-zone-content {\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n    font-size: 11.5px;\n    color: #94a3b8;\n  }\n  .pill-matched {\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    color: #10b981;\n    border-radius: 6px;\n    padding: 6px 10px;\n    font-size: 11.5px;\n    line-height: 1.3;\n    animation: scaleIn 0.3s ease;\n  }\n\n  @keyframes scaleIn {\n    from { transform: scale(0.95); opacity: 0; }\n    to { transform: scale(1); opacity: 1; }\n  }\n\n  @keyframes shake {\n    0%, 100% { transform: translateX(0); }\n    20%, 60% { transform: translateX(-6px); }\n    40%, 80% { transform: translateX(6px); }\n  }\n  .shake-error {\n    animation: shake 0.4s ease-in-out;\n    border-color: #ef4444 !important;\n    background: rgba(239, 68, 68, 0.15) !important;\n  }\n\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
+document.head.appendChild(styleEl);
+// Define definitions details for popups
+var definitionsData = {
+    "training_data": {
+        term: "Training Data (Données d'entraînement)",
+        def: "The dataset used by the model during training to directly update its weights via backpropagation."
+    },
+    "test_data": {
+        term: "Test Data (Données de test)",
+        def: "The dataset kept unseen during weight updates, used to evaluate how well the model generalizes to new, unseen inputs."
     }
-});
-function saveToStorage(key, exoData) {
-    var user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user || !user.email)
-        return false;
-    var userKey = key + "_" + user.email;
-    var list = JSON.parse(localStorage.getItem(userKey) || '[]');
-    if (!list.find(function (e) { return e.id === exoData.id; })) {
-        list.push(exoData);
-        localStorage.setItem(userKey, JSON.stringify(list));
-        return true;
-    }
-    return false;
+};
+var draggedCardId = null;
+var selectedForMatchCardId = null;
+var matchingData = {
+    concepts: [
+        { id: "training_data", name: "Training Data" },
+        { id: "test_data", name: "Test Data" }
+    ],
+    definitions: [
+        { id: "training_data_1", category: "training_data", text: "The model directly updates its weights using this data" },
+        { id: "training_data_2", category: "training_data", text: "The loss on this data decreases continuously during training" },
+        { id: "training_data_3", category: "training_data", text: "This dataset is seen by the model during backpropagation" },
+        { id: "training_data_4", category: "training_data", text: "The model can memorize patterns specific to this data" },
+        { id: "training_data_5", category: "training_data", text: "Performance on this data may become misleadingly good (overfitting)" },
+        { id: "test_data_1", category: "test_data", text: "This dataset remains unseen during weight updates" },
+        { id: "test_data_2", category: "test_data", text: "The model does not learn directly from this data" },
+        { id: "test_data_3", category: "test_data", text: "Overfitting is observed when performance worsens on this data" },
+        { id: "test_data_4", category: "test_data", text: "This data reflects how well the model performs on new, unseen inputs" },
+        { id: "test_data_5", category: "test_data", text: "This data is used to evaluate generalization performance" }
+    ]
+};
+var correctMatchesCount = 0;
+function showDefinitionModal(title, text) {
+    Array.prototype.forEach.call(document.querySelectorAll('#definition-popup-overlay'), function (el) { el.remove(); });
+    var overlay = document.createElement('div');
+    overlay.className = 'tutorial-overlay';
+    overlay.id = 'definition-popup-overlay';
+    overlay.style.zIndex = '10005';
+    var popup = document.createElement('div');
+    popup.className = 'tutorial-popup';
+    var h3 = document.createElement('h3');
+    h3.innerText = title;
+    var p = document.createElement('p');
+    p.innerText = text;
+    var okBtn = document.createElement('button');
+    okBtn.className = 'tutorial-btn';
+    okBtn.innerText = "OK";
+    popup.appendChild(h3);
+    popup.appendChild(p);
+    popup.appendChild(okBtn);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    okBtn.onclick = function () {
+        overlay.remove();
+    };
 }
-btnSauvegarder.onclick = function () {
-    var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
-        window.location.href = 'Page-demo/register.html';
-        return;
+function startTutorial() {
+    var overlay = document.createElement('div');
+    overlay.className = 'tutorial-overlay';
+    overlay.id = 'exo15-tutorial-overlay';
+    var popup = document.createElement('div');
+    popup.className = 'tutorial-popup';
+    var h3 = document.createElement('h3');
+    h3.innerText = "Exercise #15 : Training & Test Datasets";
+    var p = document.createElement('p');
+    var introText = "In this exercise, you will examine the distinct roles of the Training dataset and the Test dataset. You will classify statements, run the simulator on a small training split (10%), and observe the consequences on generalization. First, let's review the key notions by classifying statements on the right panel.";
+    p.innerText = introText;
+    var timerSpan = document.createElement('span');
+    timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'tutorial-btn';
+    nextBtn.innerText = "Continuer";
+    nextBtn.disabled = true;
+    popup.appendChild(h3);
+    popup.appendChild(p);
+    popup.appendChild(timerSpan);
+    popup.appendChild(nextBtn);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    var timeLeft = 15;
+    function updateTimer() {
+        if (timeLeft > 0) {
+            timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
+            timeLeft--;
+            setTimeout(updateTimer, 1000);
+        }
+        else {
+            timerSpan.style.display = 'none';
+            nextBtn.disabled = false;
+        }
     }
-    var now = new Date().toLocaleDateString('fr-FR');
-    var saved = saveToStorage('saved_exercises', { id: 15, date: now });
-    if (saved) {
-        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-        btnSauvegarder.style.opacity = '0.7';
-        btnSauvegarder.disabled = true;
+    updateTimer();
+    nextBtn.onclick = function () {
+        overlay.remove();
+        setTimeout(function () {
+            injectInfoTipsInIframe();
+            renderActivity1();
+        }, 800);
+    };
+}
+function injectInfoTipsInIframe() {
+    try {
+        var iframe_1 = document.getElementById('iframe-playground');
+        if (!iframe_1)
+            return;
+        var iframeDoc = iframe_1.contentDocument || iframe_1.contentWindow.document;
+        if (!iframeDoc.getElementById('exo15-styles')) {
+            var style = iframeDoc.createElement('style');
+            style.id = 'exo15-styles';
+            style.textContent = "\n              @keyframes loss-tip-flash {\n                0%, 100% { background: transparent; color: #8b5cf6; transform: scale(1); box-shadow: none; border-color: #8b5cf6; }\n                50% { background: #FF034D; color: white; transform: scale(1.3); box-shadow: 0 0 10px #FF034D; border-color: #FF034D; }\n              }\n              .info-tip-flash-active {\n                animation: loss-tip-flash 1.2s ease-in-out !important;\n                animation-iteration-count: 10 !important;\n                border-radius: 50% !important;\n                display: inline-block !important;\n              }\n            ";
+            iframeDoc.head.appendChild(style);
+        }
+        // Find the existing tips
+        var datasetTip = iframeDoc.querySelector('.ui-dataset h4 .info-tip');
+        var testDataTip = iframeDoc.querySelector('.ui-showTestData .info-tip');
+        if (datasetTip) {
+            datasetTip.classList.add('info-tip-flash-active');
+            datasetTip.onclick = function (e) {
+                e.stopPropagation();
+                showDefinitionModal(definitionsData.training_data.term, definitionsData.training_data.def);
+            };
+        }
+        if (testDataTip) {
+            testDataTip.classList.add('info-tip-flash-active');
+            testDataTip.onclick = function (e) {
+                e.stopPropagation();
+                showDefinitionModal(definitionsData.test_data.term, definitionsData.test_data.def);
+            };
+        }
+    }
+    catch (e) {
+        console.warn("Could not inject info tips into playground simulator iframe.", e);
+    }
+}
+function renderActivity1() {
+    var qPanel = document.getElementById('quiz-question-panel');
+    var fPanel = document.getElementById('quiz-feedback-panel');
+    if (!qPanel || !fPanel)
+        return;
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.4;\">\n                <strong>Drag and drop</strong> - Match each specificity statement to its corresponding dataset type. Click a statement, then click on the correct dataset type to match.\n            </div>\n        </div>\n        <div style=\"display: flex; gap: 12px; margin-top: 12px; height: 380px;\">\n            <div id=\"drag-source-col\" style=\"flex: 1.1; display: flex; flex-direction: column; height: 100%;\">\n                <h4 style=\"font-size: 10px; text-transform: uppercase; color: #94a3b8; margin: 0 0 6px 0; letter-spacing: 0.5px;\">Statements (Unsorted)</h4>\n                <div id=\"drag-source-area\" style=\"flex: 1; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 2px;\"></div>\n            </div>\n            <div id=\"drop-target-col\" style=\"flex: 0.9; display: flex; flex-direction: column; height: 100%; overflow-y: auto;\">\n                <h4 style=\"font-size: 10px; text-transform: uppercase; color: #94a3b8; margin: 0 0 6px 0; letter-spacing: 0.5px;\">Dataset Types</h4>\n                <div id=\"drop-target-area\" style=\"display: flex; flex-direction: column; gap: 2px;\"></div>\n            </div>\n        </div>\n    ";
+    fPanel.innerHTML = "\n        <div class=\"feedback-box\" style=\"border-left-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);\">\n            \uD83D\uDCA1 Use the (?) buttons next to the loss statistics inside the simulator to read definitions if needed!\n        </div>\n    ";
+    var sourceArea = qPanel.querySelector('#drag-source-area');
+    var shuffledDefs = matchingData.definitions.slice().sort(function () { return Math.random() - 0.5; });
+    shuffledDefs.forEach(function (def) {
+        var card = document.createElement('div');
+        card.className = 'drag-card';
+        card.id = "drag-" + def.id;
+        card.innerText = def.text;
+        card.draggable = true;
+        card.ondragstart = function (e) {
+            draggedCardId = def.id;
+            card.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', def.id);
+        };
+        card.ondragend = function () {
+            card.classList.remove('dragging');
+        };
+        // Click Selection
+        card.onclick = function (e) {
+            e.stopPropagation();
+            if (selectedForMatchCardId === def.id) {
+                selectedForMatchCardId = null;
+                card.classList.remove('selected-for-match');
+            }
+            else {
+                Array.prototype.forEach.call(sourceArea.querySelectorAll('.drag-card'), function (el) { el.classList.remove('selected-for-match'); });
+                selectedForMatchCardId = def.id;
+                card.classList.add('selected-for-match');
+            }
+        };
+        sourceArea.appendChild(card);
+    });
+    var targetArea = qPanel.querySelector('#drop-target-area');
+    matchingData.concepts.forEach(function (c) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'drop-zone-wrapper';
+        wrapper.id = "target-wrapper-" + c.id;
+        wrapper.innerHTML = "\n            <div class=\"drop-zone-concept\">" + c.name + "</div>\n            <div class=\"drop-zone-content\" id=\"zone-content-" + c.id + "\">\n              <div style=\"padding: 10px; border: 1px dashed rgba(255,255,255,0.05); text-align: center; border-radius: 6px;\">Drop statements here</div>\n            </div>\n        ";
+        wrapper.ondragover = function (e) {
+            e.preventDefault();
+            wrapper.classList.add('dragover');
+        };
+        wrapper.ondragleave = function () {
+            wrapper.classList.remove('dragover');
+        };
+        wrapper.ondrop = function (e) {
+            e.preventDefault();
+            wrapper.classList.remove('dragover');
+            var sourceId = e.dataTransfer.getData('text/plain') || draggedCardId;
+            handleDropMatch(sourceId, c.id);
+        };
+        wrapper.onclick = function () {
+            if (selectedForMatchCardId) {
+                handleDropMatch(selectedForMatchCardId, c.id);
+            }
+        };
+        targetArea.appendChild(wrapper);
+    });
+}
+function handleDropMatch(sourceId, conceptId) {
+    var qPanel = document.getElementById('quiz-question-panel');
+    var fPanel = document.getElementById('quiz-feedback-panel');
+    if (!qPanel || !fPanel || !sourceId)
+        return;
+    var dragCard = document.getElementById("drag-" + sourceId);
+    var zoneContent = document.getElementById("zone-content-" + conceptId);
+    var wrapper = document.getElementById("target-wrapper-" + conceptId);
+    if (!dragCard || !zoneContent || !wrapper)
+        return;
+    // Find statement data
+    var stmt = matchingData.definitions.find(function (d) { return d.id === sourceId; });
+    if (!stmt)
+        return;
+    if (stmt.category === conceptId) {
+        // Success Match!
+        correctMatchesCount++;
+        // Remove placeholder text if it's the first match
+        var placeholder = zoneContent.querySelector('div');
+        if (placeholder && placeholder.innerText.indexOf('Drop statements') !== -1) {
+            placeholder.remove();
+        }
+        // Add matching pill
+        var pill = document.createElement('div');
+        pill.className = 'pill-matched';
+        pill.innerText = dragCard.innerText;
+        zoneContent.appendChild(pill);
+        // Hide source card
+        dragCard.style.display = 'none';
+        // Clear selections
+        selectedForMatchCardId = null;
+        dragCard.classList.remove('selected-for-match');
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                \u2705 Correct! statement matches <strong>" + (conceptId === "training_data" ? "Training Data" : "Test Data") + "</strong>.\n            </div>\n        ";
+        if (correctMatchesCount === 10) {
+            showKeyInsightModal();
+        }
     }
     else {
-        alert("Cet exercice est déjà dans votre profil.");
+        // Error Match
+        dragCard.classList.add('shake-error');
+        setTimeout(function () {
+            dragCard.classList.remove('shake-error');
+        }, 500);
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                \u274C Incorrect. This statement belongs to the other dataset. Try again!\n            </div>\n        ";
     }
-};
-btnRealise.onclick = function () {
-    var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
-        window.location.href = 'Page-demo/register.html';
-        return;
+}
+function showKeyInsightModal() {
+    var fPanel = document.getElementById('quiz-feedback-panel');
+    if (fPanel) {
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                \uD83C\uDF89 Great! You\u2019ve identified all the key concepts.\n            </div>\n        ";
     }
-    var now = new Date().toLocaleDateString('fr-FR');
-    var saved = saveToStorage('completed_exercises', { id: 15, date: now });
-    if (saved) {
-        btnRealise.innerHTML = '✨ Validé !';
-        btnRealise.disabled = true;
-        setTimeout(function () { window.location.href = 'Page-demo/historique.html#completed'; }, 1000);
-    }
-};
+    // Modal
+    var overlay = document.createElement('div');
+    overlay.className = 'tutorial-overlay';
+    overlay.id = 'key-insight-overlay';
+    overlay.style.zIndex = '10006';
+    var popup = document.createElement('div');
+    popup.className = 'tutorial-popup';
+    var h3 = document.createElement('h3');
+    h3.innerText = "💡 Key insight";
+    var p = document.createElement('p');
+    p.innerText = "A neural network model is trained on data (training data), validated, and then used to make predictions on new data (test data).";
+    var okBtn = document.createElement('button');
+    okBtn.className = 'tutorial-btn';
+    okBtn.innerText = "OK";
+    popup.appendChild(h3);
+    popup.appendChild(p);
+    popup.appendChild(okBtn);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    okBtn.onclick = function () {
+        overlay.remove();
+        // Update instructions and button state
+        var instrEl = document.querySelector('.exo-instructions');
+        if (instrEl) {
+            instrEl.innerText = "Now that you have identified the roles of training data and test data, let’s see how this translates in practice.";
+        }
+        var qCardText = document.querySelector('.quiz-question-card');
+        if (qCardText) {
+            qCardText.innerText = "Now that you have identified the roles of training data and test data, let’s see how this translates in practice.";
+        }
+        if (fPanel) {
+            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                    \uD83D\uDC49 Click the \"Faire le quiz\" button in the bottom right corner to proceed to observations.\n                </div>\n            ";
+        }
+        btnRealise.removeAttribute('disabled');
+        btnRealise.classList.remove('btn-disabled');
+        btnRealise.classList.add('btn-success-ready');
+        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+    };
+}
+// Check iframe loaded status
+var iframe = document.getElementById('iframe-playground');
+if (iframe) {
+    iframe.addEventListener('load', function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('completed') === 'true') {
+            btnRealise.removeAttribute('disabled');
+            btnRealise.classList.remove('btn-disabled');
+            btnRealise.classList.add('btn-success-ready');
+            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            // Pulse the home button if completed
+            var backBtn = document.querySelector('.universal-header .btn-header');
+            if (backBtn) {
+                backBtn.style.animation = 'pulse-button 1.5s infinite';
+                var style = document.createElement('style');
+                style.textContent = "\n                    @keyframes pulse-button {\n                        0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(139, 92, 246, 0.4); }\n                        50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(139, 92, 246, 0.8); border-color: #8b5cf6; }\n                    }\n                ";
+                document.head.appendChild(style);
+            }
+            var qPanel = document.getElementById('quiz-question-panel');
+            if (qPanel) {
+                qPanel.innerHTML = "\n                    <div class=\"quiz-question-wrapper\">\n                        <div class=\"quiz-question-badge\">Exercice R\u00E9ussi</div>\n                        <div class=\"quiz-question-card\">\n                            Vous avez d\u00E9j\u00E0 valid\u00E9 cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                        </div>\n                    </div>\n                ";
+            }
+            return;
+        }
+        setTimeout(function () {
+            startTutorial();
+        }, 1200);
+    });
+}
