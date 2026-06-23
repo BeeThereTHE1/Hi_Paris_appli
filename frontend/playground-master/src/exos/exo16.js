@@ -21,7 +21,7 @@ exports.exo16 = {
         "doubleRunButton"
     ],
     forcedState: {
-        learningRate: 0.1,
+        learningRate: 10,
         dataset: state_1.datasets["spiral"],
         activation: state_1.activations["sigmoid"],
         percTrainData: 50,

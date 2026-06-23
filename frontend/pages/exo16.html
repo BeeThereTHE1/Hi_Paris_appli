@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="fr">
 
+<!doctype html>
+<html lang="fr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +11,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
+  <link rel="stylesheet" href="../styles/exo_quiz.css" />
+  <style>
+    html body main.quiz-layout-container .simulator-container {
+      width: 50% !important;
+    }
+    html body main.quiz-layout-container .quiz-panel-container {
+      width: 50% !important;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 
 <body>
@@ -77,13 +90,32 @@
     </div>
     <p class="exo-instructions">
       Entraîne le modèle pour classifier les points.
-      <br>Parametre par défaut : LR =0,03,None Reg, ratio Training test = 0,5, pas de noise, Batch Size = 10
+      <br>Paramètre par défaut : LR = 10, None Reg, ratio Training/Test = 0,5, noise = 5, Batch Size = 10, Activation: Sigmoid (haut) & ReLU (bas)
     </p>
   </section>
 
-  <main class="exo-main">
-    <iframe class="exo-frame" src="./playground/index.html?exo=16"></iframe>
-  </main>
+  <div id="main-part">
+    <main class="quiz-layout-container">
+      <div class="simulator-container" style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
+        <div class="iframe-wrapper" style="flex: 1; position: relative; min-height: 280px; height: 50%;">
+          <div class="iframe-label" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 70, 118, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; pointer-events: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">Sigmoid Model</div>
+          <iframe class="exo-frame" id="iframe-sigmoid" src="./playground/index.html?exo=16&activation=sigmoid" style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"></iframe>
+        </div>
+        <div class="iframe-wrapper" style="flex: 1; position: relative; min-height: 280px; height: 50%;">
+          <div class="iframe-label" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(255, 3, 77, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; pointer-events: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">ReLU Model</div>
+          <iframe class="exo-frame" id="iframe-relu" src="./playground/index.html?exo=16&activation=relu" style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"></iframe>
+        </div>
+      </div>
+      <div class="quiz-panel-container">
+        <div class="quiz-div-1" id="quiz-question-panel">
+          <!-- Dynamically populated activity cards -->
+        </div>
+        <div class="quiz-div-2" id="quiz-feedback-panel">
+          <!-- Dynamically populated explanation feedback bubbles -->
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script src="inactivite.js"></script>
   <script src="../playground-master/src/exos/storage_service.js"></script>

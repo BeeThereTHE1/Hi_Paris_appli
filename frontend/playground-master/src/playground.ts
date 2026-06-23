@@ -241,6 +241,11 @@ if (exoId > 0 && exoConfig) {
       (state as any)[key] = (exoConfig.forcedState as any)[key];
     }
   }
+  // Permettre des surcharges par l'URL (utile pour l'exo 16 double-iframe)
+  const urlActivation = params.get("activation");
+  if (urlActivation && activations[urlActivation]) {
+    state.activation = activations[urlActivation];
+  }
   // 3. Synchroniser l'architecture
   state.numHiddenLayers = state.networkShape.length;
 }
@@ -896,7 +901,7 @@ function makeGUI() {
       } else {
         message = "Les courbes de perte d'entraînement et de test doivent diverger d'au moins 0,005.";
       }
-    } else if (exoId === 13 || exoId === 14 || exoId === 15) {
+    } else if (exoId === 13 || exoId === 14 || exoId === 15 || exoId === 16) {
       success = true;
     } else {
       if (lossTrain < 0.1) {

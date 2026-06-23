@@ -23,7 +23,7 @@ export const exo16 = {
 
     // 2. On force l'état initial (LR=10, Batch=10, etc.)
     forcedState: {
-        learningRate: 0.1,
+        learningRate: 10,
         dataset: datasets["spiral"],
         activation: activations["sigmoid"],
         percTrainData: 50,
