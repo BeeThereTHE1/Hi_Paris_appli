@@ -51,6 +51,7 @@ import { exo17, initExo17Popups } from "./exos/exo17";
 
 const params = new URLSearchParams(window.location.search);
 let exoIdStr = params.get("exo");
+const modelId = params.get("model") || "1";
 
 // -- FALLBACK INTELLIGENT POUR PAGE 2 --
 // Si on ne trouve pas d'ID dans l'URL de l'iframe, on regarde l'URL parente
@@ -1914,6 +1915,17 @@ function oneStep(): void {
   }
 
   updateUI();
+
+  if (exoId === 8) {
+    if (window.parent) {
+      window.parent.postMessage({
+        type: 'EXO8_STEP',
+        modelId: modelId,
+        lossTrain: lossTrain,
+        iter: iter
+      }, '*');
+    }
+  }
 }
 
 export function getOutputWeights(network: nn.Node[][]): number[] {
@@ -1972,6 +1984,14 @@ function reset(onStartup = false) {
       }, '*');
     }
   }
+  if (exoId === 8) {
+    if (window.parent) {
+      window.parent.postMessage({
+        type: 'EXO8_RESET',
+        modelId: modelId
+      }, '*');
+    }
+  }
 };
 
 function initTutorial() {
@@ -2022,7 +2042,7 @@ function drawDatasetThumbnails() {
       let canvas: any =
         document.querySelector(`canvas[data-dataset=${dataset}]`);
       let dataGenerator = datasets[dataset];
-      if (exoId > 0 && exoId !== 3 && dataGenerator !== state.dataset) {
+      if (exoId > 0 && exoId !== 3 && exoId !== 7 && dataGenerator !== state.dataset) {
         continue;
       }
       renderThumbnail(canvas, dataGenerator);

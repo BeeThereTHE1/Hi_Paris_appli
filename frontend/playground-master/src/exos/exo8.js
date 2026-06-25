@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var state_1 = require("../state");
 var d3 = require("d3");
 exports.exo8 = {
@@ -40,6 +40,9 @@ exports.exo8 = {
         sinY: false
     }
 };
+/**
+ * Initialise la popup d'introduction de l'exercice 8 (2 pages).
+ */
 function initExo8Popups() {
     var overlay = d3.select("#exo8-popup-overlay");
     var page1 = d3.select("#exo8-page1");

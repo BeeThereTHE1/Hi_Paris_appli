@@ -1503,6 +1503,50 @@
                     "success": "Congratulations! You're at the final step — create your own exercise in the studio to complete the training and earn your certificate."
                 }
             }
+        },
+        "exercise_7": {
+            "title": "Exercise #7",
+            "instructions": {
+                "general": "In this exercise, you will investigate how activation functions affect the model's ability to learn non-linear boundaries. Test each activation function on the Circle dataset, fill out the Yes/No table, and answer the statements about how activation functions affect learning.",
+                "activity_1": "Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset."
+            },
+            "activity_1": {
+                "title": "1 - Test the 4 activation functions",
+                "instruction": "Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset."
+            },
+            "activity_2": {
+                "title": "2 - How do you think the activation function changes the way the model works?",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "It changes the bias term, which shifts the decision boundary.",
+                        "answer": false,
+                        "feedback_true": "❌ Incorrect. The bias is a parameter learned during training, not changed by the activation.",
+                        "feedback_false": "✅ Correct. Bias shifts the boundary, but activation changes how the signal is transformed."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "It influences the shape of the decision boundary the model can learn.",
+                        "answer": true,
+                        "feedback_true": "✅ Correct. Activation functions affect the kind of boundary the model can represent.",
+                        "feedback_false": "❌ Incorrect. Look at how the decision boundary changes when you switch activation functions."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "It changes how each neuron transforms its input before passing it to the next step",
+                        "answer": true,
+                        "feedback_true": "✅ Correct. This is the core role of an activation function.",
+                        "feedback_false": "❌ Incorrect. The activation acts inside each neuron before the signal moves forward."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "It changes the values of the weights learned during training.",
+                        "answer": false,
+                        "feedback_true": "❌ Incorrect. Weights are updated by training, not directly by the activation function.",
+                        "feedback_false": "✅ Correct. Activation affects the transformation, not the weight values themselves."
+                    }
+                ]
+            }
         }
     },
     "onboarding": {
