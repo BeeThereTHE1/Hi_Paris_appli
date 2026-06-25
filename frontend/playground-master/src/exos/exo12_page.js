@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -76,7 +75,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -84,8 +82,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(12)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(12)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -94,7 +92,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -106,10 +104,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(12)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(12)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -120,11 +118,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
-// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -217,11 +214,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject Custom CSS Styles for drag and drop and shake animation
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  .drag-card {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    padding: 12px;\n    font-size: 13px;\n    color: #e2e8f0;\n    cursor: grab;\n    user-select: none;\n    transition: all 0.2s;\n    margin-bottom: 10px;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);\n  }\n  .drag-card:hover {\n    background: rgba(255, 255, 255, 0.12);\n    border-color: rgba(255, 255, 255, 0.25);\n    transform: translateY(-2px);\n  }\n  .drag-card:active {\n    cursor: grabbing;\n  }\n  .drag-card.dragging {\n    opacity: 0.4;\n  }\n  .drag-card.selected-for-match {\n    border: 2px solid #8b5cf6 !important;\n    background: rgba(139, 92, 246, 0.15) !important;\n    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);\n  }\n\n  .drop-zone-wrapper {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px dashed rgba(255, 255, 255, 0.15);\n    border-radius: 8px;\n    padding: 10px;\n    margin-bottom: 10px;\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n    min-height: 80px;\n    transition: all 0.2s;\n    cursor: pointer;\n  }\n  .drop-zone-wrapper:hover {\n    background: rgba(255, 255, 255, 0.04);\n    border-color: rgba(255, 255, 255, 0.25);\n  }\n  .drop-zone-wrapper.dragover {\n    background: rgba(139, 92, 246, 0.1) !important;\n    border-color: #8b5cf6 !important;\n    border-style: solid !important;\n  }\n  .drop-zone-concept {\n    font-weight: 700;\n    font-size: 13.5px;\n    color: #a78bfa;\n  }\n  .drop-zone-target {\n    min-height: 40px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 12.5px;\n    color: #94a3b8;\n    background: rgba(0, 0, 0, 0.2);\n    border-radius: 6px;\n    padding: 8px;\n    text-align: center;\n    transition: all 0.2s;\n  }\n  .drop-zone-target.matched {\n    background: rgba(16, 185, 129, 0.1) !important;\n    border: 1px solid #10b981 !important;\n    color: #10b981 !important;\n    font-weight: 500;\n  }\n\n  @keyframes shake {\n    0%, 100% { transform: translateX(0); }\n    20%, 60% { transform: translateX(-6px); }\n    40%, 80% { transform: translateX(6px); }\n  }\n  .shake-error {\n    animation: shake 0.4s ease-in-out;\n    border-color: #ef4444 !important;\n    background: rgba(239, 68, 68, 0.15) !important;\n  }\n\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
 document.head.appendChild(styleEl);
-// Define definitions details for popups
 var definitionsData = {
     "training_loss": {
         term: "Training loss",
@@ -254,11 +249,8 @@ var matchesState = {
     "divergence": null,
     "overfitting": null
 };
-// Global variables for flashing arrows & helper tip state
 var activeArrow = null;
-// Modal dialog display utility
 function showDefinitionModal(title, text) {
-    // Remove existing
     Array.prototype.forEach.call(document.querySelectorAll('#definition-popup-overlay'), function (el) { el.remove(); });
     var overlay = document.createElement('div');
     overlay.className = 'tutorial-overlay';
@@ -320,7 +312,6 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
-        // Dynamic insertion of "?" inside the iframe and trigger blinking
         setTimeout(function () {
             injectInfoTipsInIframe();
             renderActivity1();
@@ -333,7 +324,6 @@ function injectInfoTipsInIframe() {
         if (!iframe_1)
             return;
         var iframeDoc = iframe_1.contentDocument || iframe_1.contentWindow.document;
-        // Insert styles in iframe
         if (!iframeDoc.getElementById('exo12-styles')) {
             var style = iframeDoc.createElement('style');
             style.id = 'exo12-styles';
@@ -380,9 +370,7 @@ function renderActivity1() {
         return;
     qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13.5px; line-height: 1.45;\">\n                <strong>Drag and drop</strong> - Match each concept with its definition. Drag the definition statements into their respective drop zones or select a card then click on a concept to match.\n            </div>\n        </div>\n        <div style=\"display: flex; gap: 15px; margin-top: 15px;\">\n            <div id=\"drag-source-col\" style=\"flex: 1; display: flex; flex-direction: column;\">\n                <h4 style=\"font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-top: 0; margin-bottom: 8px; letter-spacing: 0.5px;\">D\u00E9finitions</h4>\n                <div id=\"drag-source-area\" style=\"display: flex; flex-direction: column; gap: 2px;\"></div>\n            </div>\n            <div id=\"drop-target-col\" style=\"flex: 1; display: flex; flex-direction: column;\">\n                <h4 style=\"font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-top: 0; margin-bottom: 8px; letter-spacing: 0.5px;\">Concepts</h4>\n                <div id=\"drop-target-area\" style=\"display: flex; flex-direction: column; gap: 2px;\"></div>\n            </div>\n        </div>\n    ";
     fPanel.innerHTML = "\n        <div class=\"feedback-box\" style=\"border-left-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);\">\n            \uD83D\uDCA1 Use the (?) buttons next to the loss statistics inside the simulator to read definitions if needed!\n        </div>\n    ";
-    // Populate definitions (drag sources)
     var sourceArea = qPanel.querySelector('#drag-source-area');
-    // Shuffle definitions
     var shuffledDefs = matchingData.definitions.slice().sort(function () { return Math.random() - 0.5; });
     shuffledDefs.forEach(function (def) {
         var card = document.createElement('div');
@@ -398,7 +386,6 @@ function renderActivity1() {
         card.ondragend = function () {
             card.classList.remove('dragging');
         };
-        // Fallback Click Selection
         card.onclick = function (e) {
             e.stopPropagation();
             if (selectedForMatchCardId === def.id) {
@@ -406,7 +393,6 @@ function renderActivity1() {
                 card.classList.remove('selected-for-match');
             }
             else {
-                // Clear previous selection
                 Array.prototype.forEach.call(sourceArea.querySelectorAll('.drag-card'), function (el) { el.classList.remove('selected-for-match'); });
                 selectedForMatchCardId = def.id;
                 card.classList.add('selected-for-match');
@@ -414,9 +400,7 @@ function renderActivity1() {
         };
         sourceArea.appendChild(card);
     });
-    // Populate drop targets
     var targetArea = qPanel.querySelector('#drop-target-area');
-    // Shuffle targets/concepts
     var shuffledConcepts = matchingData.concepts.slice().sort(function () { return Math.random() - 0.5; });
     shuffledConcepts.forEach(function (c) {
         var wrapper = document.createElement('div');
@@ -424,7 +408,6 @@ function renderActivity1() {
         wrapper.id = "target-wrapper-" + c.id;
         wrapper.innerHTML = "\n            <div class=\"drop-zone-concept\">" + c.name + "</div>\n            <div class=\"drop-zone-target\" id=\"zone-" + c.id + "\">Drop definition here</div>\n        ";
         var zone = wrapper.querySelector("#zone-" + c.id);
-        // Drag events
         wrapper.ondragover = function (e) {
             e.preventDefault();
             wrapper.classList.add('dragover');
@@ -438,7 +421,6 @@ function renderActivity1() {
             var sourceId = e.dataTransfer.getData('text/plain') || draggedCardId;
             handleDropMatch(sourceId, c.id);
         };
-        // Fallback Click Match
         wrapper.onclick = function () {
             if (selectedForMatchCardId) {
                 handleDropMatch(selectedForMatchCardId, c.id);
@@ -458,18 +440,13 @@ function handleDropMatch(sourceId, conceptId) {
     if (!dragCard || !zone || !wrapper)
         return;
     if (sourceId === conceptId) {
-        // Success Match!
         matchesState[conceptId] = sourceId;
-        // Update target visual state
         zone.innerText = dragCard.innerText;
         zone.classList.add('matched');
-        // Hide/Remove draggable source card
         dragCard.style.display = 'none';
-        // Reset selections
         selectedForMatchCardId = null;
         dragCard.classList.remove('selected-for-match');
         fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                \u2705 Correct! You matched <strong>" + matchingData.concepts.find(function (c) { return c.id === conceptId; }).name + "</strong> with its definition.\n            </div>\n        ";
-        // Check if all matched
         var allDone = Object.keys(matchesState).every(function (key) { return matchesState[key] !== null; });
         if (allDone) {
             btnRealise.removeAttribute('disabled');
@@ -480,7 +457,6 @@ function handleDropMatch(sourceId, conceptId) {
         }
     }
     else {
-        // Error Match
         dragCard.classList.add('shake-error');
         setTimeout(function () {
             dragCard.classList.remove('shake-error');
@@ -488,7 +464,6 @@ function handleDropMatch(sourceId, conceptId) {
         fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                \u274C Not quite. That definition doesn't fit the concept of <strong>" + matchingData.concepts.find(function (c) { return c.id === conceptId; }).name + "</strong>. Try again!\n            </div>\n        ";
     }
 }
-// Check iframe loaded status
 var iframe = document.getElementById('iframe-playground');
 if (iframe) {
     iframe.addEventListener('load', function () {
@@ -498,7 +473,6 @@ if (iframe) {
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
             btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-            // Pulse the home button if completed
             var backBtn = document.querySelector('.universal-header .btn-header');
             if (backBtn) {
                 backBtn.style.animation = 'pulse-button 1.5s infinite';

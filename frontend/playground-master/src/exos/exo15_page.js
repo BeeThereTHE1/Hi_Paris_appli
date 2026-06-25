@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -76,7 +75,6 @@ var _this = this;
     container.appendChild(avatar);
     container.appendChild(menu);
 })();
-// ——— LOGIQUE DE SAUVEGARDE ET VALIDATION ———
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -84,8 +82,8 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.save(15)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.save(15)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -94,7 +92,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
                     btnSauvegarder.disabled = true;
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
@@ -106,10 +104,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                 isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (!isLoggedIn) {
                     window.location.href = 'Page-demo/register.html';
-                    return [2 /*return*/];
+                    return [2];
                 }
-                if (!window.StorageService) return [3 /*break*/, 2];
-                return [4 /*yield*/, window.StorageService.complete(15)];
+                if (!window.StorageService) return [3, 2];
+                return [4, window.StorageService.complete(15)];
             case 1:
                 success = _a.sent();
                 if (success) {
@@ -120,11 +118,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     }, 800);
                 }
                 _a.label = 2;
-            case 2: return [2 /*return*/];
+            case 2: return [2];
         }
     });
 }); };
-// ——— ANIMATION D'ARRIÈRE-PLAN ———
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -217,11 +214,9 @@ function animateBackground() {
 }
 initializeBackground();
 animateBackground();
-// Inject Custom CSS Styles for drag and drop
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  .drag-card {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    padding: 10px 12px;\n    font-size: 12px;\n    color: #e2e8f0;\n    cursor: grab;\n    user-select: none;\n    transition: all 0.2s;\n    margin-bottom: 8px;\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);\n    line-height: 1.35;\n  }\n  .drag-card:hover {\n    background: rgba(255, 255, 255, 0.12);\n    border-color: rgba(255, 255, 255, 0.25);\n    transform: translateY(-2px);\n  }\n  .drag-card:active {\n    cursor: grabbing;\n  }\n  .drag-card.dragging {\n    opacity: 0.4;\n  }\n  .drag-card.selected-for-match {\n    border: 2px solid #8b5cf6 !important;\n    background: rgba(139, 92, 246, 0.15) !important;\n    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);\n  }\n\n  .drop-zone-wrapper {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px dashed rgba(255, 255, 255, 0.15);\n    border-radius: 8px;\n    padding: 12px;\n    margin-bottom: 12px;\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n    min-height: 140px;\n    transition: all 0.2s;\n    cursor: pointer;\n  }\n  .drop-zone-wrapper:hover {\n    background: rgba(255, 255, 255, 0.04);\n    border-color: rgba(255, 255, 255, 0.25);\n  }\n  .drop-zone-wrapper.dragover {\n    background: rgba(139, 92, 246, 0.1) !important;\n    border-color: #8b5cf6 !important;\n    border-style: solid !important;\n  }\n  .drop-zone-concept {\n    font-weight: 700;\n    font-size: 14px;\n    color: #a78bfa;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n    padding-bottom: 4px;\n  }\n  .drop-zone-content {\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n    font-size: 11.5px;\n    color: #94a3b8;\n  }\n  .pill-matched {\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    color: #10b981;\n    border-radius: 6px;\n    padding: 6px 10px;\n    font-size: 11.5px;\n    line-height: 1.3;\n    animation: scaleIn 0.3s ease;\n  }\n\n  @keyframes scaleIn {\n    from { transform: scale(0.95); opacity: 0; }\n    to { transform: scale(1); opacity: 1; }\n  }\n\n  @keyframes shake {\n    0%, 100% { transform: translateX(0); }\n    20%, 60% { transform: translateX(-6px); }\n    40%, 80% { transform: translateX(6px); }\n  }\n  .shake-error {\n    animation: shake 0.4s ease-in-out;\n    border-color: #ef4444 !important;\n    background: rgba(239, 68, 68, 0.15) !important;\n  }\n\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
 document.head.appendChild(styleEl);
-// Define definitions details for popups
 var definitionsData = {
     "training_data": {
         term: "Training Data (Données d'entraînement)",
@@ -333,7 +328,6 @@ function injectInfoTipsInIframe() {
             style.textContent = "\n              @keyframes loss-tip-flash {\n                0%, 100% { background: transparent; color: #8b5cf6; transform: scale(1); box-shadow: none; border-color: #8b5cf6; }\n                50% { background: #FF034D; color: white; transform: scale(1.3); box-shadow: 0 0 10px #FF034D; border-color: #FF034D; }\n              }\n              .info-tip-flash-active {\n                animation: loss-tip-flash 1.2s ease-in-out !important;\n                animation-iteration-count: 10 !important;\n                border-radius: 50% !important;\n                display: inline-block !important;\n              }\n            ";
             iframeDoc.head.appendChild(style);
         }
-        // Find the existing tips
         var datasetTip = iframeDoc.querySelector('.ui-dataset h4 .info-tip');
         var testDataTip = iframeDoc.querySelector('.ui-showTestData .info-tip');
         if (datasetTip) {
@@ -378,7 +372,6 @@ function renderActivity1() {
         card.ondragend = function () {
             card.classList.remove('dragging');
         };
-        // Click Selection
         card.onclick = function (e) {
             e.stopPropagation();
             if (selectedForMatchCardId === def.id) {
@@ -430,26 +423,20 @@ function handleDropMatch(sourceId, conceptId) {
     var wrapper = document.getElementById("target-wrapper-" + conceptId);
     if (!dragCard || !zoneContent || !wrapper)
         return;
-    // Find statement data
     var stmt = matchingData.definitions.find(function (d) { return d.id === sourceId; });
     if (!stmt)
         return;
     if (stmt.category === conceptId) {
-        // Success Match!
         correctMatchesCount++;
-        // Remove placeholder text if it's the first match
         var placeholder = zoneContent.querySelector('div');
         if (placeholder && placeholder.innerText.indexOf('Drop statements') !== -1) {
             placeholder.remove();
         }
-        // Add matching pill
         var pill = document.createElement('div');
         pill.className = 'pill-matched';
         pill.innerText = dragCard.innerText;
         zoneContent.appendChild(pill);
-        // Hide source card
         dragCard.style.display = 'none';
-        // Clear selections
         selectedForMatchCardId = null;
         dragCard.classList.remove('selected-for-match');
         fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                \u2705 Correct! statement matches <strong>" + (conceptId === "training_data" ? "Training Data" : "Test Data") + "</strong>.\n            </div>\n        ";
@@ -458,7 +445,6 @@ function handleDropMatch(sourceId, conceptId) {
         }
     }
     else {
-        // Error Match
         dragCard.classList.add('shake-error');
         setTimeout(function () {
             dragCard.classList.remove('shake-error');
@@ -471,7 +457,6 @@ function showKeyInsightModal() {
     if (fPanel) {
         fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                \uD83C\uDF89 Great! You\u2019ve identified all the key concepts.\n            </div>\n        ";
     }
-    // Modal
     var overlay = document.createElement('div');
     overlay.className = 'tutorial-overlay';
     overlay.id = 'key-insight-overlay';
@@ -492,7 +477,6 @@ function showKeyInsightModal() {
     document.body.appendChild(overlay);
     okBtn.onclick = function () {
         overlay.remove();
-        // Update instructions and button state
         var instrEl = document.querySelector('.exo-instructions');
         if (instrEl) {
             instrEl.innerText = "Now that you have identified the roles of training data and test data, let’s see how this translates in practice.";
@@ -510,7 +494,6 @@ function showKeyInsightModal() {
         btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
     };
 }
-// Check iframe loaded status
 var iframe = document.getElementById('iframe-playground');
 if (iframe) {
     iframe.addEventListener('load', function () {
@@ -520,7 +503,6 @@ if (iframe) {
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
             btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-            // Pulse the home button if completed
             var backBtn = document.querySelector('.universal-header .btn-header');
             if (backBtn) {
                 backBtn.style.animation = 'pulse-button 1.5s infinite';

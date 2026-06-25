@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -55,49 +55,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     var avatar = document.createElement('div');
     avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(255,255,255,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;';
     avatar.innerText = initiales.toUpperCase();
-    (function () {
-        return __awaiter(_this, void 0, void 0, function () {
-            var count, r, res, data, res, subs, badge, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 7, , 8]);
-                        count = 0;
-                        r = (user.role || user.profil || '').toUpperCase();
-                        if (!(r.includes('TEACH') || r.includes('ENS'))) return [3, 3];
-                        return [4, fetch("/api/submissions/teacher/" + user.id + "/count", { headers: { 'x-user-email': user.email } })];
-                    case 1:
-                        res = _b.sent();
-                        return [4, res.json()];
-                    case 2:
-                        data = _b.sent();
-                        count = data.count || 0;
-                        return [3, 6];
-                    case 3: return [4, fetch("/api/submissions/student/" + user.id)];
-                    case 4:
-                        res = _b.sent();
-                        return [4, res.json()];
-                    case 5:
-                        subs = _b.sent();
-                        count = subs.filter(function (s) { return s.status !== 'PENDING'; }).length;
-                        _b.label = 6;
-                    case 6:
-                        if (count > 0) {
-                            badge = document.createElement('span');
-                            badge.style.cssText = 'position:absolute; top:-5px; right:-5px; background:#ef4444; color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; border:2px solid #0f172a; font-weight:800; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);';
-                            badge.innerText = count;
-                            avatar.appendChild(badge);
-                        }
-                        return [3, 8];
-                    case 7:
-                        e_1 = _b.sent();
-                        console.error("Badge error:", e_1);
-                        return [3, 8];
-                    case 8: return [2];
-                }
-            });
+    (function () { return __awaiter(_this, void 0, void 0, function () {
+        var count, r, res, data, res, subs, badge, e_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 7, , 8]);
+                    count = 0;
+                    r = (user.role || user.profil || '').toUpperCase();
+                    if (!(r.includes('TEACH') || r.includes('ENS'))) return [3, 3];
+                    return [4, fetch("/api/submissions/teacher/" + user.id + "/count", { headers: { 'x-user-email': user.email } })];
+                case 1:
+                    res = _b.sent();
+                    return [4, res.json()];
+                case 2:
+                    data = _b.sent();
+                    count = data.count || 0;
+                    return [3, 6];
+                case 3: return [4, fetch("/api/submissions/student/" + user.id)];
+                case 4:
+                    res = _b.sent();
+                    return [4, res.json()];
+                case 5:
+                    subs = _b.sent();
+                    count = subs.filter(function (s) { return s.status !== 'PENDING'; }).length;
+                    _b.label = 6;
+                case 6:
+                    if (count > 0) {
+                        badge = document.createElement('span');
+                        badge.style.cssText = 'position:absolute; top:-5px; right:-5px; background:#ef4444; color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; border:2px solid #0f172a; font-weight:800; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);';
+                        badge.innerText = count;
+                        avatar.appendChild(badge);
+                    }
+                    return [3, 8];
+                case 7:
+                    e_1 = _b.sent();
+                    console.error("Badge error:", e_1);
+                    return [3, 8];
+                case 8: return [2];
+            }
         });
-    })();
+    }); })();
     avatar.onmouseover = function () { return avatar.style.transform = 'scale(1.1) rotate(5deg)'; };
     avatar.onmouseout = function () { return avatar.style.transform = 'scale(1) rotate(0deg)'; };
     var menu = document.createElement('div');
@@ -503,32 +501,28 @@ function loadAndRender() {
                 case 2:
                     data = _b.sent();
                     communityOnly = data.filter(function (exo) { return !exo.is_official && !exo.official_id; });
-                    CUSTOM_EXERCISES_FROM_API = communityOnly.map(function (exo) {
-                        return ({
-                            id: exo.id,
-                            icon: '👥',
-                            title: exo.title,
-                            desc: exo.description || 'Exercice personnalisé',
-                            difficulty: 'easy',
-                            category: 'Communauté',
-                            duration: 'Auto',
-                            questions: '?',
-                            isCustom: true,
-                            creator_id: exo.creator_id
-                        });
-                    });
+                    CUSTOM_EXERCISES_FROM_API = communityOnly.map(function (exo) { return ({
+                        id: exo.id,
+                        icon: '👥',
+                        title: exo.title,
+                        desc: exo.description || 'Exercice personnalisé',
+                        difficulty: 'easy',
+                        category: 'Communauté',
+                        duration: 'Auto',
+                        questions: '?',
+                        isCustom: true,
+                        creator_id: exo.creator_id
+                    }); });
                     _b.label = 3;
                 case 3: return [3, 5];
                 case 4:
                     err_3 = _b.sent();
                     console.warn('⚠️ API indisponible pour les exos custom:', err_3.message);
                     localCustom = JSON.parse(localStorage.getItem('official_custom_exercises') || '[]');
-                    CUSTOM_EXERCISES_FROM_API = localCustom.map(function (exo) {
-                        return ({
-                            id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
-                            difficulty: 'easy', category: 'Communauté', duration: 'Auto', questions: '?', isCustom: true
-                        });
-                    });
+                    CUSTOM_EXERCISES_FROM_API = localCustom.map(function (exo) { return ({
+                        id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
+                        difficulty: 'easy', category: 'Communauté', duration: 'Auto', questions: '?', isCustom: true
+                    }); });
                     return [3, 5];
                 case 5:
                     applyFilters();
