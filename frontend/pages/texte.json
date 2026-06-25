@@ -1,0 +1,1512 @@
+{
+    "exercises": {
+        "exercise_1": {
+            "title": "Exercise #1",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran (Data, output, features, colorscale, weight)",
+            "instructions": {
+                "text": "Adjust the model parameters to classify the Gaussian dataset. Monitor how each change impacts your results. Once the classification is good enough, you will progress to two activities that validate this exercise. First, hover over parameters to view their definitions."
+            },
+            "start_marker": "Let's Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified.",
+            "target_achieved": "Great job! Your settings lead to a good classification of our data into two clusters. Let's review together what you've learned from this exercise",
+            "definitions": {
+                "data": {
+                    "term": "Data",
+                    "definition": "Numeric values that the model aims to classify"
+                },
+                "output": {
+                    "term": "Output",
+                    "definition": "The output is the result produced by the model, showing its classification based on the input data and the choice of parameters. The background colors represent the model's decision: blue for one group, orange for the other, and the border between them is the decision boundary."
+                },
+                "x_axis": {
+                    "term": "X Axis",
+                    "definition": "Each axis shows the range of synthetic values that an input can take, on an arbitrary scale from -6 to +6."
+                },
+                "y_axis": {
+                    "term": "Y Axis",
+                    "definition": "Each axis shows the range of synthetic values that an input can take, on an arbitrary scale from -6 to +6."
+                },
+                "color_scale": {
+                    "term": "Color scale",
+                    "definition": "Colors show the model's confidence: blue means the model predicts one group, orange the other. Strong colors mean high confidence; lighter colors mean uncertainty."
+                },
+                "features": {
+                    "term": "Features",
+                    "definition": "A feature is a measurable property or characteristic used as input for a machine learning model. For example, in a house price prediction model, features might include size, location, number of rooms, and age of the house."
+                },
+                "weight": {
+                    "term": "Weight",
+                    "definition": "A weight is a value that controls how much an input influences the output.\nDuring training, the model adjusts the weights to reduce its prediction errors.\nIn a neural network the weight determines the strength or importance of a connection between neurons"
+                }
+            },
+            "qcm": {
+                "question": "How did you adjust the weights of X1 and X2 to get a good classification?",
+                "options": [
+                    {
+                        "text": "X1 had to be lower than X2",
+                        "correct": false,
+                        "feedback": "Not quite. Both inputs are equally important to separate the plan in the diagonal orientation of these specific clusters."
+                    },
+                    {
+                        "text": "I randomly chose the weight",
+                        "correct": false,
+                        "feedback": "Random selection is not a deterministic strategy. A proper ratio must be found."
+                    },
+                    {
+                        "text": "X1 and X2 had to be equivalent",
+                        "correct": true,
+                        "feedback": "You got it! X1 and X2 must have similar or equivalent weights to position the decision boundary at a 45-degree angle, perfectly separating the clusters."
+                    },
+                    {
+                        "text": "X1 had to be bigger than X2",
+                        "correct": false,
+                        "feedback": "Not quite. If X1 is significantly larger, the slope of the line will lean too much towards one axis."
+                    }
+                ]
+            },
+            "drag_and_drop": {
+                "instruction": "Drag and drop statements",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "A neural network works as a linear classifier.",
+                        "answer": true,
+                        "feedback": "A neural network without hidden layers behaves like a linear model. It becomes non-linear only when hidden layers and activation functions are added."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "A simple logistic classification can only separate data that is linearly separable.",
+                        "answer": true,
+                        "feedback": "Logistic regression creates a straight decision boundary. It can only work when the classes can be separated by a straight line (or hyperplane)."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "Hidden layers are necessary to classify a linear binary dataset",
+                        "answer": false,
+                        "feedback": "Hidden layers are not required for linear binary classification because the problem can be solved entirely using a linear model. They become necessary only when the dataset is non-linear."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "If a dataset has two clusters, it is always possible to draw a straight boundary between them.",
+                        "answer": false,
+                        "feedback": "Even if a dataset has only two clusters, their shape and position matter. If the clusters are arranged in a curved or interleaved way (for example circles or moons), no straight line can separate them without making errors. A straight boundary works only when the clusters are linearly separable."
+                    }
+                ],
+                "result": {
+                    "correct": "Good job!",
+                    "incorrect": "Not quite"
+                }
+            }
+        },
+        "exercise_2": {
+            "title": "Exercise #2",
+            "instructions": {
+                "text": "Launch the training of the neural network using the step-by-step button and observe how the weighs change and the loss decreases over time. Once training is complete, we will walk through the training process step by step.\n\nFirst, hover over parameters to view their definitions."
+            },
+            "start_marker": "Ready to start the training?\nGo!",
+            "target_achieved": "Great! The model has successfully learned to classify the data. Now let's go back and review the different training steps.",
+            "tooltips": {
+                "buttons": "Run/pause",
+                "epoch": "An epoch is one complete pass of the entire training dataset through a machine learning model during the training process. Training usually requires multiple epochs so the model can gradually improve its predictions.",
+                "training_loss": "Training Loss measures how wrong the model's predictions are on the training data. During training, this value decreases as the model learns",
+                "training_loss_more_info": "Training loss is a numerical measure of the error between the model's predictions and the expected outputs on the training data.",
+                "gradient_descent": "Gradient descent is an optimization algorithm that updates the model's parameters step by step to reduce the loss."
+            },
+            "explanations": [
+                {
+                    "step": 0,
+                    "title": "Step 0 – Initial parameters are set",
+                    "description": "Before training begins, the neural network’s basic parameters (such as weights and bias) are automatically initialized. These initial values are usually small and random, allowing the model to start making predictions even before learning begins."
+                },
+                {
+                    "step": 1,
+                    "title": "Step 1 – Training starts",
+                    "description": "The training process is launched. From this point on, the model repeatedly processes the training data in order to improve its predictions."
+                },
+                {
+                    "step": 2,
+                    "title": "Step 2 – The epoch counter records the first pass",
+                    "description": "The epoch counter displays the first epoch, indicating that the model is starting its first complete pass through the training dataset. An epoch represents one full cycle in which all training examples are seen by the model once."
+                },
+                {
+                    "step": 3,
+                    "title": "Step 3 – The training loss is calculated",
+                    "description": "After making predictions using the current parameters, the model computes the training loss. This value measures the difference between the model's predictions and the expected outputs, providing a numerical indication of how wrong the model currently is."
+                },
+                {
+                    "step": 4,
+                    "title": "Step 4 – Gradient descent updates the parameters",
+                    "description": "The gradient descent algorithm uses the training loss to compute how the model's parameters should be adjusted. It updates the weights and bias in a direction that reduces the loss, improving the model's predictions."
+                },
+                {
+                    "step": 5,
+                    "title": "Step 5 – A new training step begins",
+                    "description": "With the updated parameters, the model starts a new training step. This cycle—prediction, loss calculation, and parameter update—is repeated over many steps and epochs until the loss stabilizes."
+                }
+            ],
+            "rearrange_quiz": {
+                "instruction": "Rearrange the statements",
+                "statements": [
+                    {
+                        "correct_order": 1,
+                        "displayed_order": 2,
+                        "statement": "The model already exhibits a decision boundary, even though learning has not yet begun."
+                    },
+                    {
+                        "correct_order": 2,
+                        "displayed_order": 5,
+                        "statement": "Predictions are generated using the current state of the model applied to the input features."
+                    },
+                    {
+                        "correct_order": 3,
+                        "displayed_order": 1,
+                        "statement": "A numerical signal is produced to indicate how far the model's current predictions are from the expected outcomes."
+                    },
+                    {
+                        "correct_order": 4,
+                        "displayed_order": 3,
+                        "statement": "Parameter adjustments are calculated based on how a small change would affect the error signal."
+                    },
+                    {
+                        "correct_order": 5,
+                        "displayed_order": 4,
+                        "statement": "The same sequence of operations is executed repeatedly as the model revisits the training data."
+                    }
+                ],
+                "validation_text": "Well done! You have correctly identified the steps. You can now return to the dashboard to continue with the next exercise.",
+                "summary_schema": [
+                    "Parameters initialized",
+                    "PREDICTION - Model makes predictions",
+                    "EVALUATION - Training loss is computed",
+                    "OPTIMIZATION - Gradient descent updates parameters",
+                    "-> Repeat over"
+                ]
+            }
+        },
+        "exercise_3": {
+            "title": "Exercise #3+5",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "In this exercise, you will observe the limitations of a linear model and the role of non-linear features in learning complex patterns.",
+                "activity_1": "First, Train the model on each dataset and observe its limitations",
+                "activity_2": "Now, add two other features and observe how the decision boundary changes."
+            },
+            "feedback": {
+                "quiz_1": {
+                    "question": "What kind of decision boundary was each model able to draw?",
+                    "options": {
+                        "x1_x2": "X1 ; X2 (True response = linear)",
+                        "x1_x2_x1sq_x2sq": "X1 ; X2 ; X1² ; X2² (linear and circle true)",
+                        "alternating_quadrant": "alternating quadrant: Linear, Circle, spirals"
+                    }
+                },
+                "general_feedback": "When a model uses only linear features (X1, X2), it can combine them only in a linear way. This means it can draw only a straight decision boundary. As a result, only linearly separable datasets can be correctly classified.",
+                "last_check": {
+                    "title": "Last Check!",
+                    "subtitle": "Here, we compared linear and non-linear features. Linear features are simply coordinates. Is it clear to you what a non-linear feature is?",
+                    "quiz_2": {
+                        "question": "Which statement best describes a non-linear feature?",
+                        "options": {
+                            "A": "A feature that is combined with other inputs using linear weights",
+                            "B": "A feature that is created by applying a non-linear transformation to an input",
+                            "C": "A feature that produces random or irregular outputs",
+                            "D": "A feature that can only be used in deep neural networks"
+                        },
+                        "correct_option": "B"
+                    }
+                },
+                "validation": "Good Job!"
+            }
+        },
+        "quiz_section_1": {
+            "title": "Quiz intermédiaire de section #1",
+            "activity_1": {
+                "instruction": "Match each term to its definition",
+                "pairs": [
+                    {
+                        "term": "Feature",
+                        "definition": "Input variable used by the model"
+                    },
+                    {
+                        "term": "Weight",
+                        "definition": "Value controlling the importance of a feature"
+                    },
+                    {
+                        "term": "Output",
+                        "definition": "Model prediction / decision boundary"
+                    },
+                    {
+                        "term": "Training loss",
+                        "definition": "Measure of prediction error"
+                    }
+                ]
+            },
+            "activity_2": {
+                "instruction": "Activity 2 drag and drop: True or False statements",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "Two clusters can always be separated with a line",
+                        "answer": false,
+                        "feedback": "Not quite. Some datasets (circles, spirals) are not linearly separable, so a straight line is not enough."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "Hidden layers are required for linear classification",
+                        "answer": false,
+                        "feedback": "Incorrect. Linear problems can be solved without hidden layers using a simple linear model."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "Logistic regression creates a linear boundary",
+                        "answer": true,
+                        "feedback": "Not quite. Logistic regression always produces a linear decision boundary, not non-linear ones."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "A neural network without hidden layer behaves like a linear model",
+                        "answer": true,
+                        "feedback": "Incorrect. Without hidden layers, a neural network is equivalent to a linear model."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "Training is an iterative loop: prediction -> evaluation -> optimization",
+                        "answer": true,
+                        "feedback": "Not quite. Training follows this repeating loop, not a single-step process."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "when training progresses correctly, loss increases",
+                        "answer": false,
+                        "feedback": "Incorrect. If learning works properly, loss should decrease, not increase."
+                    },
+                    {
+                        "id": 7,
+                        "statement": "Parameters initialization is the second step of training",
+                        "answer": false,
+                        "feedback": "Not quite. Initialization happens first, before any prediction or training begins."
+                    },
+                    {
+                        "id": 8,
+                        "statement": "Linear features lead to straight decision boundaries, limiting performance on complex data.",
+                        "answer": true,
+                        "feedback": "Incorrect. Linear features can only create straight boundaries, which limits performance on complex data."
+                    },
+                    {
+                        "id": 9,
+                        "statement": "Without hidden layers, a model can learn non-linear patterns with non-linear features (e.g., X1², X2²)",
+                        "answer": true,
+                        "feedback": "Not quite. Even without hidden layers, non-linear features transform the input space, enabling complex patterns."
+                    }
+                ],
+                "validation": {
+                    "success": "Congratulations! You've completed Section 1 — keep going!",
+                    "retry": "You're close! Reach 80% to unlock the next level—revisit the exercises and give it another try."
+                }
+            }
+        },
+        "exercise_6": {
+            "title": "Exercise #6",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "In this exercise, you will explore how a neural network builds its prediction step by step. First compare a simple model using only x₁ and x₂ with a model that includes one hidden layer with four neurons.",
+                "activity_1": "As seen earlier, it is not possible to classify complex data (such as the two-circle dataset) using linear features. Now try using a hidden layer with four neurons."
+            },
+            "pedagogical_overlay": [
+                {
+                    "step": 1,
+                    "title": "Simple model: one equation",
+                    "description": "This model directly combines x₁ and x₂ using weights and bias. prediction ≈ f(w1·x1 + w2·x2 + b)"
+                },
+                {
+                    "step": 2,
+                    "title": "Neural Network: What the hidden layer computes",
+                    "description": "Each neuron combines x₁ and x₂ in a different way, producing 4 new features: a1, a2, a3, a4 with ai = f(wi1·x1 + wi2·x2 + bi). These values are not predictions, they are features learned from the data."
+                },
+                {
+                    "step": 3,
+                    "title": "How the full model works",
+                    "description": "The final prediction is built by combining the learned features. prediction = f(v1·a1 + v2·a2 + v3·a3 + v4·a4 + c)"
+                },
+                {
+                    "step": 4,
+                    "title": "In Summary",
+                    "description": "A neural network learns new features using neurons, then combines them to solve more complex problems. (Here, f is an activation function, which determines how each neuron outputs its signal.)"
+                }
+            ],
+            "definitions": {
+                "hidden_layer": {
+                    "term": "Hidden Layer",
+                    "definition": "A hidden layer is a layer of neurons located between the input layer and the output layer in a neural network. Hidden layers allow the network to learn complex patterns and representations from the data."
+                },
+                "neuron": {
+                    "term": "Neuron",
+                    "definition": "A neuron (or node) is a computational unit in a neural network that receives inputs, multiplies them by weights, adds a bias, and applies an activation function to produce an output."
+                }
+            },
+            "quiz": {
+                "instruction": "Drag and drop True or False?",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "a hidden neuron creates an intermediate feature, not a final decision",
+                        "answer": true,
+                        "feedback": "A hidden neuron produces a new feature from the input data."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "The final prediction is computed directly from x₁ and x₂ in all models",
+                        "answer": false,
+                        "feedback": "In models with hidden layers, predictions are based on learned features."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "A hidden layer allows the network to learn intermediate features.",
+                        "answer": true,
+                        "feedback": "hidden layers are where new representations are learned."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "Each neuron in a hidden layer learns the same feature.",
+                        "answer": false,
+                        "feedback": "different neurons learn different features."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "The output of the network combines the features learned by the hidden layer.",
+                        "answer": true,
+                        "feedback": "the output uses learned features, not raw inputs."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "Adding a hidden layer changes the network from one equation ŷ = f(x₁, x₂) to a composition of equations ŷ = g(f₁(x₁, x₂), ..., f₄(x₁, x₂))",
+                        "answer": true,
+                        "feedback": "hidden layers turn the model into a composition of functions, applying activation functions to each step."
+                    },
+                    {
+                        "id": 7,
+                        "statement": "Feature learning means manually choosing the right input variables",
+                        "answer": false,
+                        "feedback": "feature learning is automatic, not manual."
+                    },
+                    {
+                        "id": 8,
+                        "statement": "Feature learning means that a neural network automatically creates new intermediate features from the input data, instead of relying only on the original inputs defined by the user.",
+                        "answer": true,
+                        "feedback": "without hidden layers, the model uses a single representation."
+                    }
+                ]
+            }
+        },
+        "exercise_4": {
+            "title": "Exercise #4",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.",
+                "activity_1": "What is the main role of the bias in a neuron?"
+            },
+            "quiz": {
+                "question": "What is the main role of the bias in a neuron?",
+                "options": {
+                    "A": "Change the slope of the line",
+                    "B": "Shift the line without changing its orientation (true response)",
+                    "C": "Add noise to the data",
+                    "D": "Speed up learning"
+                },
+                "correct_option": "B",
+                "feedback": "The bias plays the role of the intercept: it shifts the decision boundary."
+            },
+            "key_idea": {
+                "title": "Key Idea",
+                "description": "The neuron defines a linear decision boundary: w1·x1 + w2·x2 + b = 0. The weights control the orientation of the separating line, while the bias controls the position of the separating line.",
+                "points": [
+                    "Weights -> control the orientation of the separating line",
+                    "Bias -> controls the position of the separating line"
+                ]
+            },
+            "validation": "Let's get to the next exercise"
+        },
+        "exercise_7": {
+            "title": "Exercise #7 Activation Functions",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "Explore how different activation functions affect the model's behavior and learning.",
+                "activity_1": "Test the 4 activation functions: test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset (all)",
+                "activity_3": {
+                    "instruction": "Using the graphical representations of each activation function, and by testing them again in the Playground, drag the properties below into the correct columns"
+                }
+            },
+            "feedback": {
+                "activity_1": {
+                    "correct": "That's Right!",
+                    "incorrect": "Not Quite, try again!"
+                },
+                "activity_2": {
+                    "title": "Activity 2: True or False",
+                    "statements": [
+                        {
+                            "id": 1,
+                            "statement": "It influences the shape of the decision boundary the model can learn.",
+                            "answer": true,
+                            "feedback_true": "Correct. Activation functions affect the kind of boundary the model can represent.",
+                            "feedback_false": "Incorrect. Look at how the decision boundary changes when you switch activation functions."
+                        },
+                        {
+                            "id": 2,
+                            "statement": "It changes how each neuron transforms its input before passing it to the next step.",
+                            "answer": true,
+                            "feedback_true": "Correct. This is the core role of an activation function.",
+                            "feedback_false": "Incorrect. The activation acts inside each neuron before the signal moves forward."
+                        },
+                        {
+                            "id": 3,
+                            "statement": "It changes the bias term, which shifts the decision boundary.",
+                            "answer": false,
+                            "feedback_true": "Incorrect. The bias is a parameter learned during training, not changed by the activation.",
+                            "feedback_false": "Correct. Bias shifts the boundary, but activation changes how the signal is transformed."
+                        },
+                        {
+                            "id": 4,
+                            "statement": "It changes the values of the weights learned during training.",
+                            "answer": false,
+                            "feedback_true": "Incorrect. Weights are updated by training, not directly by the activation function.",
+                            "feedback_false": "Correct. Activation affects the transformation, not the weight values themselves."
+                        }
+                    ]
+                },
+                "activity_3": {
+                    "columns": {
+                        "linear": {
+                            "graphical_representation": "g(z) = z",
+                            "transformation": "Linear",
+                            "output_range": "Any real value",
+                            "non_linear_boundaries": "No",
+                            "observed_behavior": "Very limited"
+                        },
+                        "sigmoid": {
+                            "graphical_representation": "g(z) = 1 / (1 + e^-z)",
+                            "transformation": "Non-linear",
+                            "output_range": "0 ; 1",
+                            "non_linear_boundaries": "Yes",
+                            "observed_behavior": "Often slower"
+                        },
+                        "tanh": {
+                            "graphical_representation": "g(z) = (e^z - e^-z) / (e^z + e^-z)",
+                            "transformation": "Non-linear",
+                            "output_range": "-1 ; 1",
+                            "non_linear_boundaries": "Yes",
+                            "observed_behavior": "More stable"
+                        },
+                        "relu": {
+                            "graphical_representation": "g(z) = max(0, z)",
+                            "transformation": "Non-linear",
+                            "output_range": "0 / positive",
+                            "non_linear_boundaries": "Yes",
+                            "observed_behavior": "Often faster"
+                        }
+                    },
+                    "end_marker": "Great! Now let's revisit the definition of an activation function"
+                }
+            },
+            "definition": {
+                "text": "An activation function is a mathematical function applied to the output of a neuron in a neural network. It determines whether the neuron should be activated and what value it should pass to the next layer. More formally, a neuron first computes a weighted sum of its inputs: z = w1·x1 + w2·x2 + ... + b. Where: w = weights, x = input features, b = bias. The activation function f is then applied.",
+                "equation": "z = w1·x1 + w2·x2 + ... + b",
+                "variables": {
+                    "w": "weights",
+                    "x": "input features",
+                    "b": "bias"
+                },
+                "end_marker": "Well Done! You have finished this exercise. Go back home to the dashboard, next exercise has been unlocked!"
+            }
+        },
+        "exercise_8": {
+            "title": "Exercise #8 Instability",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "Run the two models below (same dataset and settings) and identify what explains the differences between their results",
+                "secondary": "Same data set, same parameters, observe the differences"
+            },
+            "quiz_1": {
+                "question": "What differences do you observe between the two results?",
+                "options": [
+                    {
+                        "text": "The final weights",
+                        "correct": true
+                    },
+                    {
+                        "text": "The input features change",
+                        "correct": false,
+                        "feedback": "The input features remain the same in both models."
+                    },
+                    {
+                        "text": "The training stops earlier in one model",
+                        "correct": false,
+                        "feedback": "Both models use the same training process."
+                    },
+                    {
+                        "text": "The decision boundaries are different",
+                        "correct": true
+                    }
+                ],
+                "feedback_correct": "That's right! The models use the same data and settings, but their results differ (boundaries and weights)."
+            },
+            "quiz_2": {
+                "question": "You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason?",
+                "options": [
+                    {
+                        "text": "Each run starts from a different set of weights",
+                        "correct": true
+                    },
+                    {
+                        "text": "The dataset changes slightly between runs",
+                        "correct": false
+                    },
+                    {
+                        "text": "The initial weights are randomly assigned at the start",
+                        "correct": true
+                    }
+                ],
+                "feedback_correct": "That's correct! Each run starts with randomly initialized weights, so the model begins learning from a different starting point and converges to a different solution (different boundary and final weights).",
+                "feedback_incorrect": "The dataset does not change. Both models use exactly the same data — the difference comes from how the model is initialized, not from the data itself."
+            },
+            "key_idea": {
+                "title": "Key Idea",
+                "description": "A neural network learns by adjusting its weights step by step. If the starting weights are different, the optimization path changes, which leads to different learned patterns, even with the same data and parameters."
+            },
+            "validation": "Good job! Let's get to the next exercise"
+        },
+        "quiz_section_2": {
+            "title": "Quiz intermédiaire de section #2",
+            "activity_1": {
+                "instruction": "Match each term to its definition",
+                "pairs": [
+                    {
+                        "term": "Hidden layer",
+                        "definition": "Layer that learns intermediate features from data"
+                    },
+                    {
+                        "term": "Neuron",
+                        "definition": "Unit computing weighted sum + bias (+ activation)"
+                    },
+                    {
+                        "term": "Bias",
+                        "definition": "Parameter that shifts the decision boundary"
+                    },
+                    {
+                        "term": "Activation function",
+                        "definition": "Function transforming neuron output"
+                    },
+                    {
+                        "term": "Gradient descent",
+                        "definition": "Algorithm that updates weights to reduce loss"
+                    },
+                    {
+                        "term": "Initialization",
+                        "definition": "Random starting values of weights before training"
+                    },
+                    {
+                        "term": "Model instability",
+                        "definition": "Different results with the same setup due to random initialization"
+                    }
+                ]
+            },
+            "activity_2": {
+                "instruction": "Activity 2 drag and drop: True or False statements",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "A hidden layer allows a model to learn more complex patterns.",
+                        "answer": true,
+                        "feedback": "Without hidden layers, the model remains limited to simple linear relationships."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "The bias shifts the decision boundary without changing its orientation.",
+                        "answer": true,
+                        "feedback": "Bias does not change the slope—it only moves the boundary."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "Gradients are only computed once during training.",
+                        "answer": false,
+                        "feedback": "Gradients are computed at every step to update the model iteratively."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "Hidden layers directly produce the final prediction.",
+                        "answer": false,
+                        "feedback": "Hidden layers create intermediate features; the output layer makes the prediction."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "Activation functions determine how neurons transform their inputs.",
+                        "answer": true,
+                        "feedback": "Activation is what introduces non-linearity into the model."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "The bias controls how fast the model learns.",
+                        "answer": false,
+                        "feedback": "Learning speed is controlled by the learning rate, not the bias."
+                    },
+                    {
+                        "id": 7,
+                        "statement": "Linear activation functions allow learning complex non-linear patterns.",
+                        "answer": false,
+                        "feedback": "Without non-linearity, the model remains equivalent to a linear model."
+                    },
+                    {
+                        "id": 8,
+                        "statement": "All neural networks produce the same result given the same data.",
+                        "answer": false,
+                        "feedback": "Results can differ due to random initialization of weights."
+                    },
+                    {
+                        "id": 9,
+                        "statement": "Training loss should decrease when learning is working correctly.",
+                        "answer": true,
+                        "feedback": "Increasing loss means the model is not learning properly."
+                    },
+                    {
+                        "id": 10,
+                        "statement": "Running the same model twice can give different results.",
+                        "answer": true,
+                        "feedback": "Random initialization leads to different starting points and outcomes."
+                    }
+                ],
+                "validation": {
+                    "success": "Congratulations! You've successfully completed this section. You're ready to move on to the next one.",
+                    "retry": "Almost there! Boost your score to 80% to progress — go back, learn, and try again."
+                }
+            }
+        },
+        "exercise_9_10": {
+            "title": "Exercise #9&10 Error and divergence",
+            "instructions": {
+                "general": "Run the two models with different noise levels and analyze how their training loss and weights evolve during training",
+                "secondary_1": "First, let's review the key features you'll require for this exercise.",
+                "secondary_2": "Move the cursor and observe the effect on the dataset",
+                "secondary_3": "Now, run the models twice with noise set to 5 and 50, for up to 3,000 epochs, and compare their training behavior"
+            },
+            "definitions": {
+                "noise": {
+                    "term": "Noise",
+                    "definition": "Noise is random variation added to the data that makes patterns less separable, more overlapping"
+                },
+                "training_loss": {
+                    "term": "The training loss",
+                    "definition": "The training loss measures how well the model fits the training dataset. It represents the difference between the model's predictions and the true values during training."
+                }
+            },
+            "activity_1": {
+                "instruction": "Run the model twice: first with the noise set to 5, and then with the noise set to 50. What differences do you observe? Regenerate the data if you want to check again.",
+                "propositions": [
+                    {
+                        "text": "In one model, the weights keep increasing",
+                        "correct": true
+                    },
+                    {
+                        "text": "One model shows a constant training loss",
+                        "correct": true
+                    },
+                    {
+                        "text": "One model shows a decreasing training loss",
+                        "correct": true
+                    },
+                    {
+                        "text": "Both models achieve stable parameter values.",
+                        "correct": false
+                    }
+                ],
+                "feedback": {
+                    "correct": "Correct!",
+                    "incorrect": "Not quite, please run the models again."
+                },
+                "transition": "What conclusions can be drawn from these observations?"
+            },
+            "activity_2": {
+                "instruction": "Activity 2 Drag and drop",
+                "categories": {
+                    "low_noise_divergent_model": {
+                        "title": "Low noise/divergent model",
+                        "statements": [
+                            "The error remains constant, preventing the model from improving.",
+                            "The presence of multiple equivalent minima leads to unstable optimization",
+                            "The absence of error variation prevents convergence",
+                            "The weights increase without stabilizing due to repeated updates"
+                        ]
+                    },
+                    "high_noise_convergent_model": {
+                        "title": "High noise/convergent model",
+                        "statements": [
+                            "The model converges toward a unique optimal solution",
+                            "The weights stabilize around an equilibrium value",
+                            "There is a reachable global minimum error toward which the model can move.",
+                            "The model eventually stabilizes around an optimal solution, which corresponds to convergence."
+                        ]
+                    }
+                },
+                "feedback": "When the error remains constant, the model applies the same correction at every step. This repeated update accumulates over time, causing the weights to grow continuously. As a result, the model never stabilizes and diverges instead of reaching a solution. When the error changes, the model adjusts its corrections at each step, making them progressively smaller. This allows the weights to slow down and stabilize instead of increasing continuously. As a result, the model converges toward a stable and optimal solution."
+            }
+        },
+        "exercise_11": {
+            "title": "Exercise # 11 Learning rate",
+            "instructions": {
+                "general": "Explore how different Learning rates affect learning",
+                "activity_3": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
+            },
+            "definitions": {
+                "learning_rate": {
+                    "term": "The learning rate",
+                    "definition": "The learning rate controls how much the model's parameters (weights and biases) are updated during training. A small learning rate leads to slow learning, while a large learning rate may cause the model to miss the optimal solution."
+                }
+            },
+            "activity_1": {
+                "instruction": "Activity 1 True or False",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "Training loss measures the error on the data used to train the model.",
+                        "answer": true,
+                        "feedback_true": "Correct — training loss is computed on the training dataset.",
+                        "feedback_false": "Incorrect — this is exactly the definition of training loss."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "Convergence always means the model has found the correct solution.",
+                        "answer": false,
+                        "feedback_true": "Incorrect — a model can converge to a wrong or suboptimal solution.",
+                        "feedback_false": "Correct — convergence means stability, not correctness."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "A model has converged when its behavior becomes stable during training.",
+                        "answer": true,
+                        "feedback_true": "Correct — convergence is defined by stability of learning.",
+                        "feedback_false": "Incorrect — stability is the key sign of convergence."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "A model diverges when its error increases or becomes unstable during training.",
+                        "answer": true,
+                        "feedback_true": "Correct — divergence is characterized by instability or increasing loss.",
+                        "feedback_false": "Incorrect — this describes divergence."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "The learning rate controls how much the model updates its weights at each step.",
+                        "answer": true,
+                        "feedback_true": "Correct — it defines the step size of updates.",
+                        "feedback_false": "Incorrect — this is the role of the learning rate."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "The learning rate and the number of epochs both control how many passes are made during training.",
+                        "answer": false,
+                        "feedback_true": "Incorrect — only epochs control the number of passes; learning rate controls step size.",
+                        "feedback_false": "Correct — epochs define passes, learning rate defines update magnitude."
+                    }
+                ]
+            },
+            "activity_3": {
+                "instruction": "Activity 3 True or False",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "A high learning rate can make the model learn faster.",
+                        "answer": true,
+                        "feedback_true": "Correct — larger updates can speed up learning.",
+                        "feedback_false": "Incorrect — higher learning rates often speed up updates."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "A very high learning rate can cause the model to diverge.",
+                        "answer": true,
+                        "feedback_true": "Correct — large updates can make training unstable.",
+                        "feedback_false": "Incorrect — high learning rates are a common cause of divergence."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "A low learning rate usually leads to more stable training.",
+                        "answer": true,
+                        "feedback_true": "Correct — small updates make learning more stable.",
+                        "feedback_false": "Incorrect — low learning rates generally improve stability."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "A very low learning rate can make training extremely slow.",
+                        "answer": true,
+                        "feedback_true": "Correct — small updates slow down progress.",
+                        "feedback_false": "Incorrect — low learning rates reduce training speed."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "A high learning rate can cause the model to overshoot the optimal solution.",
+                        "answer": true,
+                        "feedback_true": "Correct — large steps can go past the minimum.",
+                        "feedback_false": "Incorrect — overshooting is a typical effect of high learning rates."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "Divergence occurs when updates are too large and unstable.",
+                        "answer": true,
+                        "feedback_true": "Correct — instability comes from excessive updates.",
+                        "feedback_false": "Incorrect — divergence is often caused by large updates."
+                    },
+                    {
+                        "id": 7,
+                        "statement": "If the learning rate is too high, the model may oscillate instead of converging.",
+                        "answer": true,
+                        "feedback_true": "Correct — large updates can cause oscillations.",
+                        "feedback_false": "Incorrect — oscillation is a sign of too high learning rate."
+                    },
+                    {
+                        "id": 8,
+                        "statement": "A low learning rate can prevent the model from reaching the optimal solution within a limited time.",
+                        "answer": true,
+                        "feedback_true": "Correct — learning may be too slow to converge properly.",
+                        "feedback_false": "Incorrect — insufficient learning time can limit performance."
+                    },
+                    {
+                        "id": 9,
+                        "statement": "A high learning rate can make the model learn faster.",
+                        "answer": true,
+                        "feedback_true": "Correct — larger updates can speed up learning.",
+                        "feedback_false": "Incorrect — higher learning rates often speed up updates."
+                    },
+                    {
+                        "id": 10,
+                        "statement": "A very high learning rate can cause the model to diverge.",
+                        "answer": true,
+                        "feedback_true": "Correct — large updates can make training unstable.",
+                        "feedback_false": "Incorrect — high learning rates are a common cause of divergence."
+                    }
+                ]
+            }
+        },
+        "exercise_12": {
+            "title": "Exercise #12 training loss, train loss and overfitting",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "Train a complex model and observe how training loss and test loss evolve to identify signs of overfitting.",
+                "secondary": "First, let's review the key notions required for this exercise."
+            },
+            "activity_1": {
+                "instruction": "Match each concept with its definition?",
+                "pairs": [
+                    {
+                        "concept": "Training loss",
+                        "definition": "Error of the model on the data it was trained on"
+                    },
+                    {
+                        "concept": "Test loss",
+                        "definition": "Error of the model on new, unseen data"
+                    },
+                    {
+                        "concept": "Divergence",
+                        "definition": "Situation where the loss increases instead of decreasing during training"
+                    },
+                    {
+                        "concept": "Overfitting",
+                        "definition": "When the model learns the training data too well but performs poorly on new data"
+                    }
+                ],
+                "transition": "Great! You've identified the key concepts — now let's see them in action. Run the model and observe how training loss, test loss, and overfitting actually behave during learning.",
+                "test_loss_definition_btn": "Test loss measures the model's performance on unseen data (the test dataset). It indicates how well the model generalizes beyond the data it was trained on."
+            },
+            "activity_2": {
+                "instruction": "Did you observe the following patterns?",
+                "checklist": [
+                    {
+                        "observation": "Training loss continuously decreases",
+                        "validation": "The model keeps improving its performance on the training data"
+                    },
+                    {
+                        "observation": "Test loss decreases at first, then starts increasing",
+                        "validation": "The model initially generalizes, but then begins to fail on unseen data."
+                    },
+                    {
+                        "observation": "A gap appears between training loss and test loss",
+                        "validation": "This gap is the main signal of overfitting."
+                    },
+                    {
+                        "observation": "The more complex the model, the larger the gap",
+                        "validation": "Increased complexity amplifies overfitting."
+                    },
+                    {
+                        "observation": "The decision boundary becomes very irregular (overly complex)",
+                        "validation": "The model starts fitting noise instead of the true data pattern."
+                    },
+                    {
+                        "observation": "Best performance occurs before the end of training",
+                        "validation": "The optimal model is reached before overfitting starts (early stopping insight)."
+                    }
+                ],
+                "completion": "Good job ! Let's get to the next exercise"
+            }
+        },
+        "exercise_13_14": {
+            "title": "Exercise # 13&14 Neurons and training process",
+            "instructions": {
+                "general": "In this exercise, you will review how a neural network learns over time and explore how internal representations are built inside the model.",
+                "secondary": "First, let's examine the iterative learning cycle that takes place inside a neural network. You have the option to execute the training incrementally, observing each stage of the process as it unfolds."
+            },
+            "activity_1": {
+                "steps": [
+                    {
+                        "step": 0,
+                        "title": "Step 0 – Initialize the parameters",
+                        "points": [
+                            "Before training starts, the model does not know anything.",
+                            "All weights and biases are initialized randomly (small values)",
+                            "The network has no meaningful representation yet",
+                            "The decision boundary is random or non-informative"
+                        ],
+                        "result": "The model is ready to start learning, but its predictions are incorrect or arbitrary"
+                    },
+                    {
+                        "step": 2,
+                        "title": "Step 2 – Compute the error (loss)",
+                        "points": [
+                            "The model compares its prediction with the true label",
+                            "If prediction is wrong → error is high",
+                            "If prediction is close → error is low"
+                        ],
+                        "result": "A single value: the training loss"
+                    },
+                    {
+                        "step": 3,
+                        "title": "Step 3 – Backward pass (compute corrections)",
+                        "points": [
+                            "The model determines how to correct its mistake",
+                            "It computes: 'How much did each weight contribute to the error?'",
+                            "This uses backpropagation"
+                        ],
+                        "result": "For each weight → a direction and magnitude of update"
+                    },
+                    {
+                        "step": 4,
+                        "title": "Step 4 – Update the weights",
+                        "points": [
+                            "The model adjusts its parameters:",
+                            "New weight = old weight – (learning rate × correction)",
+                            "Small update → slow but stable learning",
+                            "Large update → faster but risk of instability"
+                        ],
+                        "result": "The model is slightly improved"
+                    }
+                ],
+                "loop_repeat": {
+                    "text": "Then the loop repeats from step 1...",
+                    "points": [
+                        "For many data points",
+                        "Over many epochs"
+                    ]
+                },
+                "summary": {
+                    "title": "In summary",
+                    "points": [
+                        "Training is an iterative loop: predict → measure error → correct → update",
+                        "Each step slightly improves the model",
+                        "Learning emerges progressively over many iterations"
+                    ],
+                    "note": "You can run the model again to observe these steps in action; Whenever you are ready click 'Next' to proceed to the next activity."
+                }
+            },
+            "activity_2": {
+                "instruction_1": "Now, reset the data and run the model until it reaches a stable state.",
+                "instruction_2": "Hover over the neurons at different layers, observe the patterns and complete the following statements.",
+                "quiz": [
+                    {
+                        "id": 1,
+                        "statement": "Hidden layers mainly...",
+                        "options": {
+                            "A": "Directly produce the final prediction",
+                            "B": "Transform inputs into intermediate features"
+                        },
+                        "correct_option": "B"
+                    },
+                    {
+                        "id": 2,
+                        "statement": "A neuron in a hidden layer...",
+                        "options": {
+                            "A": "Detects specific patterns in the data",
+                            "B": "Stores the correct answer"
+                        },
+                        "correct_option": "A"
+                    },
+                    {
+                        "id": 3,
+                        "statement": "Learning happens because...",
+                        "options": {
+                            "A": "The model adjusts its weights iteratively",
+                            "B": "The model changes its architecture"
+                        },
+                        "correct_option": "A"
+                    },
+                    {
+                        "id": 4,
+                        "statement": "At early epochs, the model...",
+                        "options": {
+                            "A": "Produces rough and inaccurate representations",
+                            "B": "Has already learned meaningful features"
+                        },
+                        "correct_option": "A"
+                    },
+                    {
+                        "id": 5,
+                        "statement": "Modifying one neuron in the last layer...",
+                        "options": {
+                            "A": "Has no effect on the output",
+                            "B": "Changes part of the decision boundary"
+                        },
+                        "correct_option": "B"
+                    },
+                    {
+                        "id": 6,
+                        "statement": "Internal representations...",
+                        "options": {
+                            "A": "Are identical to the final output",
+                            "B": "Are intermediate transformations of input data"
+                        },
+                        "correct_option": "B"
+                    },
+                    {
+                        "id": 7,
+                        "statement": "Neurons in the last hidden layers learn...",
+                        "options": {
+                            "A": "Raw input features only",
+                            "B": "More abstract and task-specific representations"
+                        },
+                        "correct_option": "B"
+                    },
+                    {
+                        "id": 8,
+                        "statement": "Each neuron in deep layers...",
+                        "options": {
+                            "A": "Represents the full decision boundary",
+                            "B": "Detects a specific feature or pattern"
+                        },
+                        "correct_option": "B"
+                    },
+                    {
+                        "id": 9,
+                        "statement": "When observing a neuron activation map, you can...",
+                        "options": {
+                            "A": "Identify what type of feature it responds to",
+                            "B": "Directly read the final prediction"
+                        },
+                        "correct_option": "A"
+                    },
+                    {
+                        "id": 10,
+                        "statement": "As depth increases, representations become...",
+                        "options": {
+                            "A": "Less interpretable and random",
+                            "B": "More specialized for the task"
+                        },
+                        "correct_option": "B"
+                    }
+                ]
+            },
+            "take_home_message": {
+                "title": "Take Home Message",
+                "points": [
+                    "Learning is a progressive and iterative process",
+                    "Neural networks transform inputs into increasingly abstract features",
+                    "Hidden layers act as feature detectors",
+                    "The final prediction is built from the combination of these learned features"
+                ]
+            }
+        },
+        "exercise_15": {
+            "title": "Exercise #15 training loss, train loss and generalisation",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "Observe how the training loss and test loss evolve over time in a complex neural network. Use these observations to evaluate the model's ability to generalize to unseen data and identify signs of overfitting.",
+                "secondary": "First, let's review the notions of test data and training data."
+            },
+            "definitions": {
+                "training_data": {
+                    "term": "Training data",
+                    "definition": "Training data is the dataset used to train the model."
+                },
+                "test_data": {
+                    "term": "Test data",
+                    "definition": "Test data is separate unseen data used to evaluate its ability to generalize."
+                }
+            },
+            "activity_1": {
+                "instruction": "Match each dataset type with its specificities",
+                "groups": {
+                    "training_data": [
+                        "(1) The model directly updates its weights using this data",
+                        "(2) The loss on this data decreases continuously during training",
+                        "(7) This dataset is seen by the model during backpropagation",
+                        "(5) The model can memorize patterns specific to this data",
+                        "(8) Performance on this data may become misleadingly good (overfitting)"
+                    ],
+                    "test_data": [
+                        "(3) This dataset remains unseen during weight updates",
+                        "(4) The model does not learn directly from this data",
+                        "(6) Overfitting is observed when performance worsens on this data",
+                        "(9) This data reflects how well the model performs on new, unseen inputs",
+                        "(10) This data is used to evaluate generalization performance"
+                    ]
+                },
+                "transition": "Now that you have identified the roles of training data and test data, let's see how this translates in practice. Run the model with the given configuration and observe how the training loss and test loss evolve during training. Pay close attention to what this reveals about the model's ability to generalize."
+            },
+            "activity_2": {
+                "instruction": "Did you observe the following items ? (if not, reset and run the model again)",
+                "checklist": [
+                    {
+                        "observation": "Evolution of the training loss over time (speed and stability)",
+                        "explanation": "→ The training loss should decrease steadily as the model learns patterns from the training data."
+                    },
+                    {
+                        "observation": "Evolution of the test loss over time (level and fluctuations)",
+                        "explanation": "→ The test loss may decrease initially but can stabilize or increase if the model fails to generalize."
+                    },
+                    {
+                        "observation": "Gap between training and test loss and whether it increases",
+                        "explanation": "→ An increasing gap indicates the model is fitting the training data better than the test data."
+                    },
+                    {
+                        "observation": "Moment when the two curves start to diverge",
+                        "explanation": "→ The point where test loss starts increasing while training loss keeps decreasing signals overfitting."
+                    },
+                    {
+                        "observation": "Signs of overfitting (training improves while test worsens)",
+                        "explanation": "→ Overfitting occurs when performance improves on training data but degrades on test data."
+                    },
+                    {
+                        "observation": "Overall generalization performance on unseen data",
+                        "explanation": "→ Good generalization means similar performance on both training and test data."
+                    },
+                    {
+                        "observation": "Amount of training data available (here very limited – 10%)",
+                        "explanation": "→ With only 10% training data, the model has limited examples to learn general patterns."
+                    },
+                    {
+                        "observation": "Evidence of memorization of training data (rapid loss decrease)",
+                        "explanation": "→ A very fast decrease in training loss suggests the model is memorizing rather than learning."
+                    },
+                    {
+                        "observation": "Difficulty to generalize from few examples",
+                        "explanation": "→ With few examples, the model struggles to apply learned patterns to new data."
+                    },
+                    {
+                        "observation": "Impact of noise and lack of data on model behavior",
+                        "explanation": "→ Noise and insufficient data increase the risk of learning irrelevant or misleading patterns."
+                    }
+                ],
+                "key_insight": "Overfitting can result from both model complexity and insufficient training data",
+                "completion": "Good job ! Let's get to the next exercise"
+            }
+        },
+        "exercise_17": {
+            "title": "Exercise # 17",
+            "instructions": {
+                "general": "Explore how increasing the learning rate affects training stability on a separable dataset using a logistic regression model.",
+                "activity_1": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
+            },
+            "activity_3": {
+                "instruction": "Activity 3 True or False",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "A separable dataset allows logistic regression to converge even with relatively large learning rates.",
+                        "answer": true,
+                        "feedback_true": "Correct. On separable data, logistic regression can remain stable even with relatively high learning rates.",
+                        "feedback_false": "Incorrect. In this exercise, the model can still converge with large learning rates because the dataset is separable and the optimization is well-behaved."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "The loss in logistic regression on separable data remains well-behaved, which prevents divergence for a wide range of learning rates.",
+                        "answer": true,
+                        "feedback_true": "Correct. The loss is well-conditioned in this setting, which helps the model stay stable across many learning rates.",
+                        "feedback_false": "Incorrect. In this exercise, the loss landscape remains stable enough to avoid divergence for many learning rates."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "A high learning rate always causes divergence, even for simple models like logistic regression.",
+                        "answer": false,
+                        "feedback_true": "Incorrect. A high learning rate does not always cause divergence. In simple cases like logistic regression on separable data, the model can still converge.",
+                        "feedback_false": "Correct. A high learning rate can cause divergence in some cases, but not always. In this exercise, logistic regression on separable data can tolerate high values without diverging."
+                    }
+                ],
+                "general_conclusion": "The learning rate impacts the stability of training: if it is too high, it can cause divergence due to large and unstable updates, while lower values promote stable convergence. However, this effect depends on the model and the data: simple models like logistic regression on separable datasets can tolerate much higher learning rates without diverging, unlike more complex neural networks",
+                "validation": "Good job ! Let's get to the next exercise"
+            }
+        },
+        "quiz_section_3": {
+            "title": "Quiz intermédiaire de section #3",
+            "activity_1": {
+                "instruction": "Match each term to its definition",
+                "pairs": [
+                    {
+                        "term": "Epoch",
+                        "definition": "One full pass over the training data"
+                    },
+                    {
+                        "term": "Learning rate",
+                        "definition": "Step size used to update model parameters"
+                    },
+                    {
+                        "term": "Convergence",
+                        "definition": "When the model stabilizes and loss stops changing significantly"
+                    },
+                    {
+                        "term": "Divergence",
+                        "definition": "When loss increases or becomes unstable during training"
+                    },
+                    {
+                        "term": "Feature learning",
+                        "definition": "Process where the model builds new internal representations"
+                    },
+                    {
+                        "term": "Noise",
+                        "definition": "Random variation that makes patterns harder to learn"
+                    },
+                    {
+                        "term": "Gradient",
+                        "definition": "Signal indicating how to update weights to reduce loss"
+                    }
+                ]
+            },
+            "activity_2": {
+                "instruction": "Activity 2 drag and drop: True or False statements",
+                "statements": [
+                    {
+                        "id": 1,
+                        "statement": "A model has converged when its behavior becomes stable.",
+                        "answer": true,
+                        "feedback": "Convergence means stability of learning, not necessarily perfect accuracy."
+                    },
+                    {
+                        "id": 2,
+                        "statement": "A high learning rate can make training unstable.",
+                        "answer": true,
+                        "feedback": "Large updates can overshoot the optimal solution and prevent convergence."
+                    },
+                    {
+                        "id": 3,
+                        "statement": "If two models use the same data, they always converge to the same solution.",
+                        "answer": false,
+                        "feedback": "Different random initializations can lead to different final solutions."
+                    },
+                    {
+                        "id": 4,
+                        "statement": "High noise always helps the model converge faster.",
+                        "answer": false,
+                        "feedback": "Noise can destabilize learning and prevent proper convergence."
+                    },
+                    {
+                        "id": 5,
+                        "statement": "Divergence occurs when the model stops updating its weights.",
+                        "answer": false,
+                        "feedback": "Divergence happens when updates become unstable or too large, not when they stop."
+                    },
+                    {
+                        "id": 6,
+                        "statement": "Feature learning means manually selecting better inputs.",
+                        "answer": false,
+                        "feedback": "Feature learning is automatic: the model builds internal representations during training."
+                    },
+                    {
+                        "id": 7,
+                        "statement": "Noise in the data can make learning more difficult.",
+                        "answer": true,
+                        "feedback": "Noise reduces separability between data points, making patterns harder to learn."
+                    },
+                    {
+                        "id": 8,
+                        "statement": "During training, weights are updated at every iteration.",
+                        "answer": true,
+                        "feedback": "Weights are continuously adjusted using gradients at each step."
+                    },
+                    {
+                        "id": 9,
+                        "statement": "Neural networks learn intermediate features inside hidden layers.",
+                        "answer": true,
+                        "feedback": "Hidden layers transform inputs into more abstract and useful representations."
+                    },
+                    {
+                        "id": 10,
+                        "statement": "A decreasing loss always means the model has found the best solution.",
+                        "answer": false,
+                        "feedback": "Loss can decrease while the model is still far from the optimal or global solution."
+                    },
+                    {
+                        "id": 11,
+                        "statement": "A very low learning rate makes training faster.",
+                        "answer": false,
+                        "feedback": "Small updates slow down learning and require more iterations to converge."
+                    },
+                    {
+                        "id": 12,
+                        "statement": "Training is an iterative process that improves the model over time.",
+                        "answer": true,
+                        "feedback": "Learning does not happen in one step—it requires repeated updates over many iterations."
+                    }
+                ],
+                "validation": {
+                    "success": "Congratulations! You've successfully completed this section. You're ready to move on to the next one.",
+                    "retry": "Almost there! Boost your score to 80% to progress — go back, learn, and try again."
+                }
+            }
+        },
+        "exercise_16": {
+            "title": "Exercise #16 Gradient",
+            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "instructions": {
+                "general": "In this exercise, you will explore how the choice of activation function affects learning in a deep neural network and influences gradient propagation.",
+                "secondary": "First, let's examine the definition of a gradient in a Neural Network"
+            },
+            "definition": {
+                "title": "What is a gradient?",
+                "text": "A gradient is the signal used to update the model during learning.",
+                "how_it_works": [
+                    "The model makes a prediction",
+                    "The error (loss) is computed",
+                    "The gradient tells how to change each weight to reduce this error"
+                ],
+                "key_idea": {
+                    "text": "The gradient improves parameter with both Direction (where to go) and Magnitude (how big the change should be).",
+                    "points": [
+                        "Large gradient — big update",
+                        "Small gradient — tiny update"
+                    ]
+                }
+            },
+            "activity_1": {
+                "instruction": "Run both models until they reach a stable state. Focus closely on weights and neurons during this process.",
+                "activation_functions": {
+                    "sigmoid": {
+                        "weight_updates": "Very small updates in early layers",
+                        "learning_progression": "Slow, blocked, or absent",
+                        "neuron_feature_learning": "Early neurons fail to learn useful features",
+                        "layer_behavior": "Early layers are \"inactive\" (no learning signal)",
+                        "suitability_for_deep_networks": "Poor choice"
+                    },
+                    "relu": {
+                        "weight_updates": "Effective updates across all layers",
+                        "learning_progression": "Continuous",
+                        "neuron_feature_learning": "Neurons learn meaningful hierarchical representations",
+                        "layer_behavior": "All layers contribute to learning",
+                        "suitability_for_deep_networks": "Preferred choice"
+                    }
+                }
+            },
+            "activity_2": {
+                "instruction": "Identify the correct conclusions. For each pair, select the correct statement",
+                "quiz": [
+                    {
+                        "concept": "Early layers behavior",
+                        "correct_statement": "The neurons and weights in the first layers barely changed because the error signal (backward pass) did not reach them.",
+                        "incorrect_statement": "The neurons and weights in the first layers changed very slowly because most of the learning was concentrated in the deeper layers."
+                    },
+                    {
+                        "concept": "Role of the gradient",
+                        "correct_statement": "The gradient, which is responsible for updating the weights and enabling learning, becomes smaller and eventually disappears.",
+                        "incorrect_statement": "The gradient becomes very stable at small values, allowing the model to converge smoothly without large weight updates."
+                    },
+                    {
+                        "concept": "Role of the activation function",
+                        "correct_statement": "The Sigmoid function is responsible for the gradient killing phenomenon because it strongly reduces the gradient at each layer.",
+                        "incorrect_statement": "The gradient killing phenomenon mainly occurs when the model is too deep, regardless of the activation function used."
+                    }
+                ],
+                "transition": "Great! Let's finish with a Find the Mistake game"
+            },
+            "activity_3": {
+                "relu": {
+                    "title": "3.a. ReLU activation Function",
+                    "description": "With ReLU transformation only two possible gradient values: 1 when the neuron is active (x > 0) and 0 when the neuron is inactive (x ≤ 0). ReLU does NOT shrink gradients (no multiplication by small values). When active → gradient stays strong (1) → learning continues.",
+                    "details": {
+                        "gradient_0": "No signal passes. No learning for that neuron (\"dead neuron\").",
+                        "gradient_1": "Full signal passes backward. Weights are updated normally."
+                    }
+                },
+                "sigmoid": {
+                    "title": "3.b. Sigmoïd activation Function",
+                    "description": "Sigmoid derivative is always ≤ 0.25. Chain effect in deep networks means gradient ≈ 0.25 * 0.25 * 0.25 * ... This leads to extremely small gradients (e.g. for 6 layers, 0.25^6 ≈ 0.00024), which is known as \"gradient killing\". It gets \"killed\" during backpropagation.",
+                    "quiz": {
+                        "statement": "The gradient becomes almost infinite after multiplication.",
+                        "hint_reveal": "Give me a Hint / Reveal the answer",
+                        "feedback": "Correct! The gradient becomes almost zero, not infinite. This happens because multiplying many small derivatives (Sigmoid) makes the gradient vanish, which stops learning."
+                    }
+                },
+                "validation": "Well Done! You have finished this exercise. Go back home to the dashboard, next exercise has been unlocked!"
+            }
+        },
+        "quiz_final": {
+            "title": "Exercise Quiz final",
+            "activity_1": {
+                "instruction": "Drag and drop - Match the right answer to each question",
+                "pairs": [
+                    {
+                        "term": "What sequence of operations is repeatedly executed during the training of a neural network to progressively improve its predictions?",
+                        "definition": "Generate predictions, Compute loss, Compute gradients and Update weights"
+                    },
+                    {
+                        "term": "In the equation of a neuron, what is the role of the bias term?",
+                        "definition": "Shifts decision boundary"
+                    },
+                    {
+                        "term": "Why can running the exact same model multiple times with identical data and parameters produce different outcomes?",
+                        "definition": "Starting weights are set randomly"
+                    },
+                    {
+                        "term": "What role does an activation function play inside a neuron?",
+                        "definition": "Transforms the output"
+                    },
+                    {
+                        "term": "How does increasing noise in a dataset affect the model's ability to converge toward a stable solution?",
+                        "definition": "Instead of \"moving toward the optimum\", the model: moves back and forth or follows a noisy path"
+                    },
+                    {
+                        "term": "What hyperparameter controls the magnitude of parameter updates during each training step?",
+                        "definition": "The learning rate controls how much the model's parameters are adjusted at each step to reduce the error."
+                    }
+                ]
+            },
+            "activity_2": {
+                "instruction": "Evaluation - Drag and drop - Match the right answer to each question",
+                "pairs": [
+                    {
+                        "term": "What is a typical consequence of using a very high learning rate during training?",
+                        "definition": "Fast but unstable"
+                    },
+                    {
+                        "term": "What is a typical consequence of using a very low learning rate during training?",
+                        "definition": "Slow but stable"
+                    },
+                    {
+                        "term": "What architectural factor increases the model's ability to learn more complex representations and abstract patterns?",
+                        "definition": "More layers"
+                    },
+                    {
+                        "term": "What phenomenon occurs when gradients become extremely small and learning stops in early layers of a deep network?",
+                        "definition": "Vanishing Gradient"
+                    },
+                    {
+                        "term": "When a model performs extremely well on training data but poorly on unseen data, what issue does it illustrate?",
+                        "definition": "Overfitting: the model has learned the training data too specifically and fails to generalize to new, unseen data."
+                    },
+                    {
+                        "term": "Why are activation functions essential for learning complex patterns?",
+                        "definition": "They add non-linearity"
+                    }
+                ],
+                "validation": {
+                    "retry": "You're nearly there! Score 80% to progress — go back, improve, and try again.",
+                    "success": "Congratulations! You're at the final step — create your own exercise in the studio to complete the training and earn your certificate."
+                }
+            }
+        }
+    },
+    "onboarding": {
+        "welcome": "Welcome to the onboarding flow! Let's get started.",
+        "nextStep": "Next Step"
+    }
+}

@@ -1,30 +1,80 @@
+let translations = null;
+
+async function loadTranslations() {
+  try {
+    const response = await fetch('../texte.json');
+    if (!response.ok) throw new Error("Failed to load translation json");
+    const data = await response.json();
+    translations = data.exercises.exercise_1;
+
+    // Dynamically update the main page elements if translations are loaded
+    if (translations) {
+      if (translations.title) {
+        document.title = translations.title;
+        const titleEl = document.querySelector('.exo-title');
+        if (titleEl) titleEl.innerText = translations.title;
+      }
+      if (translations.instructions && translations.instructions.text) {
+        const instrEl = document.querySelector('.exo-instructions');
+        if (instrEl) {
+          instrEl.innerText = translations.instructions.text;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("Could not load translations from JSON, using fallback/default texts.", error);
+  }
+}
+
 function initQuiz() {
   const options = document.querySelectorAll(".quiz-option-btn");
   const quizDiv2 = document.querySelector(".quiz-div-2");
   const mainPart = document.getElementById("main-part");
 
-  const answersData = [
-    {
-      correct: false,
-      title: "Not quite",
-      text: "Not quite. Both inputs are equally important to separate the plan in the diagonal orientation of these specific clusters."
-    },
-    {
-      correct: false,
-      title: "Not quite",
-      text: "Random selection is not a deterministic strategy. A proper ratio must be found."
-    },
-    {
-      correct: true,
-      title: "You got it!",
-      text: "You got it! X1 and X2 must have similar or equivalent weights to position the decision boundary at a 45-degree angle, perfectly separating the clusters."
-    },
-    {
-      correct: false,
-      title: "Not quite",
-      text: "Not quite. If X1 is significantly larger, the slope of the line will lean too much towards one axis."
+  if (translations && translations.qcm) {
+    const questionEl = document.querySelector('.quiz-question-card');
+    if (questionEl && translations.qcm.question) {
+      questionEl.innerText = translations.qcm.question;
     }
-  ];
+    const optionTexts = document.querySelectorAll('.quiz-option-text');
+    if (optionTexts.length === translations.qcm.options.length) {
+      optionTexts.forEach((optEl, idx) => {
+        optEl.innerText = translations.qcm.options[idx].text;
+      });
+    }
+  }
+
+  let answersData = [];
+  if (translations && translations.qcm && translations.qcm.options) {
+    answersData = translations.qcm.options.map(opt => ({
+      correct: opt.correct,
+      title: opt.correct ? "You got it!" : "Not quite",
+      text: opt.feedback
+    }));
+  } else {
+    answersData = [
+      {
+        correct: false,
+        title: "Not quite",
+        text: "Not quite. Both inputs are equally important to separate the plan in the diagonal orientation of these specific clusters."
+      },
+      {
+        correct: false,
+        title: "Not quite",
+        text: "Random selection is not a deterministic strategy. A proper ratio must be found."
+      },
+      {
+        correct: true,
+        title: "You got it!",
+        text: "You got it! X1 and X2 must have similar or equivalent weights to position the decision boundary at a 45-degree angle, perfectly separating the clusters."
+      },
+      {
+        correct: false,
+        title: "Not quite",
+        text: "Not quite. If X1 is significantly larger, the slope of the line will lean too much towards one axis."
+      }
+    ];
+  }
 
   // Helper to create the popup overlay without graying out the simulator
   function showFeedbackPopup(answer) {
@@ -53,7 +103,7 @@ function initQuiz() {
 
     const nextBtn = document.createElement("button");
     nextBtn.className = "feedback-next-btn";
-    nextBtn.textContent = "Next";
+    nextBtn.textContent = answer.correct ? "Next" : "Try Again";
     nextBtn.style.display = "none";
 
     bubble.appendChild(badge);
@@ -68,16 +118,18 @@ function initQuiz() {
       overlay.classList.add("show");
     }, 10);
 
-    // Show Next button after 5 seconds
+    // Show Next button after 5 seconds (or 2.5 seconds for incorrect answers to retry faster)
     setTimeout(() => {
       nextBtn.style.display = "block";
-    }, 5000);
+    }, answer.correct ? 5000 : 2500);
 
     nextBtn.addEventListener("click", () => {
       overlay.classList.remove("show");
       setTimeout(() => {
         overlay.remove();
-        showDragDropQuiz(); // Trigger Drag & Drop modal
+        if (answer.correct) {
+          showDragDropQuiz(); // Trigger Drag & Drop modal only if correct!
+        }
       }, 300);
     });
   }
@@ -90,19 +142,29 @@ function initQuiz() {
     ddOverlay = document.createElement("div");
     ddOverlay.className = "dragdrop-overlay";
 
-    ddOverlay.innerHTML = `
-      <div class="dragdrop-container">
-        <div class="dragdrop-header">
-          <span class="dragdrop-badge">2</span>
-          <h2>Drag and Drop</h2>
-          <h3>True or False?</h3>
-        </div>
-        
-        <div class="dragdrop-cards-area" id="cards-source">
+    let cardsHtml = "";
+    if (translations && translations.drag_and_drop && translations.drag_and_drop.statements) {
+      translations.drag_and_drop.statements.forEach((stmt) => {
+        cardsHtml += `<div class="drag-card" draggable="true" id="card-${stmt.id}" data-answer="${stmt.answer}">${stmt.statement}</div>`;
+      });
+    } else {
+      cardsHtml = `
           <div class="drag-card" draggable="true" id="card-1" data-answer="true">The basics of a neural network is a linear classifier</div>
           <div class="drag-card" draggable="true" id="card-2" data-answer="true">A simple logistic regression can only separate data that is linearly separable.</div>
           <div class="drag-card" draggable="true" id="card-3" data-answer="false">Hidden layers are necessary to classify a linear binary dataset</div>
           <div class="drag-card" draggable="true" id="card-4" data-answer="false">If a dataset has two clusters, it is always possible to draw a straight boundary between them.</div>
+      `;
+    }
+    ddOverlay.innerHTML = `
+      <div class="dragdrop-container">
+        <div class="dragdrop-header">
+          <span class="dragdrop-badge">2</span>
+          <h2>${translations && translations.drag_and_drop && translations.drag_and_drop.instruction ? translations.drag_and_drop.instruction : "Drag and Drop"}</h2>
+          <h3>True or False?</h3>
+        </div>
+        
+        <div class="dragdrop-cards-area" id="cards-source">
+          ${cardsHtml}
         </div>
         
         <div class="dragdrop-zones-container">
@@ -375,15 +437,19 @@ function initQuiz() {
   options.forEach((btn, index) => {
     btn.addEventListener("click", () => {
       // Clear previous selection
-      options.forEach(o => o.classList.remove("selected"));
-      btn.classList.add("selected");
-
+      options.forEach(o => o.classList.remove("selected", "selected-correct", "selected-incorrect"));
+      
       const answer = answersData[index];
+      if (answer.correct) {
+        btn.classList.add("selected-correct");
+      } else {
+        btn.classList.add("selected-incorrect");
+      }
 
       // Update quiz-div-2 with feedback details in a speech bubble block
       quizDiv2.innerHTML = `
-        <div class="quiz-feedback-bubble">
-          <h3 style="color: ${answer.correct ? '#10b981' : '#58303cff'}; margin-top: 0; font-weight: 800; font-size: 16px;">
+        <div class="quiz-feedback-bubble" style="background: ${answer.correct ? '#10b981' : '#FF034D'}; border-color: ${answer.correct ? '#10b981' : '#FF034D'};">
+          <h3 style="color: #ffffff; margin-top: 0; font-weight: 800; font-size: 16px;">
             ${answer.correct ? '✔ You got it!' : '✖ Not quite'}
           </h3>
           <p style="font-size: 13px; line-height: 1.5; color: #ffffff; margin: 0;">${answer.text}</p>
@@ -400,7 +466,9 @@ function initQuiz() {
 
 // Safely execute initQuiz regardless of document load status
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initQuiz);
+  document.addEventListener("DOMContentLoaded", () => {
+    loadTranslations().then(initQuiz);
+  });
 } else {
-  initQuiz();
+  loadTranslations().then(initQuiz);
 }

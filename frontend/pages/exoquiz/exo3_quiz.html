@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Exercice 3</title>
+  <title>Exercice 3+5</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../../styles/exo.css" />
@@ -72,31 +72,34 @@
 
   <section class="exo-header">
     <div class="exo-toprow">
-      <div class="badge">3</div>
-      <h1 class="exo-title">Exercice #3</h1>
+      <div class="badge">3+5</div>
+      <h1 class="exo-title">Exercice #3+5</h1>
     </div>
     <p class="exo-instructions">
-      Entraîne le modèle pour classifier les points sous forme de cercle.
-      Seulement les features X et Y sont activées, sans couche cachée.
+      Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. <br>
+      Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision.<br>
+      Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte &lt; 0.005 et au moins 1000 époques).
     </p>
   </section>
 
-  <main class="quiz-layout-container">
-    <div class="simulator-container">
-      <iframe class="exo-frame" src="../playground/index.html?exo=3"></iframe>
-    </div>
-    <div class="quiz-panel-container">
-      <div class="quiz-div-1">
-        <!-- Contenu de la partie haute du quiz -->
+  <div id="main-part">
+    <main class="quiz-layout-container">
+      <div class="simulator-container">
+        <iframe class="exo-frame" src="../playground/index.html?exo=3"></iframe>
       </div>
-      <div class="quiz-div-2">
-        <!-- Contenu de la partie basse du quiz -->
+      <div class="quiz-panel-container">
+        <div class="quiz-div-1" id="quiz-question-panel">
+          <!-- Contenu de la partie haute du quiz -->
+        </div>
+        <div class="quiz-div-2" id="quiz-feedback-panel">
+          <!-- Contenu de la partie basse du quiz -->
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <script src="../inactivite.js"></script>
   <script src="../../playground-master/src/exos/storage_service.js"></script>
-  <script src="../../playground-master/src/exoquizjs/exo3_quiz_page.js"></script>
+  <script src="./exo3_quiz_page.js"></script>
 </body>
 </html>

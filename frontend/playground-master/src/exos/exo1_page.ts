@@ -244,6 +244,34 @@ btnRealise.onclick = async () => {
 // TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 1)
 // ==========================================
 
+let translations = null;
+
+async function loadTranslations() {
+  try {
+    const response = await fetch('texte.json');
+    if (!response.ok) throw new Error("Failed to load translation json");
+    const data = await response.json();
+    translations = data.exercises.exercise_1;
+
+    // Dynamically update the main page elements if translations are loaded
+    if (translations) {
+      if (translations.title) {
+        document.title = translations.title;
+        const titleEl = document.querySelector('.exo-title');
+        if (titleEl) titleEl.innerText = translations.title;
+      }
+      if (translations.instructions && translations.instructions.text) {
+        const instrEl = document.querySelector('.exo-instructions');
+        if (instrEl) {
+          instrEl.innerText = translations.instructions.text;
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("Could not load translations from JSON, using fallback/default texts.", error);
+  }
+}
+
 function startTutorial() {
   // Step 1: Instruction Overlay
   const overlay = document.createElement('div');
@@ -254,10 +282,11 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = "Exercice #1 : Séparez les données";
+  h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Séparez les données";
 
   const p = document.createElement('p');
-  const text = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une droite qui sépare le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver dans chaque région.";
+  const defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une droite qui sépare le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver dans chaque région.";
+  const text = translations && translations.instructions && translations.instructions.text ? translations.instructions.text : defaultText;
   p.innerText = text;
 
   const timerSpan = document.createElement('span');
@@ -516,24 +545,28 @@ function highlightParameter(paramType) {
 
   if (paramType === 'XAxis') {
     selector = '.x.axis';
-    title = "Axe X (Abscisses)";
-    text = "Représente la première caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée horizontale de chaque point sur le plan.";
+    title = translations && translations.definitions && translations.definitions.x_axis ? translations.definitions.x_axis.term : "Axe X (Abscisses)";
+    text = translations && translations.definitions && translations.definitions.x_axis ? translations.definitions.x_axis.definition : "Représente la première caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée horizontale de chaque point sur le plan.";
     nextParam = 'YAxis';
+    indicatorNum = "2";
   } else if (paramType === 'YAxis') {
     selector = '.y.axis';
-    title = "Axe Y (Ordonnées)";
-    text = "Représente la deuxième caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée verticale de chaque point sur le plan.";
+    title = translations && translations.definitions && translations.definitions.y_axis ? translations.definitions.y_axis.term : "Axe Y (Ordonnées)";
+    text = translations && translations.definitions && translations.definitions.y_axis ? translations.definitions.y_axis.definition : "Représente la deuxième caractéristique d'entrée. Dans cet exercice, il s'agit de la coordonnée verticale de chaque point sur le plan.";
     nextParam = 'Colormap';
+    indicatorNum = "3";
   } else if (paramType === 'Colormap') {
     selector = '#colormap';
-    title = "Palette & Options";
-    text = "La palette indique les valeurs (Orange = négatif, Bleu = positif). L'affichage des données de test et la discrétisation aident à visualiser la frontière.";
+    title = translations && translations.definitions && translations.definitions.color_scale ? translations.definitions.color_scale.term : "Palette & Options";
+    text = translations && translations.definitions && translations.definitions.color_scale ? translations.definitions.color_scale.definition : "La palette indique les valeurs (Orange = négatif, Bleu = positif). L'affichage des données de test et la discrétisation aident à visualiser la frontière.";
     nextParam = 'Features';
+    indicatorNum = "4";
   } else if (paramType === 'Features') {
     selector = '.column.features';
-    title = "Caractéristiques (Features)";
-    text = "Les caractéristiques d'entrée sont les propriétés individuelles mesurables utilisées par le modèle. Ici, nous utilisons X1 et X2. (Notez les boutons d'information 'i' à côté pour de futures définitions !)";
+    title = translations && translations.definitions && translations.definitions.features ? translations.definitions.features.term : "Caractéristiques (Features)";
+    text = translations && translations.definitions && translations.definitions.features ? translations.definitions.features.definition : "Les caractéristiques d'entrée sont les propriétés individuelles mesurables utilisées par le modèle. Ici, nous utilisons X1 et X2. (Notez les boutons d'information 'i' à côté pour de futures définitions !)";
     nextParam = 'Step3';
+    indicatorNum = "5";
   }
 
   let el = null;
@@ -576,10 +609,20 @@ function runStep3() {
   leftPopup.id = 'exo1-step3-leftpopup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = "Let’s Start! [3]";
+  const startText = translations && translations.start_marker ? translations.start_marker : "Let’s Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
+  let titleText = "Let’s Start! [6]";
+  let bodyText = startText;
+  if (startText.startsWith("Let's Start!")) {
+    titleText = "Let's Start! [6]";
+    bodyText = startText.substring("Let's Start!".length).trim();
+  } else if (startText.startsWith("Let’s Start!")) {
+    titleText = "Let’s Start! [6]";
+    bodyText = startText.substring("Let’s Start!".length).trim();
+  }
+  h3.innerText = titleText;
 
   const p = document.createElement('p');
-  p.innerText = "Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
+  p.innerText = bodyText;
 
   const btnDiv = document.createElement('div');
   btnDiv.className = 'btn-right';
@@ -600,8 +643,10 @@ function runStep3() {
 }
 
 function runStep4() {
-  showHighlightBox('#custom-weight-editor-x, #custom-weight-editor-y', '4');
-  showCustomTooltip('#custom-weight-editor-x, #custom-weight-editor-y', "Modifier les Poids", "Faites glisser les curseurs ou cliquez sur les liaisons entre X1, X2 et la sortie pour modifier leurs poids.", 'right');
+  showHighlightBox('#custom-weight-editor-x, #custom-weight-editor-y', '7');
+  const wTitle = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.term : "Modifier les Poids";
+  const wDesc = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.definition : "Faites glisser les curseurs ou cliquez sur les liaisons entre X1, X2 et la sortie pour modifier leurs poids.";
+  showCustomTooltip('#custom-weight-editor-x, #custom-weight-editor-y', wTitle, wDesc, 'right');
 
   const clickHandler = () => {
     document.removeEventListener('click', clickHandler);
@@ -623,11 +668,12 @@ function showStep5Congrats() {
 
   const h3 = document.createElement('h3');
   h3.style.color = '#FFFFFF';
-  h3.innerText = "Great job! [5]";
+  h3.innerText = "Great job! [8]";
 
   const p = document.createElement('p');
   p.style.color = '#FFFFFF';
-  p.innerText = "Your settings lead to a good classification of our data into two clusters.\nLet's review together what you’ve learned from this exercise.";
+  const congratsText = translations && translations.target_achieved ? translations.target_achieved : "Your settings lead to a good classification of our data into two clusters.\nLet's review together what you’ve learned from this exercise.";
+  p.innerText = congratsText;
 
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
@@ -668,7 +714,7 @@ if (iframe) {
     if (urlParams.get('completed') === 'true') {
       return;
     }
-    setTimeout(() => {
+    setTimeout(async () => {
       // Remplacer les boutons '?' en 'i' d'informations dans l'iframe
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -685,6 +731,7 @@ if (iframe) {
       } catch (e) {
         console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
       }
+      await loadTranslations();
       startTutorial();
     }, 1200);
   });

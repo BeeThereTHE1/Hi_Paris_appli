@@ -51,12 +51,67 @@
     const btnSauvegarder = document.getElementById('btn-sauvegarder');
     const btnRealise = document.getElementById('btn-realise');
 
+    function showExerciseSuccessCongrats() {
+      const overlay = document.createElement('div');
+      overlay.className = 'tutorial-overlay';
+      overlay.id = 'exo3-success-overlay';
+
+      const popup = document.createElement('div');
+      popup.className = 'tutorial-popup';
+      popup.style.background = '#004676';
+
+      const h3 = document.createElement('h3');
+      h3.style.color = '#FFFFFF';
+      h3.innerText = "Excellent !";
+
+      const p = document.createElement('p');
+      p.style.color = '#FFFFFF';
+      p.innerText = "Le modèle a réussi à classifier les données circulaires sans couche cachée grâce aux caractéristiques quadratiques (X² et Y²). Passons maintenant au quiz pour valider vos connaissances.";
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'tutorial-btn';
+      nextBtn.style.background = '#FF553F';
+      nextBtn.innerText = "Aller au Quiz";
+
+      popup.appendChild(h3);
+      popup.appendChild(p);
+      popup.appendChild(nextBtn);
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+
+      const dismiss = () => {
+        overlay.remove();
+        document.removeEventListener('click', dismiss);
+      };
+
+      nextBtn.onclick = async (e) => {
+        e.stopPropagation();
+        dismiss();
+        
+        const success = await window.StorageService.complete(3);
+        if (success) {
+          btnRealise.innerHTML = '✨ Redirection...';
+          btnRealise.disabled = true;
+          setTimeout(() => {
+            window.location.href = 'exoquiz/exo3_quiz.html';
+          }, 800);
+        } else {
+          window.location.href = 'exoquiz/exo3_quiz.html';
+        }
+      };
+
+      setTimeout(() => {
+        document.addEventListener('click', dismiss);
+      }, 100);
+    }
+
     window.addEventListener('message', (event) => {
       if (event.data.type === 'EXO_SUCCESS' && event.data.exoId == 3) {
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
         btnRealise.innerHTML = '✨ Exercice Réussi !!';
+        showExerciseSuccessCongrats();
       }
     });
 
@@ -73,29 +128,23 @@
       return false;
     }
 
-    btnSauvegarder.onclick = () => {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-      const now = new Date().toLocaleDateString('fr-FR');
-      const saved = saveToStorage('saved_exercises', { id: 3, date: now });
-      if (saved) {
+    btnSauvegarder.onclick = async () => {
+      const success = await window.StorageService.save(3);
+      if (success) {
         btnSauvegarder.innerHTML = '✅ Sauvegardé !';
         btnSauvegarder.style.opacity = '0.7';
         btnSauvegarder.disabled = true;
-      } else {
-        alert("Cet exercice est déjà dans votre profil.");
       }
     };
 
-    btnRealise.onclick = () => {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-      const now = new Date().toLocaleDateString('fr-FR');
-      const saved = saveToStorage('completed_exercises', { id: 3, date: now });
-      if (saved) {
-        btnRealise.innerHTML = '✨ Validé !';
+    btnRealise.onclick = async () => {
+      const success = await window.StorageService.complete(3);
+      if (success) {
+        btnRealise.innerHTML = '✨ Redirection...';
         btnRealise.disabled = true;
-        setTimeout(() => { window.location.href = 'Page-demo/historique.html#completed'; }, 1000);
+        setTimeout(() => {
+          window.location.href = 'exoquiz/exo3_quiz.html';
+        }, 800);
       }
     };
 
@@ -165,3 +214,55 @@ const backgroundContainer = document.getElementById('background-container');
       requestAnimationFrame(animateBackground);
     }
     initializeBackground(); animateBackground();
+
+    function startTutorial() {
+      const overlay = document.createElement('div');
+      overlay.className = 'tutorial-overlay';
+      overlay.id = 'exo3-tutorial-overlay';
+
+      const popup = document.createElement('div');
+      popup.className = 'tutorial-popup';
+
+      const h3 = document.createElement('h3');
+      h3.innerText = "Exercice #3+5 : Linéaire vs Non-linéaire";
+
+      const p = document.createElement('p');
+      const text = "Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision. Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte < 0.005 et au moins 1000 époques).";
+      p.innerText = text;
+
+      const timerSpan = document.createElement('span');
+      timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8; font-weight: 500;';
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'tutorial-btn';
+      nextBtn.innerText = "Continuer";
+      nextBtn.disabled = true;
+
+      popup.appendChild(h3);
+      popup.appendChild(p);
+      popup.appendChild(timerSpan);
+      popup.appendChild(nextBtn);
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+
+      const wordCount = text.split(/\s+/).length;
+      let timeLeft = Math.max(5, Math.ceil((wordCount / 200) * 60)); // around 18s
+
+      function updateTimer() {
+        if (timeLeft > 0) {
+          timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+          timeLeft--;
+          setTimeout(updateTimer, 1000);
+        } else {
+          timerSpan.style.display = 'none';
+          nextBtn.disabled = false;
+        }
+      }
+      updateTimer();
+
+      nextBtn.onclick = () => {
+        overlay.remove();
+      };
+    }
+
+    startTutorial();
