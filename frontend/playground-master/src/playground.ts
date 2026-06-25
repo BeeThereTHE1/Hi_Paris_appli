@@ -1848,6 +1848,13 @@ function constructInput(x: number, y: number): number[] {
 function oneStep(): void {
   iter++;
 
+  if (exoId === 6 && state.numHiddenLayers === 0 && iter === 300) {
+    player.pause();
+    if (window.parent) {
+      window.parent.postMessage({ type: 'EXO6_EPOCH_300' }, '*');
+    }
+  }
+
   // Record training activity for Exercise 3
   if (exoId === 3) {
     if (state.x && state.y && !state.xSquared && !state.ySquared && !state.xTimesY && !state.sinX && !state.sinY) {
@@ -1955,6 +1962,16 @@ function reset(onStartup = false) {
 
   drawNetwork(network);
   updateUI(true);
+
+  if (exoId === 6) {
+    if (window.parent) {
+      window.parent.postMessage({
+        type: 'EXO6_STATE_CHANGE',
+        numHiddenLayers: state.numHiddenLayers,
+        networkShape: state.networkShape
+      }, '*');
+    }
+  }
 };
 
 function initTutorial() {

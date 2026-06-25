@@ -188,7 +188,7 @@ const isAuthor = exo && exo.authorEmail && String(exo.authorEmail).toLowerCase()
 
 // On est en mode édition si c'est un brouillon OU si l'utilisateur connecté est l'auteur
 // OU si c'est une prévisualisation du studio
-const isDraft = isSavedDraft || (isAuthor && !allOfficial.some(e => String(e.id) === String(exo.id))) || (exo?.id === 'preview');
+const isDraft = isSavedDraft || (isAuthor && !allOfficial.some(e => String(e.id) === String(exo.id))) || (exo && exo.id === 'preview');
 
 console.log("--- Debug Mode Édition ---");
 console.log("Email actuel:", currentEmail);
