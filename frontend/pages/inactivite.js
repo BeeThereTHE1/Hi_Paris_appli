@@ -349,3 +349,120 @@
 
     resetTimer();
 })();
+
+// --- SYNCHRONISATION DE LA LANGUE POUR LES BOUTONS (VALIDER/VALIDATE ET SAUVEGARDER/SAVE) ---
+(function () {
+    const syncLanguage = () => {
+        let lang = 'fr';
+        
+        const checkDocLang = (doc) => {
+            if (!doc) return null;
+            
+            // Cookie googtrans de Google Translate
+            const cookieMatch = doc.cookie.match(/googtrans=([^;]+)/);
+            if (cookieMatch) {
+                const parts = cookieMatch[1].split('/');
+                const l = parts[parts.length - 1];
+                if (l) return l.toLowerCase();
+            }
+            
+            // Attribut lang de la balise html
+            const htmlLang = doc.documentElement.getAttribute('lang');
+            if (htmlLang) {
+                const l = htmlLang.split('-')[0].toLowerCase();
+                if (l === 'en' || l === 'fr') return l;
+            }
+            
+            // Classes de Google Translate
+            if (doc.documentElement.classList.contains('translated-ltr') || 
+                doc.documentElement.classList.contains('translated-rtl')) {
+                return 'en';
+            }
+            return null;
+        };
+
+        let detected = checkDocLang(document);
+        if (!detected && window.parent && window.parent !== window) {
+            try {
+                detected = checkDocLang(window.parent.document);
+            } catch (e) {}
+        }
+        
+        lang = detected || 'fr';
+        const isEnglish = (lang === 'en');
+
+        // 2. Mettre à jour les boutons du document courant (SAUVEGARDER / SAVE)
+        const btnSauvegarder = document.getElementById('btn-sauvegarder');
+        if (btnSauvegarder) {
+            const text = btnSauvegarder.textContent || "";
+            if (text.includes('SAUVEGARDER') || text.includes('SAVE')) {
+                btnSauvegarder.innerHTML = isEnglish ? '<span class="icon">💾</span> SAVE' : '<span class="icon">💾</span> SAUVEGARDER';
+            } else if (text.includes('Sauvegardé !') || text.includes('Saved !') || text.includes('Enregistré !')) {
+                btnSauvegarder.innerHTML = isEnglish ? '✅ Saved !' : '✅ Sauvegardé !';
+            } else if (text.includes('Enregistrer & Valider') || text.includes('Save & Validate')) {
+                btnSauvegarder.innerHTML = isEnglish ? 'Save & Validate' : 'Enregistrer & Valider';
+            }
+        }
+
+        const localValBtn = document.getElementById('validate-button');
+        if (localValBtn) {
+            const text = localValBtn.textContent || "";
+            if (text.trim() === 'Valider' || text.trim() === 'Validate') {
+                localValBtn.textContent = isEnglish ? 'Validate' : 'Valider';
+            }
+        }
+
+        // 3. Mettre à jour les boutons dans les iFrames enfants (Valider / Validate)
+        document.querySelectorAll('iframe').forEach(iframe => {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                if (iframeDoc) {
+                    const iframeValBtn = iframeDoc.getElementById('validate-button');
+                    if (iframeValBtn) {
+                        const text = iframeValBtn.textContent || "";
+                        if (text.trim() === 'Valider' || text.trim() === 'Validate') {
+                            iframeValBtn.textContent = isEnglish ? 'Validate' : 'Valider';
+                        }
+                    }
+                }
+            } catch (e) {
+                // Ignorer les erreurs d'origines ou d'initialisation d'iframes
+            }
+        });
+    };
+
+    // Exécuter immédiatement
+    syncLanguage();
+
+    // Exécuter au chargement du DOM
+    document.addEventListener('DOMContentLoaded', syncLanguage);
+
+    // Écouter le chargement des iframes pour réappliquer la traduction
+    window.addEventListener('load', (event) => {
+        if (event.target.tagName === 'IFRAME') {
+            syncLanguage();
+        }
+    }, true);
+
+    // Écouter les changements d'attributs sur l'élément HTML (lang / class)
+    const observer = new MutationObserver(syncLanguage);
+    if (document.documentElement) {
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['lang', 'class']
+        });
+    }
+
+    if (window.parent && window.parent !== window) {
+        try {
+            const parentObserver = new MutationObserver(syncLanguage);
+            parentObserver.observe(window.parent.document.documentElement, {
+                attributes: true,
+                attributeFilter: ['lang', 'class']
+            });
+        } catch (e) {}
+    }
+
+    // Intervalle léger (toutes les 800ms) pour assurer la synchronisation en toutes circonstances
+    setInterval(syncLanguage, 800);
+})();

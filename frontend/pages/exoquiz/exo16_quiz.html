@@ -82,14 +82,14 @@
   </section>
 
   <main class="quiz-layout-container">
-    <div class="simulator-container">
-      <iframe class="exo-frame" src="../playground/index.html?exo=16"></iframe>
+    <div class="simulator-container" id="left-panel-container">
+      <iframe class="exo-frame" id="iframe-playground" src="../playground/index.html?exo=16"></iframe>
     </div>
     <div class="quiz-panel-container">
-      <div class="quiz-div-1">
+      <div class="quiz-div-1" id="quiz-question-panel">
         <!-- Contenu de la partie haute du quiz -->
       </div>
-      <div class="quiz-div-2">
+      <div class="quiz-div-2" id="quiz-feedback-panel">
         <!-- Contenu de la partie basse du quiz -->
       </div>
     </div>
@@ -97,6 +97,6 @@
 
   <script src="../inactivite.js"></script>
   <script src="../../playground-master/src/exos/storage_service.js"></script>
-  <script src="../../playground-master/src/exoquizjs/exo16_quiz_page.js"></script>
+  <script src="./exo16_quiz_page.js"></script>
 </body>
 </html>

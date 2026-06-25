@@ -8,6 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
+  <link rel="stylesheet" href="../styles/exo_quiz.css" />
+  <style>
+    html body main.quiz-layout-container .simulator-container {
+      width: 50% !important;
+    }
+    html body main.quiz-layout-container .quiz-panel-container {
+      width: 50% !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -77,13 +86,24 @@
     </div>
     <p class="exo-instructions">
       Entraîne le modèle pour classifier les points.
-     <!-- <br>Parametre par défaut : LR =0,03,None Reg, ratio Training test = 0,5, pas de noise, Batch Size = 10 -->
     </p>
   </section>
 
-  <main class="exo-main">
-    <iframe class="exo-frame" src="./playground/index.html?exo=15"></iframe>
-  </main>
+  <div id="main-part">
+    <main class="quiz-layout-container">
+      <div class="simulator-container">
+        <iframe class="exo-frame" id="iframe-playground" src="./playground/index.html?exo=15"></iframe>
+      </div>
+      <div class="quiz-panel-container">
+        <div class="quiz-div-1" id="quiz-question-panel">
+          <!-- Dynamically populated activity cards -->
+        </div>
+        <div class="quiz-div-2" id="quiz-feedback-panel">
+          <!-- Dynamically populated explanation feedback bubbles -->
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script src="inactivite.js"></script>
   <script src="../playground-master/src/exos/storage_service.js"></script>

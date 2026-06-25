@@ -324,7 +324,7 @@ const QUIZZES = {
 };
 
 /* Lottie Arrow JSON Data */
-const ARROW_LOTTIE_JSON = {"nm":"Main Scene","ddd":0,"h":200,"w":200,"meta":{"g":"@lottiefiles/creator@1.94.0"},"layers":[{"ty":4,"nm":"Shape Layer 7","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[50,50,100],"t":0},{"s":[50,50,100],"t":24}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,-1,0],"t":0,"ti":[0,-31.667,0],"to":[0,31.667,0]},{"s":[100,94,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"s":[100],"t":24}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":1},{"ty":4,"nm":"Shape Layer 6","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":0,"k":[50,50,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,94,0],"t":0,"ti":[0,-15,0],"to":[0,15,0]},{"s":[100,139,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":0,"k":100,"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":2},{"ty":4,"nm":"Shape Layer 5","sr":1,"st":0,"op":840,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[-2,77.25,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[50,50,100],"t":0},{"s":[25,25,100],"t":24}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100,139,0],"t":0,"ti":[0,-20.333,0],"to":[0,20.333,0]},{"s":[100,200,0],"t":24}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[100],"t":0},{"s":[0],"t":24}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"v":[[104.5,-23.5],[-2,48.5],[-107,-22.5],[-107,49.5],[-2.25,120],[104.5,48.125]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":1,"lj":1,"ml":4,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":0,"ix":5},"c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":3}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8863,0.2902,0.2588],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":3}],"v":"5.7.0","fr":24,"op":24,"ip":0,"assets":[]};
+const ARROW_LOTTIE_JSON = { "nm": "Main Scene", "ddd": 0, "h": 200, "w": 200, "meta": { "g": "@lottiefiles/creator@1.94.0" }, "layers": [{ "ty": 4, "nm": "Shape Layer 7", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.833, "y": 1 }, "s": [50, 50, 100], "t": 0 }, { "s": [50, 50, 100], "t": 24 }], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, -1, 0], "t": 0, "ti": [0, -31.667, 0], "to": [0, 31.667, 0] }, { "s": [100, 94, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.833, "y": 1 }, "s": [0], "t": 0 }, { "s": [100], "t": 24 }], "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 1 }, { "ty": 4, "nm": "Shape Layer 6", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 0, "k": [50, 50, 100], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, 94, 0], "t": 0, "ti": [0, -15, 0], "to": [0, 15, 0] }, { "s": [100, 139, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 0, "k": 100, "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 2 }, { "ty": 4, "nm": "Shape Layer 5", "sr": 1, "st": 0, "op": 840, "ip": 0, "hd": false, "ddd": 0, "bm": 0, "hasMask": false, "ao": 0, "ks": { "a": { "a": 0, "k": [-2, 77.25, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [50, 50, 100], "t": 0 }, { "s": [25, 25, 100], "t": 24 }], "ix": 6 }, "sk": { "a": 0, "k": 0 }, "p": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100, 139, 0], "t": 0, "ti": [0, -20.333, 0], "to": [0, 20.333, 0] }, { "s": [100, 200, 0], "t": 24 }], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 10 }, "sa": { "a": 0, "k": 0 }, "o": { "a": 1, "k": [{ "o": { "x": 0.333, "y": 0 }, "i": { "x": 0.667, "y": 1 }, "s": [100], "t": 0 }, { "s": [0], "t": 24 }], "ix": 11 } }, "shapes": [{ "ty": "gr", "bm": 0, "hd": false, "mn": "ADBE Vector Group", "nm": "Shape 1", "ix": 1, "cix": 2, "np": 3, "it": [{ "ty": "sh", "bm": 0, "hd": false, "mn": "ADBE Vector Shape - Group", "nm": "Path 1", "ix": 1, "d": 1, "ks": { "a": 0, "k": { "c": true, "i": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]], "v": [[104.5, -23.5], [-2, 48.5], [-107, -22.5], [-107, 49.5], [-2.25, 120], [104.5, 48.125]] }, "ix": 2 } }, { "ty": "st", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Stroke", "nm": "Stroke 1", "lc": 1, "lj": 1, "ml": 4, "o": { "a": 0, "k": 100, "ix": 4 }, "w": { "a": 0, "k": 0, "ix": 5 }, "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 3 } }, { "ty": "fl", "bm": 0, "hd": false, "mn": "ADBE Vector Graphic - Fill", "nm": "Fill 1", "c": { "a": 0, "k": [0.8863, 0.2902, 0.2588], "ix": 4 }, "r": 1, "o": { "a": 0, "k": 100, "ix": 5 } }, { "ty": "tr", "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "p": { "a": 0, "k": [0, 0], "ix": 2 }, "r": { "a": 0, "k": 0, "ix": 6 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "o": { "a": 0, "k": 100, "ix": 7 } }] }], "ind": 3 }], "v": "5.7.0", "fr": 24, "op": 24, "ip": 0, "assets": [] };
 
 /* === VARIABLES DE PROGRESSION GLOBALES === */
 let completedOfficialIds = new Set();
@@ -338,11 +338,11 @@ let introState = JSON.parse(localStorage.getItem('section0_visited') || '{"eval"
 function visitIntroItem(type) {
     introState[type] = true;
     localStorage.setItem('section0_visited', JSON.stringify(introState));
-    
+
     // Enlever le clignotement de la carte cliquée
     const clickedCard = document.getElementById(`card-intro-${type}`);
     if (clickedCard) clickedCard.classList.remove('pulsing');
-    
+
     // Faire clignoter la carte suivante non visitée
     if (type === 'eval' && !introState.res) {
         document.getElementById('card-intro-res').classList.add('pulsing');
@@ -413,7 +413,7 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
 
     list.forEach((ex, index) => {
         const card = document.createElement('div');
-        
+
         // Déterminer le statut de verrouillage
         // L'exercice 0 d'une section déverrouillée est ouvert. L'exercice K est ouvert si l'exercice K-1 est terminé.
         let isExUnlocked = true; // TEMP UNLOCK FOR TESTING
@@ -423,7 +423,7 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
         const starIcon = getStarSvg(isCompleted);
 
         card.className = `ex-card ${ex.difficulty} ${!isExUnlocked ? 'locked-card' : ''}`;
-        
+
         // Ajouter un effet de clignotement sur le premier exercice disponible non complété
         if (isSectionUnlocked && isExUnlocked && !isCompleted && (index === 0 || completedOfficialIds.has(list[index - 1].id))) {
             card.classList.add('pulsing');
@@ -466,7 +466,7 @@ async function deleteCommunityExo(id) {
             const err = await res.json();
             alert("Erreur : " + (err.error || 'Impossible de supprimer'));
         }
-    } catch(err) {
+    } catch (err) {
         console.error('Erreur suppression:', err);
         alert("Erreur réseau lors de la suppression.");
     }
@@ -491,7 +491,7 @@ async function loadAndRender() {
             const data = await res.json();
             // Filtrer pour ne garder que les exercices créés par les utilisateurs (non officiels)
             const communityOnly = data.filter(exo => !exo.is_official && !exo.official_id);
-            
+
             // Mapping format API → format carte
             CUSTOM_EXERCISES_FROM_API = communityOnly.map(exo => ({
                 id: exo.id,
@@ -506,7 +506,7 @@ async function loadAndRender() {
                 creator_id: exo.creator_id
             }));
         }
-    } catch(err) {
+    } catch (err) {
         console.warn('⚠️ API indisponible pour les exos custom:', err.message);
         // Fallback localStorage
         const localCustom = JSON.parse(localStorage.getItem('official_custom_exercises') || '[]');
@@ -572,7 +572,7 @@ async function applyFilters() {
     Object.keys(SECTIONS_CONFIG).forEach(secKey => {
         const conf = SECTIONS_CONFIG[secKey];
         const secExos = baseExercises.filter(e => conf.exos.includes(e.id));
-        
+
         // Appliquer la recherche locale
         const filteredSecExos = secExos.filter(e => {
             if (currentFilter !== 'tous' && e.difficulty !== currentFilter) return false;
@@ -582,7 +582,7 @@ async function applyFilters() {
 
         const isSecUnlocked = secKey == 1 ? sec1Unlocked : (secKey == 2 ? sec2Unlocked : (secKey == 3 ? sec3Unlocked : sec4Unlocked));
         renderSectionCards(conf.gridId, filteredSecExos, isSecUnlocked);
-        
+
         // Ajouter la carte de Quiz de Section à la fin de la grille
         appendQuizCard(conf.gridId, secKey, isSecUnlocked);
     });
@@ -593,14 +593,14 @@ async function applyFilters() {
         if (q && !e.title.toLowerCase().includes(q) && !(e.desc || '').toLowerCase().includes(q)) return false;
         return true;
     });
-    
+
     const gridCustom = document.getElementById('exGridCustom');
     if (gridCustom) {
         gridCustom.innerHTML = '';
         filteredCustom.forEach(ex => {
             const card = document.createElement('div');
             card.className = `ex-card ${ex.difficulty}`;
-            
+
             let deleteBtn = '';
             if (isTeacher) {
                 deleteBtn = `<button class="btn-delete-exo" onclick="event.stopPropagation(); deleteCommunityExo('${ex.id}')" title="Supprimer l'exercice">
@@ -691,14 +691,14 @@ function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
 
     const conf = SECTIONS_CONFIG[sectionKey];
     const quizCompleted = localStorage.getItem(`quiz_section_${sectionKey}_completed`) === 'true';
-    
+
     // Le quiz n'est disponible que si TOUS les exercices de la section sont validés
     const allExosCompleted = conf.exos.every(id => completedOfficialIds.has(id));
     const isQuizUnlocked = true; // TEMP UNLOCK FOR TESTING
 
     const card = document.createElement('div');
     card.className = `ex-card quiz-card medium ${!isQuizUnlocked ? 'locked-card' : ''} ${quizCompleted ? 'quiz-completed' : ''}`;
-    
+
     if (isQuizUnlocked && !quizCompleted) {
         card.classList.add('pulsing');
     }
@@ -767,7 +767,7 @@ function showFunFact(exoId, isCompleted) {
 
     const titleEl = document.getElementById('funfact-title');
     const bodyEl = document.getElementById('funfact-content');
-    
+
     titleEl.textContent = `💡 Le Saviez-vous ? (Exercice ${exoId})`;
     bodyEl.textContent = FUN_FACTS[exoId] || "L'intelligence artificielle est pleine de surprises !";
 
@@ -1085,7 +1085,7 @@ function initCustomQuizTicks() {
         const y1 = 50 + rStart * Math.sin(angle);
         const x2 = 50 + rEnd * Math.cos(angle);
         const y2 = 50 + rEnd * Math.sin(angle);
-        
+
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', x1.toString());
         line.setAttribute('y1', y1.toString());
@@ -1225,7 +1225,7 @@ function openQuizModal(sectionKey) {
 function selectQuizOption(qIdx, optionIdx) {
     const quiz = QUIZZES[activeQuizSection];
     const qObj = quiz.questions[qIdx];
-    
+
     qObj.options.forEach((_, optIdx) => {
         const el = document.getElementById(`q-${qIdx}-opt-${optIdx}`);
         if (el) el.classList.remove('selected');
@@ -1303,7 +1303,7 @@ function renderCustomQuiz1Matching() {
         item.id = `drag-${t.id}`;
         item.textContent = t.name;
         item.draggable = true;
-        
+
         item.ondragstart = (e) => {
             e.dataTransfer.setData('text/plain', t.id);
             item.classList.add('dragging');
@@ -1333,14 +1333,14 @@ function renderCustomQuiz1Matching() {
         const row = document.createElement('div');
         row.className = 'matching-target-row';
         row.id = `row-${tgt.id}`;
-        
+
         row.innerHTML = `
             <div class="matching-zone" id="zone-${tgt.id}">Dépose ici</div>
             <div class="matching-definition">${tgt.def}</div>
         `;
 
         const zone = row.querySelector(`#zone-${tgt.id}`);
-        
+
         zone.ondragover = (e) => {
             e.preventDefault();
             zone.classList.add('dragover');
@@ -1422,7 +1422,7 @@ function handleMatchingDrop(termId, targetId, jalonIndex, fallbackExo) {
 
         row.classList.add('incorrect');
         updateCustomQuizGauge();
-        
+
         setTimeout(() => {
             row.classList.remove('incorrect');
         }, 500);
@@ -1613,8 +1613,8 @@ function handleQuiz2Drop(stmtIdx, chosenTrue) {
 }
 
 // Keep for backward compat — no longer used
-function loadNextSortingStatement() {}
-function handleSortingDecision(chosenTrue) {}
+function loadNextSortingStatement() { }
+function handleSortingDecision(chosenTrue) { }
 
 function startFireworks() {
     const canvas = document.createElement('canvas');
@@ -1855,7 +1855,7 @@ function showToast(message, isSuccess) {
     toast.style.background = isSuccess ? 'rgba(16, 185, 129, 0.95)' : 'rgba(239, 68, 68, 0.95)';
     toast.style.color = 'white';
     toast.classList.add('show');
-    
+
     setTimeout(() => {
         toast.classList.remove('show');
     }, 4000);
@@ -1881,7 +1881,7 @@ function downloadCertificate() {
     ctx.strokeStyle = '#FACC15';
     ctx.lineWidth = 15;
     ctx.strokeRect(20, 20, 760, 560);
-    
+
     ctx.strokeStyle = 'rgba(255,255,255,0.05)';
     ctx.lineWidth = 1;
     ctx.strokeRect(35, 35, 730, 530);

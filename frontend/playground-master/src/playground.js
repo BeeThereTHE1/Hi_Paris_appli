@@ -180,6 +180,10 @@ if (exoId > 0 && exoConfig) {
             state[key] = exoConfig.forcedState[key];
         }
     }
+    var urlActivation = params.get("activation");
+    if (urlActivation && state_1.activations[urlActivation]) {
+        state.activation = state_1.activations[urlActivation];
+    }
     state.numHiddenLayers = state.networkShape.length;
 }
 state.getHiddenProps().forEach(function (prop) {
@@ -750,7 +754,7 @@ function makeGUI() {
                 message = "Les courbes de perte d'entraînement et de test doivent diverger d'au moins 0,005.";
             }
         }
-        else if (exoId === 13 || exoId === 14 || exoId === 15) {
+        else if (exoId === 13 || exoId === 14 || exoId === 15 || exoId === 16) {
             success = true;
         }
         else {
