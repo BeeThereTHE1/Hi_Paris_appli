@@ -1,44 +1,25 @@
 "use strict";
-/* Copyright 2016 Google Inc. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================*/
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var nn = require("./nn");
 var dataset = require("./dataset");
-/** Suffix added to the state when storing if a control is hidden or not. */
 var HIDE_STATE_SUFFIX = "_hide";
-/** A map between names and activation functions. */
 exports.activations = {
     "relu": nn.Activations.RELU,
     "tanh": nn.Activations.TANH,
     "sigmoid": nn.Activations.SIGMOID,
     "linear": nn.Activations.LINEAR
 };
-/** A map between names and regularization functions. */
 exports.regularizations = {
     "none": null,
     "L1": nn.RegularizationFunction.L1,
     "L2": nn.RegularizationFunction.L2
 };
-/** A map between dataset names and functions that generate classification data. */
 exports.datasets = {
     "circle": dataset.classifyCircleData,
     "xor": dataset.classifyXORData,
     "gauss": dataset.classifyTwoGaussData,
-    "spiral": dataset.classifySpiralData,
+    "spiral": dataset.classifySpiralData
 };
-/** A map between dataset names and functions that generate regression data. */
 exports.regDatasets = {
     "reg-plane": dataset.regressPlane,
     "reg-gauss": dataset.regressGaussian
@@ -64,10 +45,6 @@ function getHideProps(obj) {
     }
     return result;
 }
-/**
- * The data type of a state variable. Used for determining the
- * (de)serialization method.
- */
 var Type;
 (function (Type) {
     Type[Type["STRING"] = 0] = "STRING";
@@ -87,8 +64,7 @@ exports.problems = {
     "regression": Problem.REGRESSION
 };
 ;
-// Add the GUI state.
-var State = /** @class */ (function () {
+var State = (function () {
     function State() {
         this.learningRate = 0.03;
         this.regularizationRate = 0;
@@ -119,9 +95,6 @@ var State = /** @class */ (function () {
         this.dataset = dataset.classifyCircleData;
         this.regDataset = dataset.regressPlane;
     }
-    /**
-     * Deserializes the state from the url hash.
-     */
     State.deserializeState = function () {
         var map = {};
         for (var _i = 0, _a = window.location.hash.slice(1).split("&"); _i < _a.length; _i++) {
@@ -136,7 +109,6 @@ var State = /** @class */ (function () {
         function parseArray(value) {
             return value.trim() === "" ? [] : value.split(",");
         }
-        // Deserialize regular properties.
         State.PROPS.forEach(function (_a) {
             var name = _a.name, type = _a.type, keyMap = _a.keyMap;
             switch (type) {
@@ -151,7 +123,6 @@ var State = /** @class */ (function () {
                     break;
                 case Type.NUMBER:
                     if (hasKey(name)) {
-                        // The + operator is for converting a string to a number.
                         state[name] = +map[name];
                     }
                     break;
@@ -179,7 +150,6 @@ var State = /** @class */ (function () {
                     throw Error("Encountered an unknown type for a state variable");
             }
         });
-        // Deserialize state properties that correspond to hiding UI controls.
         getHideProps(map).forEach(function (prop) {
             state[prop] = (map[prop] === "true") ? true : false;
         });
@@ -190,17 +160,12 @@ var State = /** @class */ (function () {
         Math.seedrandom(state.seed);
         return state;
     };
-    /**
-     * Serializes the state into the url hash.
-     */
     State.prototype.serialize = function () {
         var _this = this;
-        // Serialize regular properties.
         var props = [];
         State.PROPS.forEach(function (_a) {
             var name = _a.name, type = _a.type, keyMap = _a.keyMap;
             var value = _this[name];
-            // Don't serialize missing values.
             if (value == null) {
                 return;
             }
@@ -213,13 +178,11 @@ var State = /** @class */ (function () {
             }
             props.push(name + "=" + value);
         });
-        // Serialize properties that correspond to hiding UI controls.
         getHideProps(this).forEach(function (prop) {
             props.push(prop + "=" + _this[prop]);
         });
         window.location.hash = props.join("&");
     };
-    /** Returns all the hidden properties. */
     State.prototype.getHiddenProps = function () {
         var result = [];
         for (var prop in this) {
