@@ -23,6 +23,7 @@ export const exo4 = {
     "regularization",
     "regularizationRate",
     "weightEditor",
+    "biasEditor",
     "doubleRunButton",
     "seedControl"
   ],
