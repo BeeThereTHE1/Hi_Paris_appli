@@ -359,7 +359,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 15;
+    let timeLeft = 2;
 
     function updateTimer() {
         if (timeLeft > 0) {

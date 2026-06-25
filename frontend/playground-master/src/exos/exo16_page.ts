@@ -330,7 +330,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 8; // 8 seconds reading timer
+    let timeLeft = 2; // 8 seconds reading timer
 
     function updateTimer() {
         if (timeLeft > 0) {

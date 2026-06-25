@@ -394,7 +394,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 15; // Strict 15s locked intro screen
+    let timeLeft = 2; // Strict 15s locked intro screen
 
     function updateTimer() {
         if (timeLeft > 0) {

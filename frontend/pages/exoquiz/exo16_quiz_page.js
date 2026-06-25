@@ -560,7 +560,7 @@ function initFindMistakeGame() {
 
     // Handle Reveal Answer button timer
     var revealBtn = document.getElementById('btn-reveal');
-    var timeLeft = 20;
+    var timeLeft = 2;
     var timerInterval = setInterval(function () {
         timeLeft--;
         if (timeLeft > 0) {

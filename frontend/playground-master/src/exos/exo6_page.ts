@@ -245,7 +245,7 @@ function startTutorial() {
   overlay.appendChild(popup);
   document.body.appendChild(overlay);
 
-  let timeLeft = 15; // Strict 15s lock
+  let timeLeft = 2; // Strict 15s lock
 
   function updateTimer() {
     if (timeLeft > 0) {

@@ -304,7 +304,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
     var wordCount = text.split(/\s+/).length;
-    var timeLeft = Math.max(5, Math.ceil((wordCount / 200) * 60));
+    var timeLeft = 2;
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";

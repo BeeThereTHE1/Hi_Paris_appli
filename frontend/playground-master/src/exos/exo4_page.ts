@@ -297,7 +297,7 @@ function startTutorial() {
   overlay.appendChild(popup);
   document.body.appendChild(overlay);
 
-  let timeLeft = 8; // Enforce strict 8s delay
+  let timeLeft = 2; // Enforce strict 8s delay
 
   function updateTimer() {
     if (timeLeft > 0) {

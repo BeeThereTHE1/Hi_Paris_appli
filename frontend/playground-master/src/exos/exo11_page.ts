@@ -335,7 +335,7 @@ function startTutorial() {
     document.body.appendChild(overlay);
 
     const wordCount = text.split(/\s+/).length;
-    let timeLeft = Math.max(10, Math.ceil((wordCount / 200) * 60)); // ~10s
+    let timeLeft = 2; // ~10s
 
     function updateTimer() {
         if (timeLeft > 0) {

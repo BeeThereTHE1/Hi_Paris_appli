@@ -222,12 +222,24 @@
                 <div class="card-icon">📚</div>
                 <span class="badge easy">Intro</span>
               </div>
+
               <div class="card-title">Resources to meet prerequisites</div>
-              <div class="card-desc">Accédez à des fiches récapitulatives et des cours pour vous mettre à niveau.</div>
+
+              <div class="card-desc">
+                Accédez à des fiches récapitulatives et des cours pour vous mettre à niveau.
+              </div>
+
               <div class="card-footer">
                 <div class="intro-status-text" id="status-intro-res">❌ Non visité</div>
+
+                <!-- Bouton Wikipedia -->
+                <button class="wiki-btn"
+                  onclick="event.stopPropagation(); window.open('https://fr.wikipedia.org/wiki/Apprentissage_profond', '_blank');">
+                  🔎 Wikipedia
+                </button>
               </div>
             </div>
+
             <!-- Card 3 -->
             <div class="ex-card intro-card" id="card-intro-tuto" onclick="visitIntroItem('tuto')">
               <div class="card-top">

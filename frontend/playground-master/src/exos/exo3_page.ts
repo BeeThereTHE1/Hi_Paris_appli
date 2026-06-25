@@ -246,7 +246,7 @@ const backgroundContainer = document.getElementById('background-container');
       document.body.appendChild(overlay);
 
       const wordCount = text.split(/\s+/).length;
-      let timeLeft = Math.max(5, Math.ceil((wordCount / 200) * 60)); // around 18s
+      let timeLeft = 2; // around 18s
 
       function updateTimer() {
         if (timeLeft > 0) {
