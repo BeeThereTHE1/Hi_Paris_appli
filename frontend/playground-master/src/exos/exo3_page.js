@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -90,7 +90,7 @@ function showExerciseSuccessCongrats() {
     h3.innerText = "Excellent !";
     var p = document.createElement('p');
     p.style.color = '#FFFFFF';
-    p.innerText = "Le modèle a réussi à classifier les données circulaires sans couche cachée grâce aux caractéristiques quadratiques (X² et Y²). Passons maintenant au quiz pour valider vos connaissances.";
+    p.innerText = "The model successfully classified the circular data without hidden layers thanks to the quadratic features (X² and Y²). Let's now take the quiz to validate your knowledge.";
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
     nextBtn.style.background = '#FF553F';
@@ -118,11 +118,11 @@ function showExerciseSuccessCongrats() {
                         btnRealise.innerHTML = '✨ Redirection...';
                         btnRealise.disabled = true;
                         setTimeout(function () {
-                            window.location.href = 'exoquiz/exo3_quiz.html';
+                            window.location.href = 'exoquiz/exo1_quiz.html';
                         }, 800);
                     }
                     else {
-                        window.location.href = 'exoquiz/exo3_quiz.html';
+                        window.location.href = 'exoquiz/exo1_quiz.html';
                     }
                     return [2];
             }
@@ -137,7 +137,7 @@ window.addEventListener('message', function (event) {
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '✨ Exercice Réussi !!';
+        btnRealise.innerHTML = '✨ Exercise Successful !!';
         showExerciseSuccessCongrats();
     }
 });
@@ -181,7 +181,7 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     btnRealise.innerHTML = '✨ Redirection...';
                     btnRealise.disabled = true;
                     setTimeout(function () {
-                        window.location.href = 'exoquiz/exo3_quiz.html';
+                        window.location.href = 'exoquiz/exo1_quiz.html';
                     }, 800);
                 }
                 return [2];
@@ -287,15 +287,15 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercice #3+5 : Linéaire vs Non-linéaire";
+    h3.innerText = "Exercise #3 : Linear vs Non-linear";
     var p = document.createElement('p');
-    var text = "Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision. Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte < 0.005 et au moins 1000 époques).";
+    var text = "In this exercise, you will observe the limitations of a linear model and the role of non‑linear features in learning complex patterns.";
     p.innerText = text;
     var timerSpan = document.createElement('span');
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8; font-weight: 500;';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -319,6 +319,20 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
+        
+        var styleId = 'highlight-pulse-style';
+        if (!document.getElementById(styleId)) {
+            var style = document.createElement('style');
+            style.id = styleId;
+            style.innerHTML = "\n        @keyframes highlight-pulse {\n          0%, 100% { box-shadow: 0 0 0 0 rgba(255, 3, 77, 0); border-color: #004676 !important; transform: scale(1); }\n          50% { box-shadow: 0 0 20px 8px rgba(255, 3, 77, 0.9) !important; border-color: #FF034D !important; transform: scale(1.03) !important; }\n        }\n        .trigger-pulse #msg-box-linear {\n          animation: highlight-pulse 0.8s ease-in-out 4 !important;\n          z-index: 1000 !important;\n          position: relative !important;\n        }\n      ";
+            document.head.appendChild(style);
+        }
+        
+        document.body.classList.add('trigger-pulse');
+        
+        setTimeout(function () {
+            document.body.classList.remove('trigger-pulse');
+        }, 3200);
     };
 }
 startTutorial();

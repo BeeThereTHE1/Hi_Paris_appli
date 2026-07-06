@@ -124,10 +124,10 @@
         <tbody>
           <tr>
             <td>Curves</td>
-            <td><img src="../../assets/images/or.jpg.png" style="width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Linear"></td>
-            <td><img src="../../assets/images/output.jpg.png" style="width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Sigmoid"></td>
-            <td><img src="../../assets/images/output.jpg.png" style="width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Tanh"></td>
-            <td><img src="../../assets/images/spiral.jpg.png" style="width: 40px; height: 40px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="ReLU"></td>
+            <td><img src="../../assets/images/linear.png" style="width: 200px; height: 200px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Linear"></td>
+            <td><img src="../../assets/images/sigmoid.png" style="width: 200px; height: 200px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Sigmoid"></td>
+            <td><img src="../../assets/images/tanh.png" style="width: 200px; height: 200px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="Tanh"></td>
+            <td><img src="../../assets/images/relu.png" style="width: 200px; height: 200px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);" alt="ReLU"></td>
           </tr>
           <tr>
             <td>Transformation</td>
@@ -165,39 +165,44 @@
     qDiv2.innerHTML = `
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
         <h4 style="margin: 0 0 10px 0; color: #94a3b8; font-size: 13px; font-weight: 700; text-transform: uppercase;">DRAG ZONE ELEMENTS</h4>
-        <div id="cards-source" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: rgba(0,0,0,0.25); border-radius: 8px; min-height: 80px; align-items: center; justify-content: center;">
+        <div id="cards-source" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 15px; background: rgba(0,0,0,0.25); border-radius: 8px; min-height: 80px;">
+          <!-- Transformation -->
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 5px; text-align: center;">Transformation</div>
+            <div class="drag-card" draggable="true" id="card-0" data-val="Linear">Linear</div>
+            <div class="drag-card" draggable="true" id="card-1" data-val="Non-linear">Non-linear</div>
+            <div class="drag-card" draggable="true" id="card-2" data-val="Non-linear">Non-linear</div>
+            <div class="drag-card" draggable="true" id="card-3" data-val="Non-linear">Non-linear</div>
+          </div>
+          <!-- Output range -->
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 5px; text-align: center;">Output range</div>
+            <div class="drag-card" draggable="true" id="card-4" data-val="Any real value">Any real value</div>
+            <div class="drag-card" draggable="true" id="card-5" data-val="0 ; 1">0 ; 1</div>
+            <div class="drag-card" draggable="true" id="card-6" data-val="-1 ; 1">-1 ; 1</div>
+            <div class="drag-card" draggable="true" id="card-7" data-val="0 / positive">0 / positive</div>
+          </div>
+          <!-- Non-linear boundaries -->
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 5px; text-align: center;">Non-linear boundaries</div>
+            <div class="drag-card" draggable="true" id="card-8" data-val="No">No</div>
+            <div class="drag-card" draggable="true" id="card-9" data-val="Yes">Yes</div>
+            <div class="drag-card" draggable="true" id="card-10" data-val="Yes">Yes</div>
+            <div class="drag-card" draggable="true" id="card-11" data-val="Yes">Yes</div>
+          </div>
+          <!-- Observed behavior -->
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <div style="font-size: 12px; font-weight: bold; color: #94a3b8; margin-bottom: 5px; text-align: center;">Observed behavior</div>
+            <div class="drag-card" draggable="true" id="card-12" data-val="Very limited">Very limited</div>
+            <div class="drag-card" draggable="true" id="card-13" data-val="Often slower">Often slower</div>
+            <div class="drag-card" draggable="true" id="card-14" data-val="More stable">More stable</div>
+            <div class="drag-card" draggable="true" id="card-15" data-val="Often faster">Often faster</div>
+          </div>
         </div>
       </div>
     `;
 
-    const rawCardsValues = [
-      "Linear", "Non-linear", "Non-linear", "Non-linear",
-      "Any real value", "0 ; 1", "-1 ; 1", "0 / positive",
-      "No", "Yes", "Yes", "Yes",
-      "Very limited", "Often slower", "More stable", "Often faster"
-    ];
-
-    // Shuffle cards helper
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
-    const shuffledValues = shuffleArray([...rawCardsValues]);
     const sourceArea = document.getElementById("cards-source");
-
-    shuffledValues.forEach((val, idx) => {
-      const card = document.createElement("div");
-      card.className = "drag-card";
-      card.draggable = true;
-      card.id = `card-${idx}`;
-      card.setAttribute("data-val", val);
-      card.innerText = val;
-      sourceArea.appendChild(card);
-    });
 
     // Attach drag events to pool cards
     let draggedCard = null;
@@ -245,19 +250,19 @@
             draggedCard.style.background = "#10b981"; // Snap green
             draggedCard.style.width = "100%";
             draggedCard.style.boxShadow = "none";
-            
+
             checkQuizCompletion();
           } else {
             // Incorrect placement: shake card and send back to pool
             draggedCard.classList.add("shake-error");
             const parent = draggedCard.parentElement;
-            
+
             // Temporarily append to cell to show the shake effect inside the cell
             cell.appendChild(draggedCard);
-            
+
             setTimeout(() => {
               draggedCard.classList.remove("shake-error");
-              sourceArea.appendChild(draggedCard);
+              parent.appendChild(draggedCard);
             }, 600);
           }
         }
@@ -302,11 +307,11 @@
               // Listen for click on "?" to redirect after 4s
               helpBtn.addEventListener('click', () => {
                 helpBtn.classList.remove('help-blinking');
-                
+
                 // Show redirection notice
                 qDiv2.innerHTML = `
                   <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                      ✨ Redirection dans 4 secondes... Félicitations !
+                      ✨ Redirection dans 4 secondes... Congratulations !
                   </div>
                 `;
 

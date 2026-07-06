@@ -31,13 +31,13 @@ function renderStep() {
       <div class="quiz-question-wrapper">
         <div class="quiz-question-badge">Question 1/2</div>
         <div class="quiz-question-card">
-          Quel type de frontière de décision le modèle avec uniquement <strong>X₁ et X₂</strong> (caractéristiques linéaires) a-t-il pu tracer ?
+          Quel type of boundary de décision le modèle avec uniquement <strong>X₁ et X₂</strong> (caractéristiques linéaires) a-t-il pu tracer ?
         </div>
       </div>
       <div class="quiz-options-container">
         <button class="quiz-option-btn" data-correct="true" data-index="0">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une ligne droite séparatrice)</span>
+          <span class="quiz-option-text">Linéaire (une separating straight line)</span>
         </button>
         <button class="quiz-option-btn" data-correct="false" data-index="1">
           <span class="quiz-option-checkbox"></span>
@@ -55,13 +55,13 @@ function renderStep() {
       <div class="quiz-question-wrapper">
         <div class="quiz-question-badge">Question 1/2</div>
         <div class="quiz-question-card">
-          Quel type de frontière de décision le modèle avec <strong>X₁, X₂, X₁² et X₂²</strong> (caractéristiques quadratiques) a-t-il pu tracer ?
+          Quel type of boundary de décision le modèle avec <strong>X₁, X₂, X₁² et X₂²</strong> (caractéristiques quadratiques) a-t-il pu tracer ?
         </div>
       </div>
       <div class="quiz-options-container">
         <button class="quiz-option-btn" data-correct="false" data-index="0">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une ligne droite séparatrice)</span>
+          <span class="quiz-option-text">Linéaire (une separating straight line)</span>
         </button>
         <button class="quiz-option-btn" data-correct="true" data-index="1">
           <span class="quiz-option-checkbox"></span>
@@ -109,7 +109,7 @@ function setupOptionListeners() {
 
       if (quizStep === "1a") {
         feedbackText = isCorrect 
-          ? "Excellent ! Avec uniquement X₁ et X₂, le modèle ne peut effectuer que des combinaisons linéaires, ce qui limite la frontière à une ligne droite séparatrice."
+          ? "Excellent ! Avec uniquement X₁ et X₂, le modèle ne peut effectuer que des combinaisons linéaires, ce qui limite la frontière à une separating straight line."
           : "Pas tout à fait. X₁ et X₂ sont des coordonnées cartésiennes linéaires. Sans couches cachées ou transformations, la frontière reste rectiligne.";
       } else if (quizStep === "1b") {
         feedbackText = isCorrect 
@@ -207,7 +207,7 @@ function showQuiz2Overlay() {
         q2Feedback.style.display = "block";
         q2Feedback.style.backgroundColor = "rgba(16, 185, 129, 0.2)";
         q2Feedback.style.border = "1px solid #10b981";
-        q2Feedback.innerHTML = "<strong>Félicitations !</strong> Vous avez identifié qu'une transformation non-linéaire (ex: x²) permet de projeter les données dans un espace où elles deviennent séparables linéairement.";
+        q2Feedback.innerHTML = "<strong>Congratulations !</strong> Vous avez identifié qu'une transformation non-linéaire (ex: x²) permet de projeter les données dans un espace où elles deviennent séparables linéairement.";
 
         setTimeout(() => {
           ddOverlay.remove();
@@ -286,14 +286,14 @@ function showCompletionScreen() {
       </div>
 
       <h2 class="completion-title">Bravo !</h2>
-      <p class="completion-msg">Vous avez terminé l'exercice 3+5 avec succès.<br>
+      <p class="completion-msg">Vous avez terminé l'exercice 3 avec succès.<br>
         L'analyse des frontières linéaires et non-linéaires est maintenant acquise.<br>
-        <strong>L'exercice suivant a été déverrouillé !</strong>
+        <strong>L'exercice following wasé déverrouillé !</strong>
       </p>
 
       <div class="completion-actions">
-        <a class="completion-btn-next pulse-btn" href="exo4_quiz.html">
-          🚀 Exercice Suivant
+        <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
+          🚀 Retourner aux Exercices
         </a>
       </div>
     </div>
@@ -315,6 +315,7 @@ function showCompletionScreen() {
 
   // Mark completion
   (async () => {
+    localStorage.setItem('quiz_section_1_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(3);
       console.log("✅ Exercice 3 marqué COMPLETED dans la base de données.");

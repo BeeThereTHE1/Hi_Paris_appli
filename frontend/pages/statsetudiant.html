@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistiques Étudiants - Neural Playground</title>
+    <title>Student Statistics - Neural Playground</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../styles/statsetudiant.css">
@@ -12,42 +12,6 @@
 
 <body>
 
-    <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-    <div id="google_translate_element" style="display: none !important;"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'fr',
-                includedLanguages: 'en,fr',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <style>
-        .goog-te-gadget-simple {
-            background-color: transparent !important;
-            border: none !important;
-            font-family: 'Inter', sans-serif !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-        }
-
-        .goog-te-gadget-icon {
-            display: none;
-        }
-
-        body {
-            top: 0px !important;
-        }
-
-        .skiptranslate iframe {
-            display: none !important;
-        }
-    </style>
 
     <!-- Security Check: Redirect if not PROF -->
     <script>
@@ -62,14 +26,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.querySelector('.brand-name');
             if (isTeacher) {
-                titleEl.innerText = "Neural Dashboard Enseignant";
+                titleEl.innerText = "Teacher Neural Dashboard";
             } else {
-                titleEl.innerText = "Neural Dashboard Étudiant";
-                // Adaptation sidebar pour étudiant
+                titleEl.innerText = "Student Neural Dashboard";
+                // Adaptation sidebar for student
                 const sidebarTitle = document.querySelector('.sidebar h2');
-                if (sidebarTitle) sidebarTitle.innerText = "Mon Espace";
+                if (sidebarTitle) sidebarTitle.innerText = "My Space";
                 const boardTab = document.querySelector('.menu-item[data-target="board-block"]');
-                if (boardTab) boardTab.innerHTML = '<span style="font-size: 1.2rem;">📈</span> Ma Progression';
+                if (boardTab) boardTab.innerHTML = '<span style="font-size: 1.2rem;">📈</span> My Progress';
             }
         });
     </script>
@@ -88,7 +52,7 @@
 
         <div class="header-right">
             <a class="btn-back" href="Page-demo/exercises.html">
-                <span class="material-icons" style="font-size: 18px;">arrow_back</span> Page d'exercices
+                <span class="material-icons" style="font-size: 18px;">arrow_back</span> Exercises page
             </a>
             <!-- Widget Profil Header comme dans Historique -->
             <div id="widget-profil-header"></div>
@@ -98,10 +62,10 @@
     <div class="main-container">
         <!-- MENU LATERAL -->
         <aside class="sidebar">
-            <h2>Espace Enseignant</h2>
+            <h2>Teacher Space</h2>
             <nav style="display: flex; flex-direction: column; gap: 10px;">
                 <div class="menu-item active" data-target="board-block">
-                    <span style="font-size: 1.2rem;">📊</span> Suivi des Étudiants
+                    <span style="font-size: 1.2rem;">📊</span> Student Tracking
                 </div>
                 <!-- <div class="menu-item" data-target="chat-block">
                     <span style="font-size: 1.2rem;">💬</span> Chat de Groupe
@@ -110,8 +74,8 @@
             <div style="flex:1;"></div> <!-- Spacer -->
             <div
                 style="padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-size: 0.8rem; line-height: 1.5;">
-                <strong style="color:var(--success);">Astuce Pédagogique :</strong><br>
-                Surveillez le temps passé par exercice. Si un étudiant y passe plus de 15 minutes, il bloque peut-être
+                <strong style="color:var(--success);">Teaching Tip:</strong><br>
+                Surveillez le temps passé par exercice. If a student y passe plus de 15 minutes, il bloque peut-être
                 sur le "Gradient Killing" !
             </div>
         </aside>
@@ -121,8 +85,8 @@
             <!-- BLOC 1 : SUIVI DES ETUDIANTS -->
             <section id="board-block" class="content-block active">
                 <div class="block-header">
-                    Suivi de Progression des Étudiants
-                    <div style="font-size: 0.9rem; font-weight: 500; color: var(--sub);">Vue d'ensemble de la promotion
+                    Student Progress Tracking
+                    <div style="font-size: 0.9rem; font-weight: 500; color: var(--sub);">Class overview
                     </div>
                 </div>
 
@@ -131,31 +95,31 @@
                     <div class="search-wrapper">
                         <span class="search-icon">🔍</span>
                         <input type="text" id="search-student"
-                            placeholder="Rechercher un étudiant (nom, prénom, email)...">
+                            placeholder="Search for a student (nom, prénom, email)...">
                     </div>
                     <div class="filters-wrapper">
                         <div class="filter-group">
-                            <label for="filter-institution">Institution :</label>
+                            <label for="filter-institution">Institution:</label>
                             <select id="filter-institution">
-                                <option value="all">Toutes les institutions</option>
+                                <option value="all">All institutions</option>
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label for="filter-level">Niveau :</label>
+                            <label for="filter-level">Level:</label>
                             <select id="filter-level">
-                                <option value="all">Tous les niveaux</option>
-                                <option value="Débutant">Débutant</option>
-                                <option value="Intermédiaire">Intermédiaire</option>
+                                <option value="all">All levels</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
                                 <option value="Expert">Expert</option>
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label for="sort-by">Trier par :</label>
+                            <label for="sort-by">Sort by:</label>
                             <select id="sort-by">
                                 <option value="name-asc">Nom (A-Z)</option>
                                 <option value="name-desc">Nom (Z-A)</option>
-                                <option value="exos-desc">Exos validés (max-min)</option>
-                                <option value="time-desc">Temps total (max-min)</option>
+                                <option value="exos-desc">Validated exercises (max-min)</option>
+                                <option value="time-desc">Total time (max-min)</option>
                                 <option value="institution-asc">Institution (A-Z)</option>
                             </select>
                         </div>
@@ -277,13 +241,13 @@
             grid.innerHTML = '';
 
             if (list.length === 0) {
-                grid.innerHTML = '<p style="padding:20px; color:var(--sub); text-align:center;">Aucun étudiant trouvé.</p>';
+                grid.innerHTML = '<p style="padding:20px; color:var(--sub); text-align:center;">No student found.</p>';
                 return;
             }
 
             list.forEach(stu => {
                 let badgeClass = 'level-debutant';
-                if (stu.level === 'Intermédiaire') badgeClass = 'level-inter';
+                if (stu.level === 'Intermediate') badgeClass = 'level-inter';
                 if (stu.level === 'Expert') badgeClass = 'level-expert';
 
                 const card = document.createElement('div');
@@ -292,10 +256,10 @@
 
                 let historyHTML = '';
                 if ((stu.history || []).length === 0) {
-                    historyHTML = `<div style="text-align:center; padding: 12px 0; color: var(--sub); font-size:0.85rem;">Aucun exercice réalisé pour l'instant.</div>`;
+                    historyHTML = `<div style="text-align:center; padding: 12px 0; color: var(--sub); font-size:0.85rem;">No exercise completed yet.</div>`;
                 } else {
                     (stu.history || []).forEach(h => {
-                        const isCompleted = h.date !== 'En cours' && h.date !== 'Sauvegardé';
+                        const isCompleted = h.date !== 'In progress' && h.date !== 'Saved';
                         const statusColor = isCompleted ? 'var(--success)' : 'var(--warning)';
                         const statusIcon = isCompleted ? '✅' : '🕐';
                         historyHTML += `
@@ -320,19 +284,19 @@
                             <div class="student-role" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
                                 <span>
                                     <span class="status-dot ${stu.online ? 'online' : 'offline'}"></span>
-                                    ${stu.online ? 'Actif' : 'Hors ligne'}
+                                    ${stu.online ? 'Active' : 'Offline'}
                                 </span>
-                                <span style="font-size:0.75rem; color:var(--accent); font-weight: 500;">🏫 ${stu.ecole || 'Non spécifiée'}</span>
+                                <span style="font-size:0.75rem; color:var(--accent); font-weight: 500;">🏫 ${stu.ecole || 'Not specified'}</span>
                             </div>
                         </div>
                     </div>
                     <div class="kpi-row">
-                        <div class="kpi-item"><span class="kpi-val">${stu.exosFaits}</span><span class="kpi-label">Exos validés</span></div>
+                        <div class="kpi-item"><span class="kpi-val">${stu.exosFaits}</span><span class="kpi-label">Validated exercises</span></div>
                         <div class="kpi-item"><span class="kpi-val">${stu.efficacite}</span><span class="kpi-label">Score</span></div>
-                        <div class="kpi-item"><span class="kpi-val" style="font-size:0.9rem;">${stu.tempsMoyen}</span><span class="kpi-label">Temps total</span></div>
+                        <div class="kpi-item"><span class="kpi-val" style="font-size:0.9rem;">${stu.tempsMoyen}</span><span class="kpi-label">Total time</span></div>
                     </div>
                     <button class="detail-btn" onclick="toggleDetails('${stu.id}')">
-                        <span>Détails des exercices (${(stu.history || []).length})</span>
+                        <span>Exercise details (${(stu.history || []).length})</span>
                         <span id="chevron-${stu.id}" class="chevron-arrow">&#9660;</span>
                     </button>
                     <div class="student-details" id="details-${stu.id}" style="display:none;">${historyHTML}</div>
@@ -365,7 +329,7 @@
 
             // 2.5. Institution Filter
             if (selectedInstitution !== 'all') {
-                filtered = filtered.filter(s => (s.ecole || 'Non spécifiée') === selectedInstitution);
+                filtered = filtered.filter(s => (s.ecole || 'Not specified') === selectedInstitution);
             }
 
             // 3. Sorting
@@ -395,7 +359,7 @@
 
         const initDashboard = async () => {
             const grid = document.getElementById('students-grid');
-            grid.innerHTML = '<p style="padding:20px; color:var(--sub);">Chargement des données réelles depuis Supabase...</p>';
+            grid.innerHTML = '<p style="padding:20px; color:var(--sub);">Loading real data from Supabase...</p>';
 
             try {
                 if (isTeacher) {
@@ -413,7 +377,7 @@
                     allStudentsData = allStats.map(s => ({
                         ...s,
                         online: Math.random() > 0.5,
-                        level: s.exosFaits > 10 ? "Expert" : (s.exosFaits > 5 ? "Intermédiaire" : "Débutant"),
+                        level: s.exosFaits > 10 ? "Expert" : (s.exosFaits > 5 ? "Intermediate" : "Beginner"),
                         efficacite: s.exosFaits > 0 ? "80%" : "0%",
                         tempsMoyen: formatTime(s.totalTime),
                         history: s.history.map(h => ({
@@ -426,8 +390,8 @@
                     // Populate dynamically the institution filter dropdown
                     const instFilter = document.getElementById('filter-institution');
                     if (instFilter) {
-                        const insts = [...new Set(allStudentsData.map(s => s.ecole || 'Non spécifiée'))].filter(Boolean).sort();
-                        instFilter.innerHTML = '<option value="all">Toutes les institutions</option>';
+                        const insts = [...new Set(allStudentsData.map(s => s.ecole || 'Not specified'))].filter(Boolean).sort();
+                        instFilter.innerHTML = '<option value="all">All institutions</option>';
                         insts.forEach(inst => {
                             const opt = document.createElement('option');
                             opt.value = inst;
@@ -469,17 +433,17 @@
                         nom: u.nom,
                         prenom: u.prenom,
                         online: true,
-                        level: exosValides > 10 ? "Expert" : (exosValides > 5 ? "Intermédiaire" : "Débutant"),
+                        level: exosValides > 10 ? "Expert" : (exosValides > 5 ? "Intermediate" : "Beginner"),
                         exosFaits: exosValides,
                         efficacite: exosValides > 0 ? "Dynamique" : "0%",
                         tempsMoyen: formatTime(totalTimeSeconds),
                         totalTime: totalTimeSeconds,
-                        ecole: u.ecole || 'Non spécifiée',
+                        ecole: u.ecole || 'Not specified',
                         history: userProgress
                             .filter(p => p.exercises)
                             .map(p => ({
                                 nom: p.exercises.title,
-                                date: p.completed_at ? new Date(p.completed_at).toLocaleDateString() : (p.is_saved ? "Sauvegardé" : "En cours"),
+                                date: p.completed_at ? new Date(p.completed_at).toLocaleDateString() : (p.is_saved ? "Saved" : "In progress"),
                                 temps: formatTime(p.time_spent)
                             }))
                     }];
@@ -487,7 +451,7 @@
 
                 applyFiltersAndSort();
             } catch (err) {
-                grid.innerHTML = `<p style="padding:20px; color:var(--danger);">Erreur lors de la connexion à la base de données : ${err.message}</p>`;
+                grid.innerHTML = `<p style="padding:20px; color:var(--danger);">Error connecting to the database: ${err.message}</p>`;
             }
         };
 
@@ -524,13 +488,13 @@
                 </div>
                 <div style="padding: 8px;">
                     <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-                        📊 Mon Historique
+                        📊 My History
                     </a>
                     <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-                        📈 Statistiques
+                        📈 Statistics
                     </a>
                     <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
-                        🚪 Déconnexion
+                        🚪 Logout
                     </div>
                 </div>
             `;
@@ -580,7 +544,7 @@
 
     </script>
 
-    <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
     <script src="inactivite.js"></script>
 </body>
 

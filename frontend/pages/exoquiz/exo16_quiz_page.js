@@ -8,7 +8,7 @@
         var visitorBtn = document.createElement('a');
         visitorBtn.href = '../Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -369,7 +369,7 @@ function renderActivity4() {
 
     fPanel.innerHTML = `
         <div class="feedback-box">
-            💡 Sélectionnez la bonne conclusion pour chaque catégorie.
+            💡 Sélectionnez la bonne conclusion for each category.
         </div>
     `;
 
@@ -495,8 +495,8 @@ function renderActivity5() {
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
             <div class="quiz-question-badge" style="background:#FF034D;">Activité 5</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.45;">
-                <strong>Trouver l'erreur dans le Schéma</strong><br><br>
-                Examinez attentivement les colonnes de synthèse qui viennent d'apparaître sur la gauche.<br><br>
+                <strong>Trouver l'erreur in the Diagram</strong><br><br>
+                Examinez attentivement les summary columns qui viennent d'apparaître sur la gauche.<br><br>
                 <b>Défi :</b> Une erreur conceptuelle majeure s'est glissée dans les textes de la colonne <b>3.b (Sigmoid)</b>. Cliquez directement sur le mot erroné pour corriger le schéma et valider l'exercice.
             </div>
         </div>
@@ -655,8 +655,8 @@ function showCompletionScreen() {
 
       <!-- Actions -->
       <div class="completion-actions">
-        <a class="completion-btn-next pulse-btn" href="../exo17.html">
-          🚀 Next Exercise
+        <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
+          🚀 Retourner aux Exercices
         </a>
       </div>
     </div>
@@ -677,6 +677,7 @@ function showCompletionScreen() {
 
   // API Call to register completion to DB
   (async function () {
+    localStorage.setItem('quiz_section_4_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(16);
       console.log("✅ Exercice 16 validé en base de données.");

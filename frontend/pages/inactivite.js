@@ -124,7 +124,7 @@
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
         if (!isLoggedIn || !user.email) {
-            alert("🔒 Veuillez vous connecter pour accéder aux exercices.");
+            alert("🔒 Please connect to access the exercises.");
             const redirectPath = isQuizPage ? '../Page-demo/register.html' : 'Page-demo/register.html';
             window.location.href = redirectPath;
             return;
@@ -205,14 +205,14 @@
             const isSolved = sessionStorage.getItem(`exo_${currentExoId}_solved`) === 'true';
             const isAlreadyCompleted = completedOfficialIds.has(currentExoId);
             if (!isSolved && !isAlreadyCompleted) {
-                alert("🔒 Vous devez d'abord réussir l'exercice avant de pouvoir accéder au quiz d'évaluation.");
+                alert("🔒 You must first successfully complete the exercise before accessing the evaluation quiz.");
                 window.location.href = `../exo${currentExoId}.html`;
                 return;
             }
         } else {
             // Si c'est l'exercice standard et qu'il est verrouillé dans le parcours
             if (!isExerciseUnlocked(currentExoId)) {
-                alert("🔒 Cet exercice est verrouillé. Veuillez suivre la progression dans l'ordre.");
+                alert("🔒 This exercise is locked. Please follow the progression in order.");
                 window.location.href = 'Page-demo/exercises.html';
                 return;
             }
@@ -225,7 +225,7 @@
         if (!isQuizPage) {
             // PAGE D'EXERCICE
             if (btnRealise) {
-                btnRealise.innerHTML = '<span class="icon">📝</span> Évaluer mes connaissances';
+                btnRealise.innerHTML = '<span class="icon">📝</span> Test your knowledge';
                 
                 // Si l'exercice est complété en base de données
                 const isCompletedDb = completedOfficialIds.has(currentExoId);
@@ -300,7 +300,7 @@
                 btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    alert(`🔒 L'exercice ciblé est verrouillé. Veuillez d'abord terminer les exercices précédents et valider les quiz de section.`);
+                    alert(`🔒 The target exercise is locked. Please finish the previous exercises and validate the section quizzes first.`);
                 }, true);
             }
         });
@@ -320,7 +320,7 @@
     const DUREE_MAX_INACTIVITE = 1800000; // 30 minutes
 
     const deconnexionAutomatique = () => {
-        alert("🔒: Vous avez été déconnecté suite à 30 minutes d'inactivité.");
+        alert("🔒: You have been disconnected due to 30 minutes of inactivity.");
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('currentUser');
 
@@ -350,7 +350,7 @@
     resetTimer();
 })();
 
-// --- SYNCHRONISATION DE LA LANGUE POUR LES BOUTONS (VALIDER/VALIDATE ET SAUVEGARDER/SAVE) ---
+// --- SYNCHRONISATION DE LA LANGUE POUR LES BOUTONS (VALIDER/VALIDATE ET Save draft/SAVE) ---
 (function () {
     const syncLanguage = () => {
         let lang = 'fr';
@@ -391,28 +391,28 @@
         lang = detected || 'fr';
         const isEnglish = (lang === 'en');
 
-        // 2. Mettre à jour les boutons du document courant (SAUVEGARDER / SAVE)
+        // 2. Mettre à jour les boutons du document courant (Save draft / SAVE)
         const btnSauvegarder = document.getElementById('btn-sauvegarder');
         if (btnSauvegarder) {
             const text = btnSauvegarder.textContent || "";
-            if (text.includes('SAUVEGARDER') || text.includes('SAVE')) {
-                btnSauvegarder.innerHTML = isEnglish ? '<span class="icon">💾</span> SAVE' : '<span class="icon">💾</span> SAUVEGARDER';
-            } else if (text.includes('Sauvegardé !') || text.includes('Saved !') || text.includes('Enregistré !')) {
+            if (text.includes('Save draft') || text.includes('SAVE')) {
+                btnSauvegarder.innerHTML = isEnglish ? '<span class="icon">💾</span> SAVE' : '<span class="icon">💾</span> Save draft';
+            } else if (text.includes('Sauvegardé !') || text.includes('Saved !') || text.includes('Saved !')) {
                 btnSauvegarder.innerHTML = isEnglish ? '✅ Saved !' : '✅ Sauvegardé !';
-            } else if (text.includes('Enregistrer & Valider') || text.includes('Save & Validate')) {
-                btnSauvegarder.innerHTML = isEnglish ? 'Save & Validate' : 'Enregistrer & Valider';
+            } else if (text.includes('Enregistrer & Submit') || text.includes('Save & Validate')) {
+                btnSauvegarder.innerHTML = isEnglish ? 'Save & Validate' : 'Enregistrer & Submit';
             }
         }
 
         const localValBtn = document.getElementById('validate-button');
         if (localValBtn) {
             const text = localValBtn.textContent || "";
-            if (text.trim() === 'Valider' || text.trim() === 'Validate') {
-                localValBtn.textContent = isEnglish ? 'Validate' : 'Valider';
+            if (text.trim() === 'Submit' || text.trim() === 'Validate') {
+                localValBtn.textContent = isEnglish ? 'Validate' : 'Submit';
             }
         }
 
-        // 3. Mettre à jour les boutons dans les iFrames enfants (Valider / Validate)
+        // 3. Mettre à jour les boutons dans les iFrames enfants (Submit / Validate)
         document.querySelectorAll('iframe').forEach(iframe => {
             try {
                 const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -420,8 +420,8 @@
                     const iframeValBtn = iframeDoc.getElementById('validate-button');
                     if (iframeValBtn) {
                         const text = iframeValBtn.textContent || "";
-                        if (text.trim() === 'Valider' || text.trim() === 'Validate') {
-                            iframeValBtn.textContent = isEnglish ? 'Validate' : 'Valider';
+                        if (text.trim() === 'Submit' || text.trim() === 'Validate') {
+                            iframeValBtn.textContent = isEnglish ? 'Validate' : 'Submit';
                         }
                     }
                 }

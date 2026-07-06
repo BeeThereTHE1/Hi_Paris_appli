@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -279,7 +279,7 @@ function startTutorial() {
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -375,7 +375,7 @@ function renderActivity1() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset.\n            </div>\n        </div>\n        <table class=\"yes-no-table\">\n            <thead>\n                <tr>\n                    <th>Activation</th>\n                    <th>YES</th>\n                    <th>NO</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr data-activation=\"relu\">\n                    <td>ReLU</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"tanh\">\n                    <td>Tanh</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"sigmoid\">\n                    <td>Sigmoid</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"linear\">\n                    <td>Linear</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n            </tbody>\n        </table>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Valider</button>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset.\n            </div>\n        </div>\n        <table class=\"yes-no-table\">\n            <thead>\n                <tr>\n                    <th>Activation</th>\n                    <th>YES</th>\n                    <th>NO</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr data-activation=\"relu\">\n                    <td>ReLU</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"tanh\">\n                    <td>Tanh</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"sigmoid\">\n                    <td>Sigmoid</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n                <tr data-activation=\"linear\">\n                    <td>Linear</td>\n                    <td><button class=\"btn-choice\" data-val=\"yes\">YES</button></td>\n                    <td><button class=\"btn-choice\" data-val=\"no\">NO</button></td>\n                </tr>\n            </tbody>\n        </table>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Submit</button>\n    ";
     var rows = qPanel.querySelectorAll('tbody tr');
     var _loop_1 = function (i) {
         var row = rows[i];
@@ -502,7 +502,7 @@ function renderActivity2() {
             feedback_incorrect: "❌ Incorrect. Weights are updated by training, not directly by the activation function."
         }
     ];
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 2</div>\n            <div class=\"quiz-question-card\">\n                How do you think the activation function changes the way the model works?\n            </div>\n        </div>\n        <div class=\"statement-container\">\n            " + statementsData.map(function (stmt, idx) { return "\n                <div class=\"statement-row\" data-idx=\"" + idx + "\">\n                    <div class=\"statement-text\">" + stmt.text + "</div>\n                    <div class=\"statement-actions\">\n                        <button class=\"btn-choice btn-true\" data-val=\"true\">True</button>\n                        <button class=\"btn-choice btn-false\" data-val=\"false\">False</button>\n                    </div>\n                </div>\n            "; }).join('') + "\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 2</div>\n            <div class=\"quiz-question-card\">\n                How do you think the activation function changes the way the model works?\n            </div>\n        </div>\n        <div class=\"statement-container\">\n            " + statementsData.map(function (stmt, idx) { return "\n                <div class=\"statement-row\" data-idx=\"" + idx + "\">\n                    <div class=\"statement-text\">" + stmt.text + "</div>\n                    <div class=\"statement-actions\">\n                        <button class=\"btn-choice btn-true\" data-val=\"true\">True</button>\n                        <button class=\"btn-choice btn-false\" data-val=\"false\">False</button>\n                    </div>\n                </div>\n            "; }).join('') + "\n        </div>\n    ";
     var statementRows = qPanel.querySelectorAll('.statement-row');
     var _loop_2 = function (i) {
         var row = statementRows[i];
@@ -531,8 +531,8 @@ function renderActivity2() {
                     btnRealise.removeAttribute('disabled');
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
-                    btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
-                    fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Faire le quiz\" en bas \u00E0 droite pour continuer.\n                        </div>\n                    ";
+                    btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
+                    fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Take the quiz\" en bas \u00E0 droite pour continuer.\n                        </div>\n                    ";
                 }
             }
             else {
@@ -576,7 +576,7 @@ if (iframe) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             return;
         }
         setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {

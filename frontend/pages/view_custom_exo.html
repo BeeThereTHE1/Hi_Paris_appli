@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prévisualisation Exercice</title>
+    <title>Exercise Preview</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./exo.css">
     <link rel="stylesheet" href="../styles/view_custom_exo.css">
@@ -13,35 +13,15 @@
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <div id="google_translate_element" style="display: none !important;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
     <header class="preview-header">
         <div>
-            <span class="preview-badge">Mode Prévisualisation</span>
-            <h1 id="exo-title" style="margin:5px 0 0 0; font-size:18px; color:white;">Chargement...</h1>
+            <span class="preview-badge">Preview Mode</span>
+            <h1 id="exo-title" style="margin:5px 0 0 0; font-size:18px; color:white;">Loading...</h1>
         </div>
         <button onclick="window.history.back()"
             style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:8px; cursor:pointer; font-weight:600;">
-            Retour à l'historique</button>
+            Back to history</button>
     </header>
 
     <iframe id="playground-frame" class="main-view"></iframe>
@@ -78,7 +58,7 @@
             }
 
             if (exo) {
-                document.getElementById('exo-title').innerText = exo.title || "Exercice personnalisé";
+                document.getElementById('exo-title').innerText = exo.title || "Custom exercise";
 
                 const iframe = document.getElementById('playground-frame');
                 const hash = exo.hash || '';
@@ -89,12 +69,12 @@
                     iframe.contentWindow.postMessage({ type: 'update-css', css: css }, '*');
                 };
             } else {
-                alert("Exercice introuvable.");
+                alert("Exercise not found.");
             }
         }
     </script>
 
-    <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
     <script src="inactivite.js"></script>
 </body>
 

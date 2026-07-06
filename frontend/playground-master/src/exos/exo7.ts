@@ -49,7 +49,7 @@ export function initExo7Popups(): void {
   // Afficher la popup d'intro au chargement
   overlay.style("display", "flex");
 
-  // Bouton "Suivant" page 1 → page 2
+  // Bouton "Next" page 1 → page 2
   d3.select("#exo7-next-btn1").on("click", () => {
     page1.style("display", "none");
     page2.style("display", "block");

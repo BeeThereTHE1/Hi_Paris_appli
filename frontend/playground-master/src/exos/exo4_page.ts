@@ -13,7 +13,7 @@
     const visitorBtn = document.createElement('a');
     visitorBtn.href = 'Page-demo/register.html';
     visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
     container.appendChild(visitorBtn);
     return;
   }
@@ -42,7 +42,7 @@
             📈 Mes Statistiques
           </a>
           <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;">
-            🚪 Déconnexion
+            🚪 Logout
           </div>
         </div>
       `;
@@ -186,7 +186,7 @@ animateBackground();
 const btnSauvegarder = document.getElementById('btn-sauvegarder');
 const btnRealise = document.getElementById('btn-realise');
 
-// Écouter le signal de succès venant de l'iframe
+// Écouter le success signal venant de l'iframe
 window.addEventListener('message', (event) => {
   console.log("Signal reçu du Playground:", event.data);
   if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 4 || event.data.exoId == "4")) {
@@ -194,7 +194,7 @@ window.addEventListener('message', (event) => {
     btnRealise.disabled = false;
     btnRealise.classList.remove('btn-disabled');
     btnRealise.classList.add('btn-success-ready');
-    btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+    btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
   }
 });
 
@@ -232,7 +232,7 @@ btnRealise.onclick = async () => {
 };
 
 // ==========================================
-// TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 4)
+// INTERACTIVE TUTORIAL STEP PAR ÉTAPE (EXO 4)
 // ==========================================
 
 let translations = null;
@@ -272,7 +272,7 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = translations && translations.title ? translations.title : "Exercice #4 : Éditeur de biais";
+  h3.innerText = translations && translations.title ? translations.title : "Exercice #4 : Bias Editor";
 
   const p = document.createElement('p');
   const defaultText = "Instructions: In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.";
@@ -287,7 +287,7 @@ function startTutorial() {
 
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
-  nextBtn.innerText = "Continuer";
+  nextBtn.innerText = "Continue";
   nextBtn.disabled = true;
 
   popup.appendChild(h3);
@@ -419,7 +419,7 @@ function showCustomTooltip(selector, title, text, position = 'bottom') {
 
   activeTooltip = document.createElement('div');
   activeTooltip.className = 'tutorial-tooltip';
-  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Cliquez n'importe où pour continuer</div>`;
+  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Click anywhere to continue</div>`;
   document.body.appendChild(activeTooltip);
   repositionActiveElements();
 }
@@ -449,7 +449,7 @@ function runStep2Highlight() {
   // Highlight the custom bias editor inside the iframe
   showHighlightBox('#custom-bias-editor-group', '1');
   
-  const title = "Modifier le Biais";
+  const title = "Modify Bias";
   const desc = "First, modify the value of the bias and train the model.\nObserve what happens each time the bias is modified.\n\nEach neuron follows the form\ny = f(x) + b";
   
   showCustomTooltip('#custom-bias-editor-group', title, desc.replace(/\n/g, '<br>'), 'right');

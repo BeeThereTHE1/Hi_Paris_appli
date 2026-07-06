@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title id="page-title">Exercice Personnalisé</title>
+  <title id="page-title">Custom Exercise</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css">
@@ -14,26 +14,6 @@
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <div id="google_translate_element" style="display: none !important;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
   <div id="background-container"></div>
   <header class="universal-header">
@@ -43,8 +23,8 @@
       <span class="brand-name">Neural Playground</span>
     </a>
     <div class="header-right">
-      <a class="btn-header" href="Page-demo/exercises.html">Catalogue</a>
-      <a class="btn-header" href="Page-demo/historique.html">Historique</a>
+      <a class="btn-header" href="Page-demo/exercises.html">Catalog</a>
+      <a class="btn-header" href="Page-demo/historique.html">History</a>
       <div id="widget-profil-header" style="margin-left:20px;"></div>
     </div>
   </header>
@@ -52,9 +32,9 @@
   <section class="exo-header">
     <div class="exo-toprow">
       <div class="badge">PRO</div>
-      <h1 class="exo-title" id="display-title">Chargement...</h1>
+      <h1 class="exo-title" id="display-title">Loading...</h1>
     </div>
-    <p class="exo-instructions" id="display-desc">Récupération des instructions...</p>
+    <p class="exo-instructions" id="display-desc">Retrieving instructions...</p>
   </section>
 
   <main class="exo-main" style="display:flex; gap:20px; padding:0 20px;">
@@ -63,16 +43,16 @@
     <aside id="validation-sidebar"
       style="display:none; width:350px; background:#0f172a; border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:25px; flex-direction:column; overflow-y:auto;">
       <h3 style="color:#fff; font-size:18px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px;">🔍
-        Validation Enseignant</h3>
+        Teacher Validation</h3>
       <div id="validation-quiz-content" style="flex:1;"></div>
       <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
         <button id="btn-approve-sidebar"
           style="background:linear-gradient(135deg, #10b981, #059669); border:none; padding:12px; border-radius:12px; color:white; font-weight:600; cursor:pointer;">✅
-          Approuver</button>
+          Approve</button>
         <button id="btn-reject-sidebar"
           style="background:#ef4444; border:none; padding:12px; border-radius:12px; color:white; font-weight:600; cursor:pointer;">❌
-          Rejeter</button>
-        <textarea id="rejection-comment" placeholder="Motif du rejet..."
+          Reject</button>
+        <textarea id="rejection-comment" placeholder="Reason for rejection..."
           style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px; color:#fff; min-height:80px;"></textarea>
       </div>
     </aside>
@@ -80,21 +60,21 @@
 
   <div id="quiz-modal" class="modal-overlay">
     <div class="modal-content">
-      <h3 id="quiz-modal-question">Question du Quiz</h3>
+      <h3 id="quiz-modal-question">Quiz Question</h3>
       <div id="quiz-modal-answers" class="quiz-options"></div>
       <div class="modal-actions">
         <button onclick="document.getElementById('quiz-modal').classList.remove('open')"
-          class="btn-modal btn-modal-secondary">Annuler</button>
-        <button id="btn-confirm-quiz" class="btn-modal btn-modal-primary">Confirmer</button>
+          class="btn-modal btn-modal-secondary">Cancel</button>
+        <button id="btn-confirm-quiz" class="btn-modal btn-modal-primary">Confirm</button>
       </div>
     </div>
   </div>
 
   <div class="exo-actions-footer">
     <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
-      <span class="icon">💾</span> SAUVEGARDER
+      <span class="icon">💾</span> Save draft
     </button>
-    <button id="btn-realise" class="btn-action-premium">✅ Réussi !!</button>
+    <button id="btn-realise" class="btn-action-premium">✅ Success!!</button>
   </div>
 
   <script>
@@ -119,7 +99,7 @@
       }
 
       if (!isLoggedIn || !currentUser || !currentUser.email) {
-        container.innerHTML = `<a href="Page-demo/login_with_catalog.html" class="btn-header">Connexion</a>`;
+        container.innerHTML = `<a href="Page-demo/login_with_catalog.html" class="btn-header">Login</a>`;
         return;
       }
 
@@ -140,7 +120,7 @@
           const feedbackCount = subs.filter(s => s.status !== 'PENDING').length;
           if (feedbackCount > 0) badgeHtml = `<span class="badge-notif">${feedbackCount}</span>`;
         }
-      } catch (e) { console.error("Erreur badge:", e); }
+      } catch (e) { console.error("Badge error:", e); }
 
       const avatar = document.createElement('div');
       avatar.id = 'avatar-btn';
@@ -164,13 +144,13 @@
         </div>
         <div style="padding: 8px;">
           <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-            <span style="font-size: 16px;">📊</span> Mon Historique
+            <span style="font-size: 16px;">📊</span> Mon History
           </a>
           <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-            <span style="font-size: 16px;">📈</span> Mes Statistiques
+            <span style="font-size: 16px;">📈</span> My Statistics
           </a>
           <div id="logout-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
-            <span style="font-size: 16px;">🚪</span> Déconnexion
+            <span style="font-size: 16px;">🚪</span> Logout
           </div>
         </div>
       `;
@@ -238,15 +218,15 @@
 
     function renderExercise() {
       const titleEl = document.getElementById('display-title'), descEl = document.getElementById('display-desc');
-      if (!exo) { titleEl.innerText = "Exercice introuvable"; return; }
+      if (!exo) { titleEl.innerText = "Exercise not found"; return; }
       titleEl.innerText = exo.title;
-      descEl.innerHTML = `<b>Objectif :</b> ${exo.description || 'Non défini'}`;
+      descEl.innerHTML = `<b>Objective:</b> ${exo.description || 'Not defined'}`;
       const iframe = document.getElementById('exo-frame');
       iframe.src = 'preview_index.html' + (exo.hash || '');
       iframe.onload = () => iframe.contentWindow.postMessage({ type: 'update-css', css: exo.css }, '*');
       if (isAlreadyCompleted) {
         const btn = document.getElementById('btn-realise');
-        btn.innerHTML = '✅ Exercice Réussi !!'; btn.classList.add('completed');
+        btn.innerHTML = '✅ Exercice Success!!'; btn.classList.add('completed');
       }
       if (modePending) {
         document.getElementById('validation-sidebar').style.display = 'flex';
@@ -267,23 +247,23 @@
         container.innerHTML = html;
       }
       document.getElementById('btn-approve-sidebar').onclick = async () => {
-        if (!confirm("Approuver cet exercice ?")) return;
+        if (!confirm("Approve cet exercice ?")) return;
         const res = await fetch(`/api/submissions/${submissionId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', 'x-user-email': user.email },
           body: JSON.stringify({ status: 'APPROVED' })
         });
-        if (res.ok) { alert("Approuvé !"); window.location.href = 'Page-demo/exercises.html'; }
+        if (res.ok) { alert("Approved!"); window.location.href = 'Page-demo/exercises.html'; }
       };
       document.getElementById('btn-reject-sidebar').onclick = async () => {
         const feedback = document.getElementById('rejection-comment').value.trim();
-        if (!feedback) return alert("Motif requis.");
+        if (!feedback) return alert("Reason required.");
         const res = await fetch(`/api/submissions/${submissionId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json', 'x-user-email': user.email },
           body: JSON.stringify({ status: 'REJECTED', feedback })
         });
-        if (res.ok) { alert("Rejeté !"); window.location.href = 'Page-demo/exercises.html'; }
+        if (res.ok) { alert("Rejected!"); window.location.href = 'Page-demo/exercises.html'; }
       };
     }
 
@@ -308,10 +288,10 @@
     };
 
     document.getElementById('btn-confirm-quiz').onclick = () => {
-      if (selectedAnswerIndex === -1) return alert("Sélectionnez une réponse.");
+      if (selectedAnswerIndex === -1) return alert("Select an answer.");
       if (exo.quiz.answers[selectedAnswerIndex].isCorrect) {
-        alert("Bravo !"); document.getElementById('quiz-modal').classList.remove('open'); markCompleted();
-      } else alert("Mauvaise réponse.");
+        alert("Congratulations!"); document.getElementById('quiz-modal').classList.remove('open'); markCompleted();
+      } else alert("Wrong answer.");
     };
 
     let startTime = Date.now(); // Lancement du chrono
@@ -320,7 +300,7 @@
     }
 
     async function markCompleted() {
-      if (!user || !user.email) return alert("Veuillez vous connecter pour enregistrer votre réussite.");
+      if (!user || !user.email) return alert("Please log in to record your success.");
       const duration = getElapsedTime();
       try {
         const res = await fetch('/api/progress', {
@@ -334,18 +314,18 @@
         });
         const result = await res.json();
         if (res.ok) {
-          document.getElementById('btn-realise').innerHTML = '✨ Validé !';
+          document.getElementById('btn-realise').innerHTML = '✨ Validated!';
           setTimeout(() => window.location.href = 'Page-demo/historique.html#completed', 1000);
         } else {
-          alert("Erreur lors de la validation : " + (result.error || "Inconnu"));
+          alert("Error during validation: " + (result.error || "Unknown"));
         }
       } catch (err) {
-        alert("Erreur réseau lors de la validation.");
+        alert("Network error during validation.");
       }
     }
 
     document.getElementById('btn-sauvegarder').onclick = async (e) => {
-      if (!user || !user.email) return alert("Veuillez vous connecter pour sauvegarder cet exercice.");
+      if (!user || !user.email) return alert("Please log in to save this exercise.");
       const btn = e.target;
       try {
         const res = await fetch('/api/progress', {
@@ -358,13 +338,13 @@
         });
         const result = await res.json();
         if (res.ok) {
-          btn.innerHTML = '✅ Enregistré !';
+          btn.innerHTML = '✅ Saved!';
           // On ne redirige plus pour laisser l'utilisateur continuer
         } else {
-          alert("Erreur lors de la sauvegarde : " + (result.error || "Inconnu"));
+          alert("Error during save: " + (result.error || "Unknown"));
         }
       } catch (err) {
-        alert("Erreur réseau lors de la sauvegarde.");
+        alert("Network error during save.");
       }
     };
 

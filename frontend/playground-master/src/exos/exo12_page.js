@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -289,7 +289,7 @@ function startTutorial() {
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -452,7 +452,7 @@ function handleDropMatch(sourceId, conceptId) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                    \uD83C\uDF89 Great! You\u2019ve identified the key concepts \u2014 now let\u2019s see them in action.<br>\n                    Run the model and observe how training loss, test loss, and overfitting actually behave during learning.\n                </div>\n            ";
         }
     }
@@ -472,7 +472,7 @@ if (iframe) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             var backBtn = document.querySelector('.universal-header .btn-header');
             if (backBtn) {
                 backBtn.style.animation = 'pulse-button 1.5s infinite';

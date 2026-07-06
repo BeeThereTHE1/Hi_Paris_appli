@@ -50,7 +50,7 @@
       <div class="quiz-question-wrapper">
           <div class="quiz-question-badge">Quiz 8 - Q1</div>
           <div class="quiz-question-card">
-              What differences do you observe between the two results? (Sélectionnez toutes les bonnes réponses)
+              What differences do you observe between the two results? (Sélectionnez toutes the correct answers)
           </div>
       </div>
       <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -71,7 +71,7 @@
               <span class="quiz-option-text">The decision boundaries are different</span>
           </button>
       </div>
-      <button class="btn-validate" id="btn-validate-act1" style="display: block; width: 100%; margin-top: 20px; background: #8b5cf6; border: none; color: white; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">Valider</button>
+      <button class="btn-validate" id="btn-validate-act1" style="display: block; width: 100%; margin-top: 20px; background: #8b5cf6; border: none; color: white; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">Submit</button>
     `;
 
     const optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
@@ -111,7 +111,7 @@
           renderQuestion2();
         };
       } else {
-        let fbMsg = "Essayez à nouveau. Repérez toutes les différences entre les deux modèles.";
+        let fbMsg = "Essayez à nouveau. Repérez all the differences entre both models.";
         if (q1Answers.features) {
           fbMsg = "The input features change: The input features remain the same in both models.";
         } else if (q1Answers.stops) {
@@ -142,7 +142,7 @@
       <div class="quiz-question-wrapper">
           <div class="quiz-question-badge">Quiz 8 - Q2</div>
           <div class="quiz-question-card">
-              You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Sélectionnez toutes les bonnes réponses)
+              You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Sélectionnez toutes the correct answers)
           </div>
       </div>
       <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -159,7 +159,7 @@
               <span class="quiz-option-text">The initial weights are randomly assigned at the start</span>
           </button>
       </div>
-      <button class="btn-validate" id="btn-validate-act2" style="display: block; width: 100%; margin-top: 20px; background: #8b5cf6; border: none; color: white; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">Valider</button>
+      <button class="btn-validate" id="btn-validate-act2" style="display: block; width: 100%; margin-top: 20px; background: #8b5cf6; border: none; color: white; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">Submit</button>
     `;
 
     const optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
@@ -197,14 +197,15 @@
         const okBtn = document.getElementById('btn-ok-act2');
         okBtn.onclick = async () => {
           // Complete exercise 8
+          localStorage.setItem('quiz_section_2_completed', 'true');
           if (window.StorageService) {
             await window.StorageService.complete(8);
           }
-          // Redirect to exo8.html with completed flag to trigger success confetti and unlocking next exercise
-          window.location.href = `../exo8.html?completed=true`;
+          // Redirect to exercises.html
+          window.location.href = `../Page-demo/exercises.html`;
         };
       } else {
-        let fbMsg = "Certaines réponses sont incorrectes.";
+        let fbMsg = "Some answers are incorrect.";
         if (q2Answers.dataset) {
           fbMsg = "The dataset does not change. Both models use exactly the same data — the difference comes from how the model is initialized, not from the data itself.";
         }

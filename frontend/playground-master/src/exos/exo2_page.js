@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -87,10 +87,10 @@ function showExerciseSuccessCongrats() {
     popup.style.background = '#004676';
     var h3 = document.createElement('h3');
     h3.style.color = '#FFFFFF';
-    h3.innerText = "Great!!";
+    h3.innerText = "Great!";
     var p = document.createElement('p');
     p.style.color = '#FFFFFF';
-    p.innerText = "the model has successsfully learned to classify the data. Now let's go back and review the different training steps.";
+    p.innerText = "The model has successfully learned to classify the data. Now let’s go back and review the different training steps.";
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
     nextBtn.style.background = '#FF553F';
@@ -104,30 +104,32 @@ function showExerciseSuccessCongrats() {
         overlay.remove();
         document.removeEventListener('click', dismiss);
     };
-    nextBtn.onclick = function (e) { return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    e.stopPropagation();
-                    dismiss();
-                    return [4, window.StorageService.complete(2)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnRealise.innerHTML = '✨ Redirection...';
-                        btnRealise.disabled = true;
-                        setTimeout(function () {
+    nextBtn.onclick = function (e) {
+        return __awaiter(_this, void 0, void 0, function () {
+            var success;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        e.stopPropagation();
+                        dismiss();
+                        return [4, window.StorageService.complete(2)];
+                    case 1:
+                        success = _a.sent();
+                        if (success) {
+                            btnRealise.innerHTML = '✨ Redirection...';
+                            btnRealise.disabled = true;
+                            setTimeout(function () {
+                                window.location.href = 'exoquiz/exo2_quiz.html';
+                            }, 800);
+                        }
+                        else {
                             window.location.href = 'exoquiz/exo2_quiz.html';
-                        }, 800);
-                    }
-                    else {
-                        window.location.href = 'exoquiz/exo2_quiz.html';
-                    }
-                    return [2];
-            }
+                        }
+                        return [2];
+                }
+            });
         });
-    }); };
+    };
     setTimeout(function () {
         document.addEventListener('click', dismiss);
     }, 100);
@@ -137,44 +139,48 @@ window.addEventListener('message', function (event) {
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '✨ Exercice Réussi !!';
+        btnRealise.innerHTML = '✨ Exercise Successful !!';
         showExerciseSuccessCongrats();
     }
 });
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, window.StorageService.save(2)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, window.StorageService.save(2)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                        btnSauvegarder.style.opacity = '0.7';
+                        btnSauvegarder.disabled = true;
+                    }
+                    return [2];
+            }
+        });
     });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, window.StorageService.complete(2)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () {
-                        window.location.href = 'exoquiz/exo2_quiz.html';
-                    }, 800);
-                }
-                return [2];
-        }
+};
+btnRealise.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, window.StorageService.complete(2)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () {
+                            window.location.href = 'exoquiz/exo2_quiz.html';
+                        }, 800);
+                    }
+                    return [2];
+            }
+        });
     });
-}); };
+};
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -445,7 +451,7 @@ function showCustomTooltip(selector, title, text, position) {
     currentTooltipPosition = position;
     activeTooltip = document.createElement('div');
     activeTooltip.className = 'tutorial-tooltip';
-    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Cliquez n'importe o\u00F9 pour continuer</div>";
+    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Click anywhere to continue</div>";
     document.body.appendChild(activeTooltip);
     repositionActiveElements();
 }
@@ -456,9 +462,9 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercice #2 : Entraînez le réseau";
+    h3.innerText = "Exercice #2 : Train the network";
     var p = document.createElement('p');
-    var text = "Dans cet exercice, vous allez apprendre à lancer l'entraînement du réseau de neurones et suivre ses performances à l'aide de l'affichage des époques, de la perte (loss) et de sa courbe d'évolution.";
+    var text = "Launch the training of the neural network using the step-by-step button and observe how the weighs change and the loss decreases over time. Once training is complete, we will walk through the training process step by step.<br><br>First, hover over parameters to view their definitions.";
     p.innerText = text;
     var timerSpan = document.createElement('span');
     timerSpan.style.display = 'block';
@@ -467,7 +473,7 @@ function startTutorial() {
     timerSpan.style.color = '#94a3b8';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -521,7 +527,7 @@ function runStep1Highlight() {
 }
 function runStep2() {
     showHighlightBox('.timeline-controls', '2');
-    showCustomTooltip('.timeline-controls', "Contrôles de Simulation", "Cliquez sur le bouton Play pour lancer l'apprentissage, ou utilisez les boutons Étape et Réinitialiser.", 'bottom');
+    showCustomTooltip('.timeline-controls', "Simulation Controls", "Click the Play button to start training, or use the Step and Reset buttons.", 'bottom');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runStep3();
@@ -532,7 +538,7 @@ function runStep2() {
 }
 function runStep3() {
     showHighlightBox('.control.ui-epoch', '3');
-    showCustomTooltip('.control.ui-epoch', "Nombre d'Époques", "Ce compteur indique combien de fois l'ensemble du jeu de données a traversé le réseau de neurones.", 'bottom');
+    showCustomTooltip('.control.ui-epoch', "Epochs", "An epoch is one complete pass of the entire training dataset through a machine learning model during the training process.Training usually requires multiple epochs so the model can gradually improve its predictions.", 'bottom');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runStep4();
@@ -543,7 +549,7 @@ function runStep3() {
 }
 function runStep4() {
     showHighlightBox('.output-stats.train.ui-trainLoss', '4');
-    showCustomTooltip('.output-stats.train.ui-trainLoss', "Perte d'Entraînement (Training Loss)", "Cette valeur mesure l'erreur du modèle. Plus elle baisse et se rapproche de 0, plus le réseau apprend à classer correctement.", 'left');
+    showCustomTooltip('.output-stats.train.ui-trainLoss', "Training Loss", "This value measures the model's error. The lower it drops and approaches 0, the better the network learns to classify correctly.", 'left');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runStep5();
@@ -554,7 +560,7 @@ function runStep4() {
 }
 function runStep5() {
     showHighlightBox('#linechart', '5');
-    showCustomTooltip('#linechart', "Graphique d'Évolution de la Perte", "Visualisez en temps réel la courbe de perte d'entraînement (et de test). Elle doit descendre progressivement pendant la simulation.", 'left');
+    showCustomTooltip('#linechart', "Loss Evolution Graph", "Visualize the training (and test) loss curve in real time. It should drop progressively during the simulation.", 'left');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runFinalStep();

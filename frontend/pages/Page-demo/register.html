@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neural Playground — Créer un compte</title>
+    <title>Neural Playground — Create an account</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -13,26 +13,6 @@
 </head>
 
 <body>
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <!-- Le script Google Translate est gardé ici, mais la div va dans le header -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
     <img src="Image/hi.png"
         style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;"
@@ -51,19 +31,19 @@
         <div class="header-right">
             <a class="btn-back" href="#"
                 onclick="event.preventDefault(); window.location.href = localStorage.getItem('isLoggedIn') === 'true' ? 'login_with_catalog.html' : '../index.html';">
-                <span class="material-icons" style="font-size: 18px;">home</span> Page principale
+                <span class="material-icons" style="font-size: 18px;">home</span> Home page
             </a>
 
             <!-- <div class="header-right">
                 <div id="widget-profil-header" style="margin-left: 20px;"></div>
             </div> -->
             
-            <!-- Nouveau Widget Traduction intégré au header -->
+            <!-- Nouveau Integrated Translation Widget au header -->
             <div id="google_translate_element" style="display: none !important;"></div>
         </div>
     </header>
 
-    <!-- WIDGET PROFIL FUTURISTE INTÉGRÉ AU HEADER -->
+    <!-- WIDGET INTEGRATED FUTURISTIC PROFILE AU HEADER -->
     <script>
         (function () {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -80,7 +60,7 @@
                 visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
                 visitorBtn.onmouseover = () => visitorBtn.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)';
                 visitorBtn.onmouseout = () => visitorBtn.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)';
-                visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+                visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not logged in!</span>';
                 container.appendChild(visitorBtn);
                 return;
             }
@@ -104,14 +84,14 @@
                 <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);">
                     <div style="font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">${user.prenom || ''} ${user.nom || ''}</div>
                     <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${user.email || ''}</div>
-                    <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;">🟢 Profil ${typeProfil}</div>
+                    <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;">🟢 Profile ${typeProfil}</div>
                 </div>
                 <div style="padding: 8px;">
                     <a href="historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-                        <span style="font-size: 16px;">📊</span> Mon Historique
+                        <span style="font-size: 16px;">📊</span> My History
                     </a>
                     <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
-                        <span style="font-size: 16px;">🚪</span> Déconnexion
+                        <span style="font-size: 16px;">🚪</span> Logout
                     </div>
                 </div>
             `;
@@ -153,58 +133,58 @@
     <div class="toast" id="toast"></div>
 
     <div class="card">
-        <div class="logo-title">Créer un compte</div>
-        <div class="logo-sub">Rejoignez le Neural Playground</div>
+        <div class="logo-title">Create an account</div>
+        <div class="logo-sub">Join the Neural Playground</div>
 
         <form onsubmit="register(event)">
 
             <div class="row">
                 <div class="field">
-                    <label>Prénom</label>
-                    <input type="text" id="prenom" placeholder="Ex: Ada" required>
+                    <label>First Name</label>
+                    <input type="text" id="prenom" placeholder="e.g., Ada" required>
                 </div>
                 <div class="field">
-                    <label>Nom</label>
-                    <input type="text" id="nom" placeholder="Ex: Lovelace" required>
+                    <label>Last Name</label>
+                    <input type="text" id="nom" placeholder="e.g., Lovelace" required>
                 </div>
             </div>
 
             <div class="field">
-                <label>Adresse Mail</label>
-                <input type="email" id="email" placeholder="ada@exemple.com" required>
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="ada@example.com" required>
             </div>
 
             <div class="field">
-                <label>Institution / École</label>
-                <input type="text" id="ecole" placeholder="Ex: Hi! PARIS" required>
+                <label>Institution / School</label>
+                <input type="text" id="ecole" placeholder="e.g., Hi! PARIS" required>
             </div>
 
             <div class="field">
-                <label>Profil</label>
+                <label>Profile</label>
                 <select id="profil" required onchange="toggleTokenField(this.value)">
-                    <option value="" disabled selected>— Choisissez votre profil —</option>
-                    <option value="enseignant">Enseignant(e)</option>
-                    <option value="etudiant">Étudiant(e)</option>
+                    <option value="" disabled selected>— Choose your profile —</option>
+                    <option value="enseignant">Teacher</option>
+                    <option value="etudiant">Student</option>
                     <!--<option value="visiteur">Visiteur</option>-->
                 </select>
             </div>
 
             <div class="field" id="token-field" style="display: none;">
-                <label>🔐 Code d'accès profil enseignant(e)(demander à votre administrateur)</label>
-                <input type="text" id="token-enseignant" placeholder="Entrez votre token d'accès">
+                <label>🔐 Teacher access code (ask your administrator)</label>
+                <input type="text" id="token-enseignant" placeholder="Enter your access token">
             </div>
 
             <div class="field" style="background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: 10px; padding: 14px 16px;">
                 <p style="margin: 0; font-size: 13px; color: #a5b4fc; line-height: 1.6;">
-                    📧 <strong>Pas de mot de passe !</strong><br>
-                    Un token de connexion vous sera envoyé par email après inscription.
+                    📧 <strong>No password required!</strong><br>
+                    A login token will be sent to you by email after registration.
                 </p>
             </div>
 
-            <button type="submit" class="btn-submit" id="btnReg">S'inscrire</button>
+            <button type="submit" class="btn-submit" id="btnReg">Register</button>
         </form>
 
-        <a href="../login.html" class="link-login">← J'ai déjà un compte</a>
+        <a href="../login.html" class="link-login">← I already have an account</a>
     </div>
 
     <script>
@@ -227,7 +207,7 @@
         function register(e) {
             e.preventDefault();
 
-            // 1. Récupération des données du formulaire
+            // 1. Récupédata ration du formulaire
             const prenom = document.getElementById('prenom').value.trim();
             const nom = document.getElementById('nom').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -235,7 +215,7 @@
             const profil = document.getElementById('profil').value;
 
             if (!prenom || !nom || !email || !ecole || !profil) {
-                toast("Veuillez remplir tous les champs", "#ef4444");
+                toast("Please fill in all fields", "#ef4444");
                 return;
             }
 
@@ -267,7 +247,7 @@
             // setTimeout(() => {
             //      btn.textContent = 'Compte créé ! 🎉';
             //      btn.style.background = 'linear-gradient(135deg,#059669,#10b981)';
-            //      toast("Inscription réussie, redirection...", "#10b981");
+            //      toast("Registration successful, redirecting...", "#10b981");
 
             //      setTimeout(() => {
             //          window.location.href = '../login.html';
@@ -277,7 +257,7 @@
 
             // 3. Sauvegarde dans Supabase via l'API
             const btn = document.getElementById('btnReg');
-            btn.textContent = 'Création en cours...';
+            btn.textContent = 'Creating account...';
             btn.style.opacity = '0.7';
 
             // Mapper le profil frontend vers le rôle base de données
@@ -293,17 +273,17 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.error) {
-                        // Email déjà utilisé ou autre erreur base de données
-                        btn.textContent = "S'inscrire";
+                        // Email already used or other database error
+                        btn.textContent = "Register";
                         btn.style.opacity = '1';
-                        toast("Cette adresse mail est déjà utilisée.", "#ef4444");
+                        toast("This email address is already in use.", "#ef4444");
                         return;
                     }
 
                     // 4. Succès : token envoyé par mail, redirection vers login
-                    btn.textContent = '📧 Token envoyé !';
+                    btn.textContent = '📧 Token sent!';
                     btn.style.background = 'linear-gradient(135deg,#059669,#10b981)';
-                    toast("Compte créé ! Vérifiez votre email 📬", "#10b981");
+                    toast("Account created! Check your email 📬", "#10b981");
 
                     setTimeout(() => {
                         window.location.href = '../login.html';
@@ -312,9 +292,9 @@
 
                 })
                 .catch(() => {
-                    btn.textContent = "S'inscrire";
+                    btn.textContent = "Register";
                     btn.style.opacity = '1';
-                    toast("❌ Serveur inaccessible. Réessayez.", "#ef4444");
+                    toast("❌ Server unreachable. Please try again.", "#ef4444");
                 });
         }
     </script>

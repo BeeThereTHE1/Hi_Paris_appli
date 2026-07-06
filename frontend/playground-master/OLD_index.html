@@ -51,29 +51,29 @@ limitations under the License.
     <div class="container l--page">
       <div class="timeline-controls">
         <div class="ui-resetButton">
-          <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialiser le réseau">
+          <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Reset the network">
             <i class="material-icons notranslate">replay</i>
           </button>
         </div>
         <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton"
-          id="play-pause-button" title="Lancer/Mettre en pause">
+          id="play-pause-button" title="Play/Pause">
           <i class="material-icons notranslate">play_arrow</i>
           <i class="material-icons notranslate">pause</i>
         </button>
         <div class="ui-stepButton">
-          <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Étape par étape">
+          <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Step by step">
             <i class="material-icons notranslate">skip_next</i>
           </button>
         </div>
       </div>
       <div class="control ui-epoch">
-        <span class="label">Nombre d'époques <span class="info-tip"
-            onclick="showTip(event, 'Une époque est un passage complet de l\'ensemble du jeu de données d\'entraînement à travers un modèle d\'apprentissage automatique pendant le processus d\'entraînement. L\'entraînement nécessite généralement plusieurs époques afin que le modèle puisse améliorer progressivement ses prédictions.')">?</span></span>
+        <span class="label">Epoch <span class="info-tip"
+            onclick="showTip(event, 'An epoch is a complete pass of the entire training dataset through a machine learning model during the training process. Training usually requires multiple epochs so the model can progressively improve its predictions.')">?</span></span>
         <span class="value" id="iter-number"></span>
       </div>
       <div class="control ui-learningRate">
-        <label for="learningRate">Taux d'apprentissage <span class="info-tip"
-            onclick="showTip(event, 'Le taux d\'apprentissage est un hyperparamètre qui contrôle la mesure dans laquelle les paramètres du modèle (poids et biais) sont mis à jour pendant l\'entraînement. Un faible taux d\'apprentissage entraîne un apprentissage lent, tandis qu\'un taux d\'apprentissage élevé peut amener le modèle à manquer la solution optimale.')">?</span></label>
+        <label for="learningRate">Learning rate <span class="info-tip"
+            onclick="showTip(event, 'The learning rate is a hyperparameter that controls how much the model\'s parameters (weights and biases) are updated during training. A low learning rate results in slow learning, while a high learning rate can cause the model to miss the optimal solution.')">?</span></label>
         <div class="select">
           <select id="learningRate">
             <option value="0.00001">0.00001</option>
@@ -92,7 +92,7 @@ limitations under the License.
       </div>
       <div class="control ui-activation">
         <label for="activations">Activation <span class="info-tip"
-            onclick="showTip(event, 'Une fonction d\'activation est une fonction mathématique appliquée à la sortie d\'un neurone. Elle détermine si le neurone doit être activé et quelle valeur il doit transmettre.<br><br>z = Σ(w_i * x_i) + b<br>a = f(z)<br><br><b>ReLU:</b> [0, +∞) (Couches cachées)<br><b>Sigmoïde:</b> (0,1) (Sortie binaire)<br><b>Tanh:</b> (-1,1) (Couches cachées)<br><b>Softmax:</b> Probabilités (Multi-classe)')">?</span></label>
+            onclick="showTip(event, 'An activation function is a mathematical function applied to the output of a neuron. It determines whether the neuron should be activated and what value it should transmit.<br><br>z = Σ(w_i * x_i) + b<br>a = f(z)<br><br><b>ReLU:</b> [0, +∞) (Hidden layers)<br><b>Sigmoid:</b> (0,1) (Binary output)<br><b>Tanh:</b> (-1,1) (Hidden layers)<br><b>Softmax:</b> Probabilities (Multi-class)')">?</span></label>
         <div class="select">
           <select id="activations">
             <option value="relu">ReLU</option>
@@ -103,18 +103,18 @@ limitations under the License.
         </div>
       </div>
       <div class="control ui-regularization">
-        <label for="regularizations">Régularisation <span class="info-tip"
-            onclick="showTip(event, 'Régularisation : Techniques utilisées pour empêcher un modèle de sur-ajuster les données d\'entraînement. Elle fonctionne en ajoutant des contraintes ou des pénalités au modèle, encourageant des modèles plus simples qui généralisent mieux aux nouvelles données.')">?</span></label>
+        <label for="regularizations">Regularization <span class="info-tip"
+            onclick="showTip(event, 'Regularization: Techniques used to prevent a model from overfitting the training data. It works by adding constraints or penalties to the model, encouraging simpler models that generalize better to new data.')">?</span></label>
         <div class="select">
           <select id="regularizations">
-            <option value="none">Aucune</option>
+            <option value="none">None</option>
             <option value="L1">L1</option>
             <option value="L2">L2</option>
           </select>
         </div>
       </div>
       <div class="control ui-regularizationRate">
-        <label for="regularRate">Taux de régularisation</label>
+        <label for="regularRate">Regularization rate</label>
         <div class="select">
           <select id="regularRate">
             <option value="0">0</option>
@@ -131,17 +131,17 @@ limitations under the License.
         </div>
       </div>
       <div class="control ui-problem">
-        <label for="problem">Type de problème</label>
+        <label for="problem">Problem type</label>
         <div class="select">
           <select id="problem">
             <option value="classification">Classification</option>
-            <option value="regression">Régression</option>
+            <option value="regression">Regression</option>
           </select>
         </div>
       </div>
       <div class="ui-doubleRunButton">
         <button id="snapshot-button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-          title="Capture l'état actuel pour comparer">Double Run</button>
+          title="Capture current state to compare">Double Run</button>
       </div>
     </div>
   </div>
@@ -153,7 +153,7 @@ limitations under the License.
     <div class="column data">
       <div id="validation-section" style="margin-bottom: 20px;">
         <button id="validate-button">
-          Valider
+          Submit
         </button>
         <div id="validation-message"></div>
       </div>
@@ -161,61 +161,62 @@ limitations under the License.
         style="margin-bottom: 18px; padding: 12px; background: #fdfdfd; border: 1px solid #e0e0e0; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <label for="seed-input"
-            style="font-weight: 700; color: #444; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Graine
-            (Seed) de simulation</label>
+            style="font-weight: 700; color: #444; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Random
+            Seed</label>
           <button id="regenerate-seed" class="mdl-button mdl-js-button mdl-button--icon"
-            title="Générer une nouvelle graine aléatoire" style="width: 24px; height: 24px; min-width: 24px;">
+            title="Generate a new random seed" style="width: 24px; height: 24px; min-width: 24px;">
             <i class="material-icons notranslate" style="font-size: 18px; color: #8b5cf6;">refresh</i>
           </button>
         </div>
         <div style="position: relative; display: flex; align-items: center;">
           <input type="text" id="seed-input"
             style="width: 100%; padding: 8px 12px; border: 1px solid #dcdcdc; border-radius: 8px; font-family: 'Roboto Mono', monospace; font-size: 13px; color: #333; transition: all 0.2s; background: #fff;"
-            placeholder="Entrez une seed...">
+            placeholder="Enter a seed...">
           <span id="seed-status"
             style="position: absolute; right: 10px; font-size: 12px; color: #10b981; display: none;">✓</span>
         </div>
       </div>
       <div id="weight-editor" class="weight-editor ui-weightEditor" style="margin-top:20px;">
-        <h4 style="margin:0 0 10px 0;">Éditeur de poids <span class="info-tip"
-            onclick="showTip(event, 'Un poids (weight) est un paramètre dans un réseau de neurones qui détermine la force ou l\'importance d\'une connexion entre les neurones. Pendant l\'entraînement, les poids sont ajustés pour minimiser l\'erreur de prédiction.')">?</span>
+        <h4 style="margin:0 0 10px 0;">Weight Editor <span class="info-tip"
+            onclick="showTip(event, 'A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the prediction error.')">?</span>
         </h4>
         <p id="selected-link-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
-          Cliquez sur une liaison
+          Click on a link
         </p>
         <p class="slider">
           <input id="weight-slider" class="mdl-slider mdl-js-slider" type="range" min="-5" max="5" step="0.01" value="0"
             style="width:100%;" />
         </p>
         <p style="margin-top:8px; font-size:13px;">
-          Valeur : <span id="weight-value">0.00</span>
+          Value: <span id="weight-value">0.00</span>
         </p>
       </div>
       <div id="bias-editor" class="bias-editor ui-biasEditor" style="margin-top:20px;">
-        <h4 style="margin:0 0 10px 0;">Éditeur de biais <span class="info-tip"
-            onclick="showTip(event, 'Un biais (bias) est un paramètre supplémentaire ajouté à un neurone qui permet de décaler la fonction d\'activation. Cela aide le réseau à mieux s\'adapter aux données en offrant plus de flexibilité.')">?</span>
+        <h4 style="margin:0 0 10px 0;">Bias Editor <span class="info-tip"
+            onclick="showTip(event, 'A bias is an additional parameter added to a neuron that shifts the activation function. It helps the network better fit the data by providing more flexibility.')">?</span>
         </h4>
         <p id="selected-node-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
-          Cliquez sur le biais d'un neurone
+          Click on a node bias
         </p>
         <p class="slider">
           <input id="bias-slider" class="mdl-slider mdl-js-slider" type="range" min="-5" max="5" step="0.01" value="0"
             style="width:100%;" />
         </p>
         <p style="margin-top:8px; font-size:13px;">
-          Valeur : <span id="bias-value">0.00</span>
+          Value: <span id="bias-value">0.00</span>
         </p>
       </div>
       <div class="ui-dataset">
         <h4>
-          <span>Jeu de données</span> <span class="info-tip" onclick="showTip(event, 'Un jeu de données (dataset) est une collection d\'exemples utilisée pour entraîner et tester le modèle. Il est composé de données d\'entraînement (pour apprendre) et de données de test (pour évaluer la généralisation).')">?</span>
+          <span>DATA</span> <span class="info-tip"
+            onclick="showTip(event, 'A dataset is a collection of examples used to train and test the model. It consists of training data (to learn) and test data (to evaluate generalization).')">?</span>
         </h4>
-        <p>Quel jeu de données voulez-vous utiliser ?</p>
+        <p>Which dataset do you want to use?</p>
         <div class="dataset-list">
-          <div class="dataset" title="Cercle">
+          <div class="dataset" title="Circle">
             <canvas class="data-thumbnail" data-dataset="circle"></canvas>
           </div>
-          <div class="dataset" title="Ou exclusif">
+          <div class="dataset" title="XOR">
             <canvas class="data-thumbnail" data-dataset="xor"></canvas>
           </div>
           <div class="dataset" title="Gaussian">
@@ -234,26 +235,25 @@ limitations under the License.
       </div>
       <div>
         <div class="ui-percTrainData">
-          <label for="percTrainData">Ratio données d'entraînement/test :&nbsp;&nbsp;<span
-              class="value">XX</span>%</label>
+          <label for="percTrainData">Ratio of training to test data:&nbsp;&nbsp;<span class="value">XX</span>%</label>
           <p class="slider">
             <input class="mdl-slider mdl-js-slider" type="range" id="percTrainData" min="10" max="90" step="10">
           </p>
         </div>
         <div class="ui-noise">
-          <label for="noise">Bruit (Noise) :&nbsp;&nbsp;<span class="value">XX</span></label>
+          <label for="noise">Noise :&nbsp;&nbsp;<span class="value">XX</span></label>
           <p class="slider">
             <input class="mdl-slider mdl-js-slider" type="range" id="noise" min="0" max="50" step="5">
           </p>
         </div>
         <div class="ui-batchSize">
-          <label for="batchSize">Taille du batch :&nbsp;&nbsp;<span class="value">XX</span></label>
+          <label for="batchSize">Batch Size:&nbsp;&nbsp;<span class="value">XX</span></label>
           <p class="slider">
             <input class="mdl-slider mdl-js-slider" type="range" id="batchSize" min="1" max="30" step="1">
           </p>
         </div>
-        <button class="basic-button" id="data-regen-button" title="Régénérer les données">
-          Régénérer
+        <button class="basic-button" id="data-regen-button" title="Regenerate data">
+          REGENERATE
         </button>
       </div>
     </div>
@@ -261,10 +261,10 @@ limitations under the License.
     <!-- Features Column -->
     <div class="column features">
       <h4>
-        Caractéristiques <span class="info-tip"
-          onclick="showTip(event, 'Une caractéristique (feature) est une propriété mesurable individuelle ou une caractéristique utilisée comme entrée pour un modèle d\'apprentissage automatique. Par exemple, pour le prix d\'une maison : la taille, l\'emplacement, etc.')">?</span>
+        FEATURES <span class="info-tip"
+          onclick="showTip(event, 'A feature is an individual measurable property or characteristic used as input for a machine learning model. For example, for a house price: size, location, etc.')">?</span>
       </h4>
-      <p>Quelles propriétés voulez-vous utiliser en entrée ?</p>
+      <p>Which properties do you want to feed in? </p>
       <div id="network">
         <svg id="svg" width="510" height="450">
           <defs>
@@ -275,9 +275,9 @@ limitations under the License.
           </defs>
         </svg>
         <div id="hovercard">
-          <div style="font-size:10px">Cliquez n'importe où pour éditer.</div>
-          <div><span class="type">Poids/Biais</span> est <span class="value">0.2</span><span><input
-                type="number" /></span>.</div>
+          <div style="font-size:10px">Click anywhere to edit.</div>
+          <div><span class="type">Bias</span> is <span class="value">0.2</span><span><input type="number" /></span>.
+          </div>
         </div>
         <div class="callout thumbnail">
           <svg viewBox="0 0 30 30">
@@ -290,9 +290,9 @@ limitations under the License.
             <path d="M12,30C5,20 2,15 12,0" marker-end="url(#arrow)">
           </svg>
           <div class="label">
-            Ceci est la sortie d'un <b>neurone</b> <span class="info-tip" style="position:relative;top:-2px;"
-              onclick="showTip(event, 'Un neurone (ou nœud) est une unité de calcul qui reçoit des entrées, les multiplie par des poids, ajoute un biais, et applique une fonction d\'activation pour produire une sortie.')">?</span>.<br>
-            Survolez pour l'agrandir.
+            This is the output of a <b>neuron</b> <span class="info-tip" style="position:relative;top:-2px;"
+              onclick="showTip(event, 'A neuron (or node) is a computational unit that receives inputs, multiplies them by weights, adds a bias, and applies an activation function to produce an output.')">?</span>.<br>
+            Hover to enlarge.
           </div>
         </div>
         <div class="callout weights">
@@ -306,10 +306,10 @@ limitations under the License.
             <path d="M12,30C5,20 2,15 12,0" marker-end="url(#arrow)">
           </svg>
           <div class="label">
-            Les sorties sont mélangées avec des <b>poids</b> variables <span class="info-tip"
+            The outputs are mixed with variable <b>weights</b> <span class="info-tip"
               style="position:relative;top:-2px;"
-              onclick="showTip(event, 'Un poids détermine l\'importance d\'une connexion. Il est représenté ici par l\'épaisseur de la ligne.')">?</span>,<br>
-            indiqués par l'épaisseur des lignes.
+              onclick="showTip(event, 'A weight determines the importance of a connection. It is represented here by the thickness of the line.')">?</span>,<br>
+            indicated by the thickness of the lines.
           </div>
         </div>
       </div>
@@ -330,7 +330,7 @@ limitations under the License.
         <span id="num-layers"></span>
         <span id="layers-label"></span>
         <span class="info-tip" style="margin-left:15px;"
-          onclick="showTip(event, 'Une couche cachée est une couche de neurones située entre la couche d\'entrée et la couche de sortie. Elle permet au réseau d\'apprendre des schémas complexes à partir des données.')">?</span>
+          onclick="showTip(event, 'A hidden layer is a layer of neurons located between the input layer and the output layer. It allows the network to learn complex patterns from the data.')">?</span>
       </h4>
       <div class="bracket"></div>
     </div>
@@ -338,17 +338,17 @@ limitations under the License.
     <!-- Output Column -->
     <div class="column output">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h4>Sortie (Output)</h4>
+        <h4>OUTPUT</h4>
       </div>
       <div class="metrics">
         <div class="output-stats ui-testLoss"
           title="The test loss measures the model’s performance on unseen data (the test dataset). It indicates how well the model generalizes beyond the data it was trained on.">
-          <span>Perte test</span>
+          <span>Test loss</span>
           <div class="value" id="loss-test"></div>
         </div>
         <div class="output-stats train ui-trainLoss"
           title="The training loss measures how well the model fits the training dataset. It represents the difference between the model’s predictions and the true values during training.">
-          <span>Perte entraînement</span>
+          <span>Training loss</span>
           <div class="value" id="loss-train"></div>
         </div>
         <div id="linechart"></div>
@@ -361,19 +361,19 @@ limitations under the License.
           <h4 style="font-size: 13px; font-weight: bold; margin: 0; color: #555;">SNAPSHOT <span
               style="font-weight: normal; font-size: 11px; margin-left: 5px;">(Epoch <span
                 id="snapshot-iter">0</span>)</span></h4>
-          <button id="clear-snapshot" class="mdl-button mdl-js-button mdl-button--icon" title="Effacer le snapshot">
+          <button id="clear-snapshot" class="mdl-button mdl-js-button mdl-button--icon" title="Clear snapshot">
             <i class="material-icons" style="font-size: 18px;">close</i>
           </button>
         </div>
         <div
           style="display: flex; justify-content: space-around; margin-bottom: 15px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 4px;">
           <div class="output-stats snapshot-stat">
-            <span style="font-weight: 500; font-size: 11px; color: #666; text-transform: uppercase;">Perte test</span>
+            <span style="font-weight: 500; font-size: 11px; color: #666; text-transform: uppercase;">Test loss</span>
             <div class="value" id="snapshot-loss-test" style="font-weight: 700; color: #1a73e8; font-size: 16px;"></div>
           </div>
           <div class="output-stats train snapshot-stat">
-            <span style="font-weight: 500; font-size: 11px; color: #666; text-transform: uppercase;">Perte
-              entraînement</span>
+            <span style="font-weight: 500; font-size: 11px; color: #666; text-transform: uppercase;">Training
+              loss</span>
             <div class="value" id="snapshot-loss-train" style="font-weight: 700; color: #333; font-size: 16px;"></div>
           </div>
         </div>
@@ -385,7 +385,7 @@ limitations under the License.
         <div style="display:flex; align-items:center;">
           <!-- Gradient color scale -->
           <div class="label" style="width:105px; margin-right: 10px">
-            Les couleurs indiquent les données, neurones et poids.
+            The colors indicate the data, neurons, and weights.
           </div>
           <svg width="150" height="30" id="colormap">
             <defs>
@@ -404,11 +404,12 @@ limitations under the License.
         <div style="display:flex;">
           <label class="ui-showTestData mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="show-test-data">
             <input type="checkbox" id="show-test-data" class="mdl-checkbox__input" checked>
-            <span class="mdl-checkbox__label label">Afficher les données de test <span class="info-tip" onclick="showTip(event, 'Afficher les données de test : Permet d\'afficher ou de masquer les points du jeu de test (translucides) afin d\'évaluer visuellement la généralisation du modèle.')">?</span></span>
+            <span class="mdl-checkbox__label label">Show test data <span class="info-tip"
+                onclick="showTip(event, 'Show test data : Allows you to display or hide the test dataset points (translucent) to visually evaluate the model\'s generalization.')">?</span></span>
           </label>
           <label class="ui-discretize mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="discretize">
             <input type="checkbox" id="discretize" class="mdl-checkbox__input" checked>
-            <span class="mdl-checkbox__label label">Discrétiser la sortie</span>
+            <span class="mdl-checkbox__label label">Discretize output</span>
           </label>
         </div>
       </div>
@@ -534,13 +535,13 @@ limitations under the License.
   <!-- <div id="exo1-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo1-page1">
-        <h3>Bienvenue dans l'Exercice 1</h3>
-        <p>Dans cet exercice, nous allons découvrir la classification avec un modèle simple.</p>
-        <button id="exo1-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Welcome to Exercise 1</h3>
+        <p>In this exercise, we will discover classification with a simple model.</p>
+        <button id="exo1-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo1-page2" style="display:none;">
-        <p>Utilisez les boutons pour manipuler les neurones d'entrée.</p>
-        <button id="exo1-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <p>Use the buttons to manipulate the input neurons.</p>
+        <button id="exo1-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -549,12 +550,12 @@ limitations under the License.
   <div id="exo2-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo2-page1">
-        <h3>Exercice 2 : Les Fondamentaux</h3>
-        <p>Observez comment les biais influencent la frontière de décision.</p>
-        <button id="exo2-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 2: The Fundamentals</h3>
+        <p>Observe how biases influence the decision boundary.</p>
+        <button id="exo2-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo2-page2" style="display:none;">
-        <button id="exo2-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo2-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -563,12 +564,12 @@ limitations under the License.
   <div id="exo3-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo3-page1">
-        <h3>Exercice 3 : Le Cercle</h3>
-        <p>Saurez-vous séparer ces points sans couches cachées ?</p>
-        <button id="exo3-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 3: The Circle</h3>
+        <p>Can you separate these points without hidden layers??</p>
+        <button id="exo3-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo3-page2" style="display:none;">
-        <button id="exo3-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo3-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -577,12 +578,12 @@ limitations under the License.
   <div id="exo4-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo4-page1">
-        <h3>Exercice 4 : Première Couche</h3>
-        <p>Nous introduisons ici une couche cachée.</p>
-        <button id="exo4-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 4: First Layer</h3>
+        <p>Here we introduce a hidden layer.</p>
+        <button id="exo4-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo4-page2" style="display:none;">
-        <button id="exo4-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo4-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -591,12 +592,12 @@ limitations under the License.
   <div id="exo5-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo5-page1">
-        <h3>Exercice 5 : Deep Learning</h3>
-        <p>Plusieurs couches pour des problèmes complexes.</p>
-        <button id="exo5-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 5: Deep Learning</h3>
+        <p>Multiple layers for complex problems.</p>
+        <button id="exo5-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo5-page2" style="display:none;">
-        <button id="exo5-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo5-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -605,12 +606,12 @@ limitations under the License.
   <div id="exo6-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo6-page1">
-        <h3>Exercice 6 : Régularisation</h3>
-        <p>Évitez le surapprentissage.</p>
-        <button id="exo6-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 6: Regularization</h3>
+        <p>Avoid overfitting.</p>
+        <button id="exo6-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo6-page2" style="display:none;">
-        <button id="exo6-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo6-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -619,12 +620,12 @@ limitations under the License.
   <div id="exo7-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo7-page1">
-        <h3>Exercice 7 : Classification de Texte</h3>
-        <p>Modèle simplifié.</p>
-        <button id="exo7-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 7: Text Classification</h3>
+        <p>Simplified model.</p>
+        <button id="exo7-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo7-page2" style="display:none;">
-        <button id="exo7-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo7-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div>
   </div> -->
@@ -633,12 +634,12 @@ limitations under the License.
   <div id="exo8-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo8-page1">
-        <h3>Exercice 8 : Examen Final</h3>
-        <p>Montrez ce que vous savez faire.</p>
-        <button id="exo8-next-btn1" class="mdl-button mdl-js-button">Suivant</button>
+        <h3>Exercise 8: Final Exam</h3>
+        <p>Show what you can do.</p>
+        <button id="exo8-next-btn1" class="mdl-button mdl-js-button">Next</button>
       </div>
       <div id="exo8-page2" style="display:none;">
-        <button id="exo8-next-btn2" class="mdl-button mdl-js-button">Commencer</button>
+        <button id="exo8-next-btn2" class="mdl-button mdl-js-button">Start</button>
       </div>
     </div> 
   </div>  -->
@@ -648,13 +649,13 @@ limitations under the License.
   <div id="exo12-popup-overlay" class="exo-popup-overlay" style="display: none;">
     <div class="exo-popup">
       <div id="exo12-page1">
-        <h3>Exercice 12 : Optimisation Avancée</h3>
-        <p>Ce dernier exercice vous met au défi d'optimiser un réseau profond à 4 couches. Manipulez tous les hyperparamètres pour atteindre une perte minimale.</p>
-        <button id="exo12-next-btn1" class="mdl-button mdl-js-button">>> SUIVANT</button>
+        <h3>Exercise 12: Advanced Optimization</h3>
+        <p>This final exercise challenges you to optimize a 4-layer deep network. Manipulate all hyperparameters to achieve minimal loss.</p>
+        <button id="exo12-next-btn1" class="mdl-button mdl-js-button">>> NEXT</button>
       </div>
       <div id="exo12-page2" style="display: none;">
-        <p>Surveillez le taux d'apprentissage et la régularisation pour éviter le surapprentissage sur le dataset Spirale.</p>
-        <button id="exo12-next-btn2" class="mdl-button mdl-js-button">>> COMMENCER</button>
+        <p>Monitor the learning rate and regularization to avoid overfitting on the Spiral dataset.</p>
+        <button id="exo12-next-btn2" class="mdl-button mdl-js-button">>> START</button>
       </div>
     </div>
   </div> -->
@@ -667,7 +668,7 @@ limitations under the License.
       <p>Il est important que vous compreniez pleinement ces concepts, car vous serez interrogé à leur sujet pendant la
         formation.</p>
       <div style="text-align: center; margin-top: 20px;">
-        <button id="common-exo-next-btn" class="mdl-button mdl-js-button">>> SUIVANT >>></button>
+        <button id="common-exo-next-btn" class="mdl-button mdl-js-button">>> NEXT >>></button>
       </div>
     </div>
   </div> -->

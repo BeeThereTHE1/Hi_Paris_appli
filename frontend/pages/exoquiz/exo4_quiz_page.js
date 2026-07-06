@@ -214,8 +214,8 @@ function showCompletionScreen() {
       <h2 class="completion-title">Bravo !</h2>
       <p class="completion-msg">
         Vous avez terminé l'exercice 4 avec succès.<br>
-        L'impact du biais sur la frontière de décision est maintenant acquis.<br>
-        <strong>L'exercice suivant a été déverrouillé !</strong>
+        L'impact du biais on the boundary de décision est maintenant acquis.<br>
+        <strong>L'exercice following wasé déverrouillé !</strong>
       </p>
 
       <!-- CTA buttons -->

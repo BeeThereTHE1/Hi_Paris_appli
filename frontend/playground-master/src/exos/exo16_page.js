@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -223,7 +223,7 @@ window.addEventListener('load', function () {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
         var qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
             qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">Exercice R\u00E9ussi</div>\n                    <div class=\"quiz-question-card\">\n                        Vous avez d\u00E9j\u00E0 valid\u00E9 cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                    </div>\n                </div>\n            ";
@@ -248,7 +248,7 @@ function startTutorial() {
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #cbd5e1;';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -316,7 +316,7 @@ function renderActivity2() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#FF034D;\">Activit\u00E9 2</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.45;\">\n                <strong>Lancement des simulateurs</strong><br><br>\n                Lancez les deux mod\u00E8les en parall\u00E8le dans le playground \u00E0 gauche en cliquant sur le bouton <b>Play</b> (\u25B6\uFE0F) de chaque simulateur.<br><br>\n                <span style=\"color:#FF034D; font-weight:700;\">Consigne :</span> Observez attentivement l'\u00E9volution des poids (lignes de connexion) et des neurones dans les couches initiales (les premi\u00E8res couches \u00E0 gauche).<br><br>\n                Laissez tourner les simulations jusqu'\u00E0 ce que le compteur atteigne au moins <b>150 \u00E9poques</b>.\n            </div>\n        </div>\n        <div style=\"background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; font-size:12px;\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:8px;\">\n                <span>Mod\u00E8le Sigmoid :</span>\n                <strong id=\"status-sigmoid\" style=\"color:#ef4444;\">Arr\u00EAt\u00E9 (0 epochs)</strong>\n            </div>\n            <div style=\"display:flex; justify-content:space-between;\">\n                <span>Mod\u00E8le ReLU :</span>\n                <strong id=\"status-relu\" style=\"color:#ef4444;\">Arr\u00EAt\u00E9 (0 epochs)</strong>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act2\" style=\"font-size:16px; padding: 8px 18px;\" disabled>Suivant</button>\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#FF034D;\">Activity 2</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.45;\">\n                <strong>Starting the simulators</strong><br><br>\n                Lancez les deux mod\u00E8les en parall\u00E8le dans le playground \u00E0 gauche en cliquant sur le bouton <b>Play</b> (\u25B6\uFE0F) de chaque simulateur.<br><br>\n                <span style=\"color:#FF034D; font-weight:700;\">Instruction :</span> Carefully observe the evolution of the weights (connection lines) and neurons in the initial layers (the first layers on the left).<br><br>\n                Laissez tourner les simulations jusqu'\u00E0 ce que le compteur atteigne au moins <b>150 \u00E9poques</b>.\n            </div>\n        </div>\n        <div style=\"background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; font-size:12px;\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:8px;\">\n                <span>Sigmoid Model :</span>\n                <strong id=\"status-sigmoid\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n            <div style=\"display:flex; justify-content:space-between;\">\n                <span>ReLU Model :</span>\n                <strong id=\"status-relu\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act2\" style=\"font-size:16px; padding: 8px 18px;\" disabled>Next</button>\n        </div>\n    ";
     fPanel.innerHTML = "\n        <div class=\"feedback-box\" style=\"border-left-color: #FF034D;\">\n            \uD83D\uDCA1 Cliquez sur le bouton Play (\u25B6\uFE0F) rouge clignotant dans chaque simulateur \u00E0 gauche.\n        </div>\n    ";
     var injectPlayFlash = function (iframeId) {
         try {
@@ -388,7 +388,7 @@ function renderActivity2() {
                     statusSig.style.color = '#3b82f6';
                 }
                 else {
-                    statusSig.innerText = "Arr\u00EAt\u00E9 (" + sigmoidEpoch + " epochs)";
+                    statusSig.innerText = "Stopped (" + sigmoidEpoch + " epochs)";
                     statusSig.style.color = '#ef4444';
                 }
             }
@@ -403,7 +403,7 @@ function renderActivity2() {
                     statusRelu.style.color = '#3b82f6';
                 }
                 else {
-                    statusRelu.innerText = "Arr\u00EAt\u00E9 (" + reluEpoch + " epochs)";
+                    statusRelu.innerText = "Stopped (" + reluEpoch + " epochs)";
                     statusRelu.style.color = '#ef4444';
                 }
             }
@@ -415,7 +415,7 @@ function renderActivity2() {
                     btnNext.removeAttribute('disabled');
                     btnNext.classList.add('blink-next');
                 }
-                fPanel.innerHTML = "\n                    <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                        \u2705 Les deux mod\u00E8les ont d\u00E9pass\u00E9 150 \u00E9poques. Cliquez sur <strong>Suivant</strong> pour classifier vos observations !\n                    </div>\n                ";
+                fPanel.innerHTML = "\n                    <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                        \u2705 Les deux mod\u00E8les ont d\u00E9pass\u00E9 150 \u00E9poques. Cliquez sur <strong>Next</strong> pour classifier vos observations !\n                    </div>\n                ";
             }
         }
         catch (e) {
@@ -565,7 +565,7 @@ function triggerCompletion() {
     p.innerText = "Excellent! Let’s now examine the conclusions that can be drawn from these observations about gradients.";
     var okBtn = document.createElement('button');
     okBtn.className = 'tutorial-btn';
-    okBtn.innerText = "Faire le quiz";
+    okBtn.innerText = "Take the quiz";
     popup.appendChild(h3);
     popup.appendChild(p);
     popup.appendChild(okBtn);
@@ -576,10 +576,10 @@ function triggerCompletion() {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
         var qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
-            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">F\u00E9licitations</div>\n                    <div class=\"quiz-question-card\">\n                        Vous avez termin\u00E9 les observations. Cliquez sur le bouton \"Faire le quiz\" en bas \u00E0 droite pour valider vos conclusions.\n                    </div>\n                </div>\n            ";
+            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">F\u00E9licitations</div>\n                    <div class=\"quiz-question-card\">\n                        Vous avez termin\u00E9 les observations. Cliquez sur le bouton \"Take the quiz\" en bas \u00E0 droite pour valider vos conclusions.\n                    </div>\n                </div>\n            ";
         }
     };
 }

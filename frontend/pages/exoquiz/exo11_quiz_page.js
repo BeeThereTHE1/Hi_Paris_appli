@@ -184,7 +184,7 @@ function renderTestingScreen() {
         </div>
       `).join('')}
     </div>
-    <button class="btn-validate" id="btn-validate-testing" style="margin-top:15px;">Valider</button>
+    <button class="btn-validate" id="btn-validate-testing" style="margin-top:15px;">Submit</button>
   `;
 
   // Add event listeners to choices
@@ -459,7 +459,7 @@ function showDragDropOverlay() {
         ${isCorrect ? '✅ Correct — ' + explanation : '❌ Incorrect — ' + explanation}
       </div>
       <div class="dd-feedback-click-tip">
-        Cliquez n'importe où pour continuer
+        Click anywhere to continue
       </div>
     `;
 
@@ -499,7 +499,7 @@ function showCompletionScreen() {
 
       <div style="font-size: 60px; margin-bottom: 20px; z-index: 2; position: relative;">⭐</div>
 
-      <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 15px 0; z-index: 2; position: relative;">Félicitations !</h2>
+      <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 15px 0; z-index: 2; position: relative;">Congratulations !</h2>
       <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6; margin: 0 0 30px 0; z-index: 2; position: relative;">
         Vous avez terminé l'exercice 11 avec succès.<br>
         Le rôle et l'impact du taux d'apprentissage (learning rate) sur la convergence sont maintenant clairs.<br>

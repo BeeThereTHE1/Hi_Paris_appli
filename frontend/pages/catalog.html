@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiParis - Catalogue Technologique</title>
+    <title>HiParis - Technology Catalog</title>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -15,25 +15,6 @@
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
     <div id="background-container"></div>
     <!-- Arrière-plan : Orbes -->
@@ -50,11 +31,11 @@
         </a>
         <div class="header-right">
             <a href="#" class="btn-back" id="btn-back">
-                🏠 Accueil
+                🏠 Home
             </a>
             <div id="widget-profil-header" style="margin-left: 20px;"></div>
             
-            <!-- Nouveau Widget Traduction intégré au header -->
+            <!-- Nouveau Integrated Translation Widget au header -->
             <div id="google_translate_element" style="display: none !important;"></div>
         </div>
     </header>
@@ -65,7 +46,7 @@
             <div class="bento-grid">
                 <!-- DATA -->
                 <div class="bento-card card-full">
-                    <div class="card-title"><span class="material-icons">storage</span> Architecture des Données</div>
+                    <div class="card-title"><span class="material-icons">storage</span> Data Architecture</div>
                     <div class="options-list">
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/gaussian.jpg.png" checked>
@@ -81,7 +62,7 @@
                         </label>
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/spiral.jpg.png">
-                            <div class="opt-box">Spirale</div>
+                            <div class="opt-box">Spiral</div>
                         </label>
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/noise.jpg.png">
@@ -132,7 +113,7 @@
 
                 <!-- NETWORK -->
                 <div class="bento-card">
-                    <div class="card-title"><span class="material-icons">account_tree</span> Architecture Réseau</div>
+                    <div class="card-title"><span class="material-icons">account_tree</span> Network Architecture</div>
                     <div class="options-list" style="grid-template-columns: repeat(2, 1fr);">
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/weight.jpg.png">
@@ -144,7 +125,7 @@
                         </label>
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/hidden.jpg.png">
-                            <div class="opt-box">Couches cachées</div>
+                            <div class="opt-box">Hidden Layers</div>
                         </label>
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/layers.jpg.png">
@@ -159,7 +140,7 @@
 
                 <!-- CORE -->
                 <div class="bento-card card-full">
-                    <div class="card-title"><span class="material-icons">terminal</span> Paramètres du Moteur</div>
+                    <div class="card-title"><span class="material-icons">terminal</span> Engine Parameters</div>
                     <div class="options-list">
                         <label class="opt-label"><input type="radio" name="feature"
                                 data-image="assets/images/run.jpg.png">
@@ -201,22 +182,21 @@
         <!-- PARTIE APERÇU (1/4) -->
         <aside class="preview-aside">
             <div class="preview-window">
-                <img id="preview-image" src="assets/images/gaussian.jpg.png" alt="Aperçu Composant">
+                <img id="preview-image" src="assets/images/gaussian.jpg.png" alt="Component Preview">
             </div>
 
             <div class="action-panel">
-                <span class="action-title">Éditeur Studio</span>
-                <p style="font-size: 13px; color: var(--text-dim); line-height: 1.5;">Sélectionnez un module pour
-                    visualiser son intégration dans le simulateur.</p>
+                <span class="action-title">Studio Editor</span>
+                <p style="font-size: 13px; color: var(--text-dim); line-height: 1.5;">Select a module to preview its integration in the simulator.</p>
 
                 <button class="btn-action btn-main" onclick="location.href='create.html'">
-                    <span class="material-icons">add_circle</span> Créer
+                    <span class="material-icons">add_circle</span> Create
                 </button>
-                <button class="btn-action btn-sub btn-disabled" disabled title="Fonctionnalité à venir">
-                    <span class="material-icons">edit</span> Modifier
+                <button class="btn-action btn-sub btn-disabled" disabled title="Upcoming feature">
+                    <span class="material-icons">edit</span> Edit
                 </button>
-                <button class="btn-action btn-sub btn-disabled" disabled style="color: #f87171; border-color: rgba(248, 113, 113, 0.2);" title="Fonctionnalité à venir">
-                    <span class="material-icons">delete</span> Supprimer
+                <button class="btn-action btn-sub btn-disabled" disabled style="color: #f87171; border-color: rgba(248, 113, 113, 0.2);" title="Upcoming feature">
+                    <span class="material-icons">delete</span> Delete
                 </button>
             </div>
         </aside>
@@ -244,7 +224,7 @@
             const container = document.getElementById('widget-profil-header');
 
             if (!isLoggedIn || !user.email) {
-                container.innerHTML = `<a href="index.html" class="btn-back">Connexion</a>`;
+                container.innerHTML = `<a href="index.html" class="btn-back">Login</a>`;
                 return;
             }
 
@@ -259,8 +239,8 @@
                         <div style="font-size: 11px; color: var(--text-dim)">${user.email}</div>
                         <div class="profile-type">🟢 ${typeProfil}</div>
                     </div>
-                    <a href="Page-demo/historique.html" class="menu-item"><span class="material-icons">history</span>Historique</a>
-                    <div class="menu-item" id="logout-btn" style="color:#f87171; cursor:pointer;"><span class="material-icons">logout</span>Déconnexion</div>
+                    <a href="Page-demo/historique.html" class="menu-item"><span class="material-icons">history</span>History</a>
+                    <div class="menu-item" id="logout-btn" style="color:#f87171; cursor:pointer;"><span class="material-icons">logout</span>Logout</div>
                 </div>
             `;
 
@@ -300,7 +280,7 @@
         })();
     </script>
 
-    <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
     <script src="inactivite.js"></script>
 </body>
 

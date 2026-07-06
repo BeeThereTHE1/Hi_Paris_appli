@@ -21,26 +21,6 @@
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <div id="google_translate_element" style="display: none !important;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
   <div id="background-container"></div>
   <div class="orb orb-1"></div>
@@ -61,31 +41,31 @@
           <line x1="19" y1="12" x2="5" y2="12" />
           <polyline points="12 19 5 12 12 5" />
         </svg>
-        Retour vers page des exercices
+        Back to exercises page
       </a>
-      <a class="btn-header" href="exo10.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Exercice précédent</a>
-      <a class="btn-header" href="exo12.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Exercice suivant ⏭️</a>
-      <a class="btn-header" href="Page-demo/historique.html">Mon historique</a>
+      <a class="btn-header" href="exo14.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
+      <a class="btn-header" href="exo17.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
+      <a class="btn-header" href="Page-demo/historique.html">My history</a>
       <div id="widget-profil-header" style="margin-left: 20px;"></div>
     </div>
   </header>
 
   <div class="exo-actions-footer">
     <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
-      <span class="icon">💾</span> SAUVEGARDER
+      <span class="icon">💾</span> Save draft
     </button>
     <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
-      <span class="icon">✅</span> Exercice Réussi !!
+      <span class="icon">✅</span> Exercise Successful !!
     </button>
   </div>
 
   <section class="exo-header">
     <div class="exo-toprow">
       <div class="badge">11</div>
-      <h1 class="exo-title">Exercice #11</h1>
+      <h1 class="exo-title">Learning rate and divergence</h1>
     </div>
     <p class="exo-instructions">
-      Entraîne le modèle pour classifier les points.
+      Analyze how Learning rate affects model capacity.
     </p>
   </section>
 

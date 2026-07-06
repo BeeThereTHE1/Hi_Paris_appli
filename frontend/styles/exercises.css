@@ -1301,7 +1301,7 @@
         align-items: center;
     }
 
-    .draggable-item {
+    .draggable-item, [draggable="true"] {
         background: linear-gradient(135deg, #004676, #002d4d);
         color: #fff;
         padding: 16px 28px;
@@ -1315,12 +1315,12 @@
         font-size: 18px;
     }
 
-    .draggable-item:active {
+    .draggable-item:active, [draggable="true"]:active {
         cursor: grabbing;
         transform: scale(0.95);
     }
 
-    .draggable-item.dragging {
+    .draggable-item.dragging, [draggable="true"].dragging {
         opacity: 0.4;
     }
 

@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -47,7 +47,7 @@ var _this = this;
         visitorBtn_1.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
         visitorBtn_1.onmouseover = function () { return visitorBtn_1.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)'; };
         visitorBtn_1.onmouseout = function () { return visitorBtn_1.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)'; };
-        visitorBtn_1.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
+        visitorBtn_1.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span > ';
         container.appendChild(visitorBtn_1);
         return;
     }
@@ -212,40 +212,44 @@ function saveToStorage(key, exoData) {
     }
     return false;
 }
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, StorageService.save(1)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, StorageService.save(1)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                        btnSauvegarder.style.opacity = '0.7';
+                        btnSauvegarder.disabled = true;
+                    }
+                    return [2];
+            }
+        });
     });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, StorageService.complete(1)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () {
-                        window.location.href = 'exoquiz/exo1_quiz.html';
-                    }, 800);
-                }
-                return [2];
-        }
+};
+btnRealise.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, StorageService.complete(1)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () {
+                            window.location.href = 'exoquiz/exo1_quiz.html';
+                        }, 800);
+                    }
+                    return [2];
+            }
+        });
     });
-}); };
+};
 var translations = null;
 function loadTranslations() {
     return __awaiter(this, void 0, void 0, function () {
@@ -294,9 +298,9 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Séparez les données";
+    h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Separate the data";
     var p = document.createElement('p');
-    var defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une droite qui sépare le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver dans chaque région.";
+    var defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une line that separates le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver in each region.";
     var text = translations && translations.instructions && translations.instructions.text ? translations.instructions.text : defaultText;
     p.innerText = text;
     var timerSpan = document.createElement('span');
@@ -306,7 +310,7 @@ function startTutorial() {
     timerSpan.style.color = '#94a3b8';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -482,7 +486,7 @@ function showCustomTooltip(selector, title, text, position) {
     currentTooltipPosition = position;
     activeTooltip = document.createElement('div');
     activeTooltip.className = 'tutorial-tooltip';
-    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Cliquez n'importe o\u00F9 pour continuer</div>";
+    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Click anywhere to continue</div>";
     document.body.appendChild(activeTooltip);
     repositionActiveElements();
 }
@@ -615,14 +619,14 @@ function runStep3() {
     leftPopup.id = 'exo1-step3-leftpopup';
     var h3 = document.createElement('h3');
     var startText = translations && translations.start_marker ? translations.start_marker : "Let’s Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
-    var titleText = "Let’s Start! [6]";
+    var titleText = "Let’s Start!";
     var bodyText = startText;
     if (startText.startsWith("Let's Start!")) {
-        titleText = "Let's Start! [6]";
+        titleText = "Let's Start!";
         bodyText = startText.substring("Let's Start!".length).trim();
     }
     else if (startText.startsWith("Let’s Start!")) {
-        titleText = "Let’s Start! [6]";
+        titleText = "Let’s Start!";
         bodyText = startText.substring("Let’s Start!".length).trim();
     }
     h3.innerText = titleText;
@@ -645,8 +649,8 @@ function runStep3() {
 }
 function runStep4() {
     showHighlightBox('#custom-weight-editor-x, #custom-weight-editor-y', '7');
-    var wTitle = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.term : "Modifier les Poids";
-    var wDesc = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.definition : "Faites glisser les curseurs ou cliquez sur les liaisons entre X1, X2 et la sortie pour modifier leurs poids.";
+    var wTitle = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.term : "Modify Weights";
+    var wDesc = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.definition : "Drag the sliders or click on the connections between X1, X2, and the output to modify their weights.";
     showCustomTooltip('#custom-weight-editor-x, #custom-weight-editor-y', wTitle, wDesc, 'right');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
@@ -673,7 +677,7 @@ function showStep5Congrats() {
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
     nextBtn.style.background = '#FF553F';
-    nextBtn.innerText = "Suivant";
+    nextBtn.innerText = "Next";
     popup.appendChild(h3);
     popup.appendChild(p);
     popup.appendChild(nextBtn);
@@ -701,33 +705,35 @@ if (iframe) {
         if (urlParams.get('completed') === 'true') {
             return;
         }
-        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-            var iframeDoc;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        try {
-                            iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                            iframeDoc.querySelectorAll('.info-tip').forEach(function (el) {
-                                if (el.innerText === '?') {
-                                    el.innerText = 'i';
-                                    el.classList.add('info-tip-pulse');
-                                    el.addEventListener('click', function () {
-                                        el.classList.remove('info-tip-pulse');
-                                    });
-                                }
-                            });
-                        }
-                        catch (e) {
-                            console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
-                        }
-                        return [4, loadTranslations()];
-                    case 1:
-                        _a.sent();
-                        startTutorial();
-                        return [2];
-                }
+        setTimeout(function () {
+            return __awaiter(_this, void 0, void 0, function () {
+                var iframeDoc;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            try {
+                                iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                iframeDoc.querySelectorAll('.info-tip').forEach(function (el) {
+                                    if (el.innerText === '?') {
+                                        el.innerText = 'i';
+                                        el.classList.add('info-tip-pulse');
+                                        el.addEventListener('click', function () {
+                                            el.classList.remove('info-tip-pulse');
+                                        });
+                                    }
+                                });
+                            }
+                            catch (e) {
+                                console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
+                            }
+                            return [4, loadTranslations()];
+                        case 1:
+                            _a.sent();
+                            startTutorial();
+                            return [2];
+                    }
+                });
             });
-        }); }, 1200);
+        }, 1200);
     });
 }

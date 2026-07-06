@@ -13,7 +13,7 @@
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
         visitorBtn.onmouseover = () => visitorBtn.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)';
         visitorBtn.onmouseout = () => visitorBtn.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span > ';
         container.appendChild(visitorBtn);
         return;
     }
@@ -104,88 +104,73 @@
 /* ─── DONNÉES ─── */
 const EXERCISES = [
     {
-        id: 1, icon: '🧠', title: ' Exercice 1 : Modification des poids.',
-        desc: 'Montrer que la régression logisitque peut être fait simplement, "à la main", et introduction de l\'objectif de la session',
+        id: 1, icon: '🧠', title: 'Exercice 1 : Linear classification',
+        desc: 'Adjust model parameters to understand how a simple model separates data into two classes.',
         difficulty: 'easy', category: 'Fondamentaux', duration: '15 min', questions: 8
     },
     {
-        id: 2, icon: '📊', title: 'Exercice 2 : Lancer un entrainement.',
-        desc: 'Comprenez comment un réseau apprend en minimisant la fonction de perte.',
+        id: 2, icon: '📊', title: 'Exercice 2 : Model training',
+        desc: "Explore how model's predictions is based on an iterative process",
         difficulty: 'easy', category: 'Optimisation', duration: '20 min', questions: 10
     },
     {
-        id: 3, icon: '🔢', title: 'Exercice 3+5 : Classification des données circulaires.',
-        desc: 'Découvrez les limites d\'un modèle linéaire simple sur des données circulaires, puis utilisez des caractéristiques quadratiques (X² et Y²) pour réussir.',
+        id: 3, icon: '🔢', title: 'Exercice 3 : Linear and non-linear features',
+        desc: 'Observe the limitations of a linear model and the role of non-linear features in learning complex patterns',
         difficulty: 'easy', category: 'Fondamentaux', duration: '15 min', questions: 6
     },
     {
-        id: 4, icon: '⚡', title: 'Exercice 4 : Modifiaction du Biais.',
-        desc: 'Apprendre à coder la rétropropagation, et comprendre comment le réseau apprend.',
-        difficulty: 'easy', category: 'Algorithmes', duration: '25 min', questions: 12
-    },
-    {
-        id: 5, icon: '🌀', title: 'Exercice 5 : Entrainement avec des feautures plus complexes.',
-        desc: 'Comprendre que sans couche caché, mais avec des featrues plus coplexes, on peut apprendre des relations non linéaires.',
-        difficulty: 'medium', category: 'Optimisation', duration: '18 min', questions: 9
-    },
-    {
-        id: 6, icon: '🔵', title: 'Exercice 6 : Entrainer un modèle avec des couches cachées.',
-        desc: 'Comprendre la notion d\'apprentissage de features.',
+        id: 6, icon: '🔵', title: 'Exercice 4 : Neurons and Hidden layers',
+        desc: 'Identify how a neural network builds predictions from intermediate features.',
         difficulty: 'medium', category: 'Fondamentaux', duration: '20 min', questions: 12
     },
     {
-        id: 7, icon: '🤖', title: 'Exercice 7 : Tester les fonctions d\'activation.',
-        desc: 'Comprendre la notion de fonction d\'activation.',
+        id: 4, icon: '⚡', title: 'Exercice 5 : Bias',
+        desc: 'Explore Bias impact on Neural network model',
+        difficulty: 'easy', category: 'Algorithmes', duration: '25 min', questions: 12
+    },
+    {
+        id: 7, icon: '🤖', title: 'Exercice 6 : Activation functions',
+        desc: 'Manipulate different activation functions and observe their impact on classification.',
         difficulty: 'medium', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 8, icon: '🤖', title: 'Exercice 8 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 8, icon: '🤖', title: 'Exercice 7 : Model Instability and weigh initialization',
+        desc: 'Observe how parameter changes affect model behavior.',
         difficulty: 'medium', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 9, icon: '🤖', title: 'Exercice 9 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 9, icon: '🤖', title: 'Exercice 8 : Optimization and convergence',
+        desc: 'Compare situations where the model converges or diverges depending on parameter settings.',
         difficulty: 'medium', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 10, icon: '🤖', title: 'Exercice 10 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 11, icon: '🤖', title: 'Exercice 9 : Learning rate and divergence',
+        desc: 'Analyze how Learning rate affects model capacity.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 11, icon: '🤖', title: 'Exercice 11 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 17, icon: '🤖', title: 'Exercice 10 : Learning rate and convergence',
+        desc: 'Analyze how Learning rate affects a linear model capacity.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 12, icon: '🤖', title: 'Exercice 12 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 13, icon: '🤖', title: 'Exercice 11 : Model complexity and features learning',
+        desc: 'Review the iterative process of a neural network and Observe how data is transformed across deeper layers of the network.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 13, icon: '🤖', title: 'Exercice 13 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 16, icon: '🤖', title: 'Exercice 12 : Deep learning and gradient killing',
+        desc: 'Understand how gradients affect learning and why they can vanish in deep networks.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 14, icon: '🤖', title: 'Exercice 14 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 12, icon: '🤖', title: 'Exercice 13 : Overfitting',
+        desc: 'Observe how an overly complex model fits training data too closely.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     },
     {
-        id: 15, icon: '🤖', title: 'Exercice 15 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
-        difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
-    },
-    {
-        id: 16, icon: '🤖', title: 'Exercice 16 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
-        difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
-    },
-    {
-        id: 17, icon: '🤖', title: 'Exercice 17 : Lancer deux fois de suite un entrainement et récupérer ces paramètres.',
-        desc: 'Lancer 2 fois l\'algo et comparer les fonction obtenues.',
+        id: 15, icon: '🤖', title: 'Exercice 14 : Generalization',
+        desc: 'Understand the difference between performance on training data and test data.',
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     }
 ];
@@ -226,14 +211,14 @@ function getStarSvg(active, size = 38) {
 
 /* === MAPPINGS DE SECTIONS ET D'EXERCICES === */
 const SECTIONS_CONFIG = {
-    1: { name: "Basic models: Foundations of neural network", exos: [1, 2, 3, 5], gridId: "exGridSec1", containerId: "section-1-container" },
+    1: { name: "Basic models: Foundations of neural network", exos: [1, 2, 3], gridId: "exGridSec1", containerId: "section-1-container" },
     2: { name: "The Building Blocks of Neural Networks", exos: [6, 4, 7, 8], gridId: "exGridSec2", containerId: "section-2-container" },
-    3: { name: "Training & Optimization", exos: [9, 10, 11, 17, 13, 14], gridId: "exGridSec3", containerId: "section-3-container" },
+    3: { name: "Training & Optimization", exos: [9, 11, 17, 13], gridId: "exGridSec3", containerId: "section-3-container" },
     4: { name: "Generalization & Deep Learning Limits", exos: [16, 12, 15], gridId: "exGridSec4", containerId: "section-4-container" }
 };
 
 const FUN_FACTS = {
-    1: "La régression logistique a été inventée par Joseph Berkson en 1944. C'est l'un des modèles de classification les plus utilisés au monde !",
+    1: "La régression logistique a été inventée par Joseph Berkson en 1944. C'est l'one of the models de classification the most used au monde !",
     2: "L'apprentissage supervisé s'inspire directement de la façon dont un enfant apprend en faisant des erreurs et en étant corrigé par un adulte.",
     3: "Les données circulaires ne peuvent pas être séparées par une simple ligne droite. C'est pourquoi nous avons besoin de fonctions d'activation non linéaires !",
     4: "Le biais permet de décaler la fonction d'activation vers la gauche ou la droite, offrant un degré de liberté crucial au neurone.",
@@ -352,6 +337,15 @@ function visitIntroItem(type) {
 
     updateIntroUI();
     applyFilters(); // Recalculer l'état global et verrous
+
+    // Navigation
+    if (type === 'eval') {
+        window.location.href = '../evaluate.html';
+    } else if (type === 'res') {
+        window.open('https://fr.wikipedia.org/wiki/Apprentissage_profond', '_blank');
+    } else if (type === 'tuto') {
+        window.location.href = '../exo1.html';
+    }
 }
 
 function updateIntroUI() {
@@ -377,7 +371,12 @@ function isSection0Completed() {
 /* === RECUPERATION DES STATUTS DEPUIS L'API SUPABASE === */
 async function fetchProgressAndCreatedExos() {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user || !user.email) return;
+    if (!user || !user.email) {
+        // Si non connecté, on charge la progression temporaire depuis localStorage
+        const tempCompleted = JSON.parse(localStorage.getItem('temp_completed_exos') || '[]');
+        completedOfficialIds = new Set(tempCompleted);
+        return;
+    }
 
     try {
         // 1. Récupérer l'historique de progression
@@ -446,7 +445,7 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
                <div class="meta-item">❓ ${ex.questions}</div>
             </div>
             <button class="btn-start" ${!isExUnlocked ? 'disabled' : ''} onclick="startExercise('${ex.id}', '${ex.title.replace(/'/g, "\\'")}', false)">
-              Commencer →
+              Start →
             </button>
           </div>
         `;
@@ -455,20 +454,20 @@ function renderSectionCards(gridId, list, isSectionUnlocked) {
 }
 
 async function deleteCommunityExo(id) {
-    if (!confirm("Voulez-vous vraiment supprimer cet exercice du catalogue ?"))
+    if (!confirm("Do you really want to delete this exercise from the catalog?"))
         return;
     try {
         const res = await fetch(`/api/exercises/${id}`, { method: 'DELETE' });
         if (res.ok) {
-            alert("L'exercice a été retiré du catalogue.");
+            alert("The exercise has been removed from the catalog.");
             await loadAndRender(); // Recharge depuis l'API
         } else {
             const err = await res.json();
-            alert("Erreur : " + (err.error || 'Impossible de supprimer'));
+            alert("Error : " + (err.error || 'Impossible to delete'));
         }
     } catch (err) {
-        console.error('Erreur suppression:', err);
-        alert("Erreur réseau lors de la suppression.");
+        console.error('Error:', err);
+        alert("Error network");
     }
 }
 /* ─── FILTRES ─── */
@@ -497,9 +496,9 @@ async function loadAndRender() {
                 id: exo.id,
                 icon: '👥',
                 title: exo.title,
-                desc: exo.description || 'Exercice personnalisé',
+                desc: exo.description || 'Custom Exercise',
                 difficulty: 'easy',
-                category: 'Communauté',
+                category: 'Community',
                 duration: 'Auto',
                 questions: '?',
                 isCustom: true,
@@ -512,7 +511,7 @@ async function loadAndRender() {
         const localCustom = JSON.parse(localStorage.getItem('official_custom_exercises') || '[]');
         CUSTOM_EXERCISES_FROM_API = localCustom.map(exo => ({
             id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
-            difficulty: 'easy', category: 'Communauté', duration: 'Auto', questions: '?', isCustom: true
+            difficulty: 'easy', category: 'Community', duration: 'Auto', questions: '?', isCustom: true
         }));
     }
     applyFilters();
@@ -539,20 +538,19 @@ async function applyFilters() {
     const statHardValue = document.getElementById('statHard');
     if (statHardValue) statHardValue.textContent = baseExercises.filter(e => e.difficulty === 'hard').length + formattedCustoms.filter(e => e.difficulty === 'hard').length;
 
-    // Détermination de l'état de déverrouillage de chaque section
-    const sec1Unlocked = true; // TEMP UNLOCK FOR TESTING
-    const sec1QuizCompleted = true; // TEMP UNLOCK FOR TESTING
+    const sec1Unlocked = isSection0Completed();
+    const sec1QuizCompleted = localStorage.getItem('quiz_section_1_completed') === 'true';
 
-    const sec2Unlocked = true; // TEMP UNLOCK FOR TESTING
-    const sec2QuizCompleted = true; // TEMP UNLOCK FOR TESTING
+    const sec2Unlocked = sec1QuizCompleted;
+    const sec2QuizCompleted = localStorage.getItem('quiz_section_2_completed') === 'true';
 
-    const sec3Unlocked = true; // TEMP UNLOCK FOR TESTING
-    const sec3QuizCompleted = true; // TEMP UNLOCK FOR TESTING
+    const sec3Unlocked = sec2QuizCompleted;
+    const sec3QuizCompleted = localStorage.getItem('quiz_section_3_completed') === 'true';
 
-    const sec4Unlocked = true; // TEMP UNLOCK FOR TESTING
-    const sec4QuizCompleted = true; // TEMP UNLOCK FOR TESTING
+    const sec4Unlocked = sec3QuizCompleted;
+    const sec4QuizCompleted = localStorage.getItem('quiz_section_4_completed') === 'true';
 
-    const finalUnlocked = true; // TEMP UNLOCK FOR TESTING
+    const finalUnlocked = sec4QuizCompleted;
 
     // Configurer l'opacité et les filtres des conteneurs de section
     updateSectionContainer('section-1-container', sec1Unlocked);
@@ -625,7 +623,7 @@ async function applyFilters() {
                    <div class="meta-item">❓ ${ex.questions}</div>
                 </div>
                 <button class="btn-start" onclick="startExercise('${ex.id}', '${ex.title.replace(/'/g, "\\'")}', true)">
-                  Commencer →
+                  Start →
                 </button>
               </div>
             `;
@@ -723,7 +721,7 @@ function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
            <div class="meta-item">❓ 2</div>
         </div>
         <button class="btn-start" ${!isQuizUnlocked ? 'disabled' : ''} onclick="openQuizModal(${sectionKey})">
-          ${quizCompleted ? 'Recommencer →' : 'Évaluer →'}
+          ${quizCompleted ? 'Restart →' : 'Evaluate →'}
         </button>
       </div>
     `;
@@ -1179,9 +1177,9 @@ function openQuizModal(sectionKey) {
                     <span class="gauge-score" id="quiz-gauge-score">${config.totalItems}/${config.totalItems}</span>
                   </div>
                 </div>
-                <div class="gauge-info-text" id="quiz-gauge-status">Seuil requis : 80%</div>
+                <div class="gauge-info-text" id="quiz-gauge-status">Required threshold : 80%</div>
                 <button class="btn-quit-quiz" onclick="closeAllModals()">
-                  🚪 Retour aux exercices
+                  🚪 Back to exercises
                 </button>
               </div>
             </div>
@@ -1256,7 +1254,7 @@ function submitQuiz() {
 
     if (allCorrect) {
         localStorage.setItem(`quiz_section_${activeQuizSection}_completed`, 'true');
-        showToast(`🎉 Félicitations ! Quiz de la section ${activeQuizSection} validé.`, true);
+        showToast(`🎉 Congratulations ! Quiz de la section ${activeQuizSection} validé.`, true);
         applyFilters();
     } else {
         showToast(`❌ Certaines réponses sont incorrectes. Révisez le cours.`, false);
@@ -1275,9 +1273,9 @@ function renderCustomQuiz1Matching() {
     if (!leftPanel) return;
 
     leftPanel.innerHTML = `
-        <h4 style="margin:0; font-size:16px; color:#fff; font-weight: 700;">Quiz 1 : Match les termes et leurs définitions</h4>
+        <h4 style="margin:0; font-size:16px; color:#fff; font-weight: 700;">Quiz 1 : Match the terms and their definitions</h4>
         <p style="margin:4px 0 16px 0; font-size:12.5px; color:#94a3b8; line-height:1.4;">
-            Glissez-déposez les termes bleus dans les zones pointillées correspondantes, ou cliquez sur un terme puis sur sa zone cible.
+            Drag and drop the blue terms into the corresponding dotted areas, or click on a term and then on its target area.
         </p>
         
         <div class="matching-deck" id="matching-deck"></div>
@@ -1335,7 +1333,7 @@ function renderCustomQuiz1Matching() {
         row.id = `row-${tgt.id}`;
 
         row.innerHTML = `
-            <div class="matching-zone" id="zone-${tgt.id}">Dépose ici</div>
+            <div class="matching-zone" id="zone-${tgt.id}">Drop here</div>
             <div class="matching-definition">${tgt.def}</div>
         `;
 
@@ -1398,12 +1396,12 @@ function handleMatchingDrop(termId, targetId, jalonIndex, fallbackExo) {
                 if (activeQuizSection === 4) {
                     feedbackBox.innerHTML = `
                         <span class="feedback-icon">🎉</span>
-                        <span class="feedback-text">Excellent ! Quiz complété avec succès. Calcul des résultats...</span>
+                        <span class="feedback-text">Excellent ! Quiz successfully completed. Calculating results...</span>
                     `;
                 } else {
                     feedbackBox.innerHTML = `
                         <span class="feedback-icon">🎉</span>
-                        <span class="feedback-text">Excellent ! Quiz 1 complété avec succès. Passage au Quiz 2 dans 2 secondes...</span>
+                        <span class="feedback-text">Excellent ! Quiz 1 successfully completed. Moving to Quiz 2 in 2 seconds...</span>
                     `;
                 }
             }
@@ -1437,20 +1435,20 @@ function renderCustomQuiz2Sorting() {
     selectedDraggableId = null;
 
     leftPanel.innerHTML = `
-        <h4 style="margin:0; font-size:20px; color:#fff; font-weight: 700;">Quiz 2 : Vrai ou Faux ?</h4>
+        <h4 style="margin:0; font-size:20px; color:#fff; font-weight: 700;">Quiz 2 : True or False ?</h4>
         <p style="margin:4px 0 16px 0; font-size:15px; color:#94a3b8; line-height:1.4;">
-            Glissez-déposez chaque affirmation dans la zone VRAI ou FAUX correspondante, ou cliquez sur une carte puis sur une zone.
+            Drag and drop each statement into the TRUE or FALSE zone, or click on a card and then on a zone.
         </p>
 
         <div class="dragdrop-source" id="dragdrop-source"></div>
 
         <div class="dragdrop-drop-zones">
             <div class="dragdrop-drop-zone drop-zone-true" id="drop-zone-true">
-                <div class="dragdrop-zone-header true-header">👍 VRAI</div>
+                <div class="dragdrop-zone-header true-header">👍 TRUE</div>
                 <div class="dragdrop-zone-cards" id="dropped-true-cards"></div>
             </div>
             <div class="dragdrop-drop-zone drop-zone-false" id="drop-zone-false">
-                <div class="dragdrop-zone-header false-header">👎 FAUX</div>
+                <div class="dragdrop-zone-header false-header">👎 FALSE</div>
                 <div class="dragdrop-zone-cards" id="dropped-false-cards"></div>
             </div>
         </div>
@@ -1466,7 +1464,7 @@ function renderCustomQuiz2Sorting() {
             feedbackArea.className = 'quiz2-feedback-area';
             rightPanel.appendChild(feedbackArea);
         }
-        feedbackArea.innerHTML = '<span style="color:#64748b; font-size:13px;">Déposez une carte pour voir le feedback ici.</span>';
+        feedbackArea.innerHTML = '<span style="color:#64748b; font-size:13px;">Drag and drop a card to see the feedback here.</span>';
     }
 
     const source = document.getElementById('dragdrop-source');
@@ -1790,10 +1788,10 @@ function renderCustomQuizResults() {
                 <h3 style="font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;">Section ${activeQuizSection} Validée !</h3>
                 <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;">
                     Félicitations, vous avez obtenu un score de <strong>${score}/${total} (${percent}%)</strong>. 
-                    Vous maîtrisez parfaitement les concepts de cette section ! Le parcours suivant est débloqué.
+                    You mastered perfectly the concepts of this section ! The next path is unlocked.
                 </p>
                 <button class="btn-start" onclick="closeAndApplyFilters()" style="background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;">
-                    Continuer le Parcours
+                    Continue
                 </button>
             </div>
         `;
@@ -1830,7 +1828,7 @@ function renderCustomQuizResults() {
                 ${recommendationHTML}
                 
                 <button class="btn-start" onclick="openQuizModal(${activeQuizSection})" style="background:#FF034D; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;">
-                    Recommencer le Quiz
+                    Restart the Quiz
                 </button>
             </div>
         `;
@@ -2153,3 +2151,15 @@ window.startExercise = startExercise;
 window.filterCards = filterCards;
 window.setFilter = setFilter;
 window.deleteCommunityExo = deleteCommunityExo;
+
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const openQuiz = urlParams.get('openQuiz');
+    if (openQuiz) {
+        setTimeout(() => {
+            if (typeof window.openQuizModal === 'function') {
+                window.openQuizModal(parseInt(openQuiz, 10));
+            }
+        }, 800);
+    }
+});

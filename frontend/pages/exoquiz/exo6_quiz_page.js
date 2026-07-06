@@ -65,7 +65,7 @@ function initQuiz() {
       <div class="dragdrop-header">
         <span class="dragdrop-badge">Quiz 6</span>
         <h2>Drag & Drop Statements</h2>
-        <h3>Vrai ou Faux ?</h3>
+        <h3> True Or False ?</h3>
       </div>
       
       <div class="dragdrop-cards-area" id="cards-source" style="max-height: 250px; overflow-y: auto;">
@@ -74,17 +74,17 @@ function initQuiz() {
       
       <div class="dragdrop-zones-container">
         <div class="drop-zone" id="zone-true" data-expected="true">
-          <h4>Vrai</h4>
+          <h4>True</h4>
           <div class="zone-cards"></div>
         </div>
         <div class="drop-zone" id="zone-false" data-expected="false">
-          <h4>Faux</h4>
+          <h4>False</h4>
           <div class="zone-cards"></div>
         </div>
       </div>
       
       <div class="dragdrop-success-msg" style="display: none;">
-        <h4>🎉 Félicitations ! Toutes les affirmations ont été triées correctement.</h4>
+        <h4>🎉 Congratulations ! Toutes les statements wereé triées correctement.</h4>
         <button class="dragdrop-close-btn">Terminer le Quiz</button>
       </div>
     </div>
@@ -145,7 +145,7 @@ function initQuiz() {
         ${explanation}
       </div>
       <div class="dd-feedback-click-tip">
-        Cliquez n'importe où pour continuer
+        Click anywhere to continue
       </div>
     `;
 
@@ -188,10 +188,10 @@ function initQuiz() {
     zone.addEventListener("drop", (e) => {
       e.preventDefault();
       zone.classList.remove("hovered");
-      
+
       const cardId = e.dataTransfer ? e.dataTransfer.getData("text/plain") : "";
       const cardElement = draggedCard || document.getElementById(cardId);
-      
+
       if (cardElement) {
         const expected = zone.getAttribute("data-expected");
         const cardAnswer = cardElement.getAttribute("data-answer");
@@ -233,7 +233,7 @@ function initQuiz() {
     ddOverlay.classList.remove("show");
     setTimeout(async () => {
       ddOverlay.remove();
-      
+
       // Save completed status via StorageService
       if (window.StorageService) {
         await window.StorageService.complete(6);

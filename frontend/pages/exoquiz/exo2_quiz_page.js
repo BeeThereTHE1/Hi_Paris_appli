@@ -30,7 +30,7 @@
       html: `
         <div class="timeline-controls" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px;">
           <div class="ui-resetButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialiser le réseau" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">replay</i>
             </button>
           </div>
@@ -38,7 +38,7 @@
             <i class="material-icons">play_arrow</i>
           </button>
           <div class="ui-stepButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Étape par étape" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Éstep by step" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">skip_next</i>
             </button>
           </div>
@@ -99,7 +99,7 @@
       html: `
         <div class="timeline-controls" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px;">
           <div class="ui-resetButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialiser le réseau" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">replay</i>
             </button>
           </div>
@@ -107,7 +107,7 @@
             <i class="material-icons">play_arrow</i>
           </button>
           <div class="ui-stepButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Étape par étape" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Éstep by step" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">skip_next</i>
             </button>
           </div>
@@ -251,7 +251,7 @@
         btnRealise.disabled = false;
         btnRealise.classList.remove("btn-disabled");
         btnRealise.classList.add("btn-success-ready");
-        btnRealise.innerHTML = `<span class="icon">📝</span> Faire le quiz suivant`;
+        btnRealise.innerHTML = `<span class="icon">📝</span> Take the next quiz`;
       }
     }
   }
@@ -533,7 +533,7 @@
     nextStep();
   });
 
-  // Action button listener for "Faire le quiz suivant"
+  // Action button listener for "Take the next quiz"
   const btnRealise = document.getElementById("btn-realise");
   if (btnRealise) {
     btnRealise.addEventListener("click", () => {

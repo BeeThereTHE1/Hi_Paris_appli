@@ -46,7 +46,7 @@ export const exo1 = {
 /**
  * Initialise toutes les popups de l'exercice 1 :
  * - Popup d'introduction (2 pages)
- * - Popup de succès (3 pages)
+ * - Success Popup (3 pages)
  * À appeler une fois le DOM prêt, depuis playground.ts.
  */
 /**
@@ -61,7 +61,7 @@ export function initExo1Popups(): void {
   // Afficher la popup d'intro au chargement
   overlay.style("display", "flex");
 
-  // Bouton "Suivant" page 1 → page 2
+  // Bouton "Next" page 1 → page 2
   d3.select("#exo1-next-btn1").on("click", () => {
     page1.style("display", "none");
     page2.style("display", "block");

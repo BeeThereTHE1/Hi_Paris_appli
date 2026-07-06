@@ -1,6 +1,30 @@
 // Chronomètre global pour les exercices natifs
 let pageStartTime = Date.now();
 
+// Si l'utilisateur n'est pas connecté et qu'il actualise la page, on nettoie son état local temporaire
+(function() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        // Liste des clés de progression temporaire à nettoyer au rafraîchissement
+        const keysToClear = [
+            'section0_visited',
+            'quiz_section_1_completed',
+            'quiz_section_2_completed',
+            'quiz_section_3_completed',
+            'quiz_section_4_completed',
+            'temp_completed_exos' // Clé pour stocker les IDs d'exos réussis temporairement
+        ];
+        // Si c'est un chargement initial/rechargement de page (sessionStorage sert à détecter la session active de l'onglet)
+        if (!sessionStorage.getItem('session_active')) {
+            keysToClear.forEach(key => localStorage.removeItem(key));
+            sessionStorage.setItem('session_active', 'true');
+        }
+    } else {
+        // Si l'utilisateur se connecte, on s'assure d'effacer la clé de session active temporaire
+        sessionStorage.removeItem('session_active');
+    }
+})();
+
 const StorageService = {
     /**
      * Sauvegarde l'exercice dans le profil (is_saved = true)
@@ -10,7 +34,7 @@ const StorageService = {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
         if (!isLoggedIn || !user.email) {
-            alert("Veuillez vous connecter pour sauvegarder cet exercice.");
+            alert("Please log in to save this exercise.");
             window.location.href = 'Page-demo/register.html';
             return false;
         }
@@ -32,13 +56,13 @@ const StorageService = {
                 console.log(`✅ Exercice ${officialId} sauvegardé.`, result);
                 return true;
             } else {
-                console.error("❌ Erreur API sauvegarde:", result);
-                alert("Erreur lors de la sauvegarde : " + (result.error || "Inconnu"));
+                console.error("❌ API error saving:", result);
+                alert("Error during saving : " + (result.error || "Inconnu"));
                 return false;
             }
         } catch (error) {
-            console.error("❌ Erreur réseau sauvegarde:", error);
-            alert("Erreur réseau. Vérifiez que le serveur est lancé.");
+            console.error("❌ Network error saving:", error);
+            alert("Network error. Check that the server is running.");
             return false;
         }
     },
@@ -53,9 +77,14 @@ const StorageService = {
         const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
         
         if (!isLoggedIn || !user.email) {
-            alert("Veuillez vous connecter pour enregistrer votre progression.");
-            window.location.href = 'Page-demo/register.html';
-            return false;
+            // Permet la réussite temporaire hors connexion
+            console.log(`ℹ️ Succès temporaire pour l'exercice ${officialId} (non connecté)`);
+            const tempExos = JSON.parse(localStorage.getItem('temp_completed_exos') || '[]');
+            if (!tempExos.includes(officialId)) {
+                tempExos.push(officialId);
+                localStorage.setItem('temp_completed_exos', JSON.stringify(tempExos));
+            }
+            return true;
         }
 
         // Si le temps n'est pas fourni, on le calcule automatiquement
@@ -79,13 +108,13 @@ const StorageService = {
                 console.log(`✅ Exercice ${officialId} validé.`, result);
                 return true;
             } else {
-                console.error("❌ Erreur API validation:", result);
-                alert("Erreur lors de la validation : " + (result.error || "Inconnu"));
+                console.error("❌ API error validating:", result);
+                alert("Error during validation : " + (result.error || "Inconnu"));
                 return false;
             }
         } catch (error) {
-            console.error("❌ Erreur réseau validation:", error);
-            alert("Erreur réseau. Vérifiez que le serveur est lancé.");
+            console.error("❌ Network error validation:", error);
+            alert("Network error. Check that the server is running.");
             return false;
         }
     },
@@ -110,7 +139,7 @@ const StorageService = {
             });
             return response.ok;
         } catch (error) {
-            console.error("❌ Erreur unSave:", error);
+            console.error("❌ Error unSave:", error);
             return false;
         }
     },
@@ -135,7 +164,7 @@ const StorageService = {
             });
             return response.ok;
         } catch (error) {
-            console.error("❌ Erreur unComplete:", error);
+            console.error("❌ Error unComplete:", error);
             return false;
         }
     }

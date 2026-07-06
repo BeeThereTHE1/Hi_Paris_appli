@@ -262,7 +262,7 @@ function openQuizModal() {
     }
 
     qContainer.innerHTML = `<textarea id="edit-quiz-question" class="quiz-edit-input" rows="3" placeholder="Insérez votre question ici...">${exo.quiz.question || ''}</textarea>`;
-    confirmBtn.innerText = "Enregistrer & Valider";
+    confirmBtn.innerText = "Enregistrer & Submit";
 
     exo.quiz.answers.forEach((ans, idx) => {
       const opt = document.createElement('div');
@@ -341,7 +341,7 @@ function closeQuizModal() {
 
 function submitQuiz(publish = false) {
   if (selectedAnswerIndex === -1) {
-    alert("Veuillez sélectionner la bonne réponse.");
+    alert("Please select the correct answer.");
     return;
   }
 
@@ -366,14 +366,14 @@ function submitQuiz(publish = false) {
     if (publish) {
       publishExercise();
     } else {
-      alert("Brouillon mis à jour avec succès ! ✨");
+      alert("Draft successfully updated! ✨");
       closeQuizModal();
     }
   } else {
     // Logique classique pour les publiés
     const answer = exo.quiz.answers[selectedAnswerIndex];
     if (answer.isCorrect) {
-      alert("Bravo ! Bonne réponse ✨. L'exercice est maintenant marqué comme réussi.");
+      alert("Good job! Correct answer ✨. The exercise is now marked as completed.");
       closeQuizModal();
       validateExercise();
     } else {
@@ -410,7 +410,7 @@ function saveQuizEdits() {
     }
   }
 
-  console.log(`Mise à jour effectuée dans ${updatedCount} liste(s)`);
+  console.log(`Update done dans ${updatedCount} liste(s)`);
   return updatedCount > 0;
 }
 
@@ -418,7 +418,7 @@ function publishExercise() {
   const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const profil = (user.role || user.profil || '').toLowerCase();
 
-  // 1. Préparation des données (on s'assure d'avoir l'auteur)
+  // 1. Prépadata ration (on s'assure d'avoir l'auteur)
   if (!exo.author) exo.author = `${user.prenom || ''} ${user.nom || ''}`;
   if (!exo.authorEmail) exo.authorEmail = user.email;
 
@@ -437,7 +437,7 @@ function publishExercise() {
   drafts = drafts.filter(e => String(e.id) !== String(exo.id));
   localStorage.setItem(draftKey, JSON.stringify(drafts));
 
-  alert("Félicitations ! Votre exercice est maintenant publié dans le catalogue officiel. 🚀");
+  alert("Congratulations! Your exercise is now published in the official catalog. 🚀");
   window.location.href = 'Page-demo/exercises.html';
 }
 
@@ -454,7 +454,7 @@ function validateExercise() {
   btnRealise.disabled = true;
 }
 
-// 3. Écoute du bouton "Valider" interne au Playground
+// 3. Écoute du bouton "Submit" interne au Playground
 window.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'PLAYGROUND_VALIDATE_CLICK') {
     console.log("Validation déclenchée depuis le Playground");

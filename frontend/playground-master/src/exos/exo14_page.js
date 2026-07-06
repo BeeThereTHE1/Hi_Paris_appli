@@ -11,7 +11,7 @@
         visitorBtn_1.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
         visitorBtn_1.onmouseover = function () { return visitorBtn_1.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)'; };
         visitorBtn_1.onmouseout = function () { return visitorBtn_1.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)'; };
-        visitorBtn_1.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
+        visitorBtn_1.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span > ';
         container.appendChild(visitorBtn_1);
         return;
     }
@@ -189,7 +189,7 @@ btnSauvegarder.onclick = function () {
         btnSauvegarder.disabled = true;
     }
     else {
-        alert("Cet exercice est déjà dans votre profil.");
+        alert("This exercise is already in your profile.");
     }
 };
 btnRealise.onclick = function () {
@@ -201,7 +201,7 @@ btnRealise.onclick = function () {
     var now = new Date().toLocaleDateString('fr-FR');
     var saved = saveToStorage('completed_exercises', { id: 14, date: now });
     if (saved) {
-        btnRealise.innerHTML = '✨ Validé !';
+        btnRealise.innerHTML = '✨ Validated !';
         btnRealise.disabled = true;
         setTimeout(function () { window.location.href = 'Page-demo/historique.html#completed'; }, 1000);
     }

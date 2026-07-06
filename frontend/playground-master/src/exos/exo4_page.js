@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -192,7 +192,7 @@ window.addEventListener('message', function (event) {
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
     }
 });
 function saveToStorage(key, exoData) {
@@ -290,7 +290,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #4 : Éditeur de biais";
+    h3.innerText = translations && translations.title ? translations.title : "Exercice #4 : Bias Editor";
     var p = document.createElement('p');
     var defaultText = "Instructions: In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.";
     var text = translations && translations.instructions && translations.instructions.general ? translations.instructions.general : defaultText;
@@ -302,7 +302,7 @@ function startTutorial() {
     timerSpan.style.color = '#94a3b8';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -433,7 +433,7 @@ function showCustomTooltip(selector, title, text, position) {
     currentTooltipPosition = position;
     activeTooltip = document.createElement('div');
     activeTooltip.className = 'tutorial-tooltip';
-    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Cliquez n'importe o\u00F9 pour continuer</div>";
+    activeTooltip.innerHTML = "<h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4><p style=\"margin:0; font-size:13px; color:#cbd5e1;\">" + text + "</p><div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;\">Click anywhere to continue</div>";
     document.body.appendChild(activeTooltip);
     repositionActiveElements();
 }
@@ -458,7 +458,7 @@ function getIframeElementRect(selector) {
 }
 function runStep2Highlight() {
     showHighlightBox('#custom-bias-editor-group', '1');
-    var title = "Modifier le Biais";
+    var title = "Modify Bias";
     var desc = "First, modify the value of the bias and train the model.\nObserve what happens each time the bias is modified.\n\nEach neuron follows the form\ny = f(x) + b";
     showCustomTooltip('#custom-bias-editor-group', title, desc.replace(/\n/g, '<br>'), 'right');
     var clickHandler = function () {

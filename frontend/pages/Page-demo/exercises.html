@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>👨‍🏫📚Bibliothèque d'exercices</title>
+  <title>👨‍🏫📚Exercise Library</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
@@ -12,42 +12,6 @@
 </head>
 
 <body>
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <!-- Le script Google Translate est gardé ici, mais la div va dans le header -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr',
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript"
-    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple {
-      background-color: transparent !important;
-      border: none !important;
-      font-family: 'Inter', sans-serif !important;
-      font-size: 14px !important;
-      font-weight: 600 !important;
-    }
-
-    .goog-te-gadget-icon {
-      display: none;
-    }
-
-    body {
-      top: 0px !important;
-    }
-
-    .skiptranslate iframe {
-      display: none !important;
-    }
-  </style>
 
   <!-- Conteneur pour l'animation de fond -->
   <div id="background-container"></div>
@@ -72,7 +36,7 @@
 
     <div class="header-right">
       <a class="btn-back" href="#" id="btn-back-dynamic">
-        🏠 Accueil
+        🏠 Home
       </a>
       <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -80,13 +44,13 @@
           if (btn) {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             if (isLoggedIn) {
-              btn.innerHTML = '🏠 Accueil';
+              btn.innerHTML = '🏠 Home';
               btn.onclick = (e) => {
                 e.preventDefault();
                 window.location.href = 'login_with_catalog.html';
               };
             } else {
-              btn.innerHTML = '<span class="material-icons" style="font-size: 18px;">home</span> Page principale';
+              btn.innerHTML = '<span class="material-icons" style="font-size: 18px;">home</span> Main page';
               btn.onclick = (e) => {
                 e.preventDefault();
                 window.location.href = '../index.html';
@@ -98,13 +62,13 @@
 
       <div class="header-right">
         <!--   <a class="btn-back" href="historique.html" onclick="...">
-          ... Mon historique 
+          ... My history 
         </a> -->
 
         <!-- Widget Profil existant -->
         <div id="widget-profil-header" style="margin-left: 20px;"></div>
 
-        <!-- Nouveau Widget Traduction intégré au header -->
+        <!-- Nouveau Integrated Translation Widget au header -->
         <div id="google_translate_element" style="display: none !important;"></div>
       </div>
 
@@ -125,11 +89,11 @@
 
           <li><a class="menu-item" href="#" id="link-historique"
               onclick="event.preventDefault(); window.location.href = localStorage.getItem('isLoggedIn') === 'true' ? 'historique.html' : 'register.html';">
-              📊<span>Mon historique</span>
+              📊<span>My history</span>
             </a></li>
-          <li><a href="../create.html" class="menu-item"><span class="icon">🚧🔨</span> Créer un exercice</a>
+          <li><a href="../create.html" class="menu-item"><span class="icon">🚧🔨</span> Create an exercise</a>
           </li>
-          <li><a href="../statsetudiant.html" class="menu-item"><span class="icon">📈</span> Statistiques</a></li>
+          <li><a href="../statsetudiant.html" class="menu-item"><span class="icon">📈</span> Statistics</a></li>
 
           <li><a href="#" class="menu-item"><span class="icon">🏠</span> Tutorial</a></li>
 
@@ -149,7 +113,7 @@
         <h1 class="page-title">💡Understand how a neural network works by adjusting its parameters and
           observing how the
           results change</h1>
-        <p class="page-sub">Choisissez un exercice pour commencer votre apprentissage</p>
+        <p class="page-sub">Choose an exercise to start learning</p>
       </div>
 
       <!-- Barre de recherche + filtres -->
@@ -160,14 +124,14 @@
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input class="search-input" type="text" id="searchInput" placeholder="Rechercher un exercice…"
+          <input class="search-input" type="text" id="searchInput" placeholder="Search for an exercise..."
             oninput="filterCards()" />
         </div>
         <div class="filter-group">
-          <button class="filter-btn active" onclick="setFilter('tous', this)">Tous</button>
-          <button class="filter-btn" onclick="setFilter('easy', this)">🟢 Facile</button>
-          <button class="filter-btn" onclick="setFilter('medium', this)">🟡 Intermédiaire</button>
-          <button class="filter-btn" onclick="setFilter('hard', this)">🔴 Difficile</button>
+          <button class="filter-btn active" onclick="setFilter('tous', this)">All</button>
+          <button class="filter-btn" onclick="setFilter('easy', this)">🟢 Easy</button>
+          <button class="filter-btn" onclick="setFilter('medium', this)">🟡 Medium</button>
+          <button class="filter-btn" onclick="setFilter('hard', this)">🔴 Hard</button>
         </div>
       </div>
 
@@ -175,45 +139,47 @@
       <div class="stats-row">
         <div class="stat-pill">
           <div class="stat-dot" style="background:#6366f1"></div>
-          <span>Total :</span>
+          <span>Total:</span>
           <strong id="statTotal">12</strong>
         </div>
         <div class="stat-pill">
           <div class="stat-dot" style="background:#10b981"></div>
-          <span>Facile :</span>
+          <span>Easy :</span>
           <strong id="statEasy">4</strong>
         </div>
         <div class="stat-pill">
           <div class="stat-dot" style="background:#f59e0b"></div>
-          <span>Intermédiaire :</span>
+          <span>Medium :</span>
           <strong id="statMedium">5</strong>
         </div>
         <div class="stat-pill">
           <div class="stat-dot" style="background:#ef4444"></div>
-          <span>Difficile :</span>
+          <span>Hard :</span>
           <strong id="statHard">3</strong>
         </div>
       </div>
 
-      <!-- Sections du Parcours Pédagogique -->
+      <!-- Sections of the Learning Path -->
       <div class="progression-path">
 
         <!-- SECTION 0 : PREREQUIS -->
         <div class="path-section" id="section-0-container">
           <h2 class="section-title">🏁 Section 0 : Prerequisites & Introduction</h2>
-          <div class="section-intro-text">Complétez ces 3 étapes introductives pour débloquer le parcours :</div>
+          <div class="section-intro-text">Complete these 3 introductory steps to unlock the path:</div>
           <div class="ex-grid">
-            <!-- Card 1 -->
             <div class="ex-card intro-card pulsing" id="card-intro-eval" onclick="visitIntroItem('eval')">
               <div class="card-top">
                 <div class="card-icon">📝</div>
                 <span class="badge easy">Intro</span>
               </div>
               <div class="card-title">Evaluate your knowledge</div>
-              <div class="card-desc">Faites le point sur vos connaissances initiales en mathématiques et programmation.
+              <div class="card-desc">Assess your initial knowledge in mathematics and programming.
               </div>
               <div class="card-footer">
-                <div class="intro-status-text" id="status-intro-eval">❌ Non visité</div>
+                <div class="intro-status-text" id="status-intro-eval">❌ Not visited</div>
+                <button class="btn-start">
+                  Start →
+                </button>
               </div>
             </div>
             <!-- Card 2 -->
@@ -226,16 +192,14 @@
               <div class="card-title">Resources to meet prerequisites</div>
 
               <div class="card-desc">
-                Accédez à des fiches récapitulatives et des cours pour vous mettre à niveau.
+                Access summary sheets and courses to get up to speed.
               </div>
 
               <div class="card-footer">
-                <div class="intro-status-text" id="status-intro-res">❌ Non visité</div>
+                <div class="intro-status-text" id="status-intro-res">❌ Not visited</div>
 
-                <!-- Bouton Wikipedia -->
-                <button class="wiki-btn"
-                  onclick="event.stopPropagation(); window.open('https://fr.wikipedia.org/wiki/Apprentissage_profond', '_blank');">
-                  🔎 Wikipedia
+                <button class="btn-start">
+                  Consult →
                 </button>
               </div>
             </div>
@@ -247,9 +211,9 @@
                 <span class="badge easy">Intro</span>
               </div>
               <div class="card-title">Tutorial</div>
-              <div class="card-desc">Découvrez comment manipuler l'interface interactive du Neural Playground.</div>
+              <div class="card-desc">Discover how to manipulate the interactive interface of the Neural Playground.</div>
               <div class="card-footer">
-                <div class="intro-status-text" id="status-intro-tuto">❌ Non visité</div>
+                <div class="intro-status-text" id="status-intro-tuto">❌ Not visited</div>
               </div>
             </div>
           </div>
@@ -299,11 +263,11 @@
                 <div class="card-icon">🛠️</div>
                 <span class="badge hard">Projet</span>
               </div>
-              <div class="card-title">Construis ton propre exercice</div>
+              <div class="card-title">Build your own exercise</div>
               <div class="card-desc">Utilisez le Studio pour concevoir un exercice interactif complet (énoncé, solution,
                 architecture) pour la communauté.</div>
               <div class="card-footer">
-                <span id="final-creation-status">❌ Aucun exercice créé</span>
+                <span id="final-creation-status">❌ No exercise created</span>
                 <button class="btn-start" onclick="window.location.href='../create.html'">Studio →</button>
               </div>
             </div>
@@ -318,8 +282,8 @@
               <div class="trophy-container">
                 <span class="trophy-icon" id="trophy-emoji">🔒</span>
               </div>
-              <div class="card-title" style="text-align: center;">Certification de réussite</div>
-              <p class="card-desc" style="text-align: center;">Validez tous les quiz intermédiaires, le quiz final et
+              <div class="card-title" style="text-align: center;">Certificate of Success</div>
+              <p class="card-desc" style="text-align: center;">Validez tous intermediate quizzes, le quiz final et
                 créez un exercice pour débloquer votre certificat de validation.</p>
               <div style="text-align: center; margin-top: 10px;">
                 <button class="btn-start" id="btn-download-cert" disabled onclick="downloadCertificate()">Télécharger le
@@ -333,15 +297,15 @@
 
       <!-- Section 2 : Communauté (exercices validés) -->
       <div id="customExercisesSection" style="margin-top: 48px;">
-        <h2 class="section-title">👥 Exercices de la communauté</h2>
+        <h2 class="section-title">👥 Community Exercises</h2>
         <div class="ex-grid" id="exGridCustom"></div>
       </div>
 
       <!-- Empty state -->
       <div class="empty" id="emptyState">
         <div class="empty-icon">🔍</div>
-        <h3>Aucun exercice trouvé</h3>
-        <p>Essayez un autre mot-clé ou modifiez les filtres</p>
+        <h3>No exercise found</h3>
+        <p>Try another keyword or modify the filters</p>
       </div>
 
       <!-- Modals (Fun Facts, Quiz, etc.) -->
@@ -350,7 +314,7 @@
       <!-- Fun Fact Modal -->
       <div class="modal" id="modal-funfact">
         <div class="modal-header">
-          <h3 id="funfact-title">💡 Le Saviez-vous ?</h3>
+          <h3 id="funfact-title">💡 Did you know??</h3>
           <span class="close-btn" onclick="closeAllModals()">&times;</span>
         </div>
         <div class="modal-body" id="funfact-content">
@@ -361,14 +325,14 @@
       <!-- Quiz Modal -->
       <div class="modal" id="modal-quiz">
         <div class="modal-header">
-          <h3 id="quiz-title">📝 Validation de Section</h3>
+          <h3 id="quiz-title">📝 Section Validation</h3>
           <span class="close-btn" onclick="closeAllModals()">&times;</span>
         </div>
         <div class="modal-body" id="quiz-content">
           <!-- Dynamically loaded questions -->
         </div>
         <div class="modal-footer">
-          <button class="btn-start" id="btn-submit-quiz" onclick="submitQuiz()">Valider mes réponses</button>
+          <button class="btn-start" id="btn-submit-quiz" onclick="submitQuiz()">Submit my answers</button>
         </div>
       </div>
 
@@ -380,7 +344,7 @@
     </main>
   </div> <!-- Fin main-container -->
 
-  <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+  <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
   <script src="../inactivite.js"></script>
   <script src="../../playground-master/src/exos/exercises.js?v=1.1"></script>
 </body>

@@ -299,9 +299,9 @@ function initExo3Boxes() {
     datasetDiv.selectAll("#msg-box-linear").remove();
     var msgBoxLinear = datasetDiv.append("div")
         .attr("id", "msg-box-linear")
-        .attr("class", "exo3-msg-box")
-        .style({
-        "background-color": "rgba(0, 70, 118, 0.1)",
+        .attr("class", "exo3-msg-box");
+    msgBoxLinear.style({
+        "background-color": "#004676",
         "border": "1px solid #004676",
         "border-radius": "8px",
         "padding": "12px",
@@ -310,15 +310,15 @@ function initExo3Boxes() {
         "color": "#fff",
         "line-height": "1.4"
     });
-    msgBoxLinear.html("\n    <strong>\uD83D\uDCA1 \u00C9tape 1 :</strong> Entra\u00EEne le mod\u00E8le sur chaque jeu de donn\u00E9es (X et Y) pour observer ses limites.<br>\n    <span style=\"font-size: 12px; color: #94a3b8;\">Progression : <span id=\"msg-box-linear-count\" style=\"font-weight: bold; color: #FF034D;\">0</span> / 4 jeux de donn\u00E9es entra\u00EEn\u00E9s.</span>\n  ");
+    msgBoxLinear.html("\n    <strong>\uD83D\uDCA1 Step 1:</strong> Train the model on each dataset (X and Y) to observe its limits.<br>\n    <span style=\"font-size: 12px; color: #94a3b8;\">Progress: <span id=\"msg-box-linear-count\" style=\"font-weight: bold; color: #FF034D;\">0</span> / 4 datasets trained.</span>\n  ");
     var networkDiv = d3.select("#network");
     networkDiv.selectAll("#msg-box-quadratic").remove();
     var msgBoxQuadratic = networkDiv.insert("div", "#hovercard")
         .attr("id", "msg-box-quadratic")
-        .attr("class", "exo3-msg-box")
-        .style({
-        "background-color": "rgba(16, 185, 129, 0.1)",
-        "border": "1px solid #10b981",
+        .attr("class", "exo3-msg-box");
+    msgBoxQuadratic.style({
+        "background-color": "#004676",
+        "border": "1px solid #004676",
         "border-radius": "8px",
         "padding": "12px",
         "margin-top": "15px",
@@ -328,7 +328,7 @@ function initExo3Boxes() {
         "position": "relative",
         "display": "none"
     });
-    msgBoxQuadratic.html("\n    <strong>\uD83C\uDF89 \u00C9tape 2 :</strong> Maintenant, active les caract\u00E9ristiques <strong>X\u00B2</strong> et <strong>Y\u00B2</strong> et entra\u00EEne \u00E0 nouveau pour r\u00E9ussir la classification !\n  ");
+    msgBoxQuadratic.html("\n    <strong>\uD83C\uDF89 Step 2:</strong> Now, activate the <strong>X\u00B2</strong> and <strong>Y\u00B2</strong> features and train again to successfully classify!\n  ");
     updateQuadraticFeaturesExo3();
 }
 function makeGUI() {
@@ -640,7 +640,7 @@ function makeGUI() {
                 success = true;
             }
             else {
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
         }
         else if (exoId === 3) {
@@ -649,22 +649,22 @@ function makeGUI() {
                 !state.xTimesY && !state.sinX && !state.sinY;
             var noHidden = state.numHiddenLayers === 0;
             if (!isQuadraticUnlockedExo3()) {
-                message = "Vous devez d'abord entraîner le modèle sur les 4 jeux de données en mode linéaire.";
+                message = "You must first train the model on all 4 datasets in linear mode.";
             }
             else if (!isCircle) {
-                message = "Veuillez sélectionner le jeu de données Cercle.";
+                message = "Please select the Circle dataset.";
             }
             else if (!hasCorrectFeatures) {
-                message = "Activez uniquement les caractéristiques X, Y, X² et Y².";
+                message = "Activate only the X, Y, X² and Y² features.";
             }
             else if (!noHidden) {
-                message = "Veuillez configurer le réseau sans aucune couche cachée (0 couche cachée).";
+                message = "Please configure the network with no hidden layers (0 hidden layers).";
             }
             else if (iter < 1000) {
-                message = "L'entraînement doit atteindre au moins 1000 époques (Epochs).";
+                message = "Training must reach at least 1000 epochs.";
             }
             else if (lossTrain >= 0.005) {
-                message = "La perte d'entraînement (loss) doit être inférieure à 0.005.";
+                message = "The training loss must be less than 0.005.";
             }
             else {
                 success = true;
@@ -676,13 +676,13 @@ function makeGUI() {
             }
             else {
                 var testees = usedActivationsExo7.join(", ");
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
         }
         else if (exoId === 4) {
             var firstHiddenNode = network[1][0];
             if (!hasTrainedInExo4 || lossTrain >= 0.01) {
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
             else if (!biasModifiedInExo4) {
                 message = "Modify the bias neuron.";
@@ -699,7 +699,7 @@ function makeGUI() {
                 success = true;
             }
             else {
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
         }
         else if (exoId === 6) {
@@ -707,12 +707,12 @@ function makeGUI() {
                 success = true;
             }
             else {
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
         }
         else if (exoId === 9 || exoId === 10) {
             if (!snapshotBoundary) {
-                message = "Cliquez sur double run afin de comparer";
+                message = "Click on double run to compare";
             }
             else {
                 var diff = Math.abs(lossTrain - snapshotLossTrainVal);
@@ -726,7 +726,7 @@ function makeGUI() {
         }
         else if (exoId === 8) {
             if (!compareUsedInExo8) {
-                message = "Veillez relire la consigne! 😤";
+                message = "Please reread the instructions! 😤";
             }
             else if (!postSnapshotRunInExo8) {
                 message = "Now run again";
@@ -737,10 +737,10 @@ function makeGUI() {
         }
         else if (exoId === 11) {
             if (runsCountExo11 < 2) {
-                message = "Plusieurs runs doivent être faits.";
+                message = "Multiple runs must be done.";
             }
             else if (!divergenceObservedExo11) {
-                message = "Au moins un cas de divergence du learning rate doit être observé.";
+                message = "At least one case of learning rate divergence must be observed.";
             }
             else {
                 success = true;
@@ -751,7 +751,7 @@ function makeGUI() {
                 success = true;
             }
             else {
-                message = "Les courbes de perte d'entraînement et de test doivent diverger d'au moins 0,005.";
+                message = "The training and test loss curves must diverge by at least 0.005.";
             }
         }
         else if (exoId === 13 || exoId === 14 || exoId === 15 || exoId === 16) {
@@ -762,14 +762,14 @@ function makeGUI() {
                 success = true;
             }
             else {
-                message = "Exercice non validé";
+                message = "Exercise not validated";
             }
         }
         var msgDiv = d3.select("#validation-message");
         msgDiv.classed("show", false);
         setTimeout(function () {
             if (success) {
-                showToast("✨ Félicitations ! Exercice validé.", "success");
+                showToast("✨ Congratulations ! Exercice validé.", "success");
                 msgDiv.text("Congratulation !")
                     .classed("success", true)
                     .classed("error", false)
@@ -779,7 +779,7 @@ function makeGUI() {
                 }
             }
             else {
-                showToast(message || "Exercice non validé", "error");
+                showToast(message || "Exercise not validated", "error");
                 msgDiv.text("Echec")
                     .classed("success", false)
                     .classed("error", true)
@@ -1536,7 +1536,7 @@ function oneStep() {
                 trainedLinearDatasetsExo3[dsKey] = true;
                 updateQuadraticFeaturesExo3();
                 if (isQuadraticUnlockedExo3()) {
-                    showToast("Félicitations ! Vous avez entraîné le modèle sur les 4 jeux de données linéaires. Les entrées X² et Y² sont maintenant déverrouillées !", "success");
+                    showToast("Congratulations ! Vous avez entraîné le modèle sur les 4 jeux de données linéaires. Les entrées X² et Y² sont maintenant déverrouillées !", "success");
                 }
             }
         }

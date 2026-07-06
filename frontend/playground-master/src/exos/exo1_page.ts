@@ -15,7 +15,7 @@
     visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
     visitorBtn.onmouseover = () => visitorBtn.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)';
     visitorBtn.onmouseout = () => visitorBtn.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)';
-    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
+    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span > ';
     container.appendChild(visitorBtn);
     return;
   }
@@ -190,7 +190,7 @@ animateBackground();
 const btnSauvegarder = document.getElementById('btn-sauvegarder');
 const btnRealise = document.getElementById('btn-realise');
 
-// Écouter le signal de succès venant de l'iframe
+// Écouter le success signal venant de l'iframe
 window.addEventListener('message', (event) => {
   console.log("Signal reçu du Playground:", event.data);
   if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 1 || event.data.exoId == "1")) {
@@ -241,7 +241,7 @@ btnRealise.onclick = async () => {
 };
 
 // ==========================================
-// TUTORIEL INTERACTIF ÉTAPE PAR ÉTAPE (EXO 1)
+// INTERACTIVE TUTORIAL STEP PAR ÉTAPE (EXO 1)
 // ==========================================
 
 let translations = null;
@@ -282,10 +282,10 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Séparez les données";
+  h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Separate the data";
 
   const p = document.createElement('p');
-  const defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une droite qui sépare le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver dans chaque région.";
+  const defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une line that separates le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver in each region.";
   const text = translations && translations.instructions && translations.instructions.text ? translations.instructions.text : defaultText;
   p.innerText = text;
 
@@ -297,7 +297,7 @@ function startTutorial() {
 
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
-  nextBtn.innerText = "Continuer";
+  nextBtn.innerText = "Continue";
   nextBtn.disabled = true;
 
   popup.appendChild(h3);
@@ -476,7 +476,7 @@ function showCustomTooltip(selector, title, text, position = 'bottom') {
 
   activeTooltip = document.createElement('div');
   activeTooltip.className = 'tutorial-tooltip';
-  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Cliquez n'importe où pour continuer</div>`;
+  activeTooltip.innerHTML = `<h4 style="margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;">${title}</h4><p style="margin:0; font-size:13px; color:#cbd5e1;">${text}</p><div style="margin-top:10px; font-size:11px; color:#94a3b8; text-align:right;">Click anywhere to continue</div>`;
   document.body.appendChild(activeTooltip);
   repositionActiveElements();
 }
@@ -613,7 +613,7 @@ function runStep3() {
   let titleText = "Let’s Start! [6]";
   let bodyText = startText;
   if (startText.startsWith("Let's Start!")) {
-    titleText = "Let's Start! [6]";
+    titleText = "Let's Start!";
     bodyText = startText.substring("Let's Start!".length).trim();
   } else if (startText.startsWith("Let’s Start!")) {
     titleText = "Let’s Start! [6]";
@@ -644,8 +644,8 @@ function runStep3() {
 
 function runStep4() {
   showHighlightBox('#custom-weight-editor-x, #custom-weight-editor-y', '7');
-  const wTitle = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.term : "Modifier les Poids";
-  const wDesc = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.definition : "Faites glisser les curseurs ou cliquez sur les liaisons entre X1, X2 et la sortie pour modifier leurs poids.";
+  const wTitle = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.term : "Modify Weights";
+  const wDesc = translations && translations.definitions && translations.definitions.weight ? translations.definitions.weight.definition : "Drag the sliders or click on the connections between X1, X2, and the output to modify their weights.";
   showCustomTooltip('#custom-weight-editor-x, #custom-weight-editor-y', wTitle, wDesc, 'right');
 
   const clickHandler = () => {
@@ -678,7 +678,7 @@ function showStep5Congrats() {
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
   nextBtn.style.background = '#FF553F';
-  nextBtn.innerText = "Suivant";
+  nextBtn.innerText = "Next";
 
   popup.appendChild(h3);
   popup.appendChild(p);

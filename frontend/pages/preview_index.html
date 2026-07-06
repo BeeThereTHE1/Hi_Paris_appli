@@ -79,26 +79,6 @@ limitations under the License.
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <div id="google_translate_element" style="display: none !important;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
 
   <!-- Top Controls -->
@@ -193,7 +173,7 @@ limitations under the License.
       </div>
       <div class="ui-doubleRunButton">
         <button id="snapshot-button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-          title="Capture l'état actuel pour comparer">Double Run</button>
+          title="Capture the current state to compare">Double Run</button>
       </div>
     </div>
   </div>
@@ -205,7 +185,7 @@ limitations under the License.
     <div class="column data">
       <div id="validation-section" class="ui-validationSection" style="margin-bottom: 20px;">
         <button id="validate-button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Valider
+          Submit
         </button>
         <div id="validation-message"></div>
       </div>
@@ -218,28 +198,28 @@ limitations under the License.
         title="A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the model’s prediction error.">
         <h4 style="margin:0 0 10px 0;">Weight editor</h4>
         <p id="selected-link-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
-          Cliquez sur une liaison
+          Click on a link
         </p>
         <p class="slider">
           <input id="weight-slider" class="mdl-slider mdl-js-slider" type="range" min="-5" max="5" step="0.01" value="0"
             style="width:100%;" />
         </p>
         <p style="margin-top:8px; font-size:13px;">
-          Valeur : <span id="weight-value">0.00</span>
+          Value : <span id="weight-value">0.00</span>
         </p>
       </div>
       <div id="bias-editor" class="bias-editor ui-biasEditor" style="margin-top:20px;"
         title="A bias is an additional parameter added to a neuron that allows the model to shift the activation function. It helps the network better fit the data by providing more flexibility in the model.">
         <h4 style="margin:0 0 10px 0;">Bias editor</h4>
         <p id="selected-node-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
-          Cliquez sur le biais d'un neurone
+          Click on a neuron's bias
         </p>
         <p class="slider">
           <input id="bias-slider" class="mdl-slider mdl-js-slider" type="range" min="-5" max="5" step="0.01" value="0"
             style="width:100%;" />
         </p>
         <p style="margin-top:8px; font-size:13px;">
-          Valeur : <span id="bias-value">0.00</span>
+          Value : <span id="bias-value">0.00</span>
         </p>
       </div>
       <h4>
@@ -391,7 +371,7 @@ limitations under the License.
           <h4 style="font-size: 13px; font-weight: bold; margin: 0; color: #555;">SNAPSHOT <span
               style="font-weight: normal; font-size: 11px; margin-left: 5px;">(Epoch <span
                 id="snapshot-iter">0</span>)</span></h4>
-          <button id="clear-snapshot" class="mdl-button mdl-js-button mdl-button--icon" title="Effacer le snapshot">
+          <button id="clear-snapshot" class="mdl-button mdl-js-button mdl-button--icon" title="Clear the snapshot">
             <i class="material-icons" style="font-size: 18px;">close</i>
           </button>
         </div>
@@ -560,7 +540,7 @@ limitations under the License.
   <div id="exo1-popup-overlay" style="display: none;">
     <div id="exo1-popup">
       <div id="exo1-page1">
-        <h3>Exercice 1</h3>
+        <h3>Exercise 1</h3>
         <p>Adjust the model parameters to classify the Gaussian dataset. Monitor how each change impacts your results.
           When your training loss falls below <span style="color:red">0.050</span>, go to the feedback quiz.</p>
         <button id="exo1-next-btn1" class="mdl-button mdl-js-button">>> NEXT</button>
@@ -613,10 +593,10 @@ limitations under the License.
   <!-- Google analytics -->
   
 
-  <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+  <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
   <script src="inactivite.js"></script>
   <script>
-    // Communication avec le parent pour les exercices personnalisés
+    // Communication avec le parent pour custom exercises
     document.addEventListener('DOMContentLoaded', () => {
       const valBtn = document.getElementById('validate-button');
       if (valBtn) {

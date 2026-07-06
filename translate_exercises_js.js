@@ -1,0 +1,91 @@
+const fs = require('fs');
+const path = require('path');
+
+const target = path.join(__dirname, 'frontend/playground-master/src/exos/exercises.js');
+let content = fs.readFileSync(target, 'utf8');
+
+const dict = {
+  "Vous n'êtes pas connecté!": "You are not connected!",
+  "Profil ": "Profile ",
+  "Mon Historique": "My History",
+  "Mes Statistiques": "My Statistics",
+  "Déconnexion": "Logout",
+  "Facile": "Easy",
+  "Intermédiaire": "Medium",
+  "Difficile": "Hard",
+  "Fondamentaux": "Fundamentals",
+  "Optimisation": "Optimization",
+  "Algorithmes": "Algorithms",
+  "Architectures": "Architectures",
+  "La régression logistique a été inventée par Joseph Berkson en 1944. C'est l'un des modèles de classification les plus utilisés au monde !": "Logistic regression was invented by Joseph Berkson in 1944. It is one of the most widely used classification models in the world!",
+  "L'apprentissage supervisé s'inspire directement de la façon dont un enfant apprend en faisant des erreurs et en étant corrigé par un adulte.": "Supervised learning is directly inspired by how a child learns by making mistakes and being corrected by an adult.",
+  "Les données circulaires ne peuvent pas être séparées par une simple ligne droite. C'est pourquoi nous avons besoin de fonctions d'activation non linéaires !": "Circular data cannot be separated by a simple straight line. That's why we need non-linear activation functions!",
+  "Le biais permet de décaler la fonction d'activation vers la gauche ou la droite, offrant un degré de liberté crucial au neurone.": "The bias allows the activation function to be shifted to the left or right, providing a crucial degree of freedom to the neuron.",
+  "Combiner plusieurs caractéristiques d'entrée complexes (comme x² ou xy) permet de résoudre des problèmes non linéaires sans ajouter de couches cachées.": "Combining several complex input features (like x² or xy) allows solving non-linear problems without adding hidden layers.",
+  "Les couches cachées agissent comme des extracteurs de caractéristiques de plus en plus abstraites. Plus on va profond, plus le concept est complexe.": "Hidden layers act as extractors of increasingly abstract features. The deeper you go, the more complex the concept.",
+  "ReLU (Rectified Linear Unit) est la fonction d'activation la plus populaire car elle évite le problème de la disparition du gradient tout en étant très rapide à calculer.": "ReLU (Rectified Linear Unit) is the most popular activation function because it avoids the vanishing gradient problem while being very fast to compute.",
+  "Un réseau de neurones avec les mêmes hyperparamètres peut converger vers des solutions différentes à cause de l'initialisation aléatoire des poids !": "A neural network with the same hyperparameters can converge to different solutions due to random weight initialization!",
+  "La descente de gradient stochastique (SGD) utilise un seul échantillon à la fois pour mettre à jour les poids, rendant l'apprentissage extrêmement rapide mais bruyant.": "Stochastic Gradient Descent (SGD) uses a single sample at a time to update weights, making learning extremely fast but noisy.",
+  "Le taux d'apprentissage (learning rate) est l'hyperparamètre le plus sensible : trop grand, le modèle oscille ; trop petit, il met une éternité à converger.": "The learning rate is the most sensitive hyperparameter: too large, the model oscillates; too small, it takes forever to converge.",
+  "La rétropropagation du gradient (backpropagation) a été popularisée par Geoffrey Hinton en 1986. Elle calcule les dérivées partielles de l'erreur par rapport à chaque poids.": "Backpropagation was popularized by Geoffrey Hinton in 1986. It calculates the partial derivatives of the error with respect to each weight.",
+  "Le surapprentissage (overfitting) se produit lorsque le modèle apprend par cœur le bruit des données d'entraînement, perdant sa capacité de généralisation.": "Overfitting occurs when the model memorizes the noise of the training data, losing its ability to generalize.",
+  "La régularisation L2 (Ridge) ajoute une pénalité proportionnelle au carré de la valeur des poids pour forcer le réseau à garder des poids petits et simples.": "L2 Regularization (Ridge) adds a penalty proportional to the square of the weight values to force the network to keep weights small and simple.",
+  "Le dropout désactive aléatoirement un pourcentage de neurones à chaque itération, forçant le réseau à ne pas dépendre d'un seul chemin de neurones.": "Dropout randomly disables a percentage of neurons at each iteration, forcing the network not to rely on a single path of neurons.",
+  "La validation croisée (cross-validation) divise les données pour estimer de manière fiable les performances réelles du modèle sur de futures données.": "Cross-validation divides the data to reliably estimate the model's actual performance on future data.",
+  "Les réseaux profonds peuvent apprendre des fonctions d'une complexité infinie. C'est le théorème d'approximation universelle !": "Deep networks can learn functions of infinite complexity. This is the universal approximation theorem!",
+  "Les fonctions d'erreur (loss functions) comme l'erreur quadratique moyenne ou la cross-entropy mesurent l'écart entre les prédictions et la réalité.": "Loss functions like mean squared error or cross-entropy measure the gap between predictions and reality.",
+  "Quiz Section 1 : Fondations des Réseaux": "Quiz Section 1: Network Foundations",
+  "Quelle fonction d'activation est indispensable pour que la régression logistique retourne une probabilité entre 0 et 1 ?": "Which activation function is essential for logistic regression to return a probability between 0 and 1?",
+  "Sigmoïde": "Sigmoid",
+  "Linéaire": "Linear",
+  "Tangente Hyperbolique": "Hyperbolic Tangent",
+  "Si des données de classification forment un cercle parfait entourant une autre classe, quel type de séparation est nécessaire ?": "If classification data forms a perfect circle surrounding another class, what type of separation is necessary?",
+  "Une séparation linéaire": "A linear separation",
+  "Une séparation non linéaire": "A non-linear separation",
+  "Aucune séparation possible": "No separation possible",
+  "Quiz Section 2 : Les Blocs de Construction": "Quiz Section 2: Building Blocks",
+  "Quel est le rôle principal du biais (bias) dans un neurone artificiel ?": "What is the main role of the bias in an artificial neuron?",
+  "Décaler la fonction d'activation": "Shift the activation function",
+  "Multiplier le poids de l'entrée": "Multiply the weight of the input",
+  "Calculer l'erreur de prédiction": "Calculate the prediction error",
+  "Pourquoi les fonctions d'activation non-linéaires (comme ReLU ou Sigmoïde) sont-elles cruciales dans les couches cachées ?": "Why are non-linear activation functions (like ReLU or Sigmoid) crucial in hidden layers?",
+  "Pour accélérer le calcul matériel": "To speed up hardware computation",
+  "Pour permettre au réseau d'apprendre des relations complexes non-linéaires": "To allow the network to learn complex non-linear relationships",
+  "Pour stabiliser les poids initiaux à zéro": "To stabilize initial weights at zero",
+  "Quiz Section 3 : Entraînement & Optimisation": "Quiz Section 3: Training & Optimization",
+  "Quel problème peut survenir si le taux d'apprentissage (learning rate) est trop élevé ?": "What problem can occur if the learning rate is too high?",
+  "L'entraînement est trop lent": "Training is too slow",
+  "Le modèle risque d'osciller et ne jamais converger vers le minimum": "The model risks oscillating and never converging to the minimum",
+  "Les poids deviennent tous égaux à zéro": "The weights all become equal to zero",
+  "Quelle technique permet de propager l'erreur de la sortie vers l'entrée pour ajuster les poids ?": "What technique allows propagating the error from the output to the input to adjust the weights?",
+  "La rétropropagation du gradient": "Backpropagation",
+  "La descente de gradient stochastique": "Stochastic gradient descent",
+  "La régularisation L1/L2": "L1/L2 regularization",
+  "Quiz Section 4 : Généralisation & Limites": "Quiz Section 4: Generalization & Limits",
+  "Comment appelle-t-on le phénomène où un modèle est excellent sur les données d'entraînement mais très mauvais sur les nouvelles données ?": "What is the phenomenon called where a model is excellent on training data but very poor on new data?",
+  "Sous-apprentissage (Underfitting)": "Underfitting",
+  "Surapprentissage (Overfitting)": "Overfitting",
+  "Régularisation extrême": "Extreme regularization",
+  "Quel est le but du 'Dropout' lors de l'entraînement d'un réseau profond ?": "What is the purpose of 'Dropout' during the training of a deep network?",
+  "Supprimer définitivement les mauvaises données": "Permanently remove bad data",
+  "Désactiver aléatoirement des neurones pour éviter le surapprentissage": "Randomly disable neurons to avoid overfitting",
+  "Augmenter la dimension de l'espace d'entrée": "Increase the dimension of the input space",
+  "Voulez-vous vraiment supprimer cet exercice du catalogue ?": "Do you really want to delete this exercise from the catalog?",
+  "L'exercice a été retiré du catalogue.": "The exercise has been removed from the catalog.",
+  "Erreur : ": "Error: ",
+  "Impossible de supprimer": "Unable to delete",
+  "Erreur réseau lors de la suppression.": "Network error during deletion.",
+  "Exercice personnalisé": "Custom exercise",
+  "Communauté": "Community",
+  "Commencer \u2192": "Start \u2192",
+  "Visité": "Visited",
+  "Non visité": "Not visited"
+};
+
+for (let [fr, en] of Object.entries(dict)) {
+    // using split and join for exact match without regex hassle (like escaping special chars)
+    content = content.split(fr).join(en);
+}
+
+fs.writeFileSync(target, content, 'utf8');
+console.log('exercises.js translated.');

@@ -10,7 +10,7 @@
         const visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -31,7 +31,7 @@
         <div style="padding: 8px;">
           <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 Mon Historique</a>
           <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📈 Mes Statistiques</a>
-          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Déconnexion</div>
+          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
         </div>
       `;
     let isOpen = false;
@@ -280,15 +280,15 @@ window.addEventListener('load', () => {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
 
         const qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
             qPanel.innerHTML = `
                 <div class="quiz-question-wrapper">
-                    <div class="quiz-question-badge">Exercice Réussi</div>
+                    <div class="quiz-question-badge">Exercise Successful</div>
                     <div class="quiz-question-card">
-                        Vous avez déjà validé cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.
+                        You have already validated this exercise ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.
                     </div>
                 </div>
             `;
@@ -320,7 +320,7 @@ function startTutorial() {
 
     const nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
 
     popup.appendChild(h3);
@@ -358,7 +358,7 @@ function renderActivity1() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
-            <div class="quiz-question-badge" style="background:#004676;">Activité 1</div>
+            <div class="quiz-question-badge" style="background:#004676;">Activity 1</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.4;">
                 <strong>Comprendre le Gradient</strong> - Prenez le temps de lire les explications ci-dessous. Les notions s'affichent séquentiellement pour vous guider.
             </div>
@@ -430,7 +430,7 @@ function renderActivity1() {
                         }
                         fPanel.innerHTML = `
                             <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
-                                ✅ Lecture complétée ! Cliquez sur <strong>NEXT</strong> pour lancer les modèles.
+                                ✅ Reading completed! Click <strong>NEXT</strong> to start the models.
                             </div>
                         `;
                     }, 4000);
@@ -453,26 +453,26 @@ function renderActivity2() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
-            <div class="quiz-question-badge" style="background:#FF034D;">Activité 2</div>
+            <div class="quiz-question-badge" style="background:#FF034D;">Activity 2</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.45;">
-                <strong>Lancement des simulateurs</strong><br><br>
-                Lancez les deux modèles en parallèle dans le playground à gauche en cliquant sur le bouton <b>Play</b> (▶️) de chaque simulateur.<br><br>
-                <span style="color:#FF034D; font-weight:700;">Consigne :</span> Observez attentivement l'évolution des poids (lignes de connexion) et des neurones dans les couches initiales (les premières couches à gauche).<br><br>
-                Laissez tourner les simulations jusqu'à ce que le compteur atteigne au moins <b>150 époques</b>.
+                <strong>Starting the simulators</strong><br><br>
+                Lancez both models en parallèle dans le playground à gauche en cliquant sur le bouton <b>Play</b> (▶️) de chaque simulateur.<br><br>
+                <span style="color:#FF034D; font-weight:700;">Instruction :</span> Carefully observe the evolution of the weights (connection lines) and neurons in the initial layers (the first layers on the left).<br><br>
+                Let the simulations run until the counter reaches at least <b>150 epochs</b>.
             </div>
         </div>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; font-size:12px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span>Modèle Sigmoid :</span>
-                <strong id="status-sigmoid" style="color:#ef4444;">Arrêté (0 epochs)</strong>
+                <span>Sigmoid Model :</span>
+                <strong id="status-sigmoid" style="color:#ef4444;">Stopped (0 epochs)</strong>
             </div>
             <div style="display:flex; justify-content:space-between;">
-                <span>Modèle ReLU :</span>
-                <strong id="status-relu" style="color:#ef4444;">Arrêté (0 epochs)</strong>
+                <span>ReLU Model :</span>
+                <strong id="status-relu" style="color:#ef4444;">Stopped (0 epochs)</strong>
             </div>
         </div>
         <div style="text-align: right; margin-top: 15px;">
-            <button class="tutorial-btn" id="btn-next-act2" style="font-size:16px; padding: 8px 18px;" disabled>Suivant</button>
+            <button class="tutorial-btn" id="btn-next-act2" style="font-size:16px; padding: 8px 18px;" disabled>Next</button>
         </div>
     `;
 
@@ -567,7 +567,7 @@ function renderActivity2() {
                     statusSig.innerText = `En cours (${sigmoidEpoch} epochs)`;
                     statusSig.style.color = '#3b82f6';
                 } else {
-                    statusSig.innerText = `Arrêté (${sigmoidEpoch} epochs)`;
+                    statusSig.innerText = `Stopped (${sigmoidEpoch} epochs)`;
                     statusSig.style.color = '#ef4444';
                 }
             }
@@ -581,7 +581,7 @@ function renderActivity2() {
                     statusRelu.innerText = `En cours (${reluEpoch} epochs)`;
                     statusRelu.style.color = '#3b82f6';
                 } else {
-                    statusRelu.innerText = `Arrêté (${reluEpoch} epochs)`;
+                    statusRelu.innerText = `Stopped (${reluEpoch} epochs)`;
                     statusRelu.style.color = '#ef4444';
                 }
             }
@@ -598,7 +598,7 @@ function renderActivity2() {
 
                 fPanel.innerHTML = `
                     <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
-                        ✅ Les deux modèles ont dépassé 150 époques. Cliquez sur <strong>Suivant</strong> pour classifier vos observations !
+                        ✅ Les deux modèles ont dépassé 150 époques. Cliquez sur <strong>Next</strong> pour classifier vos observations !
                     </div>
                 `;
             }
@@ -656,7 +656,7 @@ function renderActivity3() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper" style="margin-bottom:10px;">
-            <div class="quiz-question-badge" style="background:#10b981;">Activité 3</div>
+            <div class="quiz-question-badge" style="background:#10b981;">Activity 3</div>
             <div class="quiz-question-card" style="font-size: 12px; line-height: 1.4;">
                 <strong>Tableau Comparatif</strong> - Associez chaque observation à la fonction d'activation correspondante (Sigmoid ou ReLU). <br>
                 <i>Glissez une carte ou cliquez dessus puis cliquez sur la case correspondante dans le tableau.</i>
@@ -708,7 +708,7 @@ function renderActivity3() {
 
     fPanel.innerHTML = `
         <div class="feedback-box">
-            💡 Associez les cartes aux bonnes cases du tableau en comparant les deux modèles.
+            💡 Associez les cartes aux bonnes cases du tableau en comparant both models.
         </div>
     `;
 
@@ -846,7 +846,7 @@ function triggerCompletion() {
 
     const okBtn = document.createElement('button');
     okBtn.className = 'tutorial-btn';
-    okBtn.innerText = "Faire le quiz";
+    okBtn.innerText = "Take the quiz";
 
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -860,15 +860,15 @@ function triggerCompletion() {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
 
         const qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
             qPanel.innerHTML = `
                 <div class="quiz-question-wrapper">
-                    <div class="quiz-question-badge">Félicitations</div>
+                    <div class="quiz-question-badge">Congratulations</div>
                     <div class="quiz-question-card">
-                        Vous avez terminé les observations. Cliquez sur le bouton "Faire le quiz" en bas à droite pour valider vos conclusions.
+                        Vous avez terminé les observations. Cliquez sur le bouton "Take the quiz" en bas à droite pour valider vos conclusions.
                     </div>
                 </div>
             `;

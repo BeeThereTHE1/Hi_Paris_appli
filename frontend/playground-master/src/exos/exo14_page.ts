@@ -15,7 +15,7 @@
                     visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
                     visitorBtn.onmouseover = () => visitorBtn.style.boxShadow = '0 0 25px rgba(139,92,246,0.6)';
                     visitorBtn.onmouseout = () => visitorBtn.style.boxShadow = '0 0 15px rgba(139,92,246,0.2)';
-                    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span > ';
+                    visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span > ';
                     container.appendChild(visitorBtn);
                     return;
                 }
@@ -190,7 +190,7 @@ const backgroundContainer = document.getElementById('background-container');
             const btnSauvegarder = document.getElementById('btn-sauvegarder');
             const btnRealise = document.getElementById('btn-realise');
 
-            // Écouter le signal de succès venant de l'iframe
+            // Écouter le success signal venant de l'iframe
             window.addEventListener('message', (event) => {
                 console.log("Signal reçu du Playground:", event.data);
                 if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 14 || event.data.exoId == "14")) {
@@ -227,7 +227,7 @@ const backgroundContainer = document.getElementById('background-container');
                     btnSauvegarder.style.opacity = '0.7';
                     btnSauvegarder.disabled = true;
                 } else {
-                    alert("Cet exercice est déjà dans votre profil.");
+                    alert("This exercise is already in your profile.");
                 }
             };
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Exercice 3+5</title>
+  <title>Exercise 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../../styles/exo.css" />
@@ -12,26 +12,6 @@
 
 <body>
 
-  <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-  <div id="google_translate_element" style="display: none !important;"></div>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'fr', 
-        includedLanguages: 'en,fr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <style>
-    .goog-te-gadget-simple { background-color: transparent !important; border: none !important; font-family: 'Inter', sans-serif !important; font-size: 14px !important; font-weight: 600 !important; }
-    .goog-te-gadget-icon { display: none; }
-    body { top: 0px !important; }
-    .skiptranslate iframe { display: none !important; }
-  </style>
 
   <div id="background-container"></div>
   <div class="orb orb-1"></div>
@@ -52,33 +32,33 @@
           <line x1="19" y1="12" x2="5" y2="12" />
           <polyline points="12 19 5 12 12 5" />
         </svg>
-        Retour vers page des exercices
+        Back to exercises page
       </a>
-      <a class="btn-header" href="exo2_quiz.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Exercice précédent</a>
-      <a class="btn-header" href="exo4_quiz.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Exercice suivant ⏭️</a>
-      <a class="btn-header" href="../Page-demo/historique.html">Mon historique</a>
+      <a class="btn-header" href="exo2_quiz.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
+      <a class="btn-header" href="exo4_quiz.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
+      <a class="btn-header" href="../Page-demo/historique.html">My history</a>
       <div id="widget-profil-header" style="margin-left: 20px;"></div>
     </div>
   </header>
 
   <div class="exo-actions-footer">
     <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
-      <span class="icon">💾</span> SAUVEGARDER
+      <span class="icon">💾</span> Save draft
     </button>
     <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
-      <span class="icon">✅</span> Exercice Réussi !!
+      <span class="icon">✅</span> Exercise Successful !!
     </button>
   </div>
 
   <section class="exo-header">
     <div class="exo-toprow">
-      <div class="badge">3+5</div>
-      <h1 class="exo-title">Exercice #3+5</h1>
+      <div class="badge">3</div>
+      <h1 class="exo-title">Exercise #3</h1>
     </div>
     <p class="exo-instructions">
-      Entraîne le modèle pour classifier les points sous forme de cercle sans couche cachée. <br>
-      Dans un premier temps, entraîne le modèle uniquement avec les entrées linéaires X et Y et observe les limites de la frontière de décision.<br>
-      Ensuite, active les caractéristiques quadratiques X² et Y², puis entraîne à nouveau pour réussir la classification (perte &lt; 0.005 et au moins 1000 époques).
+      Train the model to classify the points as a circle without a hidden layer. <br>
+      Initially, train the model only with the linear inputs X and Y and observe the limits of the decision boundary.<br>
+      Then, activate the quadratic features X² and Y², and train again to successfully classify (loss &lt; 0.005 and at least 1000 epochs).
     </p>
   </section>
 
@@ -92,7 +72,7 @@
           <!-- Contenu de la partie haute du quiz -->
         </div>
         <div class="quiz-div-2" id="quiz-feedback-panel">
-          <!-- Contenu de la partie basse du quiz -->
+          <!-- Content of the bottom part of the quiz -->
         </div>
       </div>
     </main>

@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Knowledge Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/exo.css" />
+  <style>
+    /* variables de l'application adaptées */
+    :root {
+      --bg-dark: #0b0f1a;
+      --border-blue: rgba(99, 102, 241, 0.4);
+      --pink-neon: #E52B50;
+      --pink-glow: rgba(229, 43, 80, 0.3);
+      --teal-dark: #0E5A6A;
+      --purple-dark: #3B0764;
+      --green: #10b981;
+      --red: #ef4444;
+      --overlay-bg: rgba(11, 15, 26, 0.95);
+    }
+
+    body {
+      background: #004676; /* Thème sombre spécifique demandé */
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Container global */
+    .quiz-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(11, 15, 26, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    /* En-tête */
+    .header-box {
+      border: 1.5px solid var(--border-blue);
+      border-radius: 12px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .title-box {
+      border-color: var(--border-blue);
+      margin-bottom: 15px;
+    }
+
+    .title-box h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--pink-neon);
+      text-shadow: 0 0 10px var(--pink-glow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .instruction-box p {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    /* Grille de questions */
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 968px) {
+      .questions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .questions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cartes de question */
+    .question-card {
+      background: var(--teal-dark);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .question-card.show {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .question-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      min-height: 50px;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+      margin-bottom: 20px;
+    }
+
+    /* Options de réponse */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .option-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Style du bouton radio rouge vide */
+    .radio-circle {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--red);
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .option-item span.text {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Option Correcte Selectionnée */
+    .option-item.correct-selected {
+      background: var(--purple-dark) !important;
+      border-color: #a855f7 !important;
+    }
+
+    .option-item.correct-selected .radio-circle {
+      border-color: var(--green) !important;
+      background: var(--green) !important;
+      position: relative;
+    }
+
+    .option-item.correct-selected .radio-circle::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    /* Mauvaise réponse */
+    .option-item.wrong-selected {
+      border-color: var(--red) !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+    }
+
+    /* Bonne réponse révélée */
+    .option-item.correct-reveal {
+      border-color: var(--green) !important;
+      background: rgba(16, 185, 129, 0.15) !important;
+    }
+
+    .option-item.correct-reveal .radio-circle {
+      border-color: var(--green) !important;
+    }
+
+    /* Désactiver les clics après réponse */
+    .question-card.answered .option-item {
+      pointer-events: none;
+    }
+
+    /* Bloc Feedback */
+    .feedback-text {
+      margin-top: auto;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #cbd5e1;
+      border-left: 3px solid var(--pink-neon);
+      display: none;
+    }
+
+    /* Boîte de statut */
+    .status-card {
+      background: #FFFFFF;
+      color: #0b0f1a;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .status-card.show {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .status-content {
+      display: none;
+    }
+
+    .status-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .status-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .status-desc {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #475569;
+    }
+
+    /* Pied de page ressources */
+    .resources-footer {
+      border: 1.5px solid var(--pink-neon);
+      box-shadow: 0 0 10px var(--pink-glow);
+      border-radius: 12px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.01);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+
+    .resources-footer.active {
+      opacity: 1;
+      background: rgba(229, 43, 80, 0.05);
+    }
+
+    .resources-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--pink-neon);
+    }
+
+    .resources-link-container {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      margin-left: 20px;
+    }
+
+    .dots {
+      flex-grow: 1;
+      border-bottom: 2px dotted rgba(255, 255, 255, 0.2);
+      margin: 0 15px;
+    }
+
+    .resources-link {
+      color: #8b5cf6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .resources-link:hover {
+      color: #a78bfa;
+      text-decoration: underline;
+    }
+
+    /* Bouton Home Clignotant */
+    .home-neon-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #0b0f1a;
+      border: 2px solid var(--pink-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--pink-glow);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .home-neon-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--pink-neon);
+    }
+
+    .home-neon-btn.blink {
+      animation: neon-blink 1.5s infinite alternate;
+    }
+
+    @keyframes neon-blink {
+      0% {
+        box-shadow: 0 0 8px var(--pink-glow);
+        border-color: rgba(229, 43, 80, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 25px var(--pink-neon);
+        border-color: var(--pink-neon);
+        transform: scale(1.05);
+      }
+    }
+
+    /* Overlay lecture obligatoire */
+    .reading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--overlay-bg);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .reading-content {
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1.5px solid var(--border-blue);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .reading-instruction {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      font-weight: 500;
+      margin-bottom: 30px;
+      color: #f1f5f9;
+    }
+
+    .btn-next {
+      background: var(--pink-neon);
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(229, 43, 80, 0.4);
+    }
+
+    .btn-next.ready {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn-next.ready:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--pink-neon);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="background-container"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Overlay de lecture obligatoire (Etape 1) -->
+  <div class="reading-overlay" id="readingOverlay">
+    <div class="reading-content">
+      <div class="reading-instruction" id="overlayInstruction">
+        Answer the following questions to assess your understanding of the basic concepts. If needed, explore the provided resources to strengthen your prerequisites before starting the neural network training.
+      </div>
+      <button class="btn-next" id="btnNext">Please read (2s)</button>
+    </div>
+  </div>
+
+  <header class="universal-header">
+    <a class="header-brand" href="index.html">
+      <div class="brand-icon">
+        <img src="Page-demo/Image/logo_f.png" style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo">
+      </div>
+      <span class="brand-name">Neural Playground</span>
+    </a>
+
+    <div class="header-right">
+      <a class="btn-header" href="Page-demo/exercises.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Back to exercises page
+      </a>
+      <a class="btn-header" href="Page-demo/historique.html">My history</a>
+      <div id="widget-profil-header" style="margin-left: 20px;"></div>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <div class="quiz-container">
+    <div class="header-box title-box">
+      <h1>Self-Assessment Entry Quiz</h1>
+    </div>
+
+    <div class="header-box instruction-box">
+      <p id="mainInstruction">
+        Answer the following questions to assess your understanding of the basic concepts. If needed, explore the provided resources to strengthen your prerequisites before starting the neural network training.
+      </p>
+    </div>
+
+    <!-- Grille de questions -->
+    <div class="questions-grid" id="questionsGrid">
+      
+      <!-- Question 1 -->
+      <div class="question-card" id="q-card-0">
+        <h3>Q1. In a simple dataset, what does an "input" represent?</h3>
+        <div class="divider"></div>
+        <div class="options-list" data-qid="0">
+          <div class="option-item" data-opt="A">
+            <div class="radio-circle"></div>
+            <span class="text">A. The model’s prediction</span>
+          </div>
+          <div class="option-item" data-opt="B">
+            <div class="radio-circle"></div>
+            <span class="text">B. A variable used to make a prediction</span>
+          </div>
+          <div class="option-item" data-opt="C">
+            <div class="radio-circle"></div>
+            <span class="text">C. The final result</span>
+          </div>
+          <div class="option-item" data-opt="D">
+            <div class="radio-circle"></div>
+            <span class="text">D. The training loop</span>
+          </div>
+        </div>
+        <div class="feedback-text" id="feedback-0"></div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question-card" id="q-card-1">
+        <h3>Q2. What is an "output"?</h3>
+        <div class="divider"></div>
+        <div class="options-list" data-qid="1">
+          <div class="option-item" data-opt="A">
+            <div class="radio-circle"></div>
+            <span class="text">A. The dataset</span>
+          </div>
+          <div class="option-item" data-opt="B">
+            <div class="radio-circle"></div>
+            <span class="text">B. A transformation</span>
+          </div>
+          <div class="option-item" data-opt="C">
+            <div class="radio-circle"></div>
+            <span class="text">C. The result produced by the model</span>
+          </div>
+          <div class="option-item" data-opt="D">
+            <div class="radio-circle"></div>
+            <span class="text">D. A parameter</span>
+          </div>
+        </div>
+        <div class="feedback-text" id="feedback-1"></div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question-card" id="q-card-2">
+        <h3>Q3. What is the difference between a linear and a non-linear relationship?</h3>
+        <div class="divider"></div>
+        <div class="options-list" data-qid="2">
+          <div class="option-item" data-opt="A">
+            <div class="radio-circle"></div>
+            <span class="text">A. Linear = random, Non-linear = structured</span>
+          </div>
+          <div class="option-item" data-opt="B">
+            <div class="radio-circle"></div>
+            <span class="text">B. Linear = straight line, Non-linear = curved pattern</span>
+          </div>
+          <div class="option-item" data-opt="C">
+            <div class="radio-circle"></div>
+            <span class="text">C. Linear = complex, Non-linear = simple</span>
+          </div>
+          <div class="option-item" data-opt="D">
+            <div class="radio-circle"></div>
+            <span class="text">D. No difference</span>
+          </div>
+        </div>
+        <div class="feedback-text" id="feedback-2"></div>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question-card" id="q-card-3">
+        <h3>Q4. What is a "model" in a basic sense?</h3>
+        <div class="divider"></div>
+        <div class="options-list" data-qid="3">
+          <div class="option-item" data-opt="A">
+            <div class="radio-circle"></div>
+            <span class="text">A. A dataset</span>
+          </div>
+          <div class="option-item" data-opt="B">
+            <div class="radio-circle"></div>
+            <span class="text">B. A rule used to map inputs to outputs</span>
+          </div>
+          <div class="option-item" data-opt="C">
+            <div class="radio-circle"></div>
+            <span class="text">C. A training algorithm</span>
+          </div>
+          <div class="option-item" data-opt="D">
+            <div class="radio-circle"></div>
+            <span class="text">D. A visualization tool</span>
+          </div>
+        </div>
+        <div class="feedback-text" id="feedback-3"></div>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question-card" id="q-card-4">
+        <h3>Q5. What is the goal of a regression model?</h3>
+        <div class="divider"></div>
+        <div class="options-list" data-qid="4">
+          <div class="option-item" data-opt="A">
+            <div class="radio-circle"></div>
+            <span class="text">A. Classify data into categories</span>
+          </div>
+          <div class="option-item" data-opt="B">
+            <div class="radio-circle"></div>
+            <span class="text">B. Predict a continuous numerical value</span>
+          </div>
+          <div class="option-item" data-opt="C">
+            <div class="radio-circle"></div>
+            <span class="text">C. Select features automatically</span>
+          </div>
+          <div class="option-item" data-opt="D">
+            <div class="radio-circle"></div>
+            <span class="text">D. Reduce dataset size</span>
+          </div>
+        </div>
+        <div class="feedback-text" id="feedback-4"></div>
+      </div>
+
+      <!-- Boîte de statut (Completion message) -->
+      <div class="status-card" id="statusCard">
+        <!-- Succès -->
+        <div class="status-content" id="statusSuccess">
+          <div class="status-icon">✅</div>
+          <div class="status-title">Ready to go!</div>
+          <div class="status-desc">Explore the resources to deepen your understanding before starting.</div>
+        </div>
+        <!-- Échec -->
+        <div class="status-content" id="statusFailed">
+          <div class="status-icon">❌</div>
+          <div class="status-title">Almost there!</div>
+          <div class="status-desc">Review the resources below to strengthen your foundations and try again.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pied de page ressources -->
+    <div class="resources-footer" id="resourcesFooter">
+      <div class="resources-title">Resources</div>
+      <div class="resources-link-container">
+        <div class="dots"></div>
+        <a href="https://fr.wikipedia.org/wiki/Apprentissage_profond" target="_blank" class="resources-link">Basic principle of regression &lt;link&gt;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bouton Home Neon -->
+  <a class="home-neon-btn" id="homeBtn" href="Page-demo/exercises.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  </a>
+
+  <script src="inactivite.js"></script>
+  <script>
+    // Données de validation du Quiz
+    const quizData = [
+      { correct: "B", feedback: "Inputs are the variables the model uses to make predictions." },
+      { correct: "C", feedback: "Outputs are the predictions generated from inputs." },
+      { correct: "B", feedback: "Linear relationships form straight lines; non-linear ones are more complex." },
+      { correct: "B", feedback: "A model is a function that transforms inputs into outputs." },
+      { correct: "B", feedback: "Regression predicts numerical outputs (e.g., price, temperature)." }
+    ];
+
+    let userAnswers = Array(5).fill(null);
+    let errorCount = 0;
+
+    // --- Étape 1 : Lecture de l'instruction au chargement ---
+    window.addEventListener('DOMContentLoaded', () => {
+      const instructionText = document.getElementById('overlayInstruction').innerText.trim();
+      const wordsCount = instructionText.split(/\s+/).length;
+      
+      // Formule demandée : (mots / 200) * 60 (donnant environ 2 secondes)
+      // Ajustement : Si la formule donne moins de 2s, on force à 2s.
+      let duration = Math.max(Math.round((wordsCount / 200) * 60), 2);
+      const btnNext = document.getElementById('btnNext');
+
+      let timer = setInterval(() => {
+        duration--;
+        if (duration <= 0) {
+          clearInterval(timer);
+          btnNext.innerText = "Next";
+          btnNext.classList.add('ready');
+        } else {
+          btnNext.innerText = `Please read (${duration}s)`;
+        }
+      }, 1000);
+
+      // Fermeture de l'overlay et apparition fluide des éléments
+      btnNext.addEventListener('click', () => {
+        document.getElementById('readingOverlay').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('readingOverlay').style.display = 'none';
+          // Animation des cartes de questions (Etape 2)
+          document.querySelectorAll('.question-card').forEach((card, index) => {
+            setTimeout(() => {
+              card.classList.add('show');
+            }, index * 100);
+          });
+          setTimeout(() => {
+            document.getElementById('statusCard').classList.add('show');
+          }, 500);
+        }, 500);
+      });
+    });
+
+    // --- Étape 3 : Interaction options & Feedbacks ---
+    document.querySelectorAll('.options-list').forEach(list => {
+      const qid = parseInt(list.getAttribute('data-qid'));
+      
+      list.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const selectedOpt = item.getAttribute('data-opt');
+          const isCorrect = selectedOpt === quizData[qid].correct;
+
+          // Enregistre la réponse
+          userAnswers[qid] = selectedOpt;
+
+          // Marquer comme répondue
+          const card = document.getElementById(`q-card-${qid}`);
+          card.classList.add('answered');
+
+          // Révéler le feedback
+          const fBox = document.getElementById(`feedback-${qid}`);
+          fBox.innerText = quizData[qid].feedback;
+          fBox.style.display = 'block';
+
+          if (isCorrect) {
+            item.classList.add('correct-selected');
+          } else {
+            errorCount++;
+            item.classList.add('wrong-selected');
+            // Révéler la bonne réponse en vert
+            list.querySelector(`[data-opt="${quizData[qid].correct}"]`).classList.add('correct-reveal');
+          }
+
+          // Vérifier si toutes les questions received une réponse (Etape 4)
+          if (userAnswers.every(ans => ans !== null)) {
+            showCompletionState();
+          }
+        });
+      });
+    });
+
+    // --- Étape 4 & 5 : Completion & Enregistrement ---
+    function showCompletionState() {
+      const success = errorCount === 0;
+
+      // Affichage du message dans la boîte de statut
+      if (success) {
+        document.getElementById('statusSuccess').style.display = 'block';
+      } else {
+        document.getElementById('statusFailed').style.display = 'block';
+      }
+
+      // Activer les ressources et faire clignoter le bouton home
+      document.getElementById('resourcesFooter').classList.add('active');
+      document.getElementById('homeBtn').classList.add('blink');
+
+      // Sauvegarde de l'état "Visité" dans le stockage local
+      const currentIntroState = JSON.parse(localStorage.getItem('section0_visited') || '{"eval":false,"res":false,"tuto":false}');
+      currentIntroState.eval = true;
+      localStorage.setItem('section0_visited', JSON.stringify(currentIntroState));
+    }
+  </script>
+</body>
+
+</html>

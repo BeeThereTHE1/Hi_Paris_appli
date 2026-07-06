@@ -319,7 +319,7 @@ function closeQuizModal() {
 }
 function submitQuiz(publish = false) {
     if (selectedAnswerIndex === -1) {
-        alert("Veuillez sélectionner la bonne réponse.");
+        alert("Please select the correct answer.");
         return;
     }
     if (isDraft) {
@@ -340,7 +340,7 @@ function submitQuiz(publish = false) {
             publishExercise();
         }
         else {
-            alert("Brouillon mis à jour avec succès ! ✨");
+            alert("Draft successfully updated! ✨");
             closeQuizModal();
         }
     }
@@ -348,7 +348,7 @@ function submitQuiz(publish = false) {
         // Logique classique pour les publiés
         const answer = exo.quiz.answers[selectedAnswerIndex];
         if (answer.isCorrect) {
-            alert("Bravo ! Bonne réponse ✨. L'exercice est maintenant marqué comme réussi.");
+            alert("Good job! Correct answer ✨. The exercise is now marked as completed.");
             closeQuizModal();
             validateExercise();
         }
@@ -405,7 +405,7 @@ function publishExercise() {
     let drafts = JSON.parse(localStorage.getItem(draftKey) || '[]');
     drafts = drafts.filter(e => String(e.id) !== String(exo.id));
     localStorage.setItem(draftKey, JSON.stringify(drafts));
-    alert("Félicitations ! Votre exercice est maintenant publié dans le catalogue officiel. 🚀");
+    alert("Congratulations! Your exercise is now published in the official catalog. 🚀");
     window.location.href = 'Page-demo/exercises.html';
 }
 async function validateExercise() {
@@ -430,7 +430,7 @@ async function validateExercise() {
                 })
             });
         } catch (err) {
-            console.error("Erreur lors de la sauvegarde en BD :", err);
+            console.error("Error during save en BD :", err);
         }
     }
 
@@ -468,7 +468,7 @@ document.getElementById('btn-sauvegarder').onclick = async (e) => {
                 })
             });
         } catch (err) {
-            console.error("Erreur lors de la sauvegarde en BD :", err);
+            console.error("Error during save en BD :", err);
         }
     }
 

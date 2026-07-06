@@ -21,42 +21,6 @@
 
 <body>
 
-    <!-- ===============================
-       WIDGET GOOGLE TRANSLATE (FR/EN)
-  ================================ -->
-    <div id="google_translate_element" style="display: none !important;"></div>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'fr',
-                includedLanguages: 'en,fr',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript"
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <style>
-        .goog-te-gadget-simple {
-            background-color: transparent !important;
-            border: none !important;
-            font-family: 'Inter', sans-serif !important;
-            font-size: 14px !important;
-            font-weight: 600 !important;
-        }
-
-        .goog-te-gadget-icon {
-            display: none;
-        }
-
-        body {
-            top: 0px !important;
-        }
-
-        .skiptranslate iframe {
-            display: none !important;
-        }
-    </style>
 
     <!-- Conteneur pour l'animation de fond -->
     <div id="background-container"></div>
@@ -84,20 +48,20 @@
                     <line x1="19" y1="12" x2="5" y2="12" />
                     <polyline points="12 19 5 12 12 5" />
                 </svg>
-                Retour vers page des exercices
+                Back to exercises page
             </a>
 
             <a class="btn-header" href="exo12_quiz.html"
                 style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">
-                ⏮️ Exercice précédent</a>
+                ⏮️ Previous exercise</a>
 
             <a class="btn-header" href="exo14_quiz.html"
                 style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">
-                Exercice suivant ⏭️</a>
+                Next exercise ⏭️</a>
 
             <a class="btn-header" href="#" id="link-historique"
                 onclick="event.preventDefault(); window.location.href = localStorage.getItem('isLoggedIn') === 'true' ? '../Page-demo/historique.html' : 'Page-demo/register.html';">
-                Mon historique </a>
+                My history </a>
             <div id="widget-profil-header" style="margin-left: 20px;"></div>
         </div>
     </header>
@@ -105,10 +69,10 @@
     <!-- NOUVEAU : BOUTONS D'ACTION EN BAS À DROITE -->
     <div class="exo-actions-footer">
         <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
-            <span class="icon">💾</span> SAUVEGARDER
+            <span class="icon">💾</span> Save draft
         </button>
         <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
-            <span class="icon">✅</span> Exercice Réussi !!
+            <span class="icon">✅</span> Exercise Successful !!
         </button>
     </div>
 
@@ -136,7 +100,7 @@
         </main>
 
         <!-- Script Widget Profil dynamique -->
-        <!-- Ce script permet de gérer l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+        <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
         <script src="../inactivite.js"></script>
         <script src="../../playground-master/src/exos/storage_service.js"></script>
         <script src="./exo13_quiz_page.js"></script>

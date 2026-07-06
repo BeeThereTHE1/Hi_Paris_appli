@@ -10,7 +10,7 @@
         const visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -31,7 +31,7 @@
         <div style="padding: 8px;">
           <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 Mon Historique</a>
           <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📈 Mes Statistiques</a>
-          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Déconnexion</div>
+          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
         </div>
       `;
     let isOpen = false;
@@ -232,7 +232,7 @@ styleEl.textContent = `
 `;
 document.head.appendChild(styleEl);
 
-// ——— LOGIQUE DE DÉROULEMENT PÉDAGOGIQUE ———
+// ——— EXECUTION LOGIC PÉDAGOGIQUE ———
 let translations = null;
 let activeArrows = [];
 
@@ -283,7 +283,7 @@ function startTutorial() {
 
     const nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
 
     popup.appendChild(h3);
@@ -401,9 +401,9 @@ function renderActivity0() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Activité 1</div>
+            <div class="quiz-question-badge">Activity 1</div>
             <div class="quiz-question-card">
-                Lancez les deux modèles en cliquant sur le bouton de lecture (play) de chacun d'eux, et attendez que les pertes d'entraînement (loss) diminuent sous 0.01.
+                Lancez both models en cliquant sur le bouton de lecture (play) de chacun d'eux, et attendez que les pertes d'entraînement (loss) diminuent sous 0.01.
             </div>
         </div>
         <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
@@ -437,9 +437,9 @@ function renderActivity1() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Activité 1</div>
+            <div class="quiz-question-badge">Activity 1</div>
             <div class="quiz-question-card">
-                What differences do you observe between the two results? (Sélectionnez toutes les bonnes réponses)
+                What differences do you observe between the two results? (Sélectionnez toutes the correct answers)
             </div>
         </div>
         <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -460,7 +460,7 @@ function renderActivity1() {
                 <span class="quiz-option-text">The decision boundaries are different</span>
             </button>
         </div>
-        <button class="btn-validate" id="btn-validate-act1">Valider</button>
+        <button class="btn-validate" id="btn-validate-act1">Submit</button>
     `;
 
     const optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
@@ -509,7 +509,7 @@ function renderActivity1() {
             } else if (q1Answers.stops) {
                 fbMsg = "The training stops earlier in one model: Both models use the same training process.";
             } else {
-                fbMsg = "Essayez à nouveau de repérer toutes les différences réelles (poids et frontières).";
+                fbMsg = "Essayez à nouveau de repérer all the differences réelles (poids et frontières).";
             }
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
@@ -541,9 +541,9 @@ function renderActivity2() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Activité 2</div>
+            <div class="quiz-question-badge">Activity 2</div>
             <div class="quiz-question-card">
-                You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Sélectionnez toutes les bonnes réponses)
+                You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Sélectionnez toutes the correct answers)
             </div>
         </div>
         <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -560,7 +560,7 @@ function renderActivity2() {
                 <span class="quiz-option-text">The initial weights are randomly assigned at the start</span>
             </button>
         </div>
-        <button class="btn-validate" id="btn-validate-act2">Valider</button>
+        <button class="btn-validate" id="btn-validate-act2">Submit</button>
     `;
 
     const optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
@@ -654,13 +654,13 @@ function showFinalSummary() {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
 
         const fPanel = document.getElementById('quiz-feedback-panel');
         if (fPanel) {
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                    ✨ Exercice Réussi !! Cliquez sur le bouton "Faire le quiz" en bas à droite pour continuer vers le quiz final de l'exercice.
+                    ✨ Exercise Successful !! Cliquez sur le bouton "Take the quiz" en bas à droite pour continuer vers le quiz final de l'exercice.
                 </div>
             `;
         }
@@ -760,15 +760,15 @@ if (iframe1) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             
             const qPanel = document.getElementById('quiz-question-panel');
             if (qPanel) {
                 qPanel.innerHTML = `
                     <div class="quiz-question-wrapper">
-                        <div class="quiz-question-badge">Exercice Réussi</div>
+                        <div class="quiz-question-badge">Exercise Successful</div>
                         <div class="quiz-question-card">
-                            Vous avez déjà validé cet exercice ! Vous pouvez passer au quiz final.
+                            You have already validated this exercise ! Vous pouvez passer au quiz final.
                         </div>
                     </div>
                 `;

@@ -548,14 +548,14 @@ function showCompletionScreen() {
         <span class="completion-star">⭐</span>
       </div>
 
-      <h2 class="completion-title">Félicitations !</h2>
+      <h2 class="completion-title">Congratulations !</h2>
       <p class="completion-msg">Vous avez parfaitement assimilé l'exercice 13 sur le cycle d'apprentissage itératif.<br>
         Le prochain exercice a été déverrouillé sur le tableau de bord !
       </p>
 
       <div class="completion-actions">
-        <a class="completion-btn-next pulse-btn" href="../exo13.html?completed=true">
-          🚀 Terminer l'exercice
+        <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
+          🚀 Retourner aux Exercices
         </a>
       </div>
     </div>
@@ -575,6 +575,7 @@ function showCompletionScreen() {
 
   // Save progress
   (async () => {
+    localStorage.setItem('quiz_section_3_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(13);
       console.log(`✅ Exercice 13 marqué COMPLETED.`);

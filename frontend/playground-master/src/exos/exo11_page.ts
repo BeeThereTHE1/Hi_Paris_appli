@@ -10,7 +10,7 @@
         const visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -31,7 +31,7 @@
         <div style="padding: 8px;">
           <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 Mon Historique</a>
           <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📈 Mes Statistiques</a>
-          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Déconnexion</div>
+          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
         </div>
       `;
     let isOpen = false;
@@ -277,7 +277,7 @@ styleEl.textContent = `
 `;
 document.head.appendChild(styleEl);
 
-// ——— LOGIQUE DE DÉROULEMENT PÉDAGOGIQUE ———
+// ——— EXECUTION LOGIC PÉDAGOGIQUE ———
 let translations = null;
 let activeArrow = null;
 
@@ -324,7 +324,7 @@ function startTutorial() {
 
     const nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
 
     popup.appendChild(h3);
@@ -490,7 +490,7 @@ function renderActivity1() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Activité 1</div>
+            <div class="quiz-question-badge">Activity 1</div>
             <div class="quiz-question-card">
                 ${translations && translations.activity_1 && translations.activity_1.instruction ? translations.activity_1.instruction : "True or False? Check the correct statement for each of the following properties."}
             </div>
@@ -545,12 +545,12 @@ function renderActivity1() {
                     btnRealise.removeAttribute('disabled');
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
-                    btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+                    btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
                     
                     // Show final message
                     fPanel.innerHTML += `
                         <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                            ✨ Exercice Réussi !! Cliquez sur le bouton "Faire le quiz" en bas à droite pour continuer.
+                            ✨ Exercise Successful !! Cliquez sur le bouton "Take the quiz" en bas à droite pour continuer.
                         </div>
                     `;
                 }
@@ -598,7 +598,7 @@ if (iframe) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             
             // Pulse the home button if completed
             const backBtn = document.querySelector('.universal-header .btn-header') as HTMLElement;
@@ -618,9 +618,9 @@ if (iframe) {
             if (qPanel) {
                 qPanel.innerHTML = `
                     <div class="quiz-question-wrapper">
-                        <div class="quiz-question-badge">Exercice Réussi</div>
+                        <div class="quiz-question-badge">Exercise Successful</div>
                         <div class="quiz-question-card">
-                            Vous avez déjà validé cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.
+                            You have already validated this exercise ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.
                         </div>
                     </div>
                 `;

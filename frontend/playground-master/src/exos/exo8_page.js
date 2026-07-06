@@ -45,7 +45,7 @@ var _this = this;
         var visitorBtn = document.createElement('a');
         visitorBtn.href = 'Page-demo/register.html';
         visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">Vous n\'êtes pas connecté!</span>';
+        visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
         container.appendChild(visitorBtn);
         return;
     }
@@ -279,7 +279,7 @@ function startTutorial() {
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continuer";
+    nextBtn.innerText = "Continue";
     nextBtn.disabled = true;
     popup.appendChild(h3);
     popup.appendChild(p);
@@ -399,7 +399,7 @@ function renderActivity1() {
     if (!qPanel || !fPanel)
         return;
     fPanel.innerHTML = '';
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                What differences do you observe between the two results? (S\u00E9lectionnez toutes les bonnes r\u00E9ponses)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"weights\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The final weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"features\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The input features change</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"stops\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The training stops earlier in one model</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"boundaries\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The decision boundaries are different</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Valider</button>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                What differences do you observe between the two results? (S\u00E9lectionnez toutes les bonnes r\u00E9ponses)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"weights\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The final weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"features\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The input features change</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"stops\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The training stops earlier in one model</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"boundaries\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The decision boundaries are different</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Submit</button>\n    ";
     var optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
     var _loop_1 = function (i) {
         var btn = optionBtns[i];
@@ -444,7 +444,7 @@ function renderActivity1() {
                 fbMsg = "The training stops earlier in one model: Both models use the same training process.";
             }
             else {
-                fbMsg = "Essayez à nouveau de repérer toutes les différences réelles (poids et frontières).";
+                fbMsg = "Essayez à nouveau de repérer all the differences réelles (poids et frontières).";
             }
             fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    " + fbMsg + "\n                    <button class=\"btn-validate\" id=\"btn-retry-act1\" style=\"margin-top:10px; padding:6px 12px; font-size:12px; background:#475569;\">OK</button>\n                </div>\n            ";
             var retryBtn = document.getElementById('btn-retry-act1');
@@ -465,7 +465,7 @@ function renderActivity2() {
     if (!qPanel || !fPanel)
         return;
     fPanel.innerHTML = '';
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 2</div>\n            <div class=\"quiz-question-card\">\n                You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (S\u00E9lectionnez toutes les bonnes r\u00E9ponses)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"starts\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">Each run starts from a different set of weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"dataset\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The dataset changes slightly between runs</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"random\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The initial weights are randomly assigned at the start</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act2\">Valider</button>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 2</div>\n            <div class=\"quiz-question-card\">\n                You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (S\u00E9lectionnez toutes les bonnes r\u00E9ponses)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"starts\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">Each run starts from a different set of weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"dataset\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The dataset changes slightly between runs</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"random\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The initial weights are randomly assigned at the start</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act2\">Submit</button>\n    ";
     var optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
     var _loop_2 = function (i) {
         var btn = optionBtns[i];
@@ -502,7 +502,7 @@ function renderActivity2() {
             };
         }
         else {
-            var fbMsg = "Certaines réponses sont incorrectes.";
+            var fbMsg = "Some answers are incorrect.";
             if (q2Answers.dataset) {
                 fbMsg = "The dataset does not change. Both models use exactly the same data — the difference comes from how the model is initialized, not from the data itself.";
             }
@@ -539,10 +539,10 @@ function showFinalSummary() {
         btnRealise.removeAttribute('disabled');
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
         var fPanel = document.getElementById('quiz-feedback-panel');
         if (fPanel) {
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                    \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Faire le quiz\" en bas \u00E0 droite pour continuer vers le quiz final de l'exercice.\n                </div>\n            ";
+            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                    \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Take the quiz\" en bas \u00E0 droite pour continuer vers le quiz final de l'exercice.\n                </div>\n            ";
         }
     };
 }
@@ -602,7 +602,7 @@ window.addEventListener('message', function (event) {
             model1MinLoss = Infinity;
             var model1Status = document.getElementById('model1-status-text');
             if (model1Status) {
-                model1Status.innerHTML = "Non lancé ⏳";
+                model1Status.innerHTML = "Not launched ⏳";
                 model1Status.style.color = '#ef4444';
             }
         }
@@ -611,7 +611,7 @@ window.addEventListener('message', function (event) {
             model2MinLoss = Infinity;
             var model2Status = document.getElementById('model2-status-text');
             if (model2Status) {
-                model2Status.innerHTML = "Non lancé ⏳";
+                model2Status.innerHTML = "Not launched ⏳";
                 model2Status.style.color = '#ef4444';
             }
         }
@@ -635,7 +635,7 @@ if (iframe1) {
             btnRealise.removeAttribute('disabled');
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Faire le quiz';
+            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             var qPanel = document.getElementById('quiz-question-panel');
             if (qPanel) {
                 qPanel.innerHTML = "\n                    <div class=\"quiz-question-wrapper\">\n                        <div class=\"quiz-question-badge\">Exercice R\u00E9ussi</div>\n                        <div class=\"quiz-question-card\">\n                            Vous avez d\u00E9j\u00E0 valid\u00E9 cet exercice ! Vous pouvez passer au quiz final.\n                        </div>\n                    </div>\n                ";
