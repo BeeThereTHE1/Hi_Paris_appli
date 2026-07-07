@@ -30,15 +30,15 @@
       html: `
         <div class="timeline-controls" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px;">
           <div class="ui-resetButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Reinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">replay</i>
             </button>
           </div>
-          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Lancer/Mettre en pause" style="background:#FF034D; color:#fff; border-radius: 50%; width: 40px; height: 40px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Play/Pause" style="background:#FF034D; color:#fff; border-radius: 50%; width: 40px; height: 40px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
             <i class="material-icons">play_arrow</i>
           </button>
           <div class="ui-stepButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Éstep by step" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Step by step" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">skip_next</i>
             </button>
           </div>
@@ -52,7 +52,7 @@
       selector: ".control.ui-epoch",
       html: `
         <div class="control ui-epoch" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; max-width: 220px; margin: 0 auto;">
-          <span class="label" style="font-size: 11px; color: #cbd5e1; margin-bottom: 5px;">Nombre d'époques <span class="info-tip info-tip-pulse" style="background:#FF034D; color:#fff; border-radius:50%; width:14px; height:14px; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:bold;">i</span></span>
+          <span class="label" style="font-size: 11px; color: #cbd5e1; margin-bottom: 5px;">Number of epochs <span class="info-tip info-tip-pulse" style="background:#FF034D; color:#fff; border-radius:50%; width:14px; height:14px; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:bold;">i</span></span>
           <span class="value" id="iter-number" style="font-size: 22px; font-weight: 800; color: #ffffff;">000,128</span>
         </div>
       `
@@ -64,7 +64,7 @@
       selector: ".output-stats.train.ui-trainLoss",
       html: `
         <div class="output-stats train ui-trainLoss" title="The training loss measures how well the model fits the training dataset." style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center; max-width: 220px; margin: 0 auto;">
-          <span style="font-size: 11px; color: #cbd5e1; margin-bottom: 5px;">Perte entraînement</span>
+          <span style="font-size: 11px; color: #cbd5e1; margin-bottom: 5px;">Training loss</span>
           <div class="value" id="loss-train" style="font-size: 22px; font-weight: 800; color: #ffffff;">0.000</div>
         </div>
       `
@@ -99,15 +99,15 @@
       html: `
         <div class="timeline-controls" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px;">
           <div class="ui-resetButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Réinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="reset-button" title="Reinitialize the network" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">replay</i>
             </button>
           </div>
-          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Lancer/Mettre en pause" style="background:#FF034D; color:#fff; border-radius: 50%; width: 40px; height: 40px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ui-playButton" id="play-pause-button" title="Play/Pause" style="background:#FF034D; color:#fff; border-radius: 50%; width: 40px; height: 40px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
             <i class="material-icons">play_arrow</i>
           </button>
           <div class="ui-stepButton">
-            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Éstep by step" style="color:#fff; background:none; border:none; cursor:pointer;">
+            <button class="mdl-button mdl-js-button mdl-button--icon" id="next-step-button" title="Step by step" style="color:#fff; background:none; border:none; cursor:pointer;">
               <i class="material-icons">skip_next</i>
             </button>
           </div>
@@ -199,7 +199,7 @@
 
     if (window.StorageService) {
       await window.StorageService.complete(2);
-      console.log("✅ Exercice 2 marqué COMPLETED.");
+      console.log("✅ Exercise 2 marked COMPLETED.");
     }
 
     window.location.href = `../exo2.html?completed=true`;
@@ -277,7 +277,7 @@
       bloc2Panel.style.display = 'flex';
       bloc2Panel.innerHTML = `
         <div style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); padding: 40px 20px; text-align: center; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 16px; width:100%; max-width:450px; box-sizing:border-box;">
-          Résolvez l'activité d'ordonnancement à droite pour débloquer le schéma d'entraînement...
+          Solve the ordering activity on the right to unlock the training schema...
         </div>
       `;
     }
@@ -453,7 +453,7 @@
           <div class="bloc2-final-card">
             <div class="bloc2-final-badge">[ 5 ]</div>
             <p class="bloc2-final-text">You can now return to the dashboard to continue with the next exercise.</p>
-            <button class="bloc2-final-btn" id="btn-final-dashboard">Retour au Dashboard</button>
+            <button class="bloc2-final-btn" id="btn-final-dashboard">Return to Dashboard</button>
           </div>
         `;
 

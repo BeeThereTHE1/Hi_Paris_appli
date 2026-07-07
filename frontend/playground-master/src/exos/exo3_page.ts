@@ -26,11 +26,11 @@
         <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
           <div style="font-size: 17px; font-weight: 800; color: #fff;">${user.prenom || ''} ${user.nom || ''}</div>
           <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${user.email || ''}</div>
-          <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;">🟢 Profil ${typeProfil}</div>
+          <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;">🟢 Profile ${typeProfil}</div>
         </div>
         <div style="padding: 8px;">
-          <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 Mon Historique</a>
-          <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📈 Mes Statistiques</a>
+          <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 My History</a>
+          <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📈 My Statistics</a>
           <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
         </div>
       `;
@@ -62,7 +62,7 @@ function showExerciseSuccessCongrats() {
 
   const h3 = document.createElement('h3');
   h3.style.color = '#FFFFFF';
-  h3.innerText = "Excellent !";
+  h3.innerText = "Excellent!";
 
   const p = document.createElement('p');
   p.style.color = '#FFFFFF';
@@ -71,7 +71,7 @@ function showExerciseSuccessCongrats() {
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
   nextBtn.style.background = '#FF553F';
-  nextBtn.innerText = "Aller au Quiz";
+  nextBtn.innerText = "Go to Quiz";
 
   popup.appendChild(h3);
   popup.appendChild(p);
@@ -90,7 +90,7 @@ function showExerciseSuccessCongrats() {
 
     const success = await window.StorageService.complete(3);
     if (success) {
-      btnRealise.innerHTML = '✨ Redirection...';
+      btnRealise.innerHTML = '✨ Redirecting...';
       btnRealise.disabled = true;
       setTimeout(() => {
         window.location.href = 'exoquiz/exo3_quiz.html';
@@ -131,7 +131,7 @@ function saveToStorage(key, exoData) {
 btnSauvegarder.onclick = async () => {
   const success = await window.StorageService.save(3);
   if (success) {
-    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+    btnSauvegarder.innerHTML = '✅ Saved!';
     btnSauvegarder.style.opacity = '0.7';
     btnSauvegarder.disabled = true;
   }
@@ -140,7 +140,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
   const success = await window.StorageService.complete(3);
   if (success) {
-    btnRealise.innerHTML = '✨ Redirection...';
+    btnRealise.innerHTML = '✨ Redirecting...';
     btnRealise.disabled = true;
     setTimeout(() => {
       window.location.href = 'exoquiz/exo3_quiz.html';
@@ -250,7 +250,7 @@ function startTutorial() {
 
   function updateTimer() {
     if (timeLeft > 0) {
-      timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
+      timerSpan.innerText = `Remaining reading time: ${timeLeft}s`;
       timeLeft--;
       setTimeout(updateTimer, 1000);
     } else {

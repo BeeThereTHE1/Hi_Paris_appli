@@ -57,7 +57,7 @@ var _this = this;
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profile " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA My History</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 My Statistics</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA Logout</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -87,14 +87,14 @@ function showExerciseSuccessCongrats() {
     popup.style.background = '#004676';
     var h3 = document.createElement('h3');
     h3.style.color = '#FFFFFF';
-    h3.innerText = "Excellent !";
+    h3.innerText = "Excellent!";
     var p = document.createElement('p');
     p.style.color = '#FFFFFF';
     p.innerText = "The model successfully classified the circular data without hidden layers thanks to the quadratic features (X² and Y²). Let's now take the quiz to validate your knowledge.";
     var nextBtn = document.createElement('button');
     nextBtn.className = 'tutorial-btn';
     nextBtn.style.background = '#FF553F';
-    nextBtn.innerText = "Aller au Quiz";
+    nextBtn.innerText = "Go to Quiz";
     popup.appendChild(h3);
     popup.appendChild(p);
     popup.appendChild(nextBtn);
@@ -115,14 +115,14 @@ function showExerciseSuccessCongrats() {
                 case 1:
                     success = _a.sent();
                     if (success) {
-                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.innerHTML = '✨ Redirecting...';
                         btnRealise.disabled = true;
                         setTimeout(function () {
-                            window.location.href = 'exoquiz/exo1_quiz.html';
+                            window.location.href = 'exoquiz/exo3_quiz.html';
                         }, 800);
                     }
                     else {
-                        window.location.href = 'exoquiz/exo1_quiz.html';
+                        window.location.href = 'exoquiz/exo3_quiz.html';
                     }
                     return [2];
             }
@@ -162,7 +162,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.innerHTML = '✅ Saved!';
                     btnSauvegarder.style.opacity = '0.7';
                     btnSauvegarder.disabled = true;
                 }
@@ -178,10 +178,10 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.innerHTML = '✨ Redirecting...';
                     btnRealise.disabled = true;
                     setTimeout(function () {
-                        window.location.href = 'exoquiz/exo1_quiz.html';
+                        window.location.href = 'exoquiz/exo3_quiz.html';
                     }, 800);
                 }
                 return [2];
@@ -307,7 +307,7 @@ function startTutorial() {
     var timeLeft = 2;
     function updateTimer() {
         if (timeLeft > 0) {
-            timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
+            timerSpan.innerText = "Remaining reading time: " + timeLeft + "s";
             timeLeft--;
             setTimeout(updateTimer, 1000);
         }
