@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -212,44 +212,40 @@ function saveToStorage(key, exoData) {
     }
     return false;
 }
-btnSauvegarder.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, StorageService.save(1)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                        btnSauvegarder.style.opacity = '0.7';
-                        btnSauvegarder.disabled = true;
-                    }
-                    return [2];
-            }
-        });
+btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, StorageService.save(1)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.style.opacity = '0.7';
+                    btnSauvegarder.disabled = true;
+                }
+                return [2];
+        }
     });
-};
-btnRealise.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, StorageService.complete(1)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnRealise.innerHTML = '✨ Redirection...';
-                        btnRealise.disabled = true;
-                        setTimeout(function () {
-                            window.location.href = 'exoquiz/exo1_quiz.html';
-                        }, 800);
-                    }
-                    return [2];
-            }
-        });
+}); };
+btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, StorageService.complete(1)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.disabled = true;
+                    setTimeout(function () {
+                        window.location.href = 'exoquiz/exo1_quiz.html';
+                    }, 800);
+                }
+                return [2];
+        }
     });
-};
+}); };
 var translations = null;
 function loadTranslations() {
     return __awaiter(this, void 0, void 0, function () {
@@ -619,14 +615,14 @@ function runStep3() {
     leftPopup.id = 'exo1-step3-leftpopup';
     var h3 = document.createElement('h3');
     var startText = translations && translations.start_marker ? translations.start_marker : "Let’s Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
-    var titleText = "Let’s Start!";
+    var titleText = "Let’s Start! [6]";
     var bodyText = startText;
     if (startText.startsWith("Let's Start!")) {
         titleText = "Let's Start!";
         bodyText = startText.substring("Let's Start!".length).trim();
     }
     else if (startText.startsWith("Let’s Start!")) {
-        titleText = "Let’s Start!";
+        titleText = "Let’s Start! [6]";
         bodyText = startText.substring("Let’s Start!".length).trim();
     }
     h3.innerText = titleText;
@@ -705,35 +701,33 @@ if (iframe) {
         if (urlParams.get('completed') === 'true') {
             return;
         }
-        setTimeout(function () {
-            return __awaiter(_this, void 0, void 0, function () {
-                var iframeDoc;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            try {
-                                iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                                iframeDoc.querySelectorAll('.info-tip').forEach(function (el) {
-                                    if (el.innerText === '?') {
-                                        el.innerText = 'i';
-                                        el.classList.add('info-tip-pulse');
-                                        el.addEventListener('click', function () {
-                                            el.classList.remove('info-tip-pulse');
-                                        });
-                                    }
-                                });
-                            }
-                            catch (e) {
-                                console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
-                            }
-                            return [4, loadTranslations()];
-                        case 1:
-                            _a.sent();
-                            startTutorial();
-                            return [2];
-                    }
-                });
+        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+            var iframeDoc;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        try {
+                            iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                            iframeDoc.querySelectorAll('.info-tip').forEach(function (el) {
+                                if (el.innerText === '?') {
+                                    el.innerText = 'i';
+                                    el.classList.add('info-tip-pulse');
+                                    el.addEventListener('click', function () {
+                                        el.classList.remove('info-tip-pulse');
+                                    });
+                                }
+                            });
+                        }
+                        catch (e) {
+                            console.error("Erreur lors de la modification des info-tips dans l'iframe:", e);
+                        }
+                        return [4, loadTranslations()];
+                    case 1:
+                        _a.sent();
+                        startTutorial();
+                        return [2];
+                }
             });
-        }, 1200);
+        }); }, 1200);
     });
 }

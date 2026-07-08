@@ -190,7 +190,7 @@ const btnRealise = document.getElementById('btn-realise');
 window.addEventListener('message', (event) => {
   console.log("Signal reçu du Playground:", event.data);
   if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 4 || event.data.exoId == "4")) {
-    console.log("Validation confirmée pour l'exercice 4 !");
+    console.log("Validation confirmée pour l'exercice 5 !");
     btnRealise.disabled = false;
     btnRealise.classList.remove('btn-disabled');
     btnRealise.classList.add('btn-success-ready');
@@ -272,7 +272,7 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = translations && translations.title ? translations.title : "Exercice #4 : Bias Editor";
+  h3.innerText = translations && translations.title ? translations.title : "Exercice #5 : Bias Editor";
 
   const p = document.createElement('p');
   const defaultText = "Instructions: In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.";

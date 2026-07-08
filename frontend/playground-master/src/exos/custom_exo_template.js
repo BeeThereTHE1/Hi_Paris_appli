@@ -194,11 +194,11 @@ if (!exo && !exoId) {
     var tempCss = localStorage.getItem('custom_exo_css');
     var tempHash = localStorage.getItem('custom_exo_hash');
     if (tempCss || tempHash) {
-        console.log("Preview Mode activated (données temporaires du Studio)");
+        console.log("Mode Prévisualisation activé (données temporaires du Studio)");
         exo = {
             id: 'preview',
-            title: "Studio Preview",
-            description: "This is a preview of your current configuration.",
+            title: "Prévisualisation Studio",
+            description: "Ceci est un aperçu de votre configuration actuelle.",
             css: tempCss || "",
             hash: tempHash || "",
             isCustom: true,
@@ -217,15 +217,15 @@ console.log("Est l'auteur original:", isAuthor);
 console.log("Résultat Mode Édition (isDraft):", isDraft);
 console.log("--------------------------");
 if (exo) {
-    console.log("Exercise loaded successfully:", exo);
+    console.log("Exercice chargé avec succès:", exo);
     document.getElementById('page-title').innerText = exo.title || "Exercice";
     document.getElementById('display-title').innerText = exo.title || "Exercice";
     var conditionText = "";
     if (exo.quiz && exo.quiz.question) {
-        conditionText = "<b>Objectif :</b> " + (exo.description || 'Undefined') + "<br><br><b>Challenge :</b> R\u00E9pondre correctement au quiz final.";
+        conditionText = "<b>Objectif :</b> " + (exo.description || 'Non défini') + "<br><br><b>Challenge :</b> R\u00E9pondre correctement au quiz final.";
     }
     else {
-        conditionText = "<b>Objectif :</b> " + (exo.description || 'Undefined') + "<br><br><b>Condition :</b> Atteindre une perte de " + (exo.targetValue || '0.050') + " (" + (exo.condition || 'test loss') + ")";
+        conditionText = "<b>Objectif :</b> " + (exo.description || 'Non défini') + "<br><br><b>Condition :</b> Atteindre une perte de " + (exo.targetValue || '0.050') + " (" + (exo.condition || 'test loss') + ")";
     }
     document.getElementById('display-desc').innerHTML = conditionText;
     var iframe_1 = document.getElementById('exo-frame');
@@ -275,12 +275,12 @@ function openQuizModal() {
             aContainer.appendChild(opt);
         });
         var actions = document.querySelector('.modal-actions');
-        actions.innerHTML = "\n          <button onclick=\"closeQuizModal()\" class=\"btn-modal btn-modal-secondary\">Cancel</button>\n          <button onclick=\"submitQuiz(false)\" class=\"btn-modal btn-modal-secondary\">Save draft</button>\n          <button onclick=\"submitQuiz(true)\" class=\"btn-modal btn-modal-primary\">Publish to Catalog \uD83D\uDE80</button>\n        ";
+        actions.innerHTML = "\n          <button onclick=\"closeQuizModal()\" class=\"btn-modal btn-modal-secondary\">Annuler</button>\n          <button onclick=\"submitQuiz(false)\" class=\"btn-modal btn-modal-secondary\">Enregistrer le brouillon</button>\n          <button onclick=\"submitQuiz(true)\" class=\"btn-modal btn-modal-primary\">Publier au Catalogue \uD83D\uDE80</button>\n        ";
         var addBtn = document.createElement('button');
         addBtn.className = 'btn-modal btn-modal-secondary';
         addBtn.style.width = '100%';
         addBtn.style.marginTop = '10px';
-        addBtn.innerText = "+ Add an option";
+        addBtn.innerText = "+ Ajouter une option";
         addBtn.onclick = function () {
             var newIdx = exo.quiz.answers.length;
             exo.quiz.answers.push({ text: "", isCorrect: false });
@@ -291,7 +291,7 @@ function openQuizModal() {
     else {
         qContainer.innerText = exo.quiz.question;
         var actions = document.querySelector('.modal-actions');
-        actions.innerHTML = "\n          <button onclick=\"closeQuizModal()\" class=\"btn-modal btn-modal-secondary\">Cancel</button>\n          <button onclick=\"submitQuiz()\" class=\"btn-modal btn-modal-primary\">Confirmer ma r\u00E9ponse</button>\n        ";
+        actions.innerHTML = "\n          <button onclick=\"closeQuizModal()\" class=\"btn-modal btn-modal-secondary\">Annuler</button>\n          <button onclick=\"submitQuiz()\" class=\"btn-modal btn-modal-primary\">Confirmer ma r\u00E9ponse</button>\n        ";
         exo.quiz.answers.forEach(function (ans, idx) {
             var opt = document.createElement('div');
             opt.className = 'quiz-opt';
@@ -342,19 +342,19 @@ function submitQuiz(publish) {
             publishExercise();
         }
         else {
-            alert("Draft updated successfully ! ✨");
+            alert("Draft successfully updated! ✨");
             closeQuizModal();
         }
     }
     else {
         var answer = exo.quiz.answers[selectedAnswerIndex];
         if (answer.isCorrect) {
-            alert("Well done ! Good answer ✨. L'exercice est maintenant marqué comme réussi.");
+            alert("Good job! Correct answer ✨. The exercise is now marked as completed.");
             closeQuizModal();
             validateExercise();
         }
         else {
-            alert("Too bad, it's not the right answer. Réessayez pour valider l'exercice !");
+            alert("Dommage, ce n'est pas la bonne réponse. Réessayez pour valider l'exercice !");
         }
     }
 }
@@ -379,7 +379,7 @@ function saveQuizEdits() {
             updatedCount++;
         }
     }
-    console.log("Mise \u00E0 jour effectu\u00E9e dans " + updatedCount + " liste(s)");
+    console.log("Update done dans " + updatedCount + " liste(s)");
     return updatedCount > 0;
 }
 function publishExercise() {
@@ -410,12 +410,12 @@ function validateExercise() {
         list.push(__assign({}, exo, { date: new Date().toLocaleDateString('fr-FR') }));
         localStorage.setItem(key, JSON.stringify(list));
     }
-    btnRealise.innerHTML = '✨ Validated !';
+    btnRealise.innerHTML = '✨ Validé !';
     btnRealise.disabled = true;
 }
 window.addEventListener('message', function (event) {
     if (event.data && event.data.type === 'PLAYGROUND_VALIDATE_CLICK') {
-        console.log("Validation triggered from Playground");
+        console.log("Validation déclenchée depuis le Playground");
         btnRealise.click();
     }
 });
@@ -427,7 +427,7 @@ document.getElementById('btn-sauvegarder').onclick = function (e) {
         list.push(__assign({}, exo, { date: new Date().toLocaleDateString('fr-FR') }));
         localStorage.setItem(key, JSON.stringify(list));
     }
-    e.target.innerHTML = '✅ Saved !';
+    e.target.innerHTML = '✅ Enregistré !';
 };
 document.addEventListener('DOMContentLoaded', function () {
     initProfileWidget();

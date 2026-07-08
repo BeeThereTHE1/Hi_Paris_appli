@@ -201,7 +201,7 @@ btnRealise.onclick = function () {
     var now = new Date().toLocaleDateString('fr-FR');
     var saved = saveToStorage('completed_exercises', { id: 14, date: now });
     if (saved) {
-        btnRealise.innerHTML = '✨ Validated !';
+        btnRealise.innerHTML = '✨ Validé !';
         btnRealise.disabled = true;
         setTimeout(function () { window.location.href = 'Page-demo/historique.html#completed'; }, 1000);
     }

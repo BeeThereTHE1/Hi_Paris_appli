@@ -68,7 +68,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-    
+
     if ((window as any).StorageService) {
         const success = await (window as any).StorageService.complete(8);
         if (success) {
@@ -242,7 +242,7 @@ async function loadTranslations() {
         if (!response.ok) throw new Error("Failed to load translation json");
         const data = await response.json();
         translations = data.exercises.exercise_8;
-        
+
         if (translations) {
             if (translations.title) {
                 document.title = translations.title;
@@ -270,11 +270,11 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #8 Instability";
+    h3.innerText = translations && translations.title ? translations.title : "Exercice #7 Instability";
 
     const p = document.createElement('p');
-    const text = translations && translations.instructions && translations.instructions.general 
-        ? translations.instructions.general 
+    const text = translations && translations.instructions && translations.instructions.general
+        ? translations.instructions.general
         : "Run the two models below (same dataset and settings) and identify what explains the differences between their results.";
     p.innerText = text;
 
@@ -376,7 +376,7 @@ function showFlashingArrows() {
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.document.removeEventListener('click', dismissArrows);
                 }
-            } catch(e) {}
+            } catch (e) { }
         });
     };
 
@@ -388,7 +388,7 @@ function showFlashingArrows() {
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.document.addEventListener('click', dismissArrows);
                 }
-            } catch(e) {}
+            } catch (e) { }
         });
     }, 100);
 }
@@ -660,7 +660,7 @@ function showFinalSummary() {
         if (fPanel) {
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                    ✨ Exercise Successful !! Cliquez sur le bouton "Take the quiz" en bas à droite pour continuer vers le quiz final de l'exercice.
+                    ✨ Exercise Successful!! Click on the "Take the quiz" button at the bottom right to continue to the final quiz of the exercise.
                 </div>
             `;
         }
@@ -677,7 +677,7 @@ let activity1Rendered = false;
 window.addEventListener('message', (event) => {
     if (event.data.type === 'EXO8_STEP') {
         const { modelId, lossTrain, iter } = event.data;
-        
+
         if (modelId === '1') {
             model1Started = true;
             if (lossTrain < model1MinLoss) model1MinLoss = lossTrain;
@@ -711,7 +711,7 @@ window.addEventListener('message', (event) => {
             activity1Rendered = true;
             activeArrows.forEach(a => a.remove());
             activeArrows = [];
-            
+
             // Short delay to let user see "Prêt" status before transition
             setTimeout(() => {
                 renderActivity1();
@@ -761,7 +761,7 @@ if (iframe1) {
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
             btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-            
+
             const qPanel = document.getElementById('quiz-question-panel');
             if (qPanel) {
                 qPanel.innerHTML = `

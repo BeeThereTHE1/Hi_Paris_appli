@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -57,7 +57,7 @@ var _this = this;
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA Logout</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -104,32 +104,30 @@ function showExerciseSuccessCongrats() {
         overlay.remove();
         document.removeEventListener('click', dismiss);
     };
-    nextBtn.onclick = function (e) {
-        return __awaiter(_this, void 0, void 0, function () {
-            var success;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        e.stopPropagation();
-                        dismiss();
-                        return [4, window.StorageService.complete(2)];
-                    case 1:
-                        success = _a.sent();
-                        if (success) {
-                            btnRealise.innerHTML = '✨ Redirection...';
-                            btnRealise.disabled = true;
-                            setTimeout(function () {
-                                window.location.href = 'exoquiz/exo2_quiz.html';
-                            }, 800);
-                        }
-                        else {
+    nextBtn.onclick = function (e) { return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    e.stopPropagation();
+                    dismiss();
+                    return [4, window.StorageService.complete(2)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () {
                             window.location.href = 'exoquiz/exo2_quiz.html';
-                        }
-                        return [2];
-                }
-            });
+                        }, 800);
+                    }
+                    else {
+                        window.location.href = 'exoquiz/exo2_quiz.html';
+                    }
+                    return [2];
+            }
         });
-    };
+    }); };
     setTimeout(function () {
         document.addEventListener('click', dismiss);
     }, 100);
@@ -143,44 +141,40 @@ window.addEventListener('message', function (event) {
         showExerciseSuccessCongrats();
     }
 });
-btnSauvegarder.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, window.StorageService.save(2)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                        btnSauvegarder.style.opacity = '0.7';
-                        btnSauvegarder.disabled = true;
-                    }
-                    return [2];
-            }
-        });
+btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, window.StorageService.save(2)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.style.opacity = '0.7';
+                    btnSauvegarder.disabled = true;
+                }
+                return [2];
+        }
     });
-};
-btnRealise.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, window.StorageService.complete(2)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnRealise.innerHTML = '✨ Redirection...';
-                        btnRealise.disabled = true;
-                        setTimeout(function () {
-                            window.location.href = 'exoquiz/exo2_quiz.html';
-                        }, 800);
-                    }
-                    return [2];
-            }
-        });
+}); };
+btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
+    var success;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, window.StorageService.complete(2)];
+            case 1:
+                success = _a.sent();
+                if (success) {
+                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.disabled = true;
+                    setTimeout(function () {
+                        window.location.href = 'exoquiz/exo2_quiz.html';
+                    }, 800);
+                }
+                return [2];
+        }
     });
-};
+}); };
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -538,7 +532,7 @@ function runStep2() {
 }
 function runStep3() {
     showHighlightBox('.control.ui-epoch', '3');
-    showCustomTooltip('.control.ui-epoch', "Epochs", "An epoch is one complete pass of the entire training dataset through a machine learning model during the training process.Training usually requires multiple epochs so the model can gradually improve its predictions.", 'bottom');
+    showCustomTooltip('.control.ui-epoch', "Number of Epochs", "This counter indicates how many times the entire dataset has passed through the neural network.", 'bottom');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runStep4();
@@ -549,7 +543,7 @@ function runStep3() {
 }
 function runStep4() {
     showHighlightBox('.output-stats.train.ui-trainLoss', '4');
-    showCustomTooltip('.output-stats.train.ui-trainLoss', "Training Loss", "This value measures the model's error. The lower it drops and approaches 0, the better the network learns to classify correctly.", 'left');
+    showCustomTooltip('.output-stats.train.ui-trainLoss', "Training Loss", "Training Loss measures how wrong the models predictions are on the training data, during training, this value decreases as the model learns.", 'left');
     var clickHandler = function () {
         document.removeEventListener('click', clickHandler);
         runStep5();

@@ -1,4 +1,4 @@
-// Exercice 6 Quiz page logic
+// Exercice 4 Quiz page logic
 window.__currentQuizExoId = 6;
 let translations = null;
 
@@ -63,7 +63,7 @@ function initQuiz() {
   ddOverlay.innerHTML = `
     <div class="dragdrop-container" style="margin: 20px; max-width: 650px;">
       <div class="dragdrop-header">
-        <span class="dragdrop-badge">Quiz 6</span>
+        <span class="dragdrop-badge">Quiz 4</span>
         <h2>Drag & Drop Statements</h2>
         <h3> True Or False ?</h3>
       </div>
@@ -84,8 +84,8 @@ function initQuiz() {
       </div>
       
       <div class="dragdrop-success-msg" style="display: none;">
-        <h4>🎉 Congratulations ! Toutes les statements wereé triées correctement.</h4>
-        <button class="dragdrop-close-btn">Terminer le Quiz</button>
+        <h4>🎉 Congratulations! All the statements were sorted correctly.</h4>
+        <button class="dragdrop-close-btn">Finish the Quiz</button>
       </div>
     </div>
   `;
@@ -237,7 +237,7 @@ function initQuiz() {
       // Save completed status via StorageService
       if (window.StorageService) {
         await window.StorageService.complete(6);
-        console.log("✅ Exercice 6 marqué COMPLETED.");
+        console.log("✅ Exercice 4 marqué COMPLETED.");
       }
 
       // Redirect back with completed parameter to trigger inactivite.js completion overlays

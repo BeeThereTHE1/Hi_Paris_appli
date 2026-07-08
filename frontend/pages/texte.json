@@ -305,7 +305,7 @@
             }
         },
         "exercise_6": {
-            "title": "Exercise #6",
+            "title": "Exercise #4",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will explore how a neural network builds its prediction step by step. First compare a simple model using only x₁ and x₂ with a model that includes one hidden layer with four neurons.",
@@ -398,7 +398,7 @@
             }
         },
         "exercise_4": {
-            "title": "Exercise #4",
+            "title": "Exercise #5",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.",
@@ -426,7 +426,7 @@
             "validation": "Let's get to the next exercise"
         },
         "exercise_7": {
-            "title": "Exercise #7 Activation Functions",
+            "title": "Exercise #6 Activation Functions",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Explore how different activation functions affect the model's behavior and learning.",
@@ -519,7 +519,7 @@
             }
         },
         "exercise_8": {
-            "title": "Exercise #8 Instability",
+            "title": "Exercise #7 Instability",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Run the two models below (same dataset and settings) and identify what explains the differences between their results",
@@ -1505,7 +1505,7 @@
             }
         },
         "exercise_7": {
-            "title": "Exercise #7",
+            "title": "Exercise #6",
             "instructions": {
                 "general": "In this exercise, you will investigate how activation functions affect the model's ability to learn non-linear boundaries. Test each activation function on the Circle dataset, fill out the Yes/No table, and answer the statements about how activation functions affect learning.",
                 "activity_1": "Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset."

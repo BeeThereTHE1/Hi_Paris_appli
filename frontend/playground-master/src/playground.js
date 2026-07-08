@@ -299,8 +299,8 @@ function initExo3Boxes() {
     datasetDiv.selectAll("#msg-box-linear").remove();
     var msgBoxLinear = datasetDiv.append("div")
         .attr("id", "msg-box-linear")
-        .attr("class", "exo3-msg-box");
-    msgBoxLinear.style({
+        .attr("class", "exo3-msg-box")
+        .style({
         "background-color": "#004676",
         "border": "1px solid #004676",
         "border-radius": "8px",
@@ -315,8 +315,8 @@ function initExo3Boxes() {
     networkDiv.selectAll("#msg-box-quadratic").remove();
     var msgBoxQuadratic = networkDiv.insert("div", "#hovercard")
         .attr("id", "msg-box-quadratic")
-        .attr("class", "exo3-msg-box");
-    msgBoxQuadratic.style({
+        .attr("class", "exo3-msg-box")
+        .style({
         "background-color": "#004676",
         "border": "1px solid #004676",
         "border-radius": "8px",
@@ -328,7 +328,7 @@ function initExo3Boxes() {
         "position": "relative",
         "display": "none"
     });
-    msgBoxQuadratic.html("\n    <strong>\uD83C\uDF89 Step 2:</strong> Now, activate the <strong>X\u00B2</strong> and <strong>Y\u00B2</strong> features and train again to successfully classify!\n  ");
+    msgBoxQuadratic.html("\n    <strong>\uD83C\uDF89 Step 2:</strong> Now, activate the <strong>X1\u00B2</strong> and <strong>X2\u00B2</strong> features and train again to successfully classify!\n  ");
     updateQuadraticFeaturesExo3();
 }
 function makeGUI() {
@@ -535,6 +535,9 @@ function makeGUI() {
         state.serialize();
         userHasInteracted();
         parametersChanged = true;
+        if (window.parent) {
+            window.parent.postMessage({ type: 'LEARNING_RATE_CHANGED', value: state.learningRate }, '*');
+        }
     });
     learningRate.property("value", state.learningRate);
     var regularDropdown = d3.select("#regularizations").on("change", function () {
@@ -720,7 +723,7 @@ function makeGUI() {
                     success = true;
                 }
                 else {
-                    message = "Les pertes doivent \u00EAtre identiques ou tr\u00E8s proches (diff < 0.01)}";
+                    message = "Losses must be identical or very close (diff < 0.01)}";
                 }
             }
         }
@@ -769,7 +772,7 @@ function makeGUI() {
         msgDiv.classed("show", false);
         setTimeout(function () {
             if (success) {
-                showToast("✨ Congratulations ! Exercice validé.", "success");
+                showToast("✨ Congratulations ! Exercise completed.", "success");
                 msgDiv.text("Congratulation !")
                     .classed("success", true)
                     .classed("error", false)
@@ -1587,6 +1590,16 @@ function oneStep() {
         if (window.parent) {
             window.parent.postMessage({
                 type: 'EXO11_STEP',
+                learningRate: state.learningRate,
+                lossTrain: lossTrain,
+                iter: iter
+            }, '*');
+        }
+    }
+    if (exoId === 17) {
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'EXO17_STEP',
                 learningRate: state.learningRate,
                 lossTrain: lossTrain,
                 iter: iter

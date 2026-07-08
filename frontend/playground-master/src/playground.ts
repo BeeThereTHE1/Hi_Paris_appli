@@ -920,7 +920,7 @@ function makeGUI() {
     //permet d'afficher le message de réussite ou d'erreur
     setTimeout(() => {
       if (success) {
-        showToast("✨ Congratulations ! Exercice validé.", "success");
+        showToast("✨ Congratulations ! Exercise completed.", "success");
 
         // On garde l'affichage interne pour la structure
         msgDiv.text("Congratulation !")

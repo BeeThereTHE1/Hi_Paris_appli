@@ -47,7 +47,7 @@ export const exo4 = {
 
 
 /**
- * Initialise la popup d'introduction de l'exercice 4 (2 pages).
+ * Initialise la popup d'introduction de l'exercice 5 (2 pages).
  */
 export function initExo4Popups(): void {
   const overlay = d3.select("#exo4-popup-overlay");

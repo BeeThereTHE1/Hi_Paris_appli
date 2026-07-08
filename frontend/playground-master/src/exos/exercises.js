@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -55,56 +55,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     var avatar = document.createElement('div');
     avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(255,255,255,0.3); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;';
     avatar.innerText = initiales.toUpperCase();
-    (function () {
-        return __awaiter(_this, void 0, void 0, function () {
-            var count, r, res, data, res, subs, badge, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 7, , 8]);
-                        count = 0;
-                        r = (user.role || user.profil || '').toUpperCase();
-                        if (!(r.includes('TEACH') || r.includes('ENS'))) return [3, 3];
-                        return [4, fetch("/api/submissions/teacher/" + user.id + "/count", { headers: { 'x-user-email': user.email } })];
-                    case 1:
-                        res = _b.sent();
-                        return [4, res.json()];
-                    case 2:
-                        data = _b.sent();
-                        count = data.count || 0;
-                        return [3, 6];
-                    case 3: return [4, fetch("/api/submissions/student/" + user.id)];
-                    case 4:
-                        res = _b.sent();
-                        return [4, res.json()];
-                    case 5:
-                        subs = _b.sent();
-                        count = subs.filter(function (s) { return s.status !== 'PENDING'; }).length;
-                        _b.label = 6;
-                    case 6:
-                        if (count > 0) {
-                            badge = document.createElement('span');
-                            badge.style.cssText = 'position:absolute; top:-5px; right:-5px; background:#ef4444; color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; border:2px solid #0f172a; font-weight:800; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);';
-                            badge.innerText = count;
-                            avatar.appendChild(badge);
-                        }
-                        return [3, 8];
-                    case 7:
-                        e_1 = _b.sent();
-                        console.error("Badge error:", e_1);
-                        return [3, 8];
-                    case 8: return [2];
-                }
-            });
+    (function () { return __awaiter(_this, void 0, void 0, function () {
+        var count, r, res, data, res, subs, badge, e_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 7, , 8]);
+                    count = 0;
+                    r = (user.role || user.profil || '').toUpperCase();
+                    if (!(r.includes('TEACH') || r.includes('ENS'))) return [3, 3];
+                    return [4, fetch("/api/submissions/teacher/" + user.id + "/count", { headers: { 'x-user-email': user.email } })];
+                case 1:
+                    res = _b.sent();
+                    return [4, res.json()];
+                case 2:
+                    data = _b.sent();
+                    count = data.count || 0;
+                    return [3, 6];
+                case 3: return [4, fetch("/api/submissions/student/" + user.id)];
+                case 4:
+                    res = _b.sent();
+                    return [4, res.json()];
+                case 5:
+                    subs = _b.sent();
+                    count = subs.filter(function (s) { return s.status !== 'PENDING'; }).length;
+                    _b.label = 6;
+                case 6:
+                    if (count > 0) {
+                        badge = document.createElement('span');
+                        badge.style.cssText = 'position:absolute; top:-5px; right:-5px; background:#ef4444; color:white; border-radius:50%; width:18px; height:18px; font-size:10px; display:flex; align-items:center; justify-content:center; border:2px solid #0f172a; font-weight:800; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);';
+                        badge.innerText = count;
+                        avatar.appendChild(badge);
+                    }
+                    return [3, 8];
+                case 7:
+                    e_1 = _b.sent();
+                    console.error("Badge error:", e_1);
+                    return [3, 8];
+                case 8: return [2];
+            }
         });
-    })();
+    }); })();
     avatar.onmouseover = function () { return avatar.style.transform = 'scale(1.1) rotate(5deg)'; };
     avatar.onmouseout = function () { return avatar.style.transform = 'scale(1) rotate(0deg)'; };
     var menu = document.createElement('div');
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset; overflow: hidden; transform-origin: top right; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: scale(0.9) translateY(-10px); pointer-events: none;';
     var p = user.profil || user.profile || user.role || 'étudiant';
-    var typeProfile = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;\">\uD83D\uDFE2 Profile " + typeProfile + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCCA</span> My History\n          </a>\n          <a href=\"../statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCC8</span> My Statistics\n          </a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;\" onmouseover=\"this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDEAA</span> D\u00E9connexion\n          </div>\n        </div>\n      ";
+    var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCCA</span> Mon Historique\n          </a>\n          <a href=\"../statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;\" onmouseover=\"this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDCC8</span> Mes Statistiques\n          </a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;\" onmouseover=\"this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';\" onmouseout=\"this.style.background='transparent'; this.style.transform='translateX(0)';\">\n            <span style=\"font-size: 16px;\">\uD83D\uDEAA</span> D\u00E9connexion\n          </div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -139,27 +137,27 @@ var EXERCISES = [
     {
         id: 1, icon: '🧠', title: 'Exercice 1 : Linear classification',
         desc: 'Adjust model parameters to understand how a simple model separates data into two classes.',
-        difficulty: 'easy', category: 'Fundamentals', duration: '15 min', questions: 8
+        difficulty: 'easy', category: 'Fondamentaux', duration: '15 min', questions: 8
     },
     {
         id: 2, icon: '📊', title: 'Exercice 2 : Model training',
         desc: "Explore how model's predictions is based on an iterative process",
-        difficulty: 'easy', category: 'Optimization', duration: '20 min', questions: 10
+        difficulty: 'easy', category: 'Optimisation', duration: '20 min', questions: 10
     },
     {
         id: 3, icon: '🔢', title: 'Exercice 3 : Linear and non-linear features',
         desc: 'Observe the limitations of a linear model and the role of non-linear features in learning complex patterns',
-        difficulty: 'easy', category: 'Fundamentals', duration: '15 min', questions: 6
+        difficulty: 'easy', category: 'Fondamentaux', duration: '15 min', questions: 6
     },
     {
         id: 6, icon: '🔵', title: 'Exercice 4 : Neurons and Hidden layers',
         desc: 'Identify how a neural network builds predictions from intermediate features.',
-        difficulty: 'medium', category: 'Fundamentals', duration: '20 min', questions: 12
+        difficulty: 'medium', category: 'Fondamentaux', duration: '20 min', questions: 12
     },
     {
         id: 4, icon: '⚡', title: 'Exercice 5 : Bias',
         desc: 'Explore Bias impact on Neural network model',
-        difficulty: 'easy', category: 'Algorithms', duration: '25 min', questions: 12
+        difficulty: 'easy', category: 'Algorithmes', duration: '25 min', questions: 12
     },
     {
         id: 7, icon: '🤖', title: 'Exercice 6 : Activation functions',
@@ -207,7 +205,7 @@ var EXERCISES = [
         difficulty: 'hard', category: 'Architectures', duration: '45 min', questions: 20
     }
 ];
-var DIFF_LABEL = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+var DIFF_LABEL = { easy: 'Facile', medium: 'Intermédiaire', hard: 'Difficile' };
 var currentFilter = 'tous';
 var user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 var role = (user.role || user.profil || user.profile || 'ETUDIANT').toUpperCase();
@@ -237,88 +235,88 @@ var SECTIONS_CONFIG = {
     4: { name: "Generalization & Deep Learning Limits", exos: [16, 12, 15], gridId: "exGridSec4", containerId: "section-4-container" }
 };
 var FUN_FACTS = {
-    1: "Logistic regression was invented by Joseph Berkson in 1944. It is one of the most widely used classification models in the world!",
-    2: "Supervised learning is directly inspired by how a child learns by making mistakes and being corrected by an adult.",
-    3: "Circular data cannot be separated by a simple straight line. That's why we need non-linear activation functions!",
-    4: "The bias allows the activation function to be shifted to the left or right, providing a crucial degree of freedom to the neuron.",
-    5: "Combining several complex input features (like x² or xy) allows solving non-linear problems without adding hidden layers.",
-    6: "Hidden layers act as extractors of increasingly abstract features. The deeper you go, the more complex the concept.",
-    7: "ReLU (Rectified Linear Unit) is the most popular activation function because it avoids the vanishing gradient problem while being very fast to compute.",
-    8: "A neural network with the same hyperparameters can converge to different solutions due to random weight initialization!",
-    9: "Stochastic Gradient Descent (SGD) uses a single sample at a time to update weights, making learning extremely fast but noisy.",
-    10: "The learning rate is the most sensitive hyperparameter: too large, the model oscillates; too small, it takes forever to converge.",
-    11: "Backpropagation was popularized by Geoffrey Hinton in 1986. It calculates the partial derivatives of the error with respect to each weight.",
-    12: "Overfitting occurs when the model memorizes the noise of the training data, losing its ability to generalize.",
-    13: "L2 Regularization (Ridge) adds a penalty proportional to the square of the weight values to force the network to keep weights small and simple.",
-    14: "Dropout randomly disables a percentage of neurons at each iteration, forcing the network not to rely on a single path of neurons.",
-    15: "Cross-validation divides the data to reliably estimate the model's actual performance on future data.",
-    16: "Deep networks can learn functions of infinite complexity. This is the universal approximation theorem!",
-    17: "Loss functions like mean squared error or cross-entropy measure the gap between predictions and reality."
+    1: "La régression logistique a été inventée par Joseph Berkson en 1944. C'est l'one of the models de classification the most used au monde !",
+    2: "L'apprentissage supervisé s'inspire directement de la façon dont un enfant apprend en faisant des erreurs et en étant corrigé par un adulte.",
+    3: "Les données circulaires ne peuvent pas être séparées par une simple ligne droite. C'est pourquoi nous avons besoin de fonctions d'activation non linéaires !",
+    4: "Le biais permet de décaler la fonction d'activation vers la gauche ou la droite, offrant un degré de liberté crucial au neurone.",
+    5: "Combiner plusieurs caractéristiques d'entrée complexes (comme x² ou xy) permet de résoudre des problèmes non linéaires sans ajouter de couches cachées.",
+    6: "Les couches cachées agissent comme des extracteurs de caractéristiques de plus en plus abstraites. Plus on va profond, plus le concept est complexe.",
+    7: "ReLU (Rectified Linear Unit) est la fonction d'activation la plus populaire car elle évite le problème de la disparition du gradient tout en étant très rapide à calculer.",
+    8: "Un réseau de neurones avec les mêmes hyperparamètres peut converger vers des solutions différentes à cause de l'initialisation aléatoire des poids !",
+    9: "La descente de gradient stochastique (SGD) utilise un seul échantillon à la fois pour mettre à jour les poids, rendant l'apprentissage extrêmement rapide mais bruyant.",
+    10: "Le taux d'apprentissage (learning rate) est l'hyperparamètre le plus sensible : trop grand, le modèle oscille ; trop petit, il met une éternité à converger.",
+    11: "La rétropropagation du gradient (backpropagation) a été popularisée par Geoffrey Hinton en 1986. Elle calcule les dérivées partielles de l'erreur par rapport à chaque poids.",
+    12: "Le surapprentissage (overfitting) se produit lorsque le modèle apprend par cœur le bruit des données d'entraînement, perdant sa capacité de généralisation.",
+    13: "La régularisation L2 (Ridge) ajoute une pénalité proportionnelle au carré de la valeur des poids pour forcer le réseau à garder des poids petits et simples.",
+    14: "Le dropout désactive aléatoirement un pourcentage de neurones à chaque itération, forçant le réseau à ne pas dépendre d'un seul chemin de neurones.",
+    15: "La validation croisée (cross-validation) divise les données pour estimer de manière fiable les performances réelles du modèle sur de futures données.",
+    16: "Les réseaux profonds peuvent apprendre des fonctions d'une complexité infinie. C'est le théorème d'approximation universelle !",
+    17: "Les fonctions d'erreur (loss functions) comme l'erreur quadratique moyenne ou la cross-entropy mesurent l'écart entre les prédictions et la réalité."
 };
 var QUIZZES = {
     1: {
-        title: "Quiz Section 1: Network Foundations",
+        title: "Quiz Section 1 : Fondations des Réseaux",
         questions: [
             {
-                q: "Which activation function is essential for logistic regression to return a probability between 0 and 1?",
-                options: ["Sigmoid", "ReLU", "Linear", "Hyperbolic Tangent"],
+                q: "Quelle fonction d'activation est indispensable pour que la régression logistique retourne une probabilité entre 0 et 1 ?",
+                options: ["Sigmoïde", "ReLU", "Linéaire", "Tangente Hyperbolique"],
                 answer: 0,
                 fallbackExo: 1
             },
             {
-                q: "If classification data forms a perfect circle surrounding another class, what type of separation is necessary?",
-                options: ["A linear separation", "A non-linear separation", "No separation possible"],
+                q: "Si des données de classification forment un cercle parfait entourant une autre classe, quel type de séparation est nécessaire ?",
+                options: ["Une séparation linéaire", "Une séparation non linéaire", "Aucune séparation possible"],
                 answer: 1,
                 fallbackExo: 3
             }
         ]
     },
     2: {
-        title: "Quiz Section 2: Building Blocks",
+        title: "Quiz Section 2 : Les Blocs de Construction",
         questions: [
             {
-                q: "What is the main role of the bias in an artificial neuron?",
-                options: ["Shift the activation function", "Multiply the weight of the input", "Calculate the prediction error"],
+                q: "Quel est le rôle principal du biais (bias) dans un neurone artificiel ?",
+                options: ["Décaler la fonction d'activation", "Multiplier le poids de l'entrée", "Calculer l'erreur de prédiction"],
                 answer: 0,
                 fallbackExo: 4
             },
             {
-                q: "Pourquoi les fonctions d'activation non-linéaires (comme ReLU ou Sigmoid) sont-elles cruciales dans les couches cachées ?",
-                options: ["To speed up hardware computation", "To allow the network to learn complex non-linear relationships", "To stabilize initial weights at zero"],
+                q: "Pourquoi les fonctions d'activation non-linéaires (comme ReLU ou Sigmoïde) sont-elles cruciales dans les couches cachées ?",
+                options: ["Pour accélérer le calcul matériel", "Pour permettre au réseau d'apprendre des relations complexes non-linéaires", "Pour stabiliser les poids initiaux à zéro"],
                 answer: 1,
                 fallbackExo: 7
             }
         ]
     },
     3: {
-        title: "Quiz Section 3 : Entraînement & Optimization",
+        title: "Quiz Section 3 : Entraînement & Optimisation",
         questions: [
             {
-                q: "What problem can occur if the learning rate is too high?",
-                options: ["Training is too slow", "The model risks oscillating and never converging to the minimum", "The weights all become equal to zero"],
+                q: "Quel problème peut survenir si le taux d'apprentissage (learning rate) est trop élevé ?",
+                options: ["L'entraînement est trop lent", "Le modèle risque d'osciller et ne jamais converger vers le minimum", "Les poids deviennent tous égaux à zéro"],
                 answer: 1,
                 fallbackExo: 10
             },
             {
-                q: "What technique allows propagating the error from the output to the input to adjust the weights?",
-                options: ["Backpropagation", "Stochastic gradient descent", "L1/L2 regularization"],
+                q: "Quelle technique permet de propager l'erreur de la sortie vers l'entrée pour ajuster les poids ?",
+                options: ["La rétropropagation du gradient", "La descente de gradient stochastique", "La régularisation L1/L2"],
                 answer: 0,
                 fallbackExo: 11
             }
         ]
     },
     4: {
-        title: "Quiz Section 4: Generalization & Limits",
+        title: "Quiz Section 4 : Généralisation & Limites",
         questions: [
             {
-                q: "What is the phenomenon called where a model is excellent on training data but very poor on new data?",
-                options: ["Underfitting", "Overfitting", "Extreme regularization"],
+                q: "Comment appelle-t-on le phénomène où un modèle est excellent sur les données d'entraînement mais très mauvais sur les nouvelles données ?",
+                options: ["Sous-apprentissage (Underfitting)", "Surapprentissage (Overfitting)", "Régularisation extrême"],
                 answer: 1,
                 fallbackExo: 12
             },
             {
-                q: "What is the purpose of 'Dropout' during the training of a deep network?",
-                options: ["Permanently remove bad data", "Randomly disable neurons to avoid overfitting", "Increase the dimension of the input space"],
+                q: "Quel est le but du 'Dropout' lors de l'entraînement d'un réseau profond ?",
+                options: ["Supprimer définitivement les mauvaises données", "Désactiver aléatoirement des neurones pour éviter le surapprentissage", "Augmenter la dimension de l'espace d'entrée"],
                 answer: 1,
                 fallbackExo: 14
             }
@@ -345,13 +343,13 @@ function visitIntroItem(type) {
     }
     updateIntroUI();
     applyFilters();
-    
-    // Navigation
     if (type === 'eval') {
         window.location.href = '../evaluate.html';
-    } else if (type === 'res') {
+    }
+    else if (type === 'res') {
         window.open('https://fr.wikipedia.org/wiki/Apprentissage_profond', '_blank');
-    } else if (type === 'tuto') {
+    }
+    else if (type === 'tuto') {
         window.location.href = '../exo1.html';
     }
 }
@@ -361,11 +359,11 @@ function updateIntroUI() {
         var el = document.getElementById("status-intro-" + k);
         if (el) {
             if (introState[k]) {
-                el.innerHTML = "✅ Visited";
+                el.innerHTML = "✅ Visité";
                 el.style.color = "var(--green)";
             }
             else {
-                el.innerHTML = "❌ Not visited";
+                el.innerHTML = "❌ Non visité";
                 el.style.color = "var(--red)";
             }
         }
@@ -382,7 +380,6 @@ function fetchProgressAndCreatedExos() {
                 case 0:
                     user = JSON.parse(localStorage.getItem('currentUser'));
                     if (!user || !user.email) {
-                        // Si non connecté, on charge la progression temporaire depuis localStorage
                         tempCompleted = JSON.parse(localStorage.getItem('temp_completed_exos') || '[]');
                         completedOfficialIds = new Set(tempCompleted);
                         return [2];
@@ -464,13 +461,13 @@ function deleteCommunityExo(id) {
                 case 4: return [4, res.json()];
                 case 5:
                     err = _b.sent();
-                    alert("Error: " + (err.error || 'Unable to delete'));
+                    alert("Error : " + (err.error || 'Impossible to delete'));
                     _b.label = 6;
                 case 6: return [3, 8];
                 case 7:
                     err_2 = _b.sent();
-                    console.error('Erreur suppression:', err_2);
-                    alert("Network error during deletion.");
+                    console.error('Error:', err_2);
+                    alert("Error network");
                     return [3, 8];
                 case 8: return [2];
             }
@@ -501,32 +498,28 @@ function loadAndRender() {
                 case 2:
                     data = _b.sent();
                     communityOnly = data.filter(function (exo) { return !exo.is_official && !exo.official_id; });
-                    CUSTOM_EXERCISES_FROM_API = communityOnly.map(function (exo) {
-                        return ({
-                            id: exo.id,
-                            icon: '👥',
-                            title: exo.title,
-                            desc: exo.description || 'Custom exercise',
-                            difficulty: 'easy',
-                            category: 'Community',
-                            duration: 'Auto',
-                            questions: '?',
-                            isCustom: true,
-                            creator_id: exo.creator_id
-                        });
-                    });
+                    CUSTOM_EXERCISES_FROM_API = communityOnly.map(function (exo) { return ({
+                        id: exo.id,
+                        icon: '👥',
+                        title: exo.title,
+                        desc: exo.description || 'Custom Exercise',
+                        difficulty: 'easy',
+                        category: 'Community',
+                        duration: 'Auto',
+                        questions: '?',
+                        isCustom: true,
+                        creator_id: exo.creator_id
+                    }); });
                     _b.label = 3;
                 case 3: return [3, 5];
                 case 4:
                     err_3 = _b.sent();
                     console.warn('⚠️ API indisponible pour les exos custom:', err_3.message);
                     localCustom = JSON.parse(localStorage.getItem('official_custom_exercises') || '[]');
-                    CUSTOM_EXERCISES_FROM_API = localCustom.map(function (exo) {
-                        return ({
-                            id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
-                            difficulty: 'easy', category: 'Community', duration: 'Auto', questions: '?', isCustom: true
-                        });
-                    });
+                    CUSTOM_EXERCISES_FROM_API = localCustom.map(function (exo) { return ({
+                        id: exo.id, icon: '👥', title: exo.title, desc: exo.description || '',
+                        difficulty: 'easy', category: 'Community', duration: 'Auto', questions: '?', isCustom: true
+                    }); });
                     return [3, 5];
                 case 5:
                     applyFilters();
@@ -680,7 +673,7 @@ function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
     }
     var lockIcon = getLockSvg(!isQuizUnlocked);
     var starIcon = getStarSvg(quizCompleted);
-    card.innerHTML = "\n      <div class=\"card-top\">\n        <div class=\"card-actions-top\">\n            <span class=\"lock-indicator\">" + lockIcon + "</span>\n            <span class=\"star-indicator\">" + starIcon + "</span>\n        </div>\n        <span class=\"badge medium quiz-badge\">\uD83C\uDFC5 Quiz</span>\n      </div>\n      <div class=\"category-tag\">\u00C9valuation</div>\n      <div class=\"card-title\">Validation of the Section " + sectionKey + "</div>\n      <div class=\"card-desc\">Testez vos acquis th\u00E9oriques pour d\u00E9bloquer la section suivante.</div>\n      <div class=\"card-footer\">\n        <div class=\"card-meta\">\n           <div class=\"meta-item\">\uD83D\uDD52 5 min</div>\n           <div class=\"meta-item\">\u2753 2</div>\n        </div>\n        <button class=\"btn-start\" " + (!isQuizUnlocked ? 'disabled' : '') + " onclick=\"openQuizModal(" + sectionKey + ")\">\n          " + (quizCompleted ? 'Restart →' : 'Evaluate →') + "\n        </button>\n      </div>\n    ";
+    card.innerHTML = "\n      <div class=\"card-top\">\n        <div class=\"card-actions-top\">\n            <span class=\"lock-indicator\">" + lockIcon + "</span>\n            <span class=\"star-indicator\">" + starIcon + "</span>\n        </div>\n        <span class=\"badge medium quiz-badge\">\uD83C\uDFC5 Quiz</span>\n      </div>\n      <div class=\"category-tag\">\u00C9valuation</div>\n      <div class=\"card-title\">Validation de la Section " + sectionKey + "</div>\n      <div class=\"card-desc\">Testez vos acquis th\u00E9oriques pour d\u00E9bloquer la section suivante.</div>\n      <div class=\"card-footer\">\n        <div class=\"card-meta\">\n           <div class=\"meta-item\">\uD83D\uDD52 5 min</div>\n           <div class=\"meta-item\">\u2753 2</div>\n        </div>\n        <button class=\"btn-start\" " + (!isQuizUnlocked ? 'disabled' : '') + " onclick=\"openQuizModal(" + sectionKey + ")\">\n          " + (quizCompleted ? 'Restart →' : 'Evaluate →') + "\n        </button>\n      </div>\n    ";
     grid.appendChild(card);
 }
 function updateFinalProjectStatus(unlocked) {
@@ -716,8 +709,8 @@ function showFunFact(exoId, isCompleted) {
         return;
     var titleEl = document.getElementById('funfact-title');
     var bodyEl = document.getElementById('funfact-content');
-    titleEl.textContent = "\uD83D\uDCA1 Did you know ? (Exercice " + exoId + ")";
-    bodyEl.textContent = FUN_FACTS[exoId] || "Artificial intelligence is full of surprises !";
+    titleEl.textContent = "\uD83D\uDCA1 Le Saviez-vous ? (Exercice " + exoId + ")";
+    bodyEl.textContent = FUN_FACTS[exoId] || "L'intelligence artificielle est pleine de surprises !";
     document.getElementById('modal-overlay').style.display = 'block';
     document.getElementById('modal-funfact').style.display = 'block';
 }
@@ -1160,7 +1153,7 @@ function submitQuiz() {
     closeAllModals();
     if (allCorrect) {
         localStorage.setItem("quiz_section_" + activeQuizSection + "_completed", 'true');
-        showToast("\uD83C\uDF89 F\u00E9licitations ! Quiz de la section " + activeQuizSection + " valid\u00E9.", true);
+        showToast("\uD83C\uDF89 Congratulations ! Quiz de la section " + activeQuizSection + " valid\u00E9.", true);
         applyFilters();
     }
     else {
@@ -1179,7 +1172,7 @@ function renderCustomQuiz1Matching() {
     var leftPanel = document.getElementById('quiz-left-panel');
     if (!leftPanel)
         return;
-    leftPanel.innerHTML = "\n        <h4 style=\"margin:0; font-size:16px; color:#fff; font-weight: 700;\">Quiz 1 : Match les termes et leurs d\u00E9finitions</h4>\n        <p style=\"margin:4px 0 16px 0; font-size:12.5px; color:#94a3b8; line-height:1.4;\">\n            Glissez-d\u00E9posez les termes bleus dans les zones pointill\u00E9es correspondantes, ou cliquez sur un terme puis sur sa zone cible.\n        </p>\n        \n        <div class=\"matching-deck\" id=\"matching-deck\"></div>\n        <div class=\"matching-targets\" id=\"matching-targets\"></div>\n        <div class=\"quiz-feedback-box\" id=\"quiz-feedback-box\" style=\"display:none; margin-top: 15px;\">\n            <span class=\"feedback-icon\" id=\"feedback-icon\"></span>\n            <span class=\"feedback-text\" id=\"feedback-text\"></span>\n        </div>\n    ";
+    leftPanel.innerHTML = "\n        <h4 style=\"margin:0; font-size:16px; color:#fff; font-weight: 700;\">Quiz 1 : Match the terms and their definitions</h4>\n        <p style=\"margin:4px 0 16px 0; font-size:12.5px; color:#94a3b8; line-height:1.4;\">\n            Drag and drop the blue terms into the corresponding dotted areas, or click on a term and then on its target area.\n        </p>\n        \n        <div class=\"matching-deck\" id=\"matching-deck\"></div>\n        <div class=\"matching-targets\" id=\"matching-targets\"></div>\n        <div class=\"quiz-feedback-box\" id=\"quiz-feedback-box\" style=\"display:none; margin-top: 15px;\">\n            <span class=\"feedback-icon\" id=\"feedback-icon\"></span>\n            <span class=\"feedback-text\" id=\"feedback-text\"></span>\n        </div>\n    ";
     var deck = document.getElementById('matching-deck');
     var targetsContainer = document.getElementById('matching-targets');
     if (!deck || !targetsContainer)
@@ -1221,7 +1214,7 @@ function renderCustomQuiz1Matching() {
         var row = document.createElement('div');
         row.className = 'matching-target-row';
         row.id = "row-" + tgt.id;
-        row.innerHTML = "\n            <div class=\"matching-zone\" id=\"zone-" + tgt.id + "\">D\u00E9pose ici</div>\n            <div class=\"matching-definition\">" + tgt.def + "</div>\n        ";
+        row.innerHTML = "\n            <div class=\"matching-zone\" id=\"zone-" + tgt.id + "\">Drop here</div>\n            <div class=\"matching-definition\">" + tgt.def + "</div>\n        ";
         var zone = row.querySelector("#zone-" + tgt.id);
         zone.ondragover = function (e) {
             e.preventDefault();
@@ -1272,10 +1265,10 @@ function handleMatchingDrop(termId, targetId, jalonIndex, fallbackExo) {
                 feedbackBox.style.display = 'flex';
                 feedbackBox.className = 'quiz-feedback-box correct';
                 if (activeQuizSection === 4) {
-                    feedbackBox.innerHTML = "\n                        <span class=\"feedback-icon\">\uD83C\uDF89</span>\n                        <span class=\"feedback-text\">Excellent ! Quiz compl\u00E9t\u00E9 avec succ\u00E8s. Calcul des r\u00E9sultats...</span>\n                    ";
+                    feedbackBox.innerHTML = "\n                        <span class=\"feedback-icon\">\uD83C\uDF89</span>\n                        <span class=\"feedback-text\">Excellent ! Quiz successfully completed. Calculating results...</span>\n                    ";
                 }
                 else {
-                    feedbackBox.innerHTML = "\n                        <span class=\"feedback-icon\">\uD83C\uDF89</span>\n                        <span class=\"feedback-text\">Excellent ! Quiz 1 compl\u00E9t\u00E9 avec succ\u00E8s. Moving to Quiz 2 in 2 seconds...</span>\n                    ";
+                    feedbackBox.innerHTML = "\n                        <span class=\"feedback-icon\">\uD83C\uDF89</span>\n                        <span class=\"feedback-text\">Excellent ! Quiz 1 successfully completed. Moving to Quiz 2 in 2 seconds...</span>\n                    ";
                 }
             }
             setTimeout(function () {
@@ -1305,7 +1298,7 @@ function renderCustomQuiz2Sorting() {
         return;
     customQuiz2CurrentIndex = 0;
     selectedDraggableId = null;
-    leftPanel.innerHTML = "\n        <h4 style=\"margin:0; font-size:20px; color:#fff; font-weight: 700;\">Quiz 2 : True Or False ?</h4>\n        <p style=\"margin:4px 0 16px 0; font-size:15px; color:#94a3b8; line-height:1.4;\">\n            Drag and drop each statement into the TRUE or FALSE zone, or click on a card and then on a zone.\n        </p>\n\n        <div class=\"dragdrop-source\" id=\"dragdrop-source\"></div>\n\n        <div class=\"dragdrop-drop-zones\">\n            <div class=\"dragdrop-drop-zone drop-zone-true\" id=\"drop-zone-true\">\n                <div class=\"dragdrop-zone-header true-header\">\uD83D\uDC4D TRUE</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-true-cards\"></div>\n            </div>\n            <div class=\"dragdrop-drop-zone drop-zone-false\" id=\"drop-zone-false\">\n                <div class=\"dragdrop-zone-header false-header\">\uD83D\uDC4E FALSE</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-false-cards\"></div>\n            </div>\n        </div>\n    ";
+    leftPanel.innerHTML = "\n        <h4 style=\"margin:0; font-size:20px; color:#fff; font-weight: 700;\">Quiz 2 : True or False ?</h4>\n        <p style=\"margin:4px 0 16px 0; font-size:15px; color:#94a3b8; line-height:1.4;\">\n            Drag and drop each statement into the TRUE or FALSE zone, or click on a card and then on a zone.\n        </p>\n\n        <div class=\"dragdrop-source\" id=\"dragdrop-source\"></div>\n\n        <div class=\"dragdrop-drop-zones\">\n            <div class=\"dragdrop-drop-zone drop-zone-true\" id=\"drop-zone-true\">\n                <div class=\"dragdrop-zone-header true-header\">\uD83D\uDC4D TRUE</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-true-cards\"></div>\n            </div>\n            <div class=\"dragdrop-drop-zone drop-zone-false\" id=\"drop-zone-false\">\n                <div class=\"dragdrop-zone-header false-header\">\uD83D\uDC4E FALSE</div>\n                <div class=\"dragdrop-zone-cards\" id=\"dropped-false-cards\"></div>\n            </div>\n        </div>\n    ";
     var rightPanel = document.querySelector('.quiz-right-panel');
     if (rightPanel) {
         var feedbackArea = document.getElementById('quiz2-feedback-area');
@@ -1315,7 +1308,7 @@ function renderCustomQuiz2Sorting() {
             feedbackArea.className = 'quiz2-feedback-area';
             rightPanel.appendChild(feedbackArea);
         }
-        feedbackArea.innerHTML = '<span style="color:#64748b; font-size:13px;">Drop a card here to see feedback.</span>';
+        feedbackArea.innerHTML = '<span style="color:#64748b; font-size:13px;">Drag and drop a card to see the feedback here.</span>';
     }
     var source = document.getElementById('dragdrop-source');
     if (!source)
@@ -1584,7 +1577,7 @@ function renderCustomQuizResults() {
         catch (e) {
             console.error(e);
         }
-        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px; animation: bounce 1s infinite alternate;\">\uD83C\uDFC6</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;\">Section " + activeQuizSection + " Valid\u00E9e !</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;\">\n                    F\u00E9licitations, vous avez obtenu un score de <strong>" + score + "/" + total + " (" + percent + "%)</strong>. \n                    Vous ma\u00EEtrisez parfaitement les concepts de cette section ! Le parcours suivant est d\u00E9bloqu\u00E9.\n                </p>\n                <button class=\"btn-start\" onclick=\"closeAndApplyFilters()\" style=\"background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Continue the Path\n                </button>\n            </div>\n        ";
+        leftPanel.innerHTML = "\n            <div style=\"text-align: center; padding: 20px 0;\">\n                <span style=\"font-size: 64px; display: block; margin-bottom: 15px; animation: bounce 1s infinite alternate;\">\uD83C\uDFC6</span>\n                <h3 style=\"font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;\">Section " + activeQuizSection + " Valid\u00E9e !</h3>\n                <p style=\"font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;\">\n                    F\u00E9licitations, vous avez obtenu un score de <strong>" + score + "/" + total + " (" + percent + "%)</strong>. \n                    You mastered perfectly the concepts of this section ! The next path is unlocked.\n                </p>\n                <button class=\"btn-start\" onclick=\"closeAndApplyFilters()\" style=\"background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;\">\n                    Continue\n                </button>\n            </div>\n        ";
     }
     else {
         var recommendationHTML_1 = '';
@@ -1642,17 +1635,17 @@ function downloadCertificate() {
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 36px Inter, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('CERTIFICATE OF SUCCESS', 400, 150);
+    ctx.fillText('CERTIFICAT DE RÉUSSITE', 400, 150);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '500 18px Inter, sans-serif';
-    ctx.fillText('This certificate is awarded to', 400, 230);
+    ctx.fillText('Le présent certificat est décerné à', 400, 230);
     ctx.fillStyle = '#FACC15';
     ctx.font = '800 42px Inter, sans-serif';
     ctx.fillText(fullName.toUpperCase(), 400, 300);
     ctx.fillStyle = '#eef2ff';
     ctx.font = '600 16px Inter, sans-serif';
-    ctx.fillText("For having successfully completed the entire learning path", 400, 370);
-    ctx.fillText("and validated the final evaluation of Neural Playground.", 400, 400);
+    ctx.fillText("Pour avoir complété avec succès l'intégralité du parcours pédagogique", 400, 370);
+    ctx.fillText("et validé l'évaluation finale de Neural Playground.", 400, 400);
     var today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     ctx.fillStyle = '#64748b';
     ctx.font = '500 14px Inter, sans-serif';
@@ -1864,12 +1857,11 @@ window.startExercise = startExercise;
 window.filterCards = filterCards;
 window.setFilter = setFilter;
 window.deleteCommunityExo = deleteCommunityExo;
-
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const openQuiz = urlParams.get('openQuiz');
+window.addEventListener('DOMContentLoaded', function () {
+    var urlParams = new URLSearchParams(window.location.search);
+    var openQuiz = urlParams.get('openQuiz');
     if (openQuiz) {
-        setTimeout(() => {
+        setTimeout(function () {
             if (typeof window.openQuizModal === 'function') {
                 window.openQuizModal(parseInt(openQuiz, 10));
             }
