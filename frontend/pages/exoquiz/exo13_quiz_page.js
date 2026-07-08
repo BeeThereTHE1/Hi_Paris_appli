@@ -325,16 +325,16 @@ function startQuizStabilizationFlow() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Consigne</div>
+            <div class="quiz-question-badge">Instructions</div>
             <div class="quiz-question-card" style="font-size: 14px; line-height: 1.5;">
-                Veuillez réinitialiser le simulateur et lancer l'entraînement pour que le modèle s'adapte aux données.
+                Please reset the simulator and start training so the model adapts to the data.
             </div>
         </div>
         <div class="instruction-alert" style="margin-top: 20px;">
             <div class="pulse-alert-icon">⏳</div>
             <div>
-                <strong>En attente d'apprentissage...</strong><br>
-                Réinitialisez le modèle (le bouton clignote) puis lancez l'entraînement. Le quiz s'affichera dès que le Training Loss se sera stabilisé.
+                <strong>Waiting for training...</strong><br>
+                Reset the model (the button blinks) then start training. The quiz will appear once the Training Loss has stabilized.
             </div>
         </div>
     `;
@@ -411,15 +411,15 @@ function buildMCQGrid() {
 
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper">
-            <div class="quiz-question-badge">Activité</div>
+            <div class="quiz-question-badge">Activity</div>
             <div class="quiz-question-card" style="font-size: 13.5px; line-height: 1.45;">
-                <strong>Grille comparative :</strong> Analysez le modèle entraîné et sélectionnez l'énoncé correct pour chaque paire proposée.
+                <strong>Comparative grid:</strong> Analyze the trained model and select the correct statement for each proposed pair.
             </div>
         </div>
         <table class="checklist-table">
           <thead>
             <tr>
-              <th style="text-align: left;">Sujet d'observation</th>
+              <th style="text-align: left;">Observation subject</th>
               <th style="text-align: center; width: 45%;">Option A</th>
               <th style="text-align: center; width: 45%;">Option B</th>
             </tr>
@@ -549,18 +549,18 @@ function showCompletionScreen() {
       </div>
 
       <h2 class="completion-title">Congratulations !</h2>
-      <p class="completion-msg">Vous avez parfaitement assimilé l'exercice 13 sur le cycle d'apprentissage itératif.<br>
-        Le prochain exercice a été déverrouillé sur le tableau de bord !
+      <p class="completion-msg">You have successfully completed Exercise 11 on the iterative learning cycle.<br>
+        The next exercise has been unlocked on the dashboard!
       </p>
 
       <div class="completion-actions">
         <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
-          🚀 Retourner aux Exercices
+          🚀 Return to Exercises
         </a>
       </div>
     </div>
 
-    <a class="completion-home-icon blink-btn" href="../Page-demo/exercises.html" title="Retour aux exercices">
+    <a class="completion-home-icon blink-btn" href="../Page-demo/exercises.html" title="Back to exercises">
       🏠
     </a>
   `;
@@ -578,7 +578,7 @@ function showCompletionScreen() {
     localStorage.setItem('quiz_section_3_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(13);
-      console.log(`✅ Exercice 13 marqué COMPLETED.`);
+      console.log(`✅ Exercise 13 marked COMPLETED.`);
     }
   })();
 }
@@ -638,7 +638,7 @@ function showStartQuizOverlay() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Activité d'observation";
+    h3.innerText = "Observation Activity";
 
     const p = document.createElement('p');
     p.innerText = "Now, reset the data and run the model until it reaches a stable state.";
@@ -674,7 +674,7 @@ if (btnSauvegarder) {
         if (window.StorageService) {
             const success = await window.StorageService.save(13);
             if (success) {
-                btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                btnSauvegarder.innerHTML = '✅ Saved !';
                 btnSauvegarder.disabled = true;
             }
         }

@@ -33,7 +33,7 @@
         btnNext.style.opacity = "1";
         btnNext.style.pointerEvents = "auto";
       } else {
-        btnNext.innerText = `Veuillez lire (${readingTime}s)`;
+        btnNext.innerText = `Please read (${readingTime}s)`;
       }
     }, 1000);
 
@@ -151,7 +151,7 @@
     document.getElementById("btn-validate-obs").onclick = () => {
       // Vérifier si toutes les questions received une réponse
       if (Object.values(activeQuizAnswers).some(val => val === null)) {
-        alert("Please answer all statements d'observation.");
+        alert("Please answer all observation statements.");
         return;
       }
 
@@ -168,7 +168,7 @@
           <div class="feedback-box" style="border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 4px; font-size: 13.5px; color: #e2e8f0; line-height: 1.4; margin-top: 15px;">
             <strong>Correct!</strong><br>
             What conclusions can be drawn from these observations?
-            <button id="btn-start-dd" class="btn-validate" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Activité Suivante (Drag & Drop) →</button>
+            <button id="btn-start-dd" class="btn-validate" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Next Activity (Drag & Drop) →</button>
           </div>
         `;
         document.getElementById("btn-start-dd").onclick = () => {
@@ -217,7 +217,7 @@
       <div class="dragdrop-container" style="background: #0b0f1a; border: 2px solid #FF034D; border-radius: 20px; padding: 30px; width: 90%; max-width: 850px; color: #ffffff; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7); position: relative; z-index: 5000; margin: 40px auto; max-height: 85vh; overflow-y: auto;">
         <div class="dragdrop-header" style="text-align: center; margin-bottom: 20px;">
           <h2 style="color: #FF034D; text-transform: uppercase; font-size: 20px; font-weight: 800; margin: 0 0 10px 0;">Activity 2 – Drag and drop</h2>
-          <p style="font-size: 13.5px; color: #94a3b8; margin: 0;">Faites glisser les affirmations ci-dessous dans la bonne catégorie. Le dépôt n'est possible que dans la bonne case.</p>
+          <p style="font-size: 13.5px; color: #94a3b8; margin: 0;">Drag and drop the statements below into the correct category. Dropping is only possible in the correct box.</p>
         </div>
 
         <!-- Zone des Statements en haut -->
@@ -248,12 +248,12 @@
 
         <!-- Success overlay modal elements inside container -->
         <div id="dd-success-banner" style="display: none; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; border-radius: 12px; padding: 15px; margin-top: 25px; text-align: center;">
-          <h3 style="color: #10b981; font-size: 16px; font-weight: 800; margin: 0 0 10px 0;">🎉 BRAVO ! Tri des affirmations complété !</h3>
+          <h3 style="color: #10b981; font-size: 16px; font-weight: 800; margin: 0 0 10px 0;">🎉 WELL DONE! Statement sorting completed!</h3>
           <p style="font-size: 13px; line-height: 1.5; color: #e2e8f0; margin: 0 0 15px 0;">
             When the error remains constant, the model applies the same correction at every step, causing the weights to grow continuously. Divergence occurs.
             With High noise, weights slow down and stabilize instead of increasing continuously, yielding convergence.
           </p>
-          <button id="btn-finish-dd" class="btn-validate" style="background: #10b981; border: none; color: white; padding: 10px 30px; font-weight: 700; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Terminer l'Exercice</button>
+          <button id="btn-finish-dd" class="btn-validate" style="background: #10b981; border: none; color: white; padding: 10px 30px; font-weight: 700; border-radius: 6px; cursor: pointer; text-transform: uppercase;">Finish the Exercise</button>
         </div>
       </div>
     `;

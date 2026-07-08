@@ -1,4 +1,4 @@
-// Exercice 4 Quiz page logic
+// Exercice 5 Quiz page logic
 window.__currentQuizExoId = 4;
 let translations = null;
 
@@ -28,8 +28,8 @@ function initQuiz() {
 
   // Question & options configuration from translations or fallback
   const fallbackQuestion = "What is the main role of the bias in a neuron?";
-  const questionText = translations && translations.quiz && translations.quiz.question 
-    ? translations.quiz.question 
+  const questionText = translations && translations.quiz && translations.quiz.question
+    ? translations.quiz.question
     : fallbackQuestion;
 
   let fallbackOptions = [
@@ -44,7 +44,7 @@ function initQuiz() {
     const opts = translations.quiz.options;
     const correctOpt = translations.quiz.correct_option || "B";
     const correctFeedback = translations.quiz.feedback || "The bias plays the role of the intercept: it shifts the decision boundary.";
-    
+
     // Clean up "(true response)" or similar suffixes from options
     const cleanText = (txt) => txt ? txt.replace(/\s*\(true response\)\s*/i, "").replace(/\s*\(true\)\s*/i, "").trim() : "";
 
@@ -211,16 +211,16 @@ function showCompletionScreen() {
       </div>
 
       <!-- Completion Message -->
-      <h2 class="completion-title">Bravo !</h2>
+      <h2 class="completion-title">Congratulation !</h2>
       <p class="completion-msg">
-        Vous avez terminé l'exercice 4 avec succès.<br>
-        L'impact du biais on the boundary de décision est maintenant acquis.<br>
-        <strong>L'exercice following wasé déverrouillé !</strong>
+        You have successfully completed exercise 5.<br>
+        The impact of bias on the decision boundary is now understood.<br>
+<strong>The following exercise has been unlocked!</strong>
       </p>
 
       <!-- CTA buttons -->
       <div class="completion-actions">
-        <a class="completion-btn-next pulse-btn" href="exo5_quiz.html">
+        <a class="completion-btn-next pulse-btn" href="../exo7.html">
           🚀 Exercice Suivant
         </a>
       </div>
@@ -246,7 +246,7 @@ function showCompletionScreen() {
   (async () => {
     if (window.StorageService) {
       await window.StorageService.complete(4);
-      console.log("✅ Exercice 4 marqué COMPLETED.");
+      console.log("✅ Exercice 5 marqué COMPLETED.");
     }
   })();
 }

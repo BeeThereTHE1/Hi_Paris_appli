@@ -65,7 +65,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-    
+
     if ((window as any).StorageService) {
         const success = await (window as any).StorageService.complete(11);
         if (success) {
@@ -287,7 +287,7 @@ async function loadTranslations() {
         if (!response.ok) throw new Error("Failed to load translation json");
         const data = await response.json();
         translations = data.exercises.exercise_11;
-        
+
         if (translations) {
             if (translations.title) {
                 document.title = translations.title;
@@ -378,7 +378,7 @@ function getIframeElementRect(targetSelector: string) {
             width: elRect.width,
             height: elRect.height
         };
-    } catch(e) {
+    } catch (e) {
         return null;
     }
 }
@@ -418,12 +418,12 @@ function listenForDefinitionClick() {
                         activeArrow = null;
                     }
                     clearInterval(checkClick);
-                    
+
                     // Show definition overlay popup
                     showDefinitionPopup();
                 });
             }
-        } catch(e) {}
+        } catch (e) { }
     }, 100);
 }
 
@@ -546,12 +546,11 @@ function renderActivity1() {
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
                     btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-                    
+
                     // Show final message
                     fPanel.innerHTML += `
                         <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                            ✨ Exercise Successful !! Cliquez sur le bouton "Take the quiz" en bas à droite pour continuer.
-                        </div>
+                            ✨ Exercise Successful !! Click the "Take the quiz" button in the bottom right corner to continue.
                     `;
                 }
             } else {
@@ -599,7 +598,7 @@ if (iframe) {
             btnRealise.classList.remove('btn-disabled');
             btnRealise.classList.add('btn-success-ready');
             btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-            
+
             // Pulse the home button if completed
             const backBtn = document.querySelector('.universal-header .btn-header') as HTMLElement;
             if (backBtn) {
@@ -648,12 +647,12 @@ if (iframe) {
                         }
                     `;
                     iframeDoc.head.appendChild(style);
-                    
+
                     infoTip.addEventListener('click', () => {
                         infoTip.classList.remove('info-tip-pulse');
                     });
                 }
-            } catch(e) {}
+            } catch (e) { }
 
             await loadTranslations();
             startTutorial();

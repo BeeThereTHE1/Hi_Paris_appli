@@ -27,7 +27,7 @@
           <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;">🟢 Profil ${typeProfil}</div>
         </div>
         <div style="padding: 8px;">
-          <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 Mon Historique</a>
+          <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 My History</a>
           <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
         </div>
       `;
@@ -56,7 +56,7 @@
       const now = new Date().toLocaleDateString('fr-FR');
       const saved = saveToStorage('saved_exercises', { id: 17, date: now });
       if (saved) {
-        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+        btnSauvegarder.innerHTML = '✅ Saved !';
         btnSauvegarder.style.opacity = '0.7';
         btnSauvegarder.disabled = true;
       }
@@ -100,7 +100,7 @@
       btnNext.style.opacity = "1";
       btnNext.style.pointerEvents = "auto";
     } else {
-      btnNext.innerText = `Veuillez lire (${readingTime}s)`;
+      btnNext.innerText = `Please read (${readingTime}s)`;
     }
   }, 1000);
 
@@ -138,7 +138,7 @@
         row.style.opacity = "1";
         const badge = row.querySelector('.rate-status-badge');
         if (badge) {
-          badge.innerText = "⚡ Testé";
+          badge.innerText = "⚡ Tested";
           badge.style.background = "rgba(16, 185, 129, 0.15)";
           badge.style.color = "#10b981";
           badge.style.borderColor = "rgba(16, 185, 129, 0.3)";
@@ -169,7 +169,7 @@
           <div class="rate-row rate-locked" data-rate="${rate.value}" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; opacity: 0.5; transition: all 0.2s;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span class="rate-value" style="font-family: 'Roboto Mono', monospace; font-size: 13.5px; font-weight: 700; color: #fff;">${rate.value.replace('.', ',')}</span>
-              <span class="rate-status-badge" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">⏳ Non testé</span>
+              <span class="rate-status-badge" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">⏳ Not tested</span>
             </div>
             <div class="button-group" style="display: flex; gap: 6px;">
               <button class="btn-choice" disabled data-choice="convergence" style="font-size:11.5px; padding: 5px 12px;">Convergence</button>
@@ -256,7 +256,7 @@
         if (row.classList.contains('rate-locked')) {
           fPanel.innerHTML = `
             <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-              Veuillez d'abord modifier et tester la valeur <strong>${row.getAttribute('data-rate')}</strong> dans le sélecteur Learning Rate du simulateur.
+              Please first modify and test the value <strong>${row.getAttribute('data-rate')}</strong> in the Learning Rate selector of the simulator.
             </div>
           `;
         }
@@ -277,7 +277,7 @@
       if (!allTested) {
         fPanel.innerHTML = `
           <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-            Il reste <strong>${untestedCount}</strong> valeur(s) de learning rate à tester dans le simulateur avant de valider.
+            There are <strong>${untestedCount}</strong> learning rate value(s) left to test in the simulator before validating.
           </div>
         `;
         return;
@@ -295,7 +295,7 @@
       if (!allCorrect) {
         fPanel.innerHTML = `
           <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-            Vous avez <strong>${incorrectCount}</strong> réponse(s) incorrecte(s). Observez bien la trajectoire de la perte (Loss) dans le graphe : si elle stagne vers le bas, il y a convergence.
+            You have <strong>${incorrectCount}</strong> incorrect response(s). Observe the loss curve carefully: if it stabilizes downward, the model has converged.
           </div>
         `;
         return;
@@ -304,7 +304,7 @@
       // Succès Activity 1 -> Passer à l'Activity 2 (Drag & Drop)
       fPanel.innerHTML = `
         <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
-          ✨ Congratulations ! Tous les comportements de taux d'apprentissage sont corrects. Passage à l'étape suivante...
+          ✨ Congratulations! All learning rate behaviors are correct. Moving to the next step...
         </div>
       `;
       setTimeout(() => {
@@ -474,7 +474,7 @@
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '✨ Submit l\'exercice';
+        btnRealise.innerHTML = '✨ Submit the exercise';
       }
 
       qPanel.innerHTML = `

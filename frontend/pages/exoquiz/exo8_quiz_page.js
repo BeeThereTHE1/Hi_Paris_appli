@@ -1,4 +1,4 @@
-// Exercise 8 Quiz page logic
+// Exercise 7 Quiz page logic
 (function () {
   let translations = null;
 
@@ -48,9 +48,9 @@
 
     qPanel.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 8 - Q1</div>
+          <div class="quiz-question-badge">Quiz 7 - Q1</div>
           <div class="quiz-question-card">
-              What differences do you observe between the two results? (Sélectionnez toutes the correct answers)
+              What differences do you observe between the two results? (Select all correct answers)
           </div>
       </div>
       <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -103,7 +103,7 @@
         fPanel.innerHTML = `
             <div class="feedback-box" style="border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 4px; font-size: 13.5px; color: #e2e8f0; line-height: 1.4; margin-top: 15px;">
                 <strong>That’s right!</strong> The models use the same data and settings, but their results differ (boundaries and weights).
-                <button class="btn-validate" id="btn-ok-act1" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Continuer</button>
+                <button class="btn-validate" id="btn-ok-act1" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Continue</button>
             </div>
         `;
         const okBtn = document.getElementById('btn-ok-act1');
@@ -111,7 +111,7 @@
           renderQuestion2();
         };
       } else {
-        let fbMsg = "Essayez à nouveau. Repérez all the differences entre both models.";
+        let fbMsg = "Try again. Find all the differences between both models.";
         if (q1Answers.features) {
           fbMsg = "The input features change: The input features remain the same in both models.";
         } else if (q1Answers.stops) {
@@ -140,9 +140,9 @@
 
     qPanel.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 8 - Q2</div>
+          <div class="quiz-question-badge">Quiz 7 - Q2</div>
           <div class="quiz-question-card">
-              You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Sélectionnez toutes the correct answers)
+              You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Select all correct answers)
           </div>
       </div>
       <div class="quiz-options-container" style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
@@ -191,12 +191,12 @@
         fPanel.innerHTML = `
             <div class="feedback-box" style="border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 4px; font-size: 13.5px; color: #e2e8f0; line-height: 1.4; margin-top: 15px;">
                 <strong>That’s correct!</strong> Each run starts with randomly initialized weights, so the model begins learning from a different starting point and converges to a different solution.
-                <button class="btn-validate" id="btn-ok-act2" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Terminer le Quiz</button>
+                <button class="btn-validate" id="btn-ok-act2" style="display: block; width: 100%; margin-top: 10px; background: #10b981; border: none; color: white; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase;">Finish the Quiz</button>
             </div>
         `;
         const okBtn = document.getElementById('btn-ok-act2');
         okBtn.onclick = async () => {
-          // Complete exercise 8
+          // Complete exercise 7
           localStorage.setItem('quiz_section_2_completed', 'true');
           if (window.StorageService) {
             await window.StorageService.complete(8);

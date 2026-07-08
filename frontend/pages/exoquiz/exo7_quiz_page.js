@@ -1,4 +1,4 @@
-// Quiz 7 matching grid drag-and-drop
+// Quiz 6 matching grid drag-and-drop
 (function () {
   let translations = null;
 
@@ -105,7 +105,7 @@
     // Render table
     qDiv1.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 7</div>
+          <div class="quiz-question-badge">Quiz 6</div>
           <div class="quiz-question-card">
               Using the graphical representations of each activation function, and by testing them again in the Playground, drag the properties below into the correct columns.
           </div>
@@ -275,9 +275,8 @@
         // All correctly matched!
         qDiv2.innerHTML = `
           <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-              🎉 Bravo ! Tout est correctement classé.
-              <br><br>
-              👉 Cliquez sur le bouton d'aide clignotant <strong>"?"</strong> dans la zone <strong>Activation</strong> du simulateur à gauche pour terminer l'exercice.
+              🎉Well done! Everything is correctly classified.              <br><br>
+              👉 Click on the flashing help button <strong>"?"</strong> in the <strong>Activation</strong> area of ​​the simulator on the left to complete the exercise.
           </div>
         `;
 
@@ -311,7 +310,7 @@
                 // Show redirection notice
                 qDiv2.innerHTML = `
                   <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                      ✨ Redirection dans 4 secondes... Congratulations !
+                      ✨ Redirecting in 4 seconds... Congratulations!
                   </div>
                 `;
 

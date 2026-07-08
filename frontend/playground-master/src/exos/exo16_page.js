@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -57,7 +57,7 @@ var _this = this;
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA Logout</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -77,49 +77,53 @@ var _this = this;
 })();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.save(16)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.save(16)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Saved !';
+                        btnSauvegarder.style.opacity = '0.7';
+                        btnSauvegarder.disabled = true;
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var isLoggedIn, success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                if (!isLoggedIn) {
-                    window.location.href = 'Page-demo/register.html';
-                    return [2];
-                }
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.complete(16)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () { window.location.href = 'exoquiz/exo16_quiz.html'; }, 800);
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+};
+btnRealise.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var isLoggedIn, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (!isLoggedIn) {
+                        window.location.href = 'Page-demo/register.html';
+                        return [2];
+                    }
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.complete(16)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirecting...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () { window.location.href = 'exoquiz/exo16_quiz.html'; }, 800);
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
+};
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -226,7 +230,7 @@ window.addEventListener('load', function () {
         btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
         var qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
-            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">Exercice R\u00E9ussi</div>\n                    <div class=\"quiz-question-card\">\n                        Vous avez d\u00E9j\u00E0 valid\u00E9 cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                    </div>\n                </div>\n            ";
+            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">Exercise Successful</div>\n                    <div class=\"quiz-question-card\">\n                        You have already validated this exercise ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                    </div>\n                </div>\n            ";
         }
         return;
     }
@@ -241,9 +245,9 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercise #16 : Gradient Killing & Sigmoid vs ReLU";
+    h3.innerText = "Exercise #12 : Gradient Killing & Sigmoid vs ReLU";
     var p = document.createElement('p');
-    p.innerText = "Dans cet exercice, nous allons comparer le comportement de deux fonctions d'activation : la Sigmoid et la ReLU dans un réseau de neurones profond (6 couches cachées, LR = 10, Dataset Spiral). Tout d'abord, examinons de près la définition d'un gradient dans un réseau de neurones.";
+    p.innerText = "In this exercise, we will compare the behavior of two activation functions: Sigmoid and ReLU in a deep neural network (6 hidden layers, LR = 10, Spiral dataset). First, let's closely examine the definition of a gradient in a neural network.";
     var timerSpan = document.createElement('span');
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #cbd5e1;';
     var nextBtn = document.createElement('button');
@@ -279,7 +283,7 @@ function renderActivity1() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#004676;\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.4;\">\n                <strong>Comprendre le Gradient</strong> - Prenez le temps de lire les explications ci-dessous. Les notions s'affichent s\u00E9quentiellement pour vous guider.\n            </div>\n        </div>\n        <div id=\"def-boxes-container\">\n            <div class=\"def-box color-1\" id=\"def-box-1\">\n                <h4>1. Definition</h4>\n                <p>A gradient is the signal used to update the model during learning.</p>\n            </div>\n            <div class=\"def-box color-2\" id=\"def-box-2\">\n                <h4>2. How it works</h4>\n                <p>At each training step:<br>\n                \u2022 The model makes a prediction<br>\n                \u2022 The error (loss) is computed<br>\n                \u2022 The gradient tells how to change each weight to <span style=\"color:#FF034D; font-weight:700;\">reduce this error</span></p>\n            </div>\n            <div class=\"def-box color-3\" id=\"def-box-3\">\n                <h4>3. Key idea</h4>\n                <p>The gradient improves parameters with both:<br>\n                \u2022 <b>Direction</b> \u2192 where to go<br>\n                \u2022 <b>Magnitude</b> \u2192 how big the change should be<br>\n                \u2192 Large gradient  \u2192 big update<br>\n                \u2192 Small gradient  \u2192 tiny update</p>\n            </div>\n            <div class=\"def-box color-4\" id=\"def-box-4\">\n                <h4>4. Simple Formula</h4>\n                <p>Les param\u00E8tres (poids) sont mis \u00E0 jour en combinant le gradient et le taux d'apprentissage (learning rate) \u00E0 chaque \u00E9poque (epoch) :</p>\n                <div class=\"formula-images\">\n                    <div class=\"formula-img-container\">\n                        <img src=\"assets/images/epoch.jpg.png\" alt=\"Epoch\">\n                        <span>Epoch</span>\n                    </div>\n                    <div class=\"formula-img-container\">\n                        <img src=\"assets/images/learning_rate.jpg.png\" alt=\"Learning Rate\">\n                        <span>Learning Rate</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act1\" style=\"font-size:16px; padding: 8px 18px;\" disabled>NEXT</button>\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#004676;\">Activity 1</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.4;\">\n                <strong> Understanding the Gradient</strong> - Take the time to read the explanations below. The concepts are presented sequentially to guide you.\n            </div>\n        </div>\n        <div id=\"def-boxes-container\">\n            <div class=\"def-box color-1\" id=\"def-box-1\">\n                <h4>1. Definition</h4>\n                <p>A gradient is the signal used to update the model during learning.</p>\n            </div>\n            <div class=\"def-box color-2\" id=\"def-box-2\">\n                <h4>2. How it works</h4>\n                <p>At each training step:<br>\n                \u2022 The model makes a prediction<br>\n                \u2022 The error (loss) is computed<br>\n                \u2022 The gradient tells how to change each weight to <span style=\"color:#FF034D; font-weight:700;\">reduce this error</span></p>\n            </div>\n            <div class=\"def-box color-3\" id=\"def-box-3\">\n                <h4>3. Key idea</h4>\n                <p>The gradient improves parameters with both:<br>\n                \u2022 <b>Direction</b> \u2192 where to go<br>\n                \u2022 <b>Magnitude</b> \u2192 how big the change should be<br>\n                \u2192 Large gradient  \u2192 big update<br>\n                \u2192 Small gradient  \u2192 tiny update</p>\n            </div>\n            <div class=\"def-box color-4\" id=\"def-box-4\">\n                <h4>4. Simple Formula</h4>\n                <p>Les param\u00E8tres (poids) sont mis \u00E0 jour en combinant le gradient et le taux d'apprentissage (learning rate) \u00E0 chaque \u00E9poque (epoch) :</p>\n                <div class=\"formula-images\">\n                    <div class=\"formula-img-container\">\n                        <img src=\"assets/images/epoch.jpg.png\" alt=\"Epoch\">\n                        <span>Epoch</span>\n                    </div>\n                    <div class=\"formula-img-container\">\n                        <img src=\"assets/images/learning_rate.jpg.png\" alt=\"Learning Rate\">\n                        <span>Learning Rate</span>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act1\" style=\"font-size:16px; padding: 8px 18px;\" disabled>NEXT</button>\n        </div>\n    ";
     fPanel.innerHTML = "\n        <div class=\"feedback-box\">\n            \uD83D\uDCD6 Lisez attentivement la d\u00E9finition du gradient et de sa mise \u00E0 jour.\n        </div>\n    ";
     var showBox = function (id, delay, nextCallback) {
         setTimeout(function () {
@@ -300,7 +304,7 @@ function renderActivity1() {
                             btn.removeAttribute('disabled');
                             btn.classList.add('blink-next');
                         }
-                        fPanel.innerHTML = "\n                            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                                \u2705 Lecture compl\u00E9t\u00E9e ! Cliquez sur <strong>NEXT</strong> pour lancer les mod\u00E8les.\n                            </div>\n                        ";
+                        fPanel.innerHTML = "\n                            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                                \u2705 Reading completed! Click <strong>NEXT</strong> to start the models.\n                            </div>\n                        ";
                     }, 4000);
                 });
             });
@@ -316,8 +320,8 @@ function renderActivity2() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#FF034D;\">Activity 2</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.45;\">\n                <strong>Starting the simulators</strong><br><br>\n                Lancez les deux mod\u00E8les en parall\u00E8le dans le playground \u00E0 gauche en cliquant sur le bouton <b>Play</b> (\u25B6\uFE0F) de chaque simulateur.<br><br>\n                <span style=\"color:#FF034D; font-weight:700;\">Instruction :</span> Carefully observe the evolution of the weights (connection lines) and neurons in the initial layers (the first layers on the left).<br><br>\n                Laissez tourner les simulations jusqu'\u00E0 ce que le compteur atteigne au moins <b>150 \u00E9poques</b>.\n            </div>\n        </div>\n        <div style=\"background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; font-size:12px;\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:8px;\">\n                <span>Sigmoid Model :</span>\n                <strong id=\"status-sigmoid\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n            <div style=\"display:flex; justify-content:space-between;\">\n                <span>ReLU Model :</span>\n                <strong id=\"status-relu\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act2\" style=\"font-size:16px; padding: 8px 18px;\" disabled>Next</button>\n        </div>\n    ";
-    fPanel.innerHTML = "\n        <div class=\"feedback-box\" style=\"border-left-color: #FF034D;\">\n            \uD83D\uDCA1 Cliquez sur le bouton Play (\u25B6\uFE0F) rouge clignotant dans chaque simulateur \u00E0 gauche.\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:15px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#FF034D;\">Activity 2</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 13px; line-height: 1.45;\">\n                <strong>Starting the simulators</strong><br><br>\n                Launch both models in parallel in the playground on the left by clicking the <b>Play</b> (\u25B6\uFE0F) button in each simulator.<br><br>\n                <span style=\"color:#FF034D; font-weight:700;\">Instruction:</span> Carefully observe the evolution of the weights (connection lines) and neurons in the initial layers (the first layers on the left).<br><br>\n                Let the simulations run until the counter reaches at least <b>150 epochs</b>.\n            </div>\n        </div>\n        <div style=\"background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 8px; font-size:12px;\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:8px;\">\n                <span>Sigmoid Model :</span>\n                <strong id=\"status-sigmoid\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n            <div style=\"display:flex; justify-content:space-between;\">\n                <span>ReLU Model :</span>\n                <strong id=\"status-relu\" style=\"color:#ef4444;\">Stopped (0 epochs)</strong>\n            </div>\n        </div>\n        <div style=\"text-align: right; margin-top: 15px;\">\n            <button class=\"tutorial-btn\" id=\"btn-next-act2\" style=\"font-size:16px; padding: 8px 18px;\" disabled>Next</button>\n        </div>\n    ";
+    fPanel.innerHTML = "\n        <div class=\"feedback-box\" style=\"border-left-color: #FF034D;\">\n            \uD83D\uDCA1 Click the flashing red Play button (\u25B6\uFE0F) in each simulator on the left.\n        </div>\n    ";
     var injectPlayFlash = function (iframeId) {
         try {
             var iframe_1 = document.getElementById(iframeId);
@@ -380,11 +384,11 @@ function renderActivity2() {
             var statusSig = document.getElementById('status-sigmoid');
             if (statusSig) {
                 if (sigmoidEpoch >= 150) {
-                    statusSig.innerText = "Pr\u00EAt (" + sigmoidEpoch + " epochs)";
+                    statusSig.innerText = "Ready (" + sigmoidEpoch + " epochs)";
                     statusSig.style.color = '#10b981';
                 }
                 else if (sigmoidPlaying) {
-                    statusSig.innerText = "En cours (" + sigmoidEpoch + " epochs)";
+                    statusSig.innerText = "Running (" + sigmoidEpoch + " epochs)";
                     statusSig.style.color = '#3b82f6';
                 }
                 else {
@@ -395,11 +399,11 @@ function renderActivity2() {
             var statusRelu = document.getElementById('status-relu');
             if (statusRelu) {
                 if (reluEpoch >= 150) {
-                    statusRelu.innerText = "Pr\u00EAt (" + reluEpoch + " epochs)";
+                    statusRelu.innerText = "Ready (" + reluEpoch + " epochs)";
                     statusRelu.style.color = '#10b981';
                 }
                 else if (reluPlaying) {
-                    statusRelu.innerText = "En cours (" + reluEpoch + " epochs)";
+                    statusRelu.innerText = "Running (" + reluEpoch + " epochs)";
                     statusRelu.style.color = '#3b82f6';
                 }
                 else {
@@ -415,7 +419,7 @@ function renderActivity2() {
                     btnNext.removeAttribute('disabled');
                     btnNext.classList.add('blink-next');
                 }
-                fPanel.innerHTML = "\n                    <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                        \u2705 Les deux mod\u00E8les ont d\u00E9pass\u00E9 150 \u00E9poques. Cliquez sur <strong>Next</strong> pour classifier vos observations !\n                    </div>\n                ";
+                fPanel.innerHTML = "\n                    <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                        \u2705 Both models have passed 150 epochs. Click <strong>Next</strong> to classify your observations!\n                    </div>\n                ";
             }
         }
         catch (e) {
@@ -462,8 +466,8 @@ function renderActivity3() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:10px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#10b981;\">Activit\u00E9 3</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 12px; line-height: 1.4;\">\n                <strong>Tableau Comparatif</strong> - Associez chaque observation \u00E0 la fonction d'activation correspondante (Sigmoid ou ReLU). <br>\n                <i>Glissez une carte ou cliquez dessus puis cliquez sur la case correspondante dans le tableau.</i>\n            </div>\n        </div>\n        \n        <table class=\"comparison-table\">\n            <thead>\n                <tr>\n                    <th>Observation</th>\n                    <th>Sigmoid<br><img src=\"assets/images/or.jpg.png\" style=\"height:15px; vertical-align:middle; border-radius:2px;\"></th>\n                    <th>ReLU<br><img src=\"assets/images/output.jpg.png\" style=\"height:15px; vertical-align:middle; border-radius:2px;\"></th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"criteria-col\">Weight updates</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-weight\" data-zone=\"sig-weight\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-weight\" data-zone=\"relu-weight\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Learning progression</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-learning\" data-zone=\"sig-learning\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-learning\" data-zone=\"relu-learning\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Neuron features</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-neuron\" data-zone=\"sig-neuron\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-neuron\" data-zone=\"relu-neuron\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Layer behavior</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-layer\" data-zone=\"sig-layer\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-layer\" data-zone=\"relu-layer\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Suitability</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-suitability\" data-zone=\"sig-suitability\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-suitability\" data-zone=\"relu-suitability\">Drop zone</td>\n                </tr>\n            </tbody>\n        </table>\n\n        <div style=\"margin-top: 10px;\">\n            <h4 style=\"font-size:10px; text-transform:uppercase; color:#94a3b8; margin:0 0 5px 0; letter-spacing:0.5px;\">Cartes d'observations</h4>\n            <div id=\"observation-cards-container\" style=\"min-height: 80px; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:6px; padding:6px;\"></div>\n        </div>\n    ";
-    fPanel.innerHTML = "\n        <div class=\"feedback-box\">\n            \uD83D\uDCA1 Associez les cartes aux bonnes cases du tableau en comparant les deux mod\u00E8les.\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\" style=\"margin-bottom:10px;\">\n            <div class=\"quiz-question-badge\" style=\"background:#10b981;\">Activity 3</div>\n            <div class=\"quiz-question-card\" style=\"font-size: 12px; line-height: 1.4;\">\n                <strong>Comparative Table</strong> - Match each observation to the corresponding activation function (Sigmoid or ReLU). <br>\n                <i>Drag a card or click on it, then click on the matching cell in the table.</i>\n            </div>\n        </div>\n        \n        <table class=\"comparison-table\">\n            <thead>\n                <tr>\n                    <th>Observation</th>\n                    <th>Sigmoid<br><img src=\"assets/images/or.jpg.png\" style=\"height:15px; vertical-align:middle; border-radius:2px;\"></th>\n                    <th>ReLU<br><img src=\"assets/images/output.jpg.png\" style=\"height:15px; vertical-align:middle; border-radius:2px;\"></th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"criteria-col\">Weight updates</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-weight\" data-zone=\"sig-weight\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-weight\" data-zone=\"relu-weight\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Learning progression</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-learning\" data-zone=\"sig-learning\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-learning\" data-zone=\"relu-learning\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Neuron features</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-neuron\" data-zone=\"sig-neuron\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-neuron\" data-zone=\"relu-neuron\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Layer behavior</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-layer\" data-zone=\"sig-layer\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-layer\" data-zone=\"relu-layer\">Drop zone</td>\n                </tr>\n                <tr>\n                    <td class=\"criteria-col\">Suitability</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-sig-suitability\" data-zone=\"sig-suitability\">Drop zone</td>\n                    <td class=\"drop-zone-cell\" id=\"zone-relu-suitability\" data-zone=\"relu-suitability\">Drop zone</td>\n                </tr>\n            </tbody>\n        </table>\n\n        <div style=\"margin-top: 10px;\">\n            <h4 style=\"font-size:10px; text-transform:uppercase; color:#94a3b8; margin:0 0 5px 0; letter-spacing:0.5px;\">Observation cards</h4>\n            <div id=\"observation-cards-container\" style=\"min-height: 80px; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:6px; padding:6px;\"></div>\n        </div>\n    ";
+    fPanel.innerHTML = "\n        <div class=\"feedback-box\">\n            \uD83D\uDCA1 Match the cards to the correct cells in the table by comparing both models.\n        </div>\n    ";
     var cardsContainer = document.getElementById('observation-cards-container');
     var shuffledCards = observationsData.cards.slice().sort(function () { return Math.random() - 0.5; });
     shuffledCards.forEach(function (c) {
@@ -537,7 +541,7 @@ function handleDrop(cardId, zoneId) {
         zoneEl.ondragover = null;
         cardEl.remove();
         selectedCardId = null;
-        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color:#10b981; background: rgba(16, 185, 129, 0.1);\">\n                \u2705 Correct ! L'observation correspond parfaitement \u00E0 cette case.\n            </div>\n        ";
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color:#10b981; background: rgba(16, 185, 129, 0.1);\">\n                \u2705 Correct! This observation perfectly matches this cell.\n            </div>\n        ";
         if (correctDropsCount === 10) {
             triggerCompletion();
         }
@@ -545,13 +549,13 @@ function handleDrop(cardId, zoneId) {
     else {
         cardEl.classList.add('shake-error');
         setTimeout(function () { return cardEl.classList.remove('shake-error'); }, 450);
-        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color:#ef4444; background: rgba(239, 68, 68, 0.1);\">\n                \u274C Incorrect. Cette observation ne correspond pas \u00E0 cette case du tableau. R\u00E9essayez !\n            </div>\n        ";
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color:#ef4444; background: rgba(239, 68, 68, 0.1);\">\n                \u274C Incorrect. This observation does not match this cell in the table. Try again!\n            </div>\n        ";
     }
 }
 function triggerCompletion() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (fPanel) {
-        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                \uD83C\uDF89 Excellent! Vous avez class\u00E9 toutes les observations avec succ\u00E8s.\n            </div>\n        ";
+        fPanel.innerHTML = "\n            <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                \uD83C\uDF89 Excellent! You have successfully classified all observations.\n            </div>\n        ";
     }
     var overlay = document.createElement('div');
     overlay.className = 'tutorial-overlay';
@@ -560,7 +564,7 @@ function triggerCompletion() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "💡 Observations Validées !";
+    h3.innerText = "💡 Observations Validated!";
     var p = document.createElement('p');
     p.innerText = "Excellent! Let’s now examine the conclusions that can be drawn from these observations about gradients.";
     var okBtn = document.createElement('button');
@@ -579,7 +583,7 @@ function triggerCompletion() {
         btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
         var qPanel = document.getElementById('quiz-question-panel');
         if (qPanel) {
-            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">F\u00E9licitations</div>\n                    <div class=\"quiz-question-card\">\n                        Vous avez termin\u00E9 les observations. Cliquez sur le bouton \"Take the quiz\" en bas \u00E0 droite pour valider vos conclusions.\n                    </div>\n                </div>\n            ";
+            qPanel.innerHTML = "\n                <div class=\"quiz-question-wrapper\">\n                    <div class=\"quiz-question-badge\">Congratulations</div>\n                    <div class=\"quiz-question-card\">\n                        You have completed the observations. Click the \"Take the quiz\" button at the bottom right to validate your conclusions.\n                    </div>\n                </div>\n            ";
         }
     };
 }

@@ -42,7 +42,7 @@ export const exo8 = {
 };
 
 /**
- * Initialise la popup d'introduction de l'exercice 8 (2 pages).
+ * Initialise la popup d'introduction de l'exercice 7 (2 pages).
  */
 export function initExo8Popups(): void {
     const overlay = d3.select("#exo8-popup-overlay");

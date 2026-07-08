@@ -57,7 +57,7 @@ var _this = this;
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA Logout</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -87,7 +87,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.innerHTML = '✅ Saved !';
                     btnSauvegarder.style.opacity = '0.7';
                     btnSauvegarder.disabled = true;
                 }
@@ -111,7 +111,7 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.innerHTML = '✨ Redirecting...';
                     btnRealise.disabled = true;
                     setTimeout(function () {
                         window.location.href = 'exoquiz/exo11_quiz.html';
@@ -411,7 +411,7 @@ function renderActivity1() {
     if (translations && translations.activity_1 && translations.activity_1.statements) {
         statements = translations.activity_1.statements;
     }
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activit\u00E9 1</div>\n            <div class=\"quiz-question-card\">\n                " + (translations && translations.activity_1 && translations.activity_1.instruction ? translations.activity_1.instruction : "True or False? Check the correct statement for each of the following properties.") + "\n            </div>\n        </div>\n        <div style=\"margin-top: 15px; display: flex; flex-direction: column; gap: 8px;\">\n            " + statements.map(function (q, idx) { return "\n                <div class=\"true-false-row-card\" data-idx=\"" + idx + "\" data-question-id=\"" + q.id + "\">\n                    <span class=\"statement-text\">" + q.statement + "</span>\n                    <div class=\"button-group\">\n                        <button class=\"btn-choice btn-true\" data-val=\"true\">TRUE</button>\n                        <button class=\"btn-choice btn-false\" data-val=\"false\">FALSE</button>\n                    </div>\n                </div>\n            "; }).join('') + "\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 1</div>\n            <div class=\"quiz-question-card\">\n                " + (translations && translations.activity_1 && translations.activity_1.instruction ? translations.activity_1.instruction : "True or False? Check the correct statement for each of the following properties.") + "\n            </div>\n        </div>\n        <div style=\"margin-top: 15px; display: flex; flex-direction: column; gap: 8px;\">\n            " + statements.map(function (q, idx) { return "\n                <div class=\"true-false-row-card\" data-idx=\"" + idx + "\" data-question-id=\"" + q.id + "\">\n                    <span class=\"statement-text\">" + q.statement + "</span>\n                    <div class=\"button-group\">\n                        <button class=\"btn-choice btn-true\" data-val=\"true\">TRUE</button>\n                        <button class=\"btn-choice btn-false\" data-val=\"false\">FALSE</button>\n                    </div>\n                </div>\n            "; }).join('') + "\n        </div>\n    ";
     fPanel.innerHTML = '';
     var statementRows = qPanel.querySelectorAll('.true-false-row-card');
     var _loop_1 = function (i) {
@@ -443,7 +443,7 @@ function renderActivity1() {
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
                     btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-                    fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercice R\u00E9ussi !! Cliquez sur le bouton \"Take the quiz\" en bas \u00E0 droite pour continuer.\n                        </div>\n                    ";
+                    fPanel.innerHTML += "\n                        <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                            \u2728 Exercise Successful !! Click the \"Take the quiz\" button in the bottom right corner to continue.\n                    ";
                 }
             }
             else {
@@ -498,7 +498,7 @@ if (iframe) {
             }
             var qPanel = document.getElementById('quiz-question-panel');
             if (qPanel) {
-                qPanel.innerHTML = "\n                    <div class=\"quiz-question-wrapper\">\n                        <div class=\"quiz-question-badge\">Exercice R\u00E9ussi</div>\n                        <div class=\"quiz-question-card\">\n                            Vous avez d\u00E9j\u00E0 valid\u00E9 cet exercice ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                        </div>\n                    </div>\n                ";
+                qPanel.innerHTML = "\n                    <div class=\"quiz-question-wrapper\">\n                        <div class=\"quiz-question-badge\">Exercise Successful</div>\n                        <div class=\"quiz-question-card\">\n                            You have already validated this exercise ! Vous pouvez passer au quiz final en cliquant sur le bouton ci-dessous ou retourner aux exercices.\n                        </div>\n                    </div>\n                ";
             }
             return;
         }

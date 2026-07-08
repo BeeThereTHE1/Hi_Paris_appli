@@ -218,7 +218,7 @@ function renderTestingScreen() {
       if (row.classList.contains('rate-locked')) {
         fPanel.innerHTML = `
           <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-            Veuillez d'abord tester la valeur <strong>${row.getAttribute('data-rate')}</strong> dans le simulateur en lançant l'entraînement pendant 15 époques.
+            Please first test the value <strong>${row.getAttribute('data-rate')}</strong> in the simulator by running the training for 15 epochs.
           </div>
         `;
       }
@@ -239,7 +239,7 @@ function renderTestingScreen() {
     if (!allTested) {
       fPanel.innerHTML = `
         <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-          Il reste <strong>${untestedCount}</strong> valeur(s) de learning rate à tester dans le simulateur avant de valider.
+          There are <strong>${untestedCount}</strong> learning rate value(s) left to test in the simulator before validating.
         </div>
       `;
       return;
@@ -257,8 +257,8 @@ function renderTestingScreen() {
     if (allCorrect) {
       fPanel.innerHTML = `
         <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
-          <strong>✅ Excellent !</strong> Tous les comportements de learning rates ont été correctement identifiés.<br>
-          Transition vers l'activité finale...
+          <strong>✅ Excellent !</strong> All learning rate behaviors have been correctly identified.<br>
+          Transitioning to the final activity...
         </div>
       `;
       validateBtn.disabled = true;
@@ -270,7 +270,7 @@ function renderTestingScreen() {
     } else {
       fPanel.innerHTML = `
         <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-          <strong>❌ Oups !</strong> ${incorrectCount} réponse(s) incorrecte(s). Les choix erronés ont été réinitialisés.
+          <strong>❌ Oops!</strong> ${incorrectCount} incorrect response(s). Incorrect choices have been reset.
         </div>
       `;
 
@@ -450,7 +450,7 @@ function showDragDropOverlay() {
 
     bubble.innerHTML = `
       <div class="dd-feedback-status">
-        ${isCorrect ? '✔ Correct !' : '✖ Incorrect'}
+        ${isCorrect ? '✔ Correct!' : '✖ Incorrect'}
       </div>
       <div class="dd-feedback-statement">
         "${cardText}"
@@ -501,13 +501,13 @@ function showCompletionScreen() {
 
       <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 15px 0; z-index: 2; position: relative;">Congratulations !</h2>
       <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6; margin: 0 0 30px 0; z-index: 2; position: relative;">
-        Vous avez terminé l'exercice 11 avec succès.<br>
-        Le rôle et l'impact du taux d'apprentissage (learning rate) sur la convergence sont maintenant clairs.<br>
+        You have successfully completed Exercise 9.<br>
+        The role and impact of the learning rate on convergence are now clear.<br>
       </p>
 
       <div style="z-index: 2; position: relative;">
         <button id="btn-finish-all" class="pulse-btn" style="background: #FF034D; color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(255, 3, 77, 0.4); text-transform: uppercase;">
-          Retour à l'exercice
+          Return to Exercise
         </button>
       </div>
     </div>

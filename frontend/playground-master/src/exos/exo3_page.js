@@ -57,7 +57,7 @@ var _this = this;
     menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
     var p = user.profil || user.profile || user.role || 'étudiant';
     var typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA D\u00E9connexion</div>\n        </div>\n      ";
+    menu.innerHTML = "\n        <div style=\"padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);\">\n          <div style=\"font-size: 17px; font-weight: 800; color: #fff;\">" + (user.prenom || '') + " " + (user.nom || '') + "</div>\n          <div style=\"font-size: 12px; color: #94a3b8; margin-top: 4px;\">" + (user.email || '') + "</div>\n          <div style=\"display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;\">\uD83D\uDFE2 Profil " + typeProfil + "</div>\n        </div>\n        <div style=\"padding: 8px;\">\n          <a href=\"Page-demo/historique.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCCA Mon Historique</a>\n          <a href=\"statsetudiant.html\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;\">\uD83D\uDCC8 Mes Statistiques</a>\n          <div id=\"btnFuturLogout\" style=\"display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;\">\uD83D\uDEAA Logout</div>\n        </div>\n      ";
     var isOpen = false;
     avatar.onclick = function () {
         isOpen = !isOpen;
@@ -118,11 +118,11 @@ function showExerciseSuccessCongrats() {
                         btnRealise.innerHTML = '✨ Redirection...';
                         btnRealise.disabled = true;
                         setTimeout(function () {
-                            window.location.href = 'exoquiz/exo1_quiz.html';
+                            window.location.href = 'exoquiz/exo3_quiz.html';
                         }, 800);
                     }
                     else {
-                        window.location.href = 'exoquiz/exo1_quiz.html';
+                        window.location.href = 'exoquiz/exo3_quiz.html';
                     }
                     return [2];
             }
@@ -181,7 +181,7 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
                     btnRealise.innerHTML = '✨ Redirection...';
                     btnRealise.disabled = true;
                     setTimeout(function () {
-                        window.location.href = 'exoquiz/exo1_quiz.html';
+                        window.location.href = 'exoquiz/exo3_quiz.html';
                     }, 800);
                 }
                 return [2];
@@ -319,7 +319,6 @@ function startTutorial() {
     updateTimer();
     nextBtn.onclick = function () {
         overlay.remove();
-        
         var styleId = 'highlight-pulse-style';
         if (!document.getElementById(styleId)) {
             var style = document.createElement('style');
@@ -327,9 +326,7 @@ function startTutorial() {
             style.innerHTML = "\n        @keyframes highlight-pulse {\n          0%, 100% { box-shadow: 0 0 0 0 rgba(255, 3, 77, 0); border-color: #004676 !important; transform: scale(1); }\n          50% { box-shadow: 0 0 20px 8px rgba(255, 3, 77, 0.9) !important; border-color: #FF034D !important; transform: scale(1.03) !important; }\n        }\n        .trigger-pulse #msg-box-linear {\n          animation: highlight-pulse 0.8s ease-in-out 4 !important;\n          z-index: 1000 !important;\n          position: relative !important;\n        }\n      ";
             document.head.appendChild(style);
         }
-        
         document.body.classList.add('trigger-pulse');
-        
         setTimeout(function () {
             document.body.classList.remove('trigger-pulse');
         }, 3200);

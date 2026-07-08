@@ -68,7 +68,7 @@
       const now = new Date().toLocaleDateString('fr-FR');
       const saved = saveToStorage('saved_exercises', { id: 9, date: now });
       if (saved) {
-        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+        btnSauvegarder.innerHTML = '✅ Saved !';
         btnSauvegarder.style.opacity = '0.7';
         btnSauvegarder.disabled = true;
       } else {
@@ -100,7 +100,7 @@
       btnNext.style.opacity = "1";
       btnNext.style.pointerEvents = "auto";
     } else {
-      btnNext.innerText = `Veuillez lire (${readingTime}s)`;
+      btnNext.innerText = `Please read (${readingTime}s)`;
     }
   }, 1000);
 
@@ -161,7 +161,7 @@
         btnRealise.disabled = false;
         btnRealise.classList.remove('btn-disabled');
         btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '📝 Faire le Quiz';
+        btnRealise.innerHTML = '📝 Take the Quiz';
         btnRealise.onclick = () => {
           window.location.href = 'exoquiz/exo9_quiz.html';
         };

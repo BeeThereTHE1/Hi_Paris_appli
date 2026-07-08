@@ -11,10 +11,26 @@
         const overlay = document.createElement("div");
         overlay.className = "completion-overlay";
 
-        // Déterminer le lien de l'exercice suivant (max 17 exercices)
-        const nextExoId = exoId + 1;
-        const nextExoExists = nextExoId <= 17;
-        const nextExoLink = nextExoExists ? `exo${nextExoId}.html` : `Page-demo/exercises.html`;
+        // Déterminer le lien de l'exercice suivant à l'aide d'une table de correspondance
+        const nextExoMap = {
+            1: 'exo2.html',
+            2: 'exo3.html',
+            3: 'exo6.html',   // Exo 3 -> Exo 4 (Neurons & Hidden layers)
+            6: 'exo4.html',   // Exo 4 -> Exo 5 (Bias)
+            4: 'exo7.html',   // Exo 5 -> Exo 6 (Activation functions)
+            7: 'exo8.html',   // Exo 6 -> Exo 7 (Model Instability)
+            8: 'exo9.html',   // Exo 7 -> Exo 8 (Optimization)
+            9: 'exo11.html',  // Exo 8 -> Exo 9 (Learning rate/divergence)
+            11: 'exo17.html', // Exo 9 -> Exo 10 (Learning rate/convergence)
+            17: 'exo13.html', // Exo 10 -> Exo 11 (Complexity/feature learning)
+            13: 'exo16.html', // Exo 11 -> Exo 12 (Deep learning/gradient killing)
+            16: 'exo12.html', // Exo 12 -> Exo 13 (Overfitting)
+            12: 'exo15.html', // Exo 13 -> Exo 14 (Generalization)
+            15: 'Page-demo/exercises.html'
+        };
+
+        const nextExoLink = nextExoMap[exoId] || 'Page-demo/exercises.html';
+        const nextExoExists = nextExoLink !== 'Page-demo/exercises.html';
         const nextButtonText = nextExoExists ? "🚀 Next Exercise" : "🏠 Return to Dashboard";
 
         overlay.innerHTML = `

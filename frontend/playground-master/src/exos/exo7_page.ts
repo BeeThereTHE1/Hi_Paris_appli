@@ -68,7 +68,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-    
+
     if ((window as any).StorageService) {
         const success = await (window as any).StorageService.complete(7);
         if (success) {
@@ -343,7 +343,7 @@ async function loadTranslations() {
         if (!response.ok) throw new Error("Failed to load translation json");
         const data = await response.json();
         translations = data.exercises.exercise_7;
-        
+
         if (translations) {
             if (translations.title) {
                 document.title = translations.title;
@@ -371,11 +371,11 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #7";
+    h3.innerText = translations && translations.title ? translations.title : "Exercice #6";
 
     const p = document.createElement('p');
-    const text = translations && translations.instructions && translations.instructions.general 
-        ? translations.instructions.general 
+    const text = translations && translations.instructions && translations.instructions.general
+        ? translations.instructions.general
         : "In this exercise, you will investigate how activation functions affect the model's ability to learn non-linear boundaries. Test each activation function on the Circle dataset, fill out the Yes/No table, and answer the statements about how activation functions affect learning.";
     p.innerText = text;
 
@@ -470,7 +470,7 @@ function showFlashingArrow(targetSelector: string) {
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.document.removeEventListener('click', dismissArrow);
             }
-        } catch(e) {}
+        } catch (e) { }
     };
 
     setTimeout(() => {
@@ -480,7 +480,7 @@ function showFlashingArrow(targetSelector: string) {
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.document.addEventListener('click', dismissArrow);
             }
-        } catch(e) {}
+        } catch (e) { }
     }, 100);
 }
 
@@ -562,7 +562,7 @@ function renderActivity1() {
     const validateBtn = document.getElementById('btn-validate-act1') as HTMLButtonElement;
     validateBtn.onclick = () => {
         // Correct answer: relu=yes, tanh=yes, sigmoid=yes, linear=no
-        const isCorrect = 
+        const isCorrect =
             selectedAnswersAct1.relu === 'yes' &&
             selectedAnswersAct1.tanh === 'yes' &&
             selectedAnswersAct1.sigmoid === 'yes' &&
@@ -571,7 +571,7 @@ function renderActivity1() {
         if (isCorrect) {
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);">
-                    ✅ Correct ! Vous avez bien identifié les capacités de chaque fonction. Transition vers l'activité 2...
+                    ✅ Correct !You have correctly identified the capabilities of each function. Transition to activity 2...
                 </div>
             `;
             validateBtn.disabled = true;
@@ -583,7 +583,7 @@ function renderActivity1() {
         } else {
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-                    ❌ Incorrect. Testez à nouveau les fonctions dans le simulateur. Some wrong choices ont été réinitialisés.
+                    ❌ Incorrect. Test the functions in the simulator again. Some incorrect choices have been reset.
                 </div>
             `;
 
@@ -731,11 +731,11 @@ function renderActivity2() {
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
                     btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-                    
+
                     // Show final message
                     fPanel.innerHTML += `
                         <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;">
-                            ✨ Exercise Successful !! Cliquez sur le bouton "Take the quiz" en bas à droite pour continuer.
+                            ✨ Exercise Successful !!Click the "Take the quiz" button in the bottom right corner to continue.
                         </div>
                     `;
                 }
