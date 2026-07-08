@@ -33,7 +33,7 @@
         btnNext.style.opacity = "1";
         btnNext.style.pointerEvents = "auto";
       } else {
-        btnNext.innerText = `Veuillez lire (${readingTime}s)`;
+        btnNext.innerText = `Please read (${readingTime}s)`;
       }
     }, 1000);
 

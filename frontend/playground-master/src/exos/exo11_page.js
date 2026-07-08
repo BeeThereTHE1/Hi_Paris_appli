@@ -87,7 +87,7 @@ btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, f
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                    btnSauvegarder.innerHTML = '✅ Saved !';
                     btnSauvegarder.style.opacity = '0.7';
                     btnSauvegarder.disabled = true;
                 }
@@ -111,7 +111,7 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
             case 1:
                 success = _a.sent();
                 if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
+                    btnRealise.innerHTML = '✨ Redirecting...';
                     btnRealise.disabled = true;
                     setTimeout(function () {
                         window.location.href = 'exoquiz/exo11_quiz.html';

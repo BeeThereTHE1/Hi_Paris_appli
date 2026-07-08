@@ -52,11 +52,11 @@ var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () {
     var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = '../Page-demo/register.html'; return; }
-    
+
     if (window.StorageService) {
         window.StorageService.save(16).then(function (success) {
             if (success) {
-                btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                btnSauvegarder.innerHTML = '✅ Saved !';
                 btnSauvegarder.style.opacity = '0.7';
                 btnSauvegarder.disabled = true;
             }
@@ -320,7 +320,7 @@ function renderActivity4() {
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
             <div class="quiz-question-badge" style="background:#8b5cf6;">Activité 4</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.4;">
-                <strong>Identify the correct conclusions</strong> - Pour chaque paire d'énoncés ci-dessous, sélectionnez l'affirmation correcte en vous basant sur vos observations de la simulation.
+                <strong>Identify the correct conclusions</strong> -For each pair of statements below, select the correct statement based on your observations of the simulation.
             </div>
         </div>
 
@@ -383,7 +383,7 @@ function renderActivity4() {
             if (isCorrect) {
                 correctAnswers[pair] = true;
                 opt.className = "quiz-pair-option correct";
-                
+
                 // Disable other options in this pair
                 var siblings = parent.querySelectorAll('.quiz-pair-option');
                 siblings.forEach(function (sib) {
@@ -394,7 +394,7 @@ function renderActivity4() {
 
                 fPanel.innerHTML = `
                     <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15);">
-                        ✅ Correct ! Cette conclusion est scientifiquement valide.
+                        ✅ Correct! This conclusion is scientifically valid.
                     </div>
                 `;
 
@@ -407,7 +407,7 @@ function renderActivity4() {
 
                 fPanel.innerHTML = `
                     <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-                        ❌ Ce n'est pas correct. Relisez attentivement les observations de la simulation.
+                        ❌ That's not correct. Carefully reread the simulation observations.
                     </div>
                 `;
             }
@@ -420,7 +420,7 @@ function checkActivity4Completion() {
         var fPanel = document.getElementById('quiz-feedback-panel');
         fPanel.innerHTML = `
             <div class="feedback-box" style="border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); font-weight: 700;">
-                🎉 Excellent ! Toutes vos conclusions sont correctes.<br>
+                🎉 Excellent! All your conclusions are correct.<br>
                 <div style="text-align: right; margin-top: 10px;">
                     <button class="tutorial-btn" id="btn-next-act4" style="padding: 8px 20px; font-size:12px;">NEXT : Find the Mistake</button>
                 </div>
@@ -493,12 +493,14 @@ function renderActivity5() {
     // 2. Set right panel text and game UI
     qPanel.innerHTML = `
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
-            <div class="quiz-question-badge" style="background:#FF034D;">Activité 5</div>
+            <div class="quiz-question-badge" style="background:#FF034D;">Activity 5</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.45;">
-                <strong>Trouver l'erreur in the Diagram</strong><br><br>
-                Examinez attentivement les summary columns qui viennent d'apparaître sur la gauche.<br><br>
-                <b>Défi :</b> Une erreur conceptuelle majeure s'est glissée dans les textes de la colonne <b>3.b (Sigmoid)</b>. Cliquez directement sur le mot erroné pour corriger le schéma et valider l'exercice.
-            </div>
+                <strong>Find the error in the diagram</strong><br><br>
+                Carefully examine the summary columns that have just appeared on the left.<br><br>
+
+<b>Challenge:</b> A major conceptual error has crept into the text of column <b>3.b (Sigmoid)</b>. Click directly on the incorrect word to correct the diagram and complete the exercise.
+
+</div>
         </div>
 
         <div style="display:flex; gap:10px; justify-content:center; margin-top:20px;">
@@ -509,7 +511,7 @@ function renderActivity5() {
 
     fPanel.innerHTML = `
         <div class="feedback-box">
-            📖 Lisez le schéma colonne par colonne à gauche.
+            📖 Read the diagram column by column on the left.
         </div>
     `;
 
@@ -538,7 +540,7 @@ function initFindMistakeGame() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     fPanel.innerHTML = `
         <div class="feedback-box">
-            🔍 Le schéma est complet ! Cherchez l'erreur conceptuelle dans la colonne Sigmoid.
+            🔍The diagram is complete! Look for the conceptual error in the Sigmoid column.
         </div>
     `;
 
@@ -631,12 +633,12 @@ function initFindMistakeGame() {
 
 // ─── COMPLETION SCREEN ───────────────────────────────────────────────────────
 function showCompletionScreen() {
-  document.querySelectorAll(".completion-overlay").forEach(function (el) { el.remove(); });
+    document.querySelectorAll(".completion-overlay").forEach(function (el) { el.remove(); });
 
-  var overlay = document.createElement("div");
-  overlay.className = "completion-overlay";
+    var overlay = document.createElement("div");
+    overlay.className = "completion-overlay";
 
-  overlay.innerHTML = `
+    overlay.innerHTML = `
     <div class="completion-card">
       <!-- Canvas pour l'effet confettis -->
       <canvas id="confetti-canvas" class="confetti-canvas" width="560" height="387"></canvas>
@@ -656,7 +658,7 @@ function showCompletionScreen() {
       <!-- Actions -->
       <div class="completion-actions">
         <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
-          🚀 Retourner aux Exercices
+          🚀 Return to Exercises
         </a>
       </div>
     </div>
@@ -667,66 +669,66 @@ function showCompletionScreen() {
     </a>
   `;
 
-  document.body.appendChild(overlay);
+    document.body.appendChild(overlay);
 
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () { overlay.classList.add("show"); });
-  });
+    requestAnimationFrame(function () {
+        requestAnimationFrame(function () { overlay.classList.add("show"); });
+    });
 
-  requestAnimationFrame(function () { launchConfetti(); });
+    requestAnimationFrame(function () { launchConfetti(); });
 
-  // API Call to register completion to DB
-  (async function () {
-    localStorage.setItem('quiz_section_4_completed', 'true');
-    if (window.StorageService) {
-      await window.StorageService.complete(16);
-      console.log("✅ Exercice 16 validé en base de données.");
-    }
-  })();
+    // API Call to register completion to DB
+    (async function () {
+        localStorage.setItem('quiz_section_4_completed', 'true');
+        if (window.StorageService) {
+            await window.StorageService.complete(16);
+            console.log("✅ Exercise 16 marked COMPLETED.");
+        }
+    })();
 }
 
 // ─── CONFETTI ENGINE ─────────────────────────────────────────────────────────
 function launchConfetti() {
-  var canvas = document.getElementById("confetti-canvas");
-  if (!canvas) return;
-  var ctx = canvas.getContext("2d");
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+    var canvas = document.getElementById("confetti-canvas");
+    if (!canvas) return;
+    var ctx = canvas.getContext("2d");
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 
-  var COLORS = ["#FF034D", "#FFD700", "#10b981", "#6366f1", "#ffffff", "#FF6B35"];
-  var pieces = Array.from({ length: 120 }, function () {
-    return {
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      r: Math.random() * 6 + 4,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      speed: Math.random() * 3 + 1.5,
-      spin: (Math.random() - 0.5) * 0.15,
-      angle: Math.random() * Math.PI * 2,
-      drift: (Math.random() - 0.5) * 1.5
-    };
-  });
-
-  var frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(function (p) {
-      p.y += p.speed;
-      p.x += p.drift;
-      p.angle += p.spin;
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.angle);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 2);
-      ctx.restore();
-      if (p.y > canvas.height) {
-        p.y = -10;
-        p.x = Math.random() * canvas.width;
-      }
+    var COLORS = ["#FF034D", "#FFD700", "#10b981", "#6366f1", "#ffffff", "#FF6B35"];
+    var pieces = Array.from({ length: 120 }, function () {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            speed: Math.random() * 3 + 1.5,
+            spin: (Math.random() - 0.5) * 0.15,
+            angle: Math.random() * Math.PI * 2,
+            drift: (Math.random() - 0.5) * 1.5
+        };
     });
-    frame++;
-    if (frame < 300) requestAnimationFrame(draw);
-  }
-  draw();
+
+    var frame = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(function (p) {
+            p.y += p.speed;
+            p.x += p.drift;
+            p.angle += p.spin;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 2);
+            ctx.restore();
+            if (p.y > canvas.height) {
+                p.y = -10;
+                p.x = Math.random() * canvas.width;
+            }
+        });
+        frame++;
+        if (frame < 300) requestAnimationFrame(draw);
+    }
+    draw();
 }

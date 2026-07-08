@@ -583,7 +583,7 @@ function renderActivity1() {
         } else {
             fPanel.innerHTML = `
                 <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-                    ❌ Incorrect. Testez à nouveau les fonctions dans le simulateur. Some wrong choices ont été réinitialisés.
+                    ❌ Incorrect. Test the functions in the simulator again. Some incorrect choices have been reset.
                 </div>
             `;
 

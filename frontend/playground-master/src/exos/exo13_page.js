@@ -1,6 +1,6 @@
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -29,18 +29,22 @@ var _this = this;
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try {
-            step(generator.next(value));
+        function fulfilled(value) {
+            try {
+                step(generator.next(value));
+            }
+            catch (e) {
+                reject(e);
+            }
         }
-        catch (e) {
-            reject(e);
-        } }
-        function rejected(value) { try {
-            step(generator["throw"](value));
+        function rejected(value) {
+            try {
+                step(generator["throw"](value));
+            }
+            catch (e) {
+                reject(e);
+            }
         }
-        catch (e) {
-            reject(e);
-        } }
         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
@@ -518,7 +522,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercise #13 : Iterative Learning Cycle";
+    h3.innerText = "Exercise #11 : Iterative Learning Cycle";
     var p = document.createElement('p');
     p.innerText = "Observer l'évolution de la frontière de décision au fil des epochs. Mettre en pause à différents moments de l'entrainement (epoch 10, 100, 500) et décrire ce qui se passe visuellement.";
     var timerSpan = document.createElement('span');
@@ -572,18 +576,20 @@ if (iframe) {
 }
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4, window.StorageService.save(13)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.disabled = true;
-                }
-                return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, window.StorageService.save(13)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Saved !';
+                        btnSauvegarder.disabled = true;
+                    }
+                    return [2];
+            }
+        });
     });
-}); };
+};

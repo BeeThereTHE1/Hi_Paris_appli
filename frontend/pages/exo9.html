@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Exercice 9</title>
+  <title>Exercise 8</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
@@ -46,13 +46,13 @@
       <span class="icon">💾</span> Save draft
     </button>
     <button id="btn-realise" class="btn-action-premium btn-disabled" disabled onclick="window.location.href='exoquiz/exo9_quiz.html'">
-      <span class="icon">📝</span> Faire le Quiz
+      <span class="icon">📝</span> Take the Quiz
     </button>
   </div>
 
   <section class="exo-header">
     <div class="exo-toprow">
-      <div class="badge">9</div>
+      <div class="badge">8</div>
       <h1 class="exo-title">Optimization and convergence</h1>
     </div>
     <p class="exo-instructions">
@@ -63,7 +63,7 @@
   <!-- Overlay de lecture obligatoire (Etape 1) -->
   <div class="reading-overlay" id="readingOverlay" style="position: fixed; inset: 0; background: rgba(11, 15, 26, 0.97); z-index: 9999; display: flex; align-items: center; justify-content: center;">
     <div class="reading-content" style="max-width: 650px; text-align: center; padding: 40px; border: 1.5px solid rgba(99, 102, 241, 0.4); border-radius: 16px; background: rgba(255,255,255,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-      <h2 style="color: #FF034D; font-size: 24px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 0.5px;">Exercise # 9&10 Error and divergence</h2>
+      <h2 style="color: #FF034D; font-size: 24px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 0.5px;">Exercise # 8 Optimization and convergence</h2>
       <p id="overlayInstruction" style="font-size: 16px; line-height: 1.6; color: #e2e8f0; margin-bottom: 30px;">
         Run the two models with different noise levels and analyze how their training loss and weights evolve during training.
       </p>
@@ -86,11 +86,11 @@
 
   <main class="exo-main" id="main-part" style="display: flex; flex-direction: column; gap: 15px; height: calc(100vh - 180px); padding: 15px 32px; box-sizing: border-box;">
     <div style="flex: 1; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; position: relative;">
-      <div style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(11, 15, 26, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #FF034D;">Modèle 1 (Bruit Faible / Low Noise)</div>
+      <div style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(11, 15, 26, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #FF034D;">Model 1 (Low Noise)</div>
       <iframe class="exo-frame" id="iframe-model1" src="./playground/index.html?exo=9" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
     <div style="flex: 1; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; position: relative;">
-      <div style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(11, 15, 26, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #3b82f6;">Modèle 2 (Bruit Élevé / High Noise)</div>
+      <div style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(11, 15, 26, 0.85); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid #3b82f6;">Model 2 (High Noise)</div>
       <iframe class="exo-frame" id="iframe-model2" src="./playground/index.html?exo=9" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
   </main>

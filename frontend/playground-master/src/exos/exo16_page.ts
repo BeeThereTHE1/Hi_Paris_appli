@@ -65,7 +65,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-    
+
     if (window.StorageService) {
         const success = await window.StorageService.complete(16);
         if (success) {
@@ -310,10 +310,10 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #16 : Gradient Killing & Sigmoid vs ReLU";
+    h3.innerText = "Exercise #12 : Gradient Killing & Sigmoid vs ReLU";
 
     const p = document.createElement('p');
-    p.innerText = "Dans cet exercice, nous allons comparer le comportement de deux fonctions d'activation : la Sigmoid et la ReLU dans un réseau de neurones profond (6 couches cachées, LR = 10, Dataset Spiral). Tout d'abord, examinons de près la définition d'un gradient dans un réseau de neurones.";
+    p.innerText = "In this exercise, we will compare the behavior of two activation functions: Sigmoid and ReLU in a deep neural network (6 hidden layers, LR = 10, Spiral dataset). First, let's closely examine the definition of a gradient in a neural network.";
 
     const timerSpan = document.createElement('span');
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #cbd5e1;';
@@ -360,7 +360,7 @@ function renderActivity1() {
         <div class="quiz-question-wrapper" style="margin-bottom:15px;">
             <div class="quiz-question-badge" style="background:#004676;">Activity 1</div>
             <div class="quiz-question-card" style="font-size: 13px; line-height: 1.4;">
-                <strong>Comprendre le Gradient</strong> - Prenez le temps de lire les explications ci-dessous. Les notions s'affichent séquentiellement pour vous guider.
+                <strong>Comprendre le Gradient</strong> -Take the time to read the explanations below. The concepts are presented sequentially to guide you.
             </div>
         </div>
         <div id="def-boxes-container">
@@ -405,7 +405,7 @@ function renderActivity1() {
 
     fPanel.innerHTML = `
         <div class="feedback-box">
-            📖 Lisez attentivement la définition du gradient et de sa mise à jour.
+            📖Read carefully the definition of the gradient and its update.
         </div>
     `;
 
@@ -478,7 +478,7 @@ function renderActivity2() {
 
     fPanel.innerHTML = `
         <div class="feedback-box" style="border-left-color: #FF034D;">
-            💡 Cliquez sur le bouton Play (▶️) rouge clignotant dans chaque simulateur à gauche.
+            💡 Click on the flashing red Play button (▶️) in each simulator on the left.
         </div>
     `;
 
@@ -520,7 +520,7 @@ function renderActivity2() {
 
     // Interval to check progress
     if (simulationCheckInterval) clearInterval(simulationCheckInterval);
-    
+
     let sigmoidEpoch = 0;
     let reluEpoch = 0;
     let sigmoidPlaying = false;
@@ -589,7 +589,7 @@ function renderActivity2() {
             if (sigmoidEpoch >= 150 && reluEpoch >= 150) {
                 clearInterval(simulationCheckInterval);
                 simulationCheckInterval = null;
-                
+
                 const btnNext = document.getElementById('btn-next-act2');
                 if (btnNext) {
                     btnNext.removeAttribute('disabled');

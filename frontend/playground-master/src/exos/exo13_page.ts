@@ -434,7 +434,7 @@ function drawFlowArrows() {
     const r3 = c3.getBoundingClientRect();
     const r4 = c4.getBoundingClientRect();
     const r5 = c5.getBoundingClientRect();
-    
+
     function addArrowPath(dStr) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', dStr);
@@ -637,7 +637,7 @@ function startTutorial() {
     const popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #13 : Iterative Learning Cycle";
+    h3.innerText = "Exercise #11 : Iterative Learning Cycle";
     const p = document.createElement('p');
     p.innerText = "Observer l'évolution de la frontière de décision au fil des epochs. Mettre en pause à différents moments de l'entrainement (epoch 10, 100, 500) et décrire ce qui se passe visuellement.";
     const timerSpan = document.createElement('span');

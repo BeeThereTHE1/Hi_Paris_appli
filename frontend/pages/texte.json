@@ -749,7 +749,7 @@
             }
         },
         "exercise_11": {
-            "title": "Exercise # 11 Learning rate",
+            "title": "Exercise # 9 Learning rate",
             "instructions": {
                 "general": "Explore how different Learning rates affect learning",
                 "activity_3": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
@@ -945,7 +945,7 @@
             }
         },
         "exercise_13_14": {
-            "title": "Exercise # 13&14 Neurons and training process",
+            "title": "Exercise # 11 Neurons and training process",
             "instructions": {
                 "general": "In this exercise, you will review how a neural network learns over time and explore how internal representations are built inside the model.",
                 "secondary": "First, let's examine the iterative learning cycle that takes place inside a neural network. You have the option to execute the training incrementally, observing each stage of the process as it unfolds."
@@ -1204,7 +1204,7 @@
             }
         },
         "exercise_17": {
-            "title": "Exercise # 17",
+            "title": "Exercise # 10",
             "instructions": {
                 "general": "Explore how increasing the learning rate affects training stability on a separable dataset using a logistic regression model.",
                 "activity_1": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
@@ -1356,8 +1356,8 @@
             }
         },
         "exercise_16": {
-            "title": "Exercise #16 Gradient",
-            "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
+            "title": "Exercise #12 Gradient",
+            "visible_parameters": "Validate/modify the elements that appear by referring to the base screen",
             "instructions": {
                 "general": "In this exercise, you will explore how the choice of activation function affects learning in a deep neural network and influences gradient propagation.",
                 "secondary": "First, let's examine the definition of a gradient in a Neural Network"

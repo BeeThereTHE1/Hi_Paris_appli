@@ -65,7 +65,7 @@ btnSauvegarder.onclick = async () => {
 btnRealise.onclick = async () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (!isLoggedIn) { window.location.href = 'Page-demo/register.html'; return; }
-    
+
     if ((window as any).StorageService) {
         const success = await (window as any).StorageService.complete(15);
         if (success) {
@@ -338,7 +338,7 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #15 : Training & Test Datasets";
+    h3.innerText = "Exercise #14 : Training & Test Datasets";
 
     const p = document.createElement('p');
     const introText = "In this exercise, you will examine the distinct roles of the Training dataset and the Test dataset. You will classify statements, run the simulator on a small training split (10%), and observe the consequences on generalization. First, let's review the key notions by classifying statements on the right panel.";

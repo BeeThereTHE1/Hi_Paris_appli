@@ -354,10 +354,10 @@ function updateIntroUI() {
         const el = document.getElementById(`status-intro-${k}`);
         if (el) {
             if (introState[k]) {
-                el.innerHTML = "✅ Visité";
+                el.innerHTML = "✅ Visited";
                 el.style.color = "var(--green)";
             } else {
-                el.innerHTML = "❌ Non visité";
+                el.innerHTML = "❌ Not visited";
                 el.style.color = "var(--red)";
             }
         }
@@ -713,8 +713,8 @@ function appendQuizCard(gridId, sectionKey, isSectionUnlocked) {
         <span class="badge medium quiz-badge">🏅 Quiz</span>
       </div>
       <div class="category-tag">Évaluation</div>
-      <div class="card-title">Validation de la Section ${sectionKey}</div>
-      <div class="card-desc">Testez vos acquis théoriques pour débloquer la section suivante.</div>
+      <div class="card-title">Section Validation ${sectionKey}</div>
+      <div class="card-desc">Test your theoretical knowledge to unlock the next section.</div>
       <div class="card-footer">
         <div class="card-meta">
            <div class="meta-item">🕒 5 min</div>
@@ -1787,7 +1787,7 @@ function renderCustomQuizResults() {
                 <span style="font-size: 64px; display: block; margin-bottom: 15px; animation: bounce 1s infinite alternate;">🏆</span>
                 <h3 style="font-size: 22px; font-weight: 800; color: #10B981; margin: 0 0 10px 0;">Section ${activeQuizSection} Validée !</h3>
                 <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 24px 0;">
-                    Félicitations, vous avez obtenu un score de <strong>${score}/${total} (${percent}%)</strong>. 
+                   Congratulations, you achieved a score of <strong>${score}/${total} (${percent}%)</strong>. 
                     You mastered perfectly the concepts of this section ! The next path is unlocked.
                 </p>
                 <button class="btn-start" onclick="closeAndApplyFilters()" style="background:#10B981; padding: 12px 36px; font-size: 15px; font-weight:700; border-radius:12px;">
@@ -1800,9 +1800,9 @@ function renderCustomQuizResults() {
         if (customQuizIncorrectExos.size > 0) {
             recommendationHTML = `
                 <div style="text-align: left; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 15px; margin: 20px 0;">
-                    <h5 style="margin: 0 0 8px 0; color: #ef4444; font-size: 13.5px; font-weight: 700;">📚 Recommandations de révision (V3) :</h5>
+                    <h5 style="margin: 0 0 8px 0; color: #ef4444; font-size: 13.5px; font-weight: 700;">📚 Revision recommendations (V3) :</h5>
                     <p style="margin: 0 0 10px 0; font-size: 12px; color: #94a3b8; line-height: 1.4;">
-                        En analysant vos erreurs, nous vous conseillons vivement de refaire les exercices suivants pour maîtriser ces concepts :
+                        After analyzing your mistakes, we strongly advise you to redo the following exercises to master these concepts:
                     </p>
                     <ul style="margin: 0; padding-left: 20px; font-size: 12.5px; color: #cbd5e1; line-height: 1.6;">
             `;
@@ -1820,9 +1820,9 @@ function renderCustomQuizResults() {
         leftPanel.innerHTML = `
             <div style="text-align: center; padding: 20px 0;">
                 <span style="font-size: 64px; display: block; margin-bottom: 15px;">❌</span>
-                <h3 style="font-size: 22px; font-weight: 800; color: #FF034D; margin: 0 0 10px 0;">Score insuffisant (${percent}%)</h3>
+                <h3 style="font-size: 22px; font-weight: 800; color: #FF034D; margin: 0 0 10px 0;">Insufficient score (${percent}%)</h3>
                 <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin: 0 0 15px 0;">
-                    Vous avez obtenu <strong>${score}/${total}</strong>. Le seuil requis pour valider cette section est de <strong>80% (${Math.ceil(total * 0.8)}/${total})</strong>.
+                    you achieved a score of <strong>${score}/${total}</strong>. The threshold required to validate this section is <strong>80% (${Math.ceil(total * 0.8)}/${total})</strong>.
                 </p>
                 
                 ${recommendationHTML}
@@ -1902,8 +1902,8 @@ function downloadCertificate() {
     // Texte d'attribution
     ctx.fillStyle = '#eef2ff';
     ctx.font = '600 16px Inter, sans-serif';
-    ctx.fillText("Pour avoir complété avec succès l'intégralité du parcours pédagogique", 400, 370);
-    ctx.fillText("et validé l'évaluation finale de Neural Playground.", 400, 400);
+    ctx.fillText("For having successfully completed the entire educational program", 400, 370);
+    ctx.fillText("and validated the final evaluation of Neural Playground.", 400, 400);
 
     // Date
     const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
