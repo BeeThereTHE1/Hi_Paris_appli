@@ -458,7 +458,7 @@ function renderActivity5() {
                 <h4>2. Deep Learning (Chain Rule)</h4>
                 <p>In backpropagation, the gradient is computed as a product of derivatives across layers:</p>
                 <div class="schema-card-formula">∂Loss / ∂w = (∂Loss / ∂a_n) * (∂a_n / ∂w)</div>
-                <p>Gradient is a product of many terms across layers.</p>
+                <p>Gradient  =  multiplication of many terms</p>
             </div>
 
             <div class="schema-col col-3" id="schema-col-3">
@@ -468,10 +468,12 @@ function renderActivity5() {
                     ReLU'(x) = 1 if x > 0<br>
                     ReLU'(x) = 0 if x ≤ 0
                 </div>
-                <p>• <b>Gradient = 0</b> → No signal passes ("dead node").<br>
-                • <b>Gradient = 1</b> → Full signal passes, weights are updated normally.<br>
+                <p>• <b>Gradient = 0</b> → No signal passes ("dead neuron").<br>
+                • <b>Gradient = 1</b> →Full signal passes backward. <br>
+                • <b>Weights are updated normally.<br>
                 gradient ≈ 1 * 1 * 1... = 1.<br><br>
-                ReLU does NOT shrink gradients (no multiplication by small values).</p>
+                ReLU does NOT shrink gradients (no multiplication by small values). When active → gradient stays strong (1) → learning continues
+</p>
             </div>
 
             <div class="schema-col col-4" id="schema-col-4">
