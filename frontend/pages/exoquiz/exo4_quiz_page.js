@@ -221,7 +221,7 @@ function showCompletionScreen() {
       <!-- CTA buttons -->
       <div class="completion-actions">
         <a class="completion-btn-next pulse-btn" href="../exo7.html">
-          🚀 Exercice Suivant
+          🚀 Next Exercise
         </a>
       </div>
     </div>

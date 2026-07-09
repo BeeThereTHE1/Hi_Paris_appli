@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -80,51 +80,55 @@ var _this = this;
 })();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.save(7)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.save(7)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                        btnSauvegarder.style.opacity = '0.7';
+                        btnSauvegarder.disabled = true;
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var isLoggedIn, success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                if (!isLoggedIn) {
-                    window.location.href = 'Page-demo/register.html';
-                    return [2];
-                }
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.complete(7)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () {
-                        window.location.href = 'exoquiz/exo7_quiz.html';
-                    }, 800);
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+};
+btnRealise.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var isLoggedIn, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (!isLoggedIn) {
+                        window.location.href = 'Page-demo/register.html';
+                        return [2];
+                    }
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.complete(7)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () {
+                            window.location.href = 'exoquiz/exo7_quiz.html';
+                        }, 800);
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
+};
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -411,7 +415,7 @@ function renderActivity1() {
             }, 2000);
         }
         else {
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    \u274C Incorrect. Testez \u00E0 nouveau les fonctions dans le simulateur. Some wrong choices ont \u00E9t\u00E9 r\u00E9initialis\u00E9s.\n                </div>\n            ";
+            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    \u274C Incorrect, Test the functions in the simulator again. Some incorrect choices have been reset.\n                </div>\n            ";
             if (selectedAnswersAct1.relu !== 'yes') {
                 selectedAnswersAct1.relu = null;
                 var row = qPanel.querySelector('tr[data-activation="relu"]');
@@ -579,16 +583,18 @@ if (iframe) {
             btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
             return;
         }
-        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, loadTranslations()];
-                    case 1:
-                        _a.sent();
-                        startTutorial();
-                        return [2];
-                }
+        setTimeout(function () {
+            return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, loadTranslations()];
+                        case 1:
+                            _a.sent();
+                            startTutorial();
+                            return [2];
+                    }
+                });
             });
-        }); }, 1200);
+        }, 1200);
     });
 }

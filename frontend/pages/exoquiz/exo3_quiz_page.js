@@ -31,21 +31,21 @@ function renderStep() {
       <div class="quiz-question-wrapper">
         <div class="quiz-question-badge">Question 1/2</div>
         <div class="quiz-question-card">
-          Quel type of boundary de décision le modèle avec uniquement <strong>X₁ et X₂</strong> (caractéristiques linéaires) a-t-il pu tracer ?
+          What type of decision boundary was the model with only X₁ and X₂ (linear characteristics) able to draw?
         </div>
       </div>
       <div class="quiz-options-container">
         <button class="quiz-option-btn" data-correct="true" data-index="0">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une separating straight line)</span>
+          <span class="quiz-option-text">Linear (une separating straight line)</span>
         </button>
         <button class="quiz-option-btn" data-correct="false" data-index="1">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Circulaire (un cercle entourant les points)</span>
+          <span class="quiz-option-text">Circular (a circle surrounding the points)</span>
         </button>
         <button class="quiz-option-btn" data-correct="false" data-index="2">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Aucune frontière possible</span>
+          <span class="quiz-option-text">No borders possible</span>
         </button>
       </div>
     `;
@@ -55,21 +55,21 @@ function renderStep() {
       <div class="quiz-question-wrapper">
         <div class="quiz-question-badge">Question 1/2</div>
         <div class="quiz-question-card">
-          Quel type of boundary de décision le modèle avec <strong>X₁, X₂, X₁² et X₂²</strong> (caractéristiques quadratiques) a-t-il pu tracer ?
+          What type of decision boundary was the model with X₁, X₂, X₁² and X₂² (quadratic characteristics) able to draw?
         </div>
       </div>
       <div class="quiz-options-container">
         <button class="quiz-option-btn" data-correct="false" data-index="0">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Linéaire (une separating straight line)</span>
+          <span class="quiz-option-text">Linear (une separating straight line)</span>
         </button>
         <button class="quiz-option-btn" data-correct="true" data-index="1">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Circulaire (un cercle entourant les points)</span>
+          <span class="quiz-option-text">Circular (a circle surrounding the points)</span>
         </button>
         <button class="quiz-option-btn" data-correct="false" data-index="2">
           <span class="quiz-option-checkbox"></span>
-          <span class="quiz-option-text">Une forme en spirale complexe</span>
+          <span class="quiz-option-text">A complex spiral shape</span>
         </button>
       </div>
     `;
@@ -78,9 +78,9 @@ function renderStep() {
     // Render static indicator in right panel
     questionPanel.innerHTML = `
       <div style="text-align: center; padding: 40px 20px; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 16px;">
-        <h3 style="color: #cbd5e1; margin-bottom: 15px;">Étape finale débloquée !</h3>
+        <h3 style="color: #cbd5e1; margin-bottom: 15px;">Final step unlocked!</h3>
         <p style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
-          Répondez à la question flottante pour terminer l'exercice. Vous pouvez déplacer la boîte si elle cache le playground.
+          Answer the open question to complete the exercise. You can move the box if it's blocking the playground.
         </p>
       </div>
     `;
@@ -108,13 +108,13 @@ function setupOptionListeners() {
       let feedbackText = "";
 
       if (quizStep === "1a") {
-        feedbackText = isCorrect 
-          ? "Excellent ! Avec uniquement X₁ et X₂, le modèle ne peut effectuer que des combinaisons linéaires, ce qui limite la frontière à une separating straight line."
-          : "Pas tout à fait. X₁ et X₂ sont des coordonnées cartésiennes linéaires. Sans couches cachées ou transformations, la frontière reste rectiligne.";
+        feedbackText = isCorrect
+          ? "Excellent! With only X₁ and X₂, the model can only perform linear combinations, which limits the boundary to a separating straight line."
+          : "Not quite. X₁ and X₂ are linear Cartesian coordinates. Without hidden layers or transformations, the boundary remains rectilinear.";
       } else if (quizStep === "1b") {
-        feedbackText = isCorrect 
-          ? "Exact ! L'introduction de X₁² et X₂² permet au modèle d'exprimer des termes quadratiques, traçant ainsi des cercles ou ellipses pour séparer le dataset."
-          : "Rappelez-vous des équations mathématiques de cercle (x² + y² = r²). Les caractéristiques quadratiques sont indispensables pour tracer des frontières courbes.";
+        feedbackText = isCorrect
+          ? "Exactly! The introduction of X₁² and X₂² allows the model to express quadratic terms, thus drawing circles or ellipses to separate the dataset."
+          : "Remember the mathematical equations of a circle (x² + y² = r²). Quadratic characteristics are essential for drawing curved boundaries."
       }
 
       feedbackPanel.innerHTML = `
@@ -160,27 +160,27 @@ function showQuiz2Overlay() {
   container.innerHTML = `
     <div class="dragdrop-header" style="cursor: move; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
       <span style="background: #FF034D; color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold;">2</span>
-      <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #fff;">Last Check! (Déplaçable ↕️)</h3>
+      <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #fff;">Last Check! (Movable ↕️)</h3>
     </div>
     <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px;">
-      Ici, nous avons comparé les caractéristiques linéaires et non-linéaires. Quelle proposition décrit le mieux une caractéristique non-linéaire (non-linear feature) ?
+      Here, we compared linear and non-linear features. Which proposition best describes a non-linear feature?
     </p>
     <div class="quiz-options-container" style="display: flex; flex-direction: column; gap: 10px;">
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">A) Une caractéristique combinée avec d'autres entrées par des poids linéaires.</span>
+        <span class="quiz-option-text">A)A feature combined with other inputs by linear weights.</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="true">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">B) Une caractéristique créée en appliquant une transformation non-linéaire à une entrée.</span>
+        <span class="quiz-option-text">B)A feature created by applying a non-linear transformation to an input.</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">C) Une caractéristique qui produit des sorties aléatoires et irrégulières.</span>
+        <span class="quiz-option-text">C) A characteristic that produces random and irregular outputs.</span>
       </button>
       <button class="quiz-option-btn opt-q2" data-correct="false">
         <span class="quiz-option-checkbox"></span>
-        <span class="quiz-option-text">D) Une caractéristique utilisable uniquement dans les réseaux profonds.</span>
+        <span class="quiz-option-text">D)A feature usable only in deep networks.</span>
       </button>
     </div>
     <div id="q2-feedback" style="margin-top: 15px; font-size: 12px; border-radius: 8px; padding: 10px; display: none; color: #fff;"></div>
@@ -207,7 +207,7 @@ function showQuiz2Overlay() {
         q2Feedback.style.display = "block";
         q2Feedback.style.backgroundColor = "rgba(16, 185, 129, 0.2)";
         q2Feedback.style.border = "1px solid #10b981";
-        q2Feedback.innerHTML = "<strong>Congratulations !</strong> Vous avez identifié qu'une transformation non-linéaire (ex: x²) permet de projeter les données dans un espace où elles deviennent séparables linéairement.";
+        q2Feedback.innerHTML = "<strong>Congratulations !</strong>You have identified that a non-linear transformation (e.g., x²) allows the data to be projected into a space where it becomes linearly separable.";
 
         setTimeout(() => {
           ddOverlay.remove();
@@ -218,7 +218,7 @@ function showQuiz2Overlay() {
         q2Feedback.style.display = "block";
         q2Feedback.style.backgroundColor = "rgba(255, 3, 77, 0.2)";
         q2Feedback.style.border = "1px solid #FF034D";
-        q2Feedback.innerHTML = "<strong>Incorrect.</strong> Réfléchissez au passage de X à X² : nous appliquons une fonction non-linéaire (la puissance 2) pour changer l'espace de la caractéristique.";
+        q2Feedback.innerHTML = "<strong>Incorrect.</strong> Consider the transition from X to X²: we apply a non-linear function (the power of 2) to change the characteristic space.";
       }
     });
   });
@@ -238,7 +238,7 @@ function makeElementDraggable(elmnt, header) {
       return;
     }
     e.preventDefault();
-    
+
     // Clear CSS transforms if present to avoid absolute offset calculation issues
     if (elmnt.style.transform && elmnt.style.transform !== "none") {
       const rect = elmnt.getBoundingClientRect();
@@ -286,14 +286,14 @@ function showCompletionScreen() {
       </div>
 
       <h2 class="completion-title">Bravo !</h2>
-      <p class="completion-msg">Vous avez terminé l'exercice 3 avec succès.<br>
-        L'analyse des frontières linéaires et non-linéaires est maintenant acquise.<br>
-        <strong>L'exercice following wasé déverrouillé !</strong>
+      <p class="completion-msg">You have successfully completed exercise 3.<br>
+        The analysis of linear and nonlinear boundaries is now complete.<br>
+      <strong>The following exercise has been unlocked!</strong>
       </p>
 
       <div class="completion-actions">
         <a class="completion-btn-next pulse-btn" href="../Page-demo/exercises.html">
-          🚀 Retourner aux Exercices
+          🚀Return to Exercises
         </a>
       </div>
     </div>
@@ -318,7 +318,7 @@ function showCompletionScreen() {
     localStorage.setItem('quiz_section_1_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(3);
-      console.log("✅ Exercice 3 marqué COMPLETED dans la base de données.");
+      console.log("✅ Exercice 3 marked COMPLETED in database.");
     }
   })();
 }

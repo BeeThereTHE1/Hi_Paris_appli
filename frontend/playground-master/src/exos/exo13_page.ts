@@ -639,7 +639,7 @@ function startTutorial() {
     const h3 = document.createElement('h3');
     h3.innerText = "Exercise #11 : Iterative Learning Cycle";
     const p = document.createElement('p');
-    p.innerText = "Observer l'évolution de la frontière de décision au fil des epochs. Mettre en pause à différents moments de l'entrainement (epoch 10, 100, 500) et décrire ce qui se passe visuellement.";
+    p.innerText = "Observe the evolution of the decision frontier over the epochs. Pause at different times during the training (epoch 10, 100, 500) and describe what is happening visually.";
     const timerSpan = document.createElement('span');
     timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
     const nextBtn = document.createElement('button');

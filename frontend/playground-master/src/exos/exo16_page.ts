@@ -564,7 +564,7 @@ function renderActivity2() {
                     statusSig.innerText = `Prêt (${sigmoidEpoch} epochs)`;
                     statusSig.style.color = '#10b981';
                 } else if (sigmoidPlaying) {
-                    statusSig.innerText = `En cours (${sigmoidEpoch} epochs)`;
+                    statusSig.innerText = `In progress (${sigmoidEpoch} epochs)`;
                     statusSig.style.color = '#3b82f6';
                 } else {
                     statusSig.innerText = `Stopped (${sigmoidEpoch} epochs)`;
@@ -578,7 +578,7 @@ function renderActivity2() {
                     statusRelu.innerText = `Prêt (${reluEpoch} epochs)`;
                     statusRelu.style.color = '#10b981';
                 } else if (reluPlaying) {
-                    statusRelu.innerText = `En cours (${reluEpoch} epochs)`;
+                    statusRelu.innerText = `In progress (${reluEpoch} epochs)`;
                     statusRelu.style.color = '#3b82f6';
                 } else {
                     statusRelu.innerText = `Stopped (${reluEpoch} epochs)`;

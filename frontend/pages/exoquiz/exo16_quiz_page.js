@@ -625,7 +625,7 @@ function initFindMistakeGame() {
             } else {
                 fPanel.innerHTML = `
                     <div class="feedback-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);">
-                        ❌ Ce n'est pas le bon mot. Lisez attentivement la colonne Sigmoid !
+                        ❌ That's not the right word. Read the Sigmoid column carefully.!
                     </div>
                 `;
             }
