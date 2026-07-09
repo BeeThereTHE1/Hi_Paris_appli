@@ -277,7 +277,7 @@
       bloc2Panel.style.display = 'flex';
       bloc2Panel.innerHTML = `
         <div style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); padding: 40px 20px; text-align: center; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 16px; width:100%; max-width:450px; box-sizing:border-box;">
-          Résolvez l'activité d'ordonnancement à droite pour débloquer le schéma d'entraînement...
+          Solve the scheduling activity on the right to unlock the training pattern...
         </div>
       `;
     }
@@ -453,7 +453,7 @@
           <div class="bloc2-final-card">
             <div class="bloc2-final-badge">[ 5 ]</div>
             <p class="bloc2-final-text">You can now return to the dashboard to continue with the next exercise.</p>
-            <button class="bloc2-final-btn" id="btn-final-dashboard">Retour au Dashboard</button>
+            <button class="bloc2-final-btn" id="btn-final-dashboard">Back to Dashboard</button>
           </div>
         `;
 

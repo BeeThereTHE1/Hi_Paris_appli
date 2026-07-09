@@ -71,7 +71,7 @@ function showExerciseSuccessCongrats() {
   const nextBtn = document.createElement('button');
   nextBtn.className = 'tutorial-btn';
   nextBtn.style.background = '#FF553F';
-  nextBtn.innerText = "Aller au Quiz";
+  nextBtn.innerText = "go to the quiz";
 
   popup.appendChild(h3);
   popup.appendChild(p);
@@ -262,7 +262,7 @@ function startTutorial() {
 
   nextBtn.onclick = () => {
     overlay.remove();
-    
+
     const styleId = 'highlight-pulse-style';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
@@ -280,9 +280,9 @@ function startTutorial() {
       `;
       document.head.appendChild(style);
     }
-    
+
     document.body.classList.add('trigger-pulse');
-    
+
     setTimeout(() => {
       document.body.classList.remove('trigger-pulse');
     }, 3200);

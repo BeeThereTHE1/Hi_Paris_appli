@@ -403,17 +403,17 @@ function renderActivity0() {
         <div class="quiz-question-wrapper">
             <div class="quiz-question-badge">Activity 1</div>
             <div class="quiz-question-card">
-                Lancez both models en cliquant sur le bouton de lecture (play) de chacun d'eux, et attendez que les pertes d'entraînement (loss) diminuent sous 0.01.
+               Launch both models by clicking the play button on each one, and wait for the training losses to decrease below 0.01.
             </div>
         </div>
         <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:13.5px;">
-                <span>Modèle 1 (Graine A) :</span>
-                <span id="model1-status-text" style="font-weight:700; color:#ef4444;">Non lancé ⏳</span>
+                <span>Model 1 (Seed A) :</span>
+                <span id="model1-status-text" style="font-weight:700; color:#ef4444;">Not launched ⏳</span>
             </div>
             <div style="display:flex; justify-content:space-between; font-size:13.5px;">
-                <span>Modèle 2 (Graine B) :</span>
-                <span id="model2-status-text" style="font-weight:700; color:#ef4444;">Non lancé ⏳</span>
+                <span>Model 2 (Seed B) :</span>
+                <span id="model2-status-text" style="font-weight:700; color:#ef4444;">Not launched ⏳</span>
             </div>
         </div>
     `;
@@ -687,7 +687,7 @@ window.addEventListener('message', (event) => {
                     model1Status.innerHTML = `Prêt ! loss = ${model1MinLoss.toFixed(5)} ✅`;
                     model1Status.style.color = '#10b981';
                 } else {
-                    model1Status.innerHTML = `En cours (loss: ${lossTrain.toFixed(4)}) ⏳`;
+                    model1Status.innerHTML = `In progress (loss: ${lossTrain.toFixed(4)}) ⏳`;
                     model1Status.style.color = '#3b82f6';
                 }
             }
@@ -700,7 +700,7 @@ window.addEventListener('message', (event) => {
                     model2Status.innerHTML = `Prêt ! loss = ${model2MinLoss.toFixed(5)} ✅`;
                     model2Status.style.color = '#10b981';
                 } else {
-                    model2Status.innerHTML = `En cours (loss: ${lossTrain.toFixed(4)}) ⏳`;
+                    model2Status.innerHTML = `In progress (loss: ${lossTrain.toFixed(4)}) ⏳`;
                     model2Status.style.color = '#3b82f6';
                 }
             }

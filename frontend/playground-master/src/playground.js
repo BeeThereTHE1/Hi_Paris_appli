@@ -301,15 +301,15 @@ function initExo3Boxes() {
         .attr("id", "msg-box-linear")
         .attr("class", "exo3-msg-box")
         .style({
-        "background-color": "#004676",
-        "border": "1px solid #004676",
-        "border-radius": "8px",
-        "padding": "12px",
-        "margin-top": "15px",
-        "font-size": "13px",
-        "color": "#fff",
-        "line-height": "1.4"
-    });
+            "background-color": "#004676",
+            "border": "1px solid #004676",
+            "border-radius": "8px",
+            "padding": "12px",
+            "margin-top": "15px",
+            "font-size": "13px",
+            "color": "#fff",
+            "line-height": "1.4"
+        });
     msgBoxLinear.html("\n    <strong>\uD83D\uDCA1 Step 1:</strong> Train the model on each dataset (X and Y) to observe its limits.<br>\n    <span style=\"font-size: 12px; color: #94a3b8;\">Progress: <span id=\"msg-box-linear-count\" style=\"font-weight: bold; color: #FF034D;\">0</span> / 4 datasets trained.</span>\n  ");
     var networkDiv = d3.select("#network");
     networkDiv.selectAll("#msg-box-quadratic").remove();
@@ -317,17 +317,17 @@ function initExo3Boxes() {
         .attr("id", "msg-box-quadratic")
         .attr("class", "exo3-msg-box")
         .style({
-        "background-color": "#004676",
-        "border": "1px solid #004676",
-        "border-radius": "8px",
-        "padding": "12px",
-        "margin-top": "15px",
-        "font-size": "13px",
-        "color": "#fff",
-        "line-height": "1.4",
-        "position": "relative",
-        "display": "none"
-    });
+            "background-color": "#004676",
+            "border": "1px solid #004676",
+            "border-radius": "8px",
+            "padding": "12px",
+            "margin-top": "15px",
+            "font-size": "13px",
+            "color": "#fff",
+            "line-height": "1.4",
+            "position": "relative",
+            "display": "none"
+        });
     msgBoxQuadratic.html("\n    <strong>\uD83C\uDF89 Step 2:</strong> Now, activate the <strong>X1\u00B2</strong> and <strong>X2\u00B2</strong> features and train again to successfully classify!\n  ");
     updateQuadraticFeaturesExo3();
 }
@@ -834,10 +834,10 @@ function updateWeightsUI(network, container) {
                 var link = node.inputLinks[j];
                 container.select("#link" + link.source.id + "-" + link.dest.id)
                     .style({
-                    "stroke-dashoffset": -iter / 3,
-                    "stroke-width": linkWidthScale(Math.abs(link.weight)),
-                    "stroke": colorScale(link.weight)
-                })
+                        "stroke-dashoffset": -iter / 3,
+                        "stroke-width": linkWidthScale(Math.abs(link.weight)),
+                        "stroke": colorScale(link.weight)
+                    })
                     .datum(link);
             }
         }
@@ -848,17 +848,17 @@ function drawNode(cx, cy, nodeId, isInput, container, node) {
     var y = cy - RECT_SIZE / 2;
     var nodeGroup = container.append("g")
         .attr({
-        "class": "node",
-        "id": "node" + nodeId,
-        "transform": "translate(" + x + "," + y + ")"
-    });
+            "class": "node",
+            "id": "node" + nodeId,
+            "transform": "translate(" + x + "," + y + ")"
+        });
     nodeGroup.append("rect")
         .attr({
-        x: 0,
-        y: 0,
-        width: RECT_SIZE,
-        height: RECT_SIZE
-    });
+            x: 0,
+            y: 0,
+            width: RECT_SIZE,
+            height: RECT_SIZE
+        });
     var activeOrNotClass = state[nodeId] ? "active" : "inactive";
     if (isInput) {
         var label = INPUTS[nodeId].label != null ?
@@ -903,31 +903,31 @@ function drawNode(cx, cy, nodeId, isInput, container, node) {
                 .attr("id", "custom-bias-editor-group");
             var track = biasGroup.append("line")
                 .attr({
-                x1: sliderX,
-                y1: sliderY_1 - 30,
-                x2: sliderX,
-                y2: sliderY_1 + 30,
-                stroke: "#1e293b",
-                "stroke-width": 4,
-                "stroke-linecap": "round",
-                cursor: "pointer"
-            });
+                    x1: sliderX,
+                    y1: sliderY_1 - 30,
+                    x2: sliderX,
+                    y2: sliderY_1 + 30,
+                    stroke: "#1e293b",
+                    "stroke-width": 4,
+                    "stroke-linecap": "round",
+                    cursor: "pointer"
+                });
             var handleColor = "#8b5cf6";
             var badgeColor = "#5b21b6";
             var badge = biasGroup.append("g")
                 .attr("transform", "translate(" + (sliderX - 60) + ", " + (sliderY_1 - 18) + ")");
             badge.append("rect")
                 .attr({
-                x: 0,
-                y: 0,
-                width: 48,
-                height: 36,
-                rx: 6,
-                ry: 6,
-                fill: badgeColor,
-                stroke: "rgba(255,255,255,0.1)",
-                "stroke-width": 1
-            });
+                    x: 0,
+                    y: 0,
+                    width: 48,
+                    height: 36,
+                    rx: 6,
+                    ry: 6,
+                    fill: badgeColor,
+                    stroke: "rgba(255,255,255,0.1)",
+                    "stroke-width": 1
+                });
             var badgeText = badge.append("text")
                 .attr("text-anchor", "middle")
                 .attr("fill", "white")
@@ -943,101 +943,101 @@ function drawNode(cx, cy, nodeId, isInput, container, node) {
             var initialY = sliderY_1 - (node.bias / 5.0) * 30;
             var handle_1 = biasGroup.append("rect")
                 .attr({
-                x: sliderX - 8,
-                y: initialY - 3,
-                width: 16,
-                height: 6,
-                rx: 2,
-                ry: 2,
-                fill: handleColor,
-                cursor: "ns-resize",
-                stroke: "#ffffff",
-                "stroke-width": 1
-            });
+                    x: sliderX - 8,
+                    y: initialY - 3,
+                    width: 16,
+                    height: 6,
+                    rx: 2,
+                    ry: 2,
+                    fill: handleColor,
+                    cursor: "ns-resize",
+                    stroke: "#ffffff",
+                    "stroke-width": 1
+                });
             var drag = d3.behavior.drag()
                 .on("drag", function () {
-                var mouseContainer = d3.mouse(container.node());
-                var mouseY = mouseContainer[1];
-                var newY = Math.max(sliderY_1 - 30, Math.min(sliderY_1 + 30, mouseY));
-                var bias = 5.0 - 10.0 * (newY - (sliderY_1 - 30)) / 60.0;
-                bias = Math.round(bias * 100) / 100;
-                if (node.bias !== bias) {
-                    var firstHiddenNode = network[1][0];
-                    var w1 = firstHiddenNode.inputLinks[0].weight;
-                    var w2 = firstHiddenNode.inputLinks[1].weight;
-                    var linePoints = getBoundaryLinePoints(w1, w2, node.bias);
-                    if (linePoints.length >= 2) {
-                        var x1 = heatMap.xScale(linePoints[0][0]);
-                        var y1 = heatMap.yScale(linePoints[0][1]);
-                        var x2 = heatMap.xScale(linePoints[1][0]);
-                        var y2 = heatMap.yScale(linePoints[1][1]);
-                        if (boundaryHistory.length === 0 ||
-                            Math.abs(boundaryHistory[boundaryHistory.length - 1].biasValue - node.bias) > 0.05) {
-                            boundaryHistory.push({ x1: x1, y1: y1, x2: x2, y2: y2, biasValue: node.bias });
-                            if (boundaryHistory.length > 5) {
-                                boundaryHistory.shift();
+                    var mouseContainer = d3.mouse(container.node());
+                    var mouseY = mouseContainer[1];
+                    var newY = Math.max(sliderY_1 - 30, Math.min(sliderY_1 + 30, mouseY));
+                    var bias = 5.0 - 10.0 * (newY - (sliderY_1 - 30)) / 60.0;
+                    bias = Math.round(bias * 100) / 100;
+                    if (node.bias !== bias) {
+                        var firstHiddenNode = network[1][0];
+                        var w1 = firstHiddenNode.inputLinks[0].weight;
+                        var w2 = firstHiddenNode.inputLinks[1].weight;
+                        var linePoints = getBoundaryLinePoints(w1, w2, node.bias);
+                        if (linePoints.length >= 2) {
+                            var x1 = heatMap.xScale(linePoints[0][0]);
+                            var y1 = heatMap.yScale(linePoints[0][1]);
+                            var x2 = heatMap.xScale(linePoints[1][0]);
+                            var y2 = heatMap.yScale(linePoints[1][1]);
+                            if (boundaryHistory.length === 0 ||
+                                Math.abs(boundaryHistory[boundaryHistory.length - 1].biasValue - node.bias) > 0.05) {
+                                boundaryHistory.push({ x1: x1, y1: y1, x2: x2, y2: y2, biasValue: node.bias });
+                                if (boundaryHistory.length > 5) {
+                                    boundaryHistory.shift();
+                                }
                             }
                         }
+                        node.bias = bias;
+                        handle_1.attr("y", (sliderY_1 - (bias / 5.0) * 30) - 3);
+                        valSpan_1.text(bias.toFixed(2).replace(".", ","));
+                        biasSlider.property("value", bias);
+                        biasValue.text(bias.toFixed(2));
+                        biasModifiedInExo4 = true;
+                        lossTrain = getLoss(network, trainData);
+                        lossTest = getLoss(network, testData);
+                        updateUI();
                     }
-                    node.bias = bias;
-                    handle_1.attr("y", (sliderY_1 - (bias / 5.0) * 30) - 3);
-                    valSpan_1.text(bias.toFixed(2).replace(".", ","));
-                    biasSlider.property("value", bias);
-                    biasValue.text(bias.toFixed(2));
-                    biasModifiedInExo4 = true;
-                    lossTrain = getLoss(network, trainData);
-                    lossTest = getLoss(network, testData);
-                    updateUI();
-                }
-            });
+                });
             handle_1.call(drag);
             track.call(drag);
         }
         else {
             nodeGroup.append("rect")
                 .attr({
-                id: "bias-" + nodeId,
-                x: -BIAS_SIZE - 4,
-                y: RECT_SIZE + 2,
-                width: BIAS_SIZE,
-                height: BIAS_SIZE
-            }).on("mouseenter", function () {
-                updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
-            }).on("mouseleave", function () {
-                updateHoverCard(null);
-            }).on("click", function () {
-                selectedNodeForBiasSlider = node;
-                selectedNodeLabel.text("Neurone : " + node.id);
-                biasSlider.property("value", node.bias);
-                biasValue.text((+node.bias).toFixed(2));
-                console.log("biais séléctionné:", node.id, "bias = ", node.bias);
-            });
+                    id: "bias-" + nodeId,
+                    x: -BIAS_SIZE - 4,
+                    y: RECT_SIZE + 2,
+                    width: BIAS_SIZE,
+                    height: BIAS_SIZE
+                }).on("mouseenter", function () {
+                    updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
+                }).on("mouseleave", function () {
+                    updateHoverCard(null);
+                }).on("click", function () {
+                    selectedNodeForBiasSlider = node;
+                    selectedNodeLabel.text("Neurone : " + node.id);
+                    biasSlider.property("value", node.bias);
+                    biasValue.text((+node.bias).toFixed(2));
+                    console.log("biais séléctionné:", node.id, "bias = ", node.bias);
+                });
         }
     }
     var div = d3.select("#network").insert("div", ":first-child")
         .attr({
-        "id": "canvas-" + nodeId,
-        "class": "canvas"
-    })
+            "id": "canvas-" + nodeId,
+            "class": "canvas"
+        })
         .style({
-        position: "absolute",
-        left: x + 3 + "px",
-        top: y + 3 + "px"
-    })
+            position: "absolute",
+            left: x + 3 + "px",
+            top: y + 3 + "px"
+        })
         .on("mouseenter", function () {
-        selectedNodeId = nodeId;
-        div.classed("hovered", true);
-        nodeGroup.classed("hovered", true);
-        updateDecisionBoundary(network, false);
-        heatMap.updateBackground(boundary[nodeId], state.discretize);
-    })
+            selectedNodeId = nodeId;
+            div.classed("hovered", true);
+            nodeGroup.classed("hovered", true);
+            updateDecisionBoundary(network, false);
+            heatMap.updateBackground(boundary[nodeId], state.discretize);
+        })
         .on("mouseleave", function () {
-        selectedNodeId = null;
-        div.classed("hovered", false);
-        nodeGroup.classed("hovered", false);
-        updateDecisionBoundary(network, false);
-        heatMap.updateBackground(boundary[nn.getOutputNode(network).id], state.discretize);
-    });
+            selectedNodeId = null;
+            div.classed("hovered", false);
+            nodeGroup.classed("hovered", false);
+            updateDecisionBoundary(network, false);
+            heatMap.updateBackground(boundary[nn.getOutputNode(network).id], state.discretize);
+        });
     if (isInput) {
         div.on("click", function () {
             if (exoId === 3 && (nodeId === "xSquared" || nodeId === "ySquared") && !isQuadraticUnlockedExo3()) {
@@ -1170,28 +1170,28 @@ function addPlusMinusControl(x, layerIdx) {
     firstRow.append("button")
         .attr("class", "mdl-button mdl-js-button mdl-button--icon")
         .on("click", function () {
-        var numNeurons = state.networkShape[i];
-        if (numNeurons >= 8) {
-            return;
-        }
-        state.networkShape[i]++;
-        parametersChanged = true;
-        reset();
-    })
+            var numNeurons = state.networkShape[i];
+            if (numNeurons >= 8) {
+                return;
+            }
+            state.networkShape[i]++;
+            parametersChanged = true;
+            reset();
+        })
         .append("i")
         .attr("class", "material-icons")
         .text("add");
     firstRow.append("button")
         .attr("class", "mdl-button mdl-js-button mdl-button--icon")
         .on("click", function () {
-        var numNeurons = state.networkShape[i];
-        if (numNeurons <= 1) {
-            return;
-        }
-        state.networkShape[i]--;
-        parametersChanged = true;
-        reset();
-    })
+            var numNeurons = state.networkShape[i];
+            if (numNeurons <= 1) {
+                return;
+            }
+            state.networkShape[i]--;
+            parametersChanged = true;
+            reset();
+        })
         .append("i")
         .attr("class", "material-icons")
         .text("remove");
@@ -1263,16 +1263,16 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
         .attr("d", diagonal(datum, 0))
         .attr("class", "link-hover")
         .on("mouseenter", function () {
-        updateHoverCard(HoverType.WEIGHT, input, d3.mouse(this));
-    }).on("mouseleave", function () {
-        updateHoverCard(null);
-    }).on("click", function () {
-        selectedLinkForSlider = input;
-        selectedLinkLabel.text("Lien : " + input.source.id + " → " + input.dest.id);
-        weightSlider.property("value", input.weight);
-        weightValue.text((+input.weight).toFixed(2));
-        console.log("lien séléctionné:", input.source.id, "->", input.dest.id, "weight = ", input.weight);
-    });
+            updateHoverCard(HoverType.WEIGHT, input, d3.mouse(this));
+        }).on("mouseleave", function () {
+            updateHoverCard(null);
+        }).on("click", function () {
+            selectedLinkForSlider = input;
+            selectedLinkLabel.text("Lien : " + input.source.id + " → " + input.dest.id);
+            weightSlider.property("value", input.weight);
+            weightValue.text((+input.weight).toFixed(2));
+            console.log("lien séléctionné:", input.source.id, "->", input.dest.id, "weight = ", input.weight);
+        });
     if (exoId === 1) {
         var pathEl = line.node();
         var totalLength = pathEl.getTotalLength();
@@ -1284,15 +1284,15 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             .attr("id", "custom-weight-editor-" + input.source.id);
         var track = group.append("line")
             .attr({
-            x1: sliderX,
-            y1: sliderY_2 - 30,
-            x2: sliderX,
-            y2: sliderY_2 + 30,
-            stroke: "#1e293b",
-            "stroke-width": 4,
-            "stroke-linecap": "round",
-            cursor: "pointer"
-        });
+                x1: sliderX,
+                y1: sliderY_2 - 30,
+                x2: sliderX,
+                y2: sliderY_2 + 30,
+                stroke: "#1e293b",
+                "stroke-width": 4,
+                "stroke-linecap": "round",
+                cursor: "pointer"
+            });
         var handleColor = input.source.id === "x" ? "#ef4444" : "#8b5cf6";
         var badgeColor = input.source.id === "x" ? "#b91c1c" : "#5b21b6";
         var initialY = sliderY_2 - (input.weight / 5.0) * 30;
@@ -1300,16 +1300,16 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             .attr("transform", "translate(" + (sliderX - 60) + ", " + (sliderY_2 - 18) + ")");
         badge.append("rect")
             .attr({
-            x: 0,
-            y: 0,
-            width: 48,
-            height: 36,
-            rx: 6,
-            ry: 6,
-            fill: badgeColor,
-            stroke: "rgba(255,255,255,0.1)",
-            "stroke-width": 1
-        });
+                x: 0,
+                y: 0,
+                width: 48,
+                height: 36,
+                rx: 6,
+                ry: 6,
+                fill: badgeColor,
+                stroke: "rgba(255,255,255,0.1)",
+                "stroke-width": 1
+            });
         var badgeText = badge.append("text")
             .attr("text-anchor", "middle")
             .attr("fill", "white")
@@ -1324,35 +1324,35 @@ function drawLink(input, node2coord, network, container, isFirst, index, length)
             .text(input.weight.toFixed(1).replace(".", ","));
         var handle_2 = group.append("rect")
             .attr({
-            x: sliderX - 8,
-            y: initialY - 3,
-            width: 16,
-            height: 6,
-            rx: 2,
-            ry: 2,
-            fill: handleColor,
-            cursor: "ns-resize",
-            stroke: "#ffffff",
-            "stroke-width": 1
-        });
+                x: sliderX - 8,
+                y: initialY - 3,
+                width: 16,
+                height: 6,
+                rx: 2,
+                ry: 2,
+                fill: handleColor,
+                cursor: "ns-resize",
+                stroke: "#ffffff",
+                "stroke-width": 1
+            });
         var drag = d3.behavior.drag()
             .on("drag", function () {
-            var mouseContainer = d3.mouse(container.node());
-            var mouseY = mouseContainer[1];
-            var newY = Math.max(sliderY_2 - 30, Math.min(sliderY_2 + 30, mouseY));
-            var weight = 5.0 - 10.0 * (newY - (sliderY_2 - 30)) / 60.0;
-            weight = Math.round(weight * 10) / 10;
-            input.weight = weight;
-            handle_2.attr("y", (sliderY_2 - (weight / 5.0) * 30) - 3);
-            valSpan_2.text(weight.toFixed(1).replace(".", ","));
-            if (selectedLinkForSlider === input) {
-                weightSlider.property("value", weight);
-                weightValue.text(weight.toFixed(2));
-            }
-            lossTrain = getLoss(network, trainData);
-            lossTest = getLoss(network, testData);
-            updateUI();
-        });
+                var mouseContainer = d3.mouse(container.node());
+                var mouseY = mouseContainer[1];
+                var newY = Math.max(sliderY_2 - 30, Math.min(sliderY_2 + 30, mouseY));
+                var weight = 5.0 - 10.0 * (newY - (sliderY_2 - 30)) / 60.0;
+                weight = Math.round(weight * 10) / 10;
+                input.weight = weight;
+                handle_2.attr("y", (sliderY_2 - (weight / 5.0) * 30) - 3);
+                valSpan_2.text(weight.toFixed(1).replace(".", ","));
+                if (selectedLinkForSlider === input) {
+                    weightSlider.property("value", weight);
+                    weightValue.text(weight.toFixed(2));
+                }
+                lossTrain = getLoss(network, trainData);
+                lossTest = getLoss(network, testData);
+                updateUI();
+            });
         handle_2.call(drag);
         track.on("click", function () {
             var mouseContainer = d3.mouse(container.node());
@@ -1432,8 +1432,8 @@ function updateUI(firstStep) {
     heatMap.updateBackground(boundary[selectedId], state.discretize);
     d3.select("#network").selectAll("div.canvas")
         .each(function (data) {
-        data.heatmap.updateBackground(heatmap_1.reduceMatrix(boundary[data.id], 10), state.discretize);
-    });
+            data.heatmap.updateBackground(heatmap_1.reduceMatrix(boundary[data.id], 10), state.discretize);
+        });
     function zeroPad(n) {
         var pad = "000000";
         return (pad + n).slice(-pad.length);
@@ -1462,14 +1462,14 @@ function updateUI(firstStep) {
             var opacity = 0.05 + 0.15 * ((index + 1) / boundaryHistory.length);
             highlightGroup_1.append("line")
                 .attr({
-                x1: histLine.x1,
-                y1: histLine.y1,
-                x2: histLine.x2,
-                y2: histLine.y2,
-                stroke: "#FF034D",
-                "stroke-width": 2,
-                "stroke-dasharray": "4,4"
-            })
+                    x1: histLine.x1,
+                    y1: histLine.y1,
+                    x2: histLine.x2,
+                    y2: histLine.y2,
+                    stroke: "#FF034D",
+                    "stroke-width": 2,
+                    "stroke-dasharray": "4,4"
+                })
                 .style("opacity", opacity);
         });
         var firstHiddenNode = network[1][0];
@@ -1484,24 +1484,24 @@ function updateUI(firstStep) {
             var y2 = heatMap.yScale(linePoints[1][1]);
             highlightGroup_1.append("line")
                 .attr({
-                x1: x1,
-                y1: y1,
-                x2: x2,
-                y2: y2,
-                stroke: "#FF034D",
-                "stroke-width": 4
-            });
+                    x1: x1,
+                    y1: y1,
+                    x2: x2,
+                    y2: y2,
+                    stroke: "#FF034D",
+                    "stroke-width": 4
+                });
             highlightGroup_1.append("text")
                 .attr({
-                x: (x1 + x2) / 2 + 10,
-                y: (y1 + y2) / 2 - 10,
-                fill: "#FF034D"
-            })
+                    x: (x1 + x2) / 2 + 10,
+                    y: (y1 + y2) / 2 - 10,
+                    fill: "#FF034D"
+                })
                 .style({
-                "font-family": "'Inter', sans-serif",
-                "font-size": "11px",
-                "font-weight": "800"
-            })
+                    "font-family": "'Inter', sans-serif",
+                    "font-size": "11px",
+                    "font-weight": "800"
+                })
                 .text("b = " + b.toFixed(2));
         }
     }
@@ -1539,7 +1539,7 @@ function oneStep() {
                 trainedLinearDatasetsExo3[dsKey] = true;
                 updateQuadraticFeaturesExo3();
                 if (isQuadraticUnlockedExo3()) {
-                    showToast("Congratulations ! Vous avez entraîné le modèle sur les 4 jeux de données linéaires. Les entrées X² et Y² sont maintenant déverrouillées !", "success");
+                    showToast("Congratulations! You have trained the model on all 4 linear datasets. The X² and Y² inputs are now unlocked!", "success");
                 }
             }
         }
@@ -1752,9 +1752,9 @@ function hideControls() {
             .attr("class", "mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
         var input = label.append("input")
             .attr({
-            type: "checkbox",
-            "class": "mdl-checkbox__input"
-        });
+                type: "checkbox",
+                "class": "mdl-checkbox__input"
+            });
         if (hiddenProps.indexOf(id) === -1) {
             input.attr("checked", "true");
         }

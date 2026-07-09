@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -80,51 +80,55 @@ var _this = this;
 })();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.save(8)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+btnSauvegarder.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.save(8)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
+                        btnSauvegarder.style.opacity = '0.7';
+                        btnSauvegarder.disabled = true;
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var isLoggedIn, success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                if (!isLoggedIn) {
-                    window.location.href = 'Page-demo/register.html';
-                    return [2];
-                }
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.complete(8)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () {
-                        window.location.href = 'exoquiz/exo8_quiz.html';
-                    }, 800);
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
+};
+btnRealise.onclick = function () {
+    return __awaiter(_this, void 0, void 0, function () {
+        var isLoggedIn, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (!isLoggedIn) {
+                        window.location.href = 'Page-demo/register.html';
+                        return [2];
+                    }
+                    if (!window.StorageService) return [3, 2];
+                    return [4, window.StorageService.complete(8)];
+                case 1:
+                    success = _a.sent();
+                    if (success) {
+                        btnRealise.innerHTML = '✨ Redirection...';
+                        btnRealise.disabled = true;
+                        setTimeout(function () {
+                            window.location.href = 'exoquiz/exo8_quiz.html';
+                        }, 800);
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
     });
-}); };
+};
 var backgroundContainer = document.getElementById('background-container');
 var formulas = ['\\sqrt{x}', '\\int', 'f(x) = ax^2', '\\frac{dy}{dx}', '\\sin(t)', 'e^{-t}'];
 var numFormulas = 25;
@@ -384,7 +388,7 @@ function renderActivity0() {
     var fPanel = document.getElementById('quiz-feedback-panel');
     if (!qPanel || !fPanel)
         return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 1</div>\n            <div class=\"quiz-question-card\">\n                Lancez both models en cliquant sur le bouton de lecture (play) de chacun d'eux, et attendez que les pertes d'entra\u00EEnement (loss) diminuent sous 0.01.\n            </div>\n        </div>\n        <div style=\"margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:10px; font-size:13.5px;\">\n                <span>Mod\u00E8le 1 (Graine A) :</span>\n                <span id=\"model1-status-text\" style=\"font-weight:700; color:#ef4444;\">Non lanc\u00E9 \u23F3</span>\n            </div>\n            <div style=\"display:flex; justify-content:space-between; font-size:13.5px;\">\n                <span>Mod\u00E8le 2 (Graine B) :</span>\n                <span id=\"model2-status-text\" style=\"font-weight:700; color:#ef4444;\">Non lanc\u00E9 \u23F3</span>\n            </div>\n        </div>\n    ";
+    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 1</div>\n            <div class=\"quiz-question-card\">\n             Launch both models by clicking the play button on each of them, and wait for the training losses to decrease below 0.01.\n            </div>\n        </div>\n        <div style=\"margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:10px; font-size:13.5px;\">\n                <span>Model 1 (Seed A) :</span>\n                <span id=\"model1-status-text\" style=\"font-weight:700; color:#ef4444;\">Not launched \u23F3</span>\n            </div>\n            <div style=\"display:flex; justify-content:space-between; font-size:13.5px;\">\n                <span>Model 2 (Seed B) :</span>\n                <span id=\"model2-status-text\" style=\"font-weight:700; color:#ef4444;\">Not launched \u23F3</span>\n            </div>\n        </div>\n    ";
     fPanel.innerHTML = '';
 }
 var q1Answers = {
@@ -565,7 +569,7 @@ window.addEventListener('message', function (event) {
                     model1Status.style.color = '#10b981';
                 }
                 else {
-                    model1Status.innerHTML = "En cours (loss: " + lossTrain.toFixed(4) + ") \u23F3";
+                    model1Status.innerHTML = "In progress (loss: " + lossTrain.toFixed(4) + ") \u23F3";
                     model1Status.style.color = '#3b82f6';
                 }
             }
@@ -581,7 +585,7 @@ window.addEventListener('message', function (event) {
                     model2Status.style.color = '#10b981';
                 }
                 else {
-                    model2Status.innerHTML = "En cours (loss: " + lossTrain.toFixed(4) + ") \u23F3";
+                    model2Status.innerHTML = "In progress (loss: " + lossTrain.toFixed(4) + ") \u23F3";
                     model2Status.style.color = '#3b82f6';
                 }
             }
@@ -642,16 +646,18 @@ if (iframe1) {
             }
             return;
         }
-        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, loadTranslations()];
-                    case 1:
-                        _a.sent();
-                        startTutorial();
-                        return [2];
-                }
+        setTimeout(function () {
+            return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, loadTranslations()];
+                        case 1:
+                            _a.sent();
+                            startTutorial();
+                            return [2];
+                    }
+                });
             });
-        }); }, 1200);
+        }, 1200);
     });
 }

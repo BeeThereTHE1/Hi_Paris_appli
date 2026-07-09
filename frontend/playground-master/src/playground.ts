@@ -1872,7 +1872,7 @@ function oneStep(): void {
         trainedLinearDatasetsExo3[dsKey] = true;
         updateQuadraticFeaturesExo3();
         if (isQuadraticUnlockedExo3()) {
-          showToast("Congratulations ! Vous avez entraîné le modèle sur les 4 jeux de données linéaires. Les entrées X² et Y² sont maintenant déverrouillées !", "success");
+          showToast("Congratulations! You have trained the model on all 4 linear datasets. The X² and Y² inputs are now unlocked!", "success");
         }
       }
     }
