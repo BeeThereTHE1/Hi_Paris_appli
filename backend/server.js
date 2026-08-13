@@ -6,6 +6,9 @@ if (process.env.NODE_ENV === 'development') {
 
 require('express-async-errors'); // allows throwing in async route handlers
 const express = require('express');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
+const { body, param, query, validationResult } = require('express-validator');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -15,12 +18,34 @@ const { supabase } = require('./supabaseClient');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// If running behind a proxy (e.g. Heroku, nginx), enable trust proxy when configured
+if (process.env.TRUST_PROXY === 'true') app.set('trust proxy', 1);
+
+// Basic rate limiting (configurable via env)
+const limiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MIN || '15', 10) * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+// Compression for responses
+app.use(compression());
+
 // Security & basic hardening
 app.disable('x-powered-by');
-app.use(helmet());
+// Use relaxed Helmet in development to avoid local tooling issues; strict in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet());
+} else {
+  app.use(helmet({ contentSecurityPolicy: false }));
+}
 
-// Logging
-app.use(morgan(process.env.MORGAN_FORMAT || 'combined'));
+// Logging (skip logging in tests)
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan(process.env.MORGAN_FORMAT || 'combined'));
+}
 
 // CORS: restrictable via env var CORS_ORIGIN (comma-separated) or fallback to true for quick dev
 const corsOrigin = process.env.CORS_ORIGIN;
@@ -30,6 +55,20 @@ const corsOptions = corsOrigin
 app.use(cors(corsOptions));
 
 app.use(express.json());
+
+// Shared validation error handler
+function handleValidation(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  next();
+}
+
+// Utility: uniform error throw helper
+function throwWithStatus(status, message) {
+  const err = new Error(message);
+  err.status = status;
+  throw err;
+}
 
 // ─────────────────────────────────────────────
 // SANTÉ DU SERVEUR
@@ -42,47 +81,51 @@ app.get('/health', (req, res) => {
   res.json({ status: 'healthy', time: new Date().toISOString() });
 });
 
-// Utility: uniform error throw helper
-function throwWithStatus(status, message) {
-  const err = new Error(message);
-  err.status = status;
-  throw err;
-}
-
 // ─────────────────────────────────────────────
 // ROUTES : UTILISATEURS (users)
 // ─────────────────────────────────────────────
 
 // Créer ou mettre à jour un utilisateur (upsert à l'inscription/login)
-app.post('/api/users', async (req, res) => {
-  const { email, nom, prenom, ecole, role } = req.body;
+app.post(
+  '/api/users',
+  [
+    body('email').isEmail().withMessage('email invalide'),
+    body('nom').optional().isString().trim(),
+    body('prenom').optional().isString().trim(),
+    body('ecole').optional().isString().trim(),
+    body('role').optional().isString().trim(),
+  ],
+  handleValidation,
+  async (req, res) => {
+    const { email, nom, prenom, ecole, role } = req.body;
 
-  if (!email) return res.status(400).json({ error: 'email requis' });
+    const { data, error } = await supabase
+      .from('users')
+      .upsert({ email, nom, prenom, ecole, role }, { onConflict: 'email' })
+      .select()
+      .single();
 
-  const { data, error } = await supabase
-    .from('users')
-    .upsert(
-      { email, nom, prenom, ecole, role },
-      { onConflict: 'email' }
-    )
-    .select()
-    .single();
-
-  if (error) throwWithStatus(500, error.message);
-  res.json(data);
-});
+    if (error) throwWithStatus(500, 'Erreur base de données utilisateurs');
+    res.json(data);
+  }
+);
 
 // Récupérer un utilisateur par email
-app.get('/api/users/:email', async (req, res) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('email', req.params.email)
-    .single();
+app.get(
+  '/api/users/:email',
+  [param('email').isEmail().withMessage('email invalide')],
+  handleValidation,
+  async (req, res) => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', req.params.email)
+      .single();
 
-  if (error) throwWithStatus(404, 'Utilisateur introuvable');
-  res.json(data);
-});
+    if (error) throwWithStatus(404, 'Utilisateur introuvable');
+    res.json(data);
+  }
+);
 
 // Récupérer tous les enseignants (avec pagination)
 app.get('/api/users/role/teachers', async (req, res) => {
@@ -149,19 +192,36 @@ app.get('/api/exercises/:id', async (req, res) => {
 
 // Créer un nouvel exercice (depuis le Studio)
 // config_json : { css: "...", hash: "..." }
-app.post('/api/exercises', async (req, res) => {
-  const { title, description, config_json, creator_id, visibility } = req.body;
-  if (!title || !config_json) return res.status(400).json({ error: 'title et config_json sont requis' });
+app.post(
+  '/api/exercises',
+  [
+    body('title').isString().notEmpty().withMessage('title requis'),
+    body('config_json').notEmpty().withMessage('config_json requis'),
+    body('description').optional().isString(),
+    body('creator_id').optional(),
+    body('visibility').optional().isString(),
+  ],
+  handleValidation,
+  async (req, res) => {
+    const { title, description, config_json, creator_id, visibility } = req.body;
 
-  const { data, error } = await supabase
-    .from('exercises')
-    .insert({ title, description, config_json, creator_id, is_official: false, visibility: visibility || 'PRIVATE' })
-    .select()
-    .single();
+    const { data, error } = await supabase
+      .from('exercises')
+      .insert({
+        title,
+        description,
+        config_json,
+        creator_id,
+        is_official: false,
+        visibility: visibility || 'PRIVATE',
+      })
+      .select()
+      .single();
 
-  if (error) throwWithStatus(500, error.message);
-  res.status(201).json(data);
-});
+    if (error) throwWithStatus(500, 'Erreur création exercice');
+    res.status(201).json(data);
+  }
+);
 
 // Mettre à jour un exercice (ex: rendre officiel)
 app.patch('/api/exercises/:id', async (req, res) => {
@@ -181,21 +241,27 @@ app.patch('/api/exercises/:id', async (req, res) => {
 // ─────────────────────────────────────────────
 
 // Soumettre un exercice à un enseignant pour validation
-app.post('/api/submissions', async (req, res) => {
-  const { exercise_id, student_id, teacher_id } = req.body;
-  if (!exercise_id || !student_id || !teacher_id) {
-    return res.status(400).json({ error: 'exercise_id, student_id et teacher_id sont requis' });
+app.post(
+  '/api/submissions',
+  [
+    body('exercise_id').notEmpty().withMessage('exercise_id requis'),
+    body('student_id').notEmpty().withMessage('student_id requis'),
+    body('teacher_id').notEmpty().withMessage('teacher_id requis'),
+  ],
+  handleValidation,
+  async (req, res) => {
+    const { exercise_id, student_id, teacher_id } = req.body;
+
+    const { data, error } = await supabase
+      .from('exercise_submissions')
+      .insert({ exercise_id, student_id, teacher_id, status: 'PENDING' })
+      .select()
+      .single();
+
+    if (error) throwWithStatus(500, 'Erreur création submission');
+    res.status(201).json(data);
   }
-
-  const { data, error } = await supabase
-    .from('exercise_submissions')
-    .insert({ exercise_id, student_id, teacher_id, status: 'PENDING' })
-    .select()
-    .single();
-
-  if (error) throwWithStatus(500, error.message);
-  res.status(201).json(data);
-});
+);
 
 // Récupérer les soumissions reçues par un enseignant
 app.get('/api/submissions/teacher/:teacherId', async (req, res) => {
@@ -253,48 +319,91 @@ app.get('/api/progress/:userId', async (req, res) => {
 });
 
 // Sauvegarder ou mettre à jour la progression sur un exercice
-app.post('/api/progress', async (req, res) => {
-  const { user_id, exercise_id, status, score_details } = req.body;
-  if (!user_id || !exercise_id) return res.status(400).json({ error: 'user_id et exercise_id requis' });
+app.post(
+  '/api/progress',
+  [body('user_id').notEmpty().withMessage('user_id requis'), body('exercise_id').notEmpty().withMessage('exercise_id requis')],
+  handleValidation,
+  async (req, res) => {
+    const { user_id, exercise_id, status, score_details } = req.body;
 
-  const payload = {
-    user_id,
-    exercise_id,
-    status: status || 'IN_PROGRESS',
-    score_details: score_details || null,
-    completed_at: status === 'COMPLETED' ? new Date().toISOString() : null,
-  };
+    const payload = {
+      user_id,
+      exercise_id,
+      status: status || 'IN_PROGRESS',
+      score_details: score_details || null,
+      completed_at: status === 'COMPLETED' ? new Date().toISOString() : null,
+    };
 
-  // Upsert : crée ou met à jour (une seule ligne par user/exercise)
-  const { data, error } = await supabase
-    .from('progress')
-    .upsert(payload, { onConflict: 'user_id,exercise_id' })
-    .select()
-    .single();
+    // Upsert : crée ou met à jour (une seule ligne par user/exercise)
+    const { data, error } = await supabase
+      .from('progress')
+      .upsert(payload, { onConflict: 'user_id,exercise_id' })
+      .select()
+      .single();
 
-  if (error) throwWithStatus(500, error.message);
-  res.json(data);
-});
+    if (error) throwWithStatus(500, 'Erreur upsert progression');
+    res.json(data);
+  }
+);
 
 // Centralized error handler (must be after routes)
 app.use((err, req, res, next) => {
-  console.error(err.stack || err);
+  // Log the full error in non-production environments
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack || err);
+  } else {
+    // keep production logs compact
+    console.error(err.message);
+  }
+
   const status = err.status || 500;
-  res.status(status).json({ error: err.message || 'Internal Server Error' });
+  const response = { error: err.message || 'Internal Server Error' };
+  if (process.env.NODE_ENV !== 'production') response.stack = err.stack;
+  res.status(status).json(response);
 });
 
+// 404 fallback for unknown routes
+app.use((req, res) => res.status(404).json({ error: 'Not Found' }));
+
 // Graceful shutdown
+let server;
 function shutdown(signal) {
   console.log(`Received ${signal}. Closing server...`);
-  process.exit(0);
+  try {
+    if (server && server.close) {
+      server.close(() => {
+        console.log('HTTP server closed.');
+        // If your DB client needs explicit close, do it here (e.g. supabase client cleanup)
+        process.exit(0);
+      });
+      // Force exit if close hangs
+      setTimeout(() => {
+        console.error('Forcing shutdown');
+        process.exit(1);
+      }, 10_000);
+    } else {
+      process.exit(0);
+    }
+  } catch (e) {
+    console.error('Error during shutdown', e);
+    process.exit(1);
+  }
 }
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+  shutdown('unhandledRejection');
+});
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  shutdown('uncaughtException');
+});
 
 // ─────────────────────────────────────────────
 // DÉMARRAGE DU SERVEUR
 // ─────────────────────────────────────────────
-app.listen(PORT, () => {
+server = app.listen(PORT, () => {
   console.log(`🚀 Serveur API HiParis en ligne sur http://localhost:${PORT}`);
   console.log(`📋 Routes disponibles :`);
   console.log(`   GET  /api/exercises          → Catalogue officiel`);
