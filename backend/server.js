@@ -1,15 +1,34 @@
-// Bypass SSL (développement uniquement)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// Only bypass TLS in development (not recommended for production)
+if (process.env.NODE_ENV === 'development') {
+  // For local dev where you control the environment:
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
+require('express-async-errors'); // allows throwing in async route handlers
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 require('dotenv').config();
 const { supabase } = require('./supabaseClient');
 
 const app = express();
-const PORT = process.env.PORT || 3001; // Port séparé du serve (5000)
+const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Security & basic hardening
+app.disable('x-powered-by');
+app.use(helmet());
+
+// Logging
+app.use(morgan(process.env.MORGAN_FORMAT || 'combined'));
+
+// CORS: restrictable via env var CORS_ORIGIN (comma-separated) or fallback to true for quick dev
+const corsOrigin = process.env.CORS_ORIGIN;
+const corsOptions = corsOrigin
+  ? { origin: corsOrigin.split(',').map(s => s.trim()) }
+  : { origin: true }; // change to a specific origin for production
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // ─────────────────────────────────────────────
@@ -18,6 +37,17 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ status: 'ok', message: '🚀 Serveur HiParis en ligne !' });
 });
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', time: new Date().toISOString() });
+});
+
+// Utility: uniform error throw helper
+function throwWithStatus(status, message) {
+  const err = new Error(message);
+  err.status = status;
+  throw err;
+}
 
 // ─────────────────────────────────────────────
 // ROUTES : UTILISATEURS (users)
@@ -29,7 +59,6 @@ app.post('/api/users', async (req, res) => {
 
   if (!email) return res.status(400).json({ error: 'email requis' });
 
-  // On laisse la DB générer l'ID grâce au DEFAULT gen_random_uuid()
   const { data, error } = await supabase
     .from('users')
     .upsert(
@@ -39,11 +68,7 @@ app.post('/api/users', async (req, res) => {
     .select()
     .single();
 
-  if (error) {
-    console.error("Erreur Supabase:", error.message);
-    return res.status(500).json({ error: error.message });
-  }
-
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -55,18 +80,22 @@ app.get('/api/users/:email', async (req, res) => {
     .eq('email', req.params.email)
     .single();
 
-  if (error) return res.status(404).json({ error: 'Utilisateur introuvable' });
+  if (error) throwWithStatus(404, 'Utilisateur introuvable');
   res.json(data);
 });
 
-// Récupérer tous les enseignants
+// Récupérer tous les enseignants (avec pagination)
 app.get('/api/users/role/teachers', async (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit || '50', 10), 200);
+  const offset = Math.max(parseInt(req.query.offset || '0', 10), 0);
+
   const { data, error } = await supabase
     .from('users')
     .select('id, email, prenom, nom')
-    .eq('role', 'TEACHER');
+    .eq('role', 'TEACHER')
+    .range(offset, offset + limit - 1);
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -74,15 +103,23 @@ app.get('/api/users/role/teachers', async (req, res) => {
 // ROUTES : EXERCICES (exercises)
 // ─────────────────────────────────────────────
 
-// Récupérer tous les exercices officiels (le catalogue public)
+// Récupérer tous les exercices officiels (le catalogue public) with pagination / filtering
 app.get('/api/exercises', async (req, res) => {
-  const { data, error } = await supabase
+  const limit = Math.min(parseInt(req.query.limit || '50', 10), 200);
+  const offset = Math.max(parseInt(req.query.offset || '0', 10), 0);
+  const visibility = req.query.visibility; // optional
+
+  let query = supabase
     .from('exercises')
     .select('id, title, description, config_json, creator_id, is_official, visibility, created_at')
     .eq('is_official', true)
     .order('created_at', { ascending: true });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (visibility) query = query.eq('visibility', visibility);
+
+  const { data, error } = await query.range(offset, offset + limit - 1);
+
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -94,7 +131,7 @@ app.get('/api/exercises/creator/:userId', async (req, res) => {
     .eq('creator_id', req.params.userId)
     .order('created_at', { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -106,7 +143,7 @@ app.get('/api/exercises/:id', async (req, res) => {
     .eq('id', req.params.id)
     .single();
 
-  if (error) return res.status(404).json({ error: 'Exercice introuvable' });
+  if (error) throwWithStatus(404, 'Exercice introuvable');
   res.json(data);
 });
 
@@ -122,7 +159,7 @@ app.post('/api/exercises', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.status(201).json(data);
 });
 
@@ -135,7 +172,7 @@ app.patch('/api/exercises/:id', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -156,7 +193,7 @@ app.post('/api/submissions', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.status(201).json(data);
 });
 
@@ -169,7 +206,7 @@ app.get('/api/submissions/teacher/:teacherId', async (req, res) => {
     .eq('status', 'PENDING')
     .order('created_at', { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -195,7 +232,7 @@ app.patch('/api/submissions/:id', async (req, res) => {
       .eq('id', data.exercise_id);
   }
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -211,7 +248,7 @@ app.get('/api/progress/:userId', async (req, res) => {
     .eq('user_id', req.params.userId)
     .order('created_at', { ascending: false });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
 
@@ -235,9 +272,24 @@ app.post('/api/progress', async (req, res) => {
     .select()
     .single();
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) throwWithStatus(500, error.message);
   res.json(data);
 });
+
+// Centralized error handler (must be after routes)
+app.use((err, req, res, next) => {
+  console.error(err.stack || err);
+  const status = err.status || 500;
+  res.status(status).json({ error: err.message || 'Internal Server Error' });
+});
+
+// Graceful shutdown
+function shutdown(signal) {
+  console.log(`Received ${signal}. Closing server...`);
+  process.exit(0);
+}
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
 // ─────────────────────────────────────────────
 // DÉMARRAGE DU SERVEUR
