@@ -38,7 +38,7 @@ async function sendTokenEmail(email, prenom, token, isNew = true) {
     to: email,
     subject,
     html: `
-      <div style="font-family: Inter, sans-serif; max-width: 480px; margin: 0 auto; background: #0b0f1a; color: #eef2ff; border-radius: 16px; overflow: hidden; border: 1px solid rgba(99,102,241,0.3);">
+      <div style="font-family: Inter, sans-serif; max-width: 480px; margin: 0 auto; background: #0b0f1a; color: #eef2ff; border-radius: 16px; overflow: hidden; border: 1px solid rgba(99,102,241,0.15);">
         <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 32px; text-align: center;">
           <h1 style="margin: 0; font-size: 24px; color: white; letter-spacing: -0.5px;">Hi!Paris Playground</h1>
           <p style="margin: 8px 0 0; color: rgba(255,255,255,0.8); font-size: 14px;">Neural Deep Learning Platform</p>
@@ -65,169 +65,16 @@ async function sendTokenEmail(email, prenom, token, isNew = true) {
 
 // --- MIDDLEWARE D'AUTORISATION ---
 
-// Middleware pour vérifier le rôle TEACHER
+// Middleware requireTeacher : AUTH DISABLED (version "open" / local).
+// Pour la version publique/production il faudra restaurer la vérification réelle.
 const requireTeacher = async (req, res, next) => {
-  // On attend l'email ou l'ID dans le header personnalisé
-  const userEmail = req.headers['x-user-email'];
-  
-  if (!userEmail) {
-    return res.status(401).json({ error: "Accès refusé : Identifiant manquant dans les headers (x-user-email)" });
-  }
-
-  try {
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('role')
-      .eq('email', userEmail)
-      .single();
-
-    if (error || !user) {
-      return res.status(401).json({ error: "Utilisateur non trouvé" });
-    }
-
-    if (user.role !== 'TEACHER') {
-      return res.status(403).json({ error: "Accès interdit : Privilèges enseignants requis" });
-    }
-
-    next(); // L'utilisateur est bien un prof, on continue vers la route
-  } catch (err) {
-    return res.status(500).json({ error: "Erreur lors de la vérification des droits" });
-  }
+  // Middleware passe‑tout : autorise toutes les requêtes.
+  next();
 };
 
 // --- ROUTES UTILISATEURS ---
-
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("⚠️ ATTENTION : La clé SERVICE_ROLE est manquante !");
-}
-
-// Connexion (Login) — via token reçu par mail
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body; // 'password' contient désormais le token
-  console.log("🔑 Tentative de connexion pour :", email);
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email et token requis" });
-  }
-
-  try {
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .single();
-
-    if (error || !user) {
-      return res.status(401).json({ error: "Email ou token incorrect" });
-    }
-
-    // Vérification du token (insensible à la casse)
-    if (!user.login_token || user.login_token !== password.trim().toUpperCase()) {
-      return res.status(401).json({ error: "Email ou token incorrect" });
-    }
-
-    // On ne renvoie pas les champs sensibles
-    const safeUser = { ...user };
-    delete safeUser.login_token;
-    delete safeUser.password;
-
-    res.json(safeUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Créer un utilisateur (Register) — génère un token OTP et l'envoie par mail
-app.post('/api/users', async (req, res) => {
-  const { email, role, token, prenom, nom, ecole } = req.body;
-  console.log("📨 Tentative d'inscription pour :", email);
-
-  if (role === 'TEACHER') {
-    const validTokens = (process.env.TEACHER_TOKENS || "").split(',');
-    if (!token || !validTokens.includes(token)) {
-      return res.status(401).json({ error: "Token enseignant invalide" });
-    }
-  }
-
-  try {
-    // Génération du token OTP de connexion
-    let loginToken = generateToken();
-
-    // TEMPORAIRE DÉMO : Si le domaine Resend n'est pas encore validé
-    if (process.env.RESEND_DOMAIN_VERIFIED !== 'true') {
-      loginToken = role === 'TEACHER' ? '#TOKEN_TEACHERSHI!PARIS2026#' : '#TOKEN_STUDENTHIPARIS2026';
-    }
-
-    const userData = { email, nom, prenom, ecole, role, login_token: loginToken };
-
-    const { data, error } = await supabase
-      .from('users')
-      .insert([userData])
-      .select();
-
-    if (error) throw error;
-
-    // Envoi du token par email (On ignore l'erreur si Resend bloque en Sandbox)
-    try {
-      await sendTokenEmail(email, prenom, loginToken, true);
-    } catch (mailErr) {
-      console.warn("⚠️ Impossible d'envoyer l'email (Sandbox Resend). Token standard fourni.");
-    }
-
-    const safeUser = { ...data[0] };
-    delete safeUser.login_token;
-    delete safeUser.password;
-    res.status(201).json(safeUser);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-// Token oublié — génère un nouveau token et l'envoie par mail
-app.post('/api/forgot-token', async (req, res) => {
-  const { email } = req.body;
-  console.log("🔄 Demande de nouveau token pour :", email);
-
-  if (!email) {
-    return res.status(400).json({ error: "Email requis" });
-  }
-
-  try {
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('id, email, prenom, role')
-      .eq('email', email)
-      .single();
-
-    // Même réponse si l'email n'existe pas (sécurité : ne pas révéler les comptes)
-    if (error || !user) {
-      return res.json({ message: "Si cet email est enregistré, un token a été envoyé." });
-    }
-
-    let newToken = generateToken();
-
-    // TEMPORAIRE DÉMO : Si le domaine Resend n'est pas encore validé
-    if (process.env.RESEND_DOMAIN_VERIFIED !== 'true') {
-      newToken = user.role === 'TEACHER' ? '#TOKEN_TEACHERSHI!PARIS2026#' : '#TOKEN_STUDENTHIPARIS2026';
-    }
-
-    await supabase
-      .from('users')
-      .update({ login_token: newToken })
-      .eq('id', user.id);
-
-    try {
-      await sendTokenEmail(user.email, user.prenom, newToken, false);
-    } catch (mailErr) {
-      console.warn("⚠️ Impossible d'envoyer l'email (Sandbox Resend). Token standard fourni.");
-    }
-
-    res.json({ message: "Un nouveau token a été envoyé à votre adresse email." });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
+// NOTE: Les routes de connexion / inscription / forgot-token sont retirées pour la version sans auth.
+// Si besoin, on peut les restaurer depuis l'historique git.
 
 // --- ROUTES EXERCICES & PROFESSEURS ---
 
@@ -373,7 +220,6 @@ app.post('/api/exercises', async (req, res) => {
   console.log("✅ Exercice et soumission créés avec succès !");
   res.status(201).json(exo);
 });
-
 
 
 // --- ROUTES HISTORIQUE & VALIDATION ---
@@ -529,8 +375,6 @@ app.get('/api/stats/users', async (req, res) => {
 // Route pour incrémenter le nombre de visites
 app.get('/api/stats/visit', async (req, res) => {
   try {
-    // Utilisation d'une fonction RPC Supabase pour incrémenter de façon atomique
-    // OU faire un simple update (plus simple ici)
     const { data: current } = await supabase.from('site_stats').select('count').eq('id', 'visits').single();
     const newCount = (current ? current.count : 0) + 1;
 
@@ -597,7 +441,6 @@ app.post('/api/progress', async (req, res) => {
   }
 });
 
-
 // --- RÉCUPÉRER LA PROGRESSION D'UN UTILISATEUR ---
 app.get('/api/progress/:email', async (req, res) => {
   const { email } = req.params;
@@ -635,6 +478,3 @@ app.get('/api/progress/:email', async (req, res) => {
 });
 
 module.exports = app;
-
-
-
