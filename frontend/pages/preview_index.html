@@ -99,12 +99,12 @@ limitations under the License.
         </button>
       </div>
       <div class="control"
-        title="An epoch is one complete pass of the entire training dataset through a machine learning model during the training process. Training usually requires multiple epochs so the model can gradually improve its predictions.">
+        title="An epoch is one complete pass of the entire training dataset through a machine learning model during the training process. Training usually requires multiple epochs so the model ca[...]
         <span class="label">Epoch</span>
         <span class="value" id="iter-number"></span>
       </div>
       <div class="control ui-learningRate"
-        title="The learning rate is a hyperparameter that controls how much the model’s parameters (weights and biases) are updated during training. A small learning rate leads to slow learning, while a large learning rate may cause the model to miss the optimal solution.">
+        title="The learning rate is a hyperparameter that controls how much the model’s parameters (weights and biases) are updated during training. A small learning rate leads to slow learning[...]
         <label for="learningRate">Learning rate</label>
         <div class="select">
           <select id="learningRate">
@@ -123,7 +123,7 @@ limitations under the License.
         </div>
       </div>
       <div class="control ui-activation"
-        title="An activation function is a mathematical function applied to the output of a neuron in a neural network. It determines whether the neuron should be activated and what value it should pass to the next layer.&#10;&#10;More formally, a neuron first computes a weighted sum of its inputs:&#10;z = Σ(w_i * x_i) + b&#10;where:&#10;w_i = weights&#10;x_i = input features&#10;b = bias&#10;&#10;The activation function f(z) is then applied:&#10;a = f(z)&#10;&#10;Function  | Output Range | Typical use&#10;---------------------------------------------------------&#10;ReLU      | [0, +∞)      | Hidden layers in deep networks&#10;Sigmoid   | (0,1)        | Output layer for binary classification&#10;Tanh      | (-1,1)       | Hidden layers, RNNs&#10;Softmax   | Probabilities| Output layer for multi-class classification">
+        title="An activation function is a mathematical function applied to the output of a neuron in a neural network. It determines whether the neuron should be activated and what value it shou[...]
         <label for="activations">Activation</label>
         <div class="select">
           <select id="activations">
@@ -135,7 +135,7 @@ limitations under the License.
         </div>
       </div>
       <div class="control ui-regularization"
-        title="Regularization refers to techniques used to prevent a model from overfitting the training data. It works by adding constraints or penalties to the model, encouraging simpler models that generalize better to new data.">
+        title="Regularization refers to techniques used to prevent a model from overfitting the training data. It works by adding constraints or penalties to the model, encouraging simpler models[...]
         <label for="regularizations">Regularization</label>
         <div class="select">
           <select id="regularizations">
@@ -195,7 +195,7 @@ limitations under the License.
         <input type="text" id="seed-input" style="width: 100%; padding: 5px;" placeholder="Seed...">
       </div>
       <div id="weight-editor" class="weight-editor ui-weightEditor" style="margin-top:20px;"
-        title="A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the model’s prediction error.">
+        title="A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the model�[...]
         <h4 style="margin:0 0 10px 0;">Weight editor</h4>
         <p id="selected-link-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
           Click on a link
@@ -209,7 +209,7 @@ limitations under the License.
         </p>
       </div>
       <div id="bias-editor" class="bias-editor ui-biasEditor" style="margin-top:20px;"
-        title="A bias is an additional parameter added to a neuron that allows the model to shift the activation function. It helps the network better fit the data by providing more flexibility in the model.">
+        title="A bias is an additional parameter added to a neuron that allows the model to shift the activation function. It helps the network better fit the data by providing more flexibility i[...]
         <h4 style="margin:0 0 10px 0;">Bias editor</h4>
         <p id="selected-node-label" style="font-size:12px; color:#666; margin:0 0 10px 0;">
           Click on a neuron's bias
@@ -276,7 +276,7 @@ limitations under the License.
     <!-- Features Column -->
     <div class="column features">
       <h4
-        title="A feature is an individual measurable property or characteristic used as input for a machine learning model. For example, in a house price prediction model, features might include size, location, number of rooms, and age of the house.">
+        title="A feature is an individual measurable property or characteristic used as input for a machine learning model. For example, in a house price prediction model, features might include [...]
         Features</h4>
       <p>Which properties do you want to feed in?</p>
       <div id="network">
@@ -306,7 +306,7 @@ limitations under the License.
           </svg>
           <div class="label">
             This is the output from one <b
-              title="A neuron (or node) is a computational unit in a neural network that receives inputs, multiplies them by weights, adds a bias, and applies an activation function to produce an output.">neuron</b>.
+              title="A neuron (or node) is a computational unit in a neural network that receives inputs, multiplies them by weights, adds a bias, and applies an activation function to produce an[...]
             Hover to see it larger.
           </div>
         </div>
@@ -322,7 +322,7 @@ limitations under the License.
           </svg>
           <div class="label">
             The outputs are mixed with varying <b
-              title="A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the model’s prediction error.">weights</b>,
+              title="A weight is a parameter in a neural network that determines the strength or importance of a connection between neurons. During training, weights are adjusted to minimize the [...]
             shown by the thickness of the lines.
           </div>
         </div>
@@ -332,7 +332,7 @@ limitations under the License.
     <!-- Hidden Layers Column -->
     <div class="column hidden-layers">
       <h4
-        title="A hidden layer is a layer of neurons located between the input layer and the output layer in a neural network. Hidden layers allow the network to learn complex patterns and representations from the data.">
+        title="A hidden layer is a layer of neurons located between the input layer and the output layer in a neural network. Hidden layers allow the network to learn complex patterns and represe[...]
         <div class="ui-numHiddenLayers">
           <button id="add-layers" class="mdl-button mdl-js-button mdl-button--icon">
             <i class="material-icons notranslate">add</i>
@@ -365,7 +365,7 @@ limitations under the License.
       </div>
       <div id="heatmap"></div>
       <div id="compare-area"
-        style="display: none; width: 100%; float: left; margin-top: 25px; border: 1px solid #ddd; background: #fafafa; padding: 15px; border-radius: 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+        style="display: none; width: 100%; float: left; margin-top: 25px; border: 1px solid #ddd; background: #fafafa; padding: 15px; border-radius: 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.[...]
         <div
           style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 10px;">
           <h4 style="font-size: 13px; font-weight: bold; margin: 0; color: #555;">SNAPSHOT <span
@@ -528,7 +528,7 @@ limitations under the License.
         		l7.3-30h12L510.9,85.8z" />
           <path d="M79.1,76.2c-6.7,0-12.7-4-14.9-13.2l40.5-12.2c-0.2-2.8-0.6-5.4-1.3-8c-3-11.6-11.1-20.1-24.7-20.1
         		c-16,0-27.1,11.3-27.1,32.3c0,20.5,12.2,32.1,26.7,32.1c9.4,0,15.9-2.9,21.3-8.1l-7.2-7.8C88.4,74.3,84.3,76.2,79.1,76.2z
-        	 M78,33.7c7.9,0,12.1,4.5,13.8,10.5l-27.9,8.5l0-3.5C64.9,39.3,69.8,33.7,78,33.7z" />
+        		M78,33.7c7.9,0,12.1,4.5,13.8,10.5l-27.9,8.5l0-3.5C64.9,39.3,69.8,33.7,78,33.7z" />
         </svg>
       </a>
       <div class="links">
