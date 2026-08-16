@@ -136,15 +136,9 @@
         }
 
         if (DEV_MODE) return; // Court-circuit total : aucun verrouillage en mode dev
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-        if (!isLoggedIn || !user.email) {
-            alert("🔒 Please connect to access the exercises.");
-            const redirectPath = isQuizPage ? '../Page-demo/register.html' : 'Page-demo/register.html';
-            window.location.href = redirectPath;
-            return;
-        }
+        // NOTE: login-related checks and server-side progress fetch removed per request.
+        // Rely on local/session storage only for progression state.
 
         // Configuration des sections
         const SECTIONS_CONFIG = {
@@ -159,21 +153,18 @@
             return introState.eval && introState.res && introState.tuto;
         }
 
-        // Récupérer la progression de l'utilisateur (Supabase API)
+        // Récupérer la progression de l'utilisateur depuis le localStorage (remplace l'appel serveur)
         let completedOfficialIds = new Set();
         try {
-            const progressRes = await fetch(`/api/progress/${user.email}`);
-            if (progressRes.ok) {
-                const progressData = await progressRes.json();
-                completedOfficialIds = new Set(
-                    progressData
-                        .filter(p => p.status === 'COMPLETED')
-                        .map(p => p.exercises ? p.exercises.official_id : null)
-                        .filter(id => id !== null)
-                );
+            const stored = JSON.parse(localStorage.getItem('completedExercises') || '[]');
+            if (Array.isArray(stored)) {
+                stored.forEach(id => {
+                    const num = parseInt(id);
+                    if (!Number.isNaN(num)) completedOfficialIds.add(num);
+                });
             }
         } catch (err) {
-            console.error("Erreur récupération progression dans inactivite.js :", err);
+            console.error("Erreur lecture completedExercises dans inactivite.js :", err);
         }
 
         function isExerciseUnlocked(id) {
@@ -243,9 +234,9 @@
             if (btnRealise) {
                 btnRealise.innerHTML = '<span class="icon">📝</span> Test your knowledge';
                 
-                // Si l'exercice est complété en base de données
-                const isCompletedDb = completedOfficialIds.has(currentExoId);
-                if (isCompletedDb) {
+                // Si l'exercice est complété (localStorage)
+                const isCompletedLocal = completedOfficialIds.has(currentExoId);
+                if (isCompletedLocal) {
                     btnRealise.disabled = false;
                     btnRealise.classList.remove('btn-disabled');
                     btnRealise.classList.add('btn-success-ready');
@@ -328,42 +319,7 @@
         initProgressionCheck();
     }
 
-    // 2. Système de déconnexion automatique d'inactivité
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) return;
-
-    let timerInactivite;
-    const DUREE_MAX_INACTIVITE = 1800000; // 30 minutes
-
-    const deconnexionAutomatique = () => {
-        alert("🔒: You have been disconnected due to 30 minutes of inactivity.");
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('currentUser');
-
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('/Page-demo/')) {
-            window.location.href = '../index.html';
-        } else {
-            window.location.href = 'index.html';
-        }
-    };
-
-    const resetTimer = () => {
-        clearTimeout(timerInactivite);
-        timerInactivite = setTimeout(deconnexionAutomatique, DUREE_MAX_INACTIVITE);
-    };
-
-    ['mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
-        window.addEventListener(evt, resetTimer, { passive: true, capture: true });
-    });
-
-    window.addEventListener('message', (event) => {
-        if (event.data === 'USER_ACTIVE_IN_IFRAME') {
-            resetTimer();
-        }
-    });
-
-    resetTimer();
+    // NOTE: auto-logout / inactivity-based sign-out removed per request to delete login-tied code.
 })();
 
 // --- SYNCHRONISATION DE LA LANGUE POUR LES BOUTONS (VALIDER/VALIDATE ET Save draft/SAVE) ---
