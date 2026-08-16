@@ -12,32 +12,6 @@
 
 <body>
 
-
-    <!-- Security Check: Redirect if not PROF -->
-    <script>
-        const u = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        const role = u ? (u.profil || u.profile || u.role || '').toUpperCase() : '';
-        const isTeacher = role.includes('TEACH') || role.includes('ENS') || role.includes('PROF');
-
-        if (!u) {
-            window.location.href = 'login.html';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const titleEl = document.querySelector('.brand-name');
-            if (isTeacher) {
-                titleEl.innerText = "Teacher Neural Dashboard";
-            } else {
-                titleEl.innerText = "Student Neural Dashboard";
-                // Adaptation sidebar for student
-                const sidebarTitle = document.querySelector('.sidebar h2');
-                if (sidebarTitle) sidebarTitle.innerText = "My Space";
-                const boardTab = document.querySelector('.menu-item[data-target="board-block"]');
-                if (boardTab) boardTab.innerHTML = '<span style="font-size: 1.2rem;">📈</span> My Progress';
-            }
-        });
-    </script>
-
     <div class="orb-blur-1"></div>
     <div class="orb-blur-2"></div>
     <div class="grid-overlay"></div>
@@ -54,7 +28,7 @@
             <a class="btn-back" href="Page-demo/exercises.html">
                 <span class="material-icons" style="font-size: 18px;">arrow_back</span> Exercises page
             </a>
-            <!-- Widget Profil Header comme dans Historique -->
+            <!-- Profile widget placeholder (login-related widget removed) -->
             <div id="widget-profil-header"></div>
         </div>
     </header>
@@ -67,9 +41,6 @@
                 <div class="menu-item active" data-target="board-block">
                     <span style="font-size: 1.2rem;">📊</span> Student Tracking
                 </div>
-                <!-- <div class="menu-item" data-target="chat-block">
-                    <span style="font-size: 1.2rem;">💬</span> Chat de Groupe
-                </div> -->
             </nav>
             <div style="flex:1;"></div> <!-- Spacer -->
             <div
@@ -90,7 +61,7 @@
                     </div>
                 </div>
 
-                <!-- Barre de recherche et de filtres (Affichée uniquement pour le prof) -->
+                <!-- Barre de recherche et de filtres (hidden — teacher features removed because they relied on login) -->
                 <div id="teacher-controls" class="controls-bar" style="display: none;">
                     <div class="search-wrapper">
                         <span class="search-icon">🔍</span>
@@ -127,7 +98,7 @@
                 </div>
 
                 <div class="students-grid" id="students-grid">
-                    <!-- Généré dynamiquement en JS (Mock pour l'IHM) -->
+                    <!-- Généré dynamiquement en JS -->
                 </div>
             </section>
 
@@ -207,8 +178,6 @@
         btnSend.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-
-
         // --- toggleDetails : ouvre/ferme l'accordéon d'un étudiant ---
         window.toggleDetails = (id) => {
             const det = document.getElementById('details-' + id);
@@ -223,8 +192,6 @@
             }
         };
 
-
-
         // Fonction pour formater les secondes en MM:SS
         const formatTime = (s) => {
             if (!s || s <= 0) return "0s";
@@ -233,7 +200,7 @@
             return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
         };
 
-        // --- 3. LOGIQUE DE DONNÉES DYNAMIQUE (CONNECTÉ BD) ---
+        // --- 3. LOGIQUE DE DONNÉES DYNAMIQUE (LOGIN-DEPENDENT CODE REMOVED) ---
         let allStudentsData = [];
 
         const renderStudents = (list) => {
@@ -359,192 +326,90 @@
 
         const initDashboard = async () => {
             const grid = document.getElementById('students-grid');
-            grid.innerHTML = '<p style="padding:20px; color:var(--sub);">Loading real data from Supabase...</p>';
+            grid.innerHTML = '<p style="padding:20px; color:var(--sub);">Loading sample data (login-related features removed)...</p>';
 
             try {
-                if (isTeacher) {
-                    // Show teacher controls bar
-                    const ctrlBar = document.getElementById('teacher-controls');
-                    if (ctrlBar) ctrlBar.style.display = 'flex';
-
-                    // Fetch stats
-                    // Fetch stats avec le nouveau header de sécurité
-                    const res = await fetch('/api/teacher/students-progress', {
-                        headers: { 'x-user-email': u.email }
-                    });
-                    const allStats = await res.json();
-
-                    allStudentsData = allStats.map(s => ({
-                        ...s,
-                        online: Math.random() > 0.5,
-                        level: s.exosFaits > 10 ? "Expert" : (s.exosFaits > 5 ? "Intermediate" : "Beginner"),
-                        efficacite: s.exosFaits > 0 ? "80%" : "0%",
-                        tempsMoyen: formatTime(s.totalTime),
-                        history: s.history.map(h => ({
-                            nom: h.nom,
-                            date: h.date,
-                            temps: formatTime(h.temps)
-                        }))
-                    }));
-
-                    // Populate dynamically the institution filter dropdown
-                    const instFilter = document.getElementById('filter-institution');
-                    if (instFilter) {
-                        const insts = [...new Set(allStudentsData.map(s => s.ecole || 'Not specified'))].filter(Boolean).sort();
-                        instFilter.innerHTML = '<option value="all">All institutions</option>';
-                        insts.forEach(inst => {
-                            const opt = document.createElement('option');
-                            opt.value = inst;
-                            opt.textContent = inst;
-                            instFilter.appendChild(opt);
-                        });
-                    }
-
-                    // Bind control events once
-                    const searchInput = document.getElementById('search-student');
-                    const levelFilter = document.getElementById('filter-level');
-                    const instFilterElement = document.getElementById('filter-institution');
-                    const sortByFilter = document.getElementById('sort-by');
-
-                    if (searchInput && !searchInput.dataset.bound) {
-                        searchInput.addEventListener('input', applyFiltersAndSort);
-                        searchInput.dataset.bound = "true";
-                    }
-                    if (levelFilter && !levelFilter.dataset.bound) {
-                        levelFilter.addEventListener('change', applyFiltersAndSort);
-                        levelFilter.dataset.bound = "true";
-                    }
-                    if (instFilterElement && !instFilterElement.dataset.bound) {
-                        instFilterElement.addEventListener('change', applyFiltersAndSort);
-                        instFilterElement.dataset.bound = "true";
-                    }
-                    if (sortByFilter && !sortByFilter.dataset.bound) {
-                        sortByFilter.addEventListener('change', applyFiltersAndSort);
-                        sortByFilter.dataset.bound = "true";
-                    }
-                } else {
-                    const resProg = await fetch(`/api/progress/${u.email}`);
-                    const userProgress = await resProg.json();
-                    const exosValides = userProgress.filter(p => p.status === 'COMPLETED').length;
-                    const totalTimeSeconds = userProgress.reduce((acc, p) => acc + (p.time_spent || 0), 0);
-
-                    allStudentsData = [{
-                        id: 'me',
-                        nom: u.nom,
-                        prenom: u.prenom,
+                // Login-dependent behaviors removed. Provide neutral sample data.
+                allStudentsData = [
+                    {
+                        id: 's1',
+                        nom: 'Dupont',
+                        prenom: 'Alice',
                         online: true,
-                        level: exosValides > 10 ? "Expert" : (exosValides > 5 ? "Intermediate" : "Beginner"),
-                        exosFaits: exosValides,
-                        efficacite: exosValides > 0 ? "Dynamique" : "0%",
-                        tempsMoyen: formatTime(totalTimeSeconds),
-                        totalTime: totalTimeSeconds,
-                        ecole: u.ecole || 'Not specified',
-                        history: userProgress
-                            .filter(p => p.exercises)
-                            .map(p => ({
-                                nom: p.exercises.title,
-                                date: p.completed_at ? new Date(p.completed_at).toLocaleDateString() : (p.is_saved ? "Saved" : "In progress"),
-                                temps: formatTime(p.time_spent)
-                            }))
-                    }];
+                        level: 'Intermediate',
+                        exosFaits: 7,
+                        efficacite: '78%',
+                        tempsMoyen: formatTime(1240),
+                        totalTime: 1240,
+                        ecole: 'Université Paris',
+                        history: [
+                            { nom: 'Exercice 12', date: '2026-07-10', temps: formatTime(300) },
+                            { nom: 'Exercice 15', date: '2026-07-12', temps: formatTime(600) }
+                        ]
+                    },
+                    {
+                        id: 's2',
+                        nom: 'Martin',
+                        prenom: 'Lucas',
+                        online: false,
+                        level: 'Beginner',
+                        exosFaits: 2,
+                        efficacite: '45%',
+                        tempsMoyen: formatTime(420),
+                        totalTime: 420,
+                        ecole: 'École Centrale',
+                        history: []
+                    }
+                ];
+
+                // Populate institution filter from sample data (if visible)
+                const instFilter = document.getElementById('filter-institution');
+                if (instFilter) {
+                    const insts = [...new Set(allStudentsData.map(s => s.ecole || 'Not specified'))].filter(Boolean).sort();
+                    instFilter.innerHTML = '<option value="all">All institutions</option>';
+                    insts.forEach(inst => {
+                        const opt = document.createElement('option');
+                        opt.value = inst;
+                        opt.textContent = inst;
+                        instFilter.appendChild(opt);
+                    });
+                }
+
+                // Bind controls if they exist (they remain hidden by default)
+                const searchInput = document.getElementById('search-student');
+                const levelFilter = document.getElementById('filter-level');
+                const instFilterElement = document.getElementById('filter-institution');
+                const sortByFilter = document.getElementById('sort-by');
+
+                if (searchInput && !searchInput.dataset.bound) {
+                    searchInput.addEventListener('input', applyFiltersAndSort);
+                    searchInput.dataset.bound = "true";
+                }
+                if (levelFilter && !levelFilter.dataset.bound) {
+                    levelFilter.addEventListener('change', applyFiltersAndSort);
+                    levelFilter.dataset.bound = "true";
+                }
+                if (instFilterElement && !instFilterElement.dataset.bound) {
+                    instFilterElement.addEventListener('change', applyFiltersAndSort);
+                    instFilterElement.dataset.bound = "true";
+                }
+                if (sortByFilter && !sortByFilter.dataset.bound) {
+                    sortByFilter.addEventListener('change', applyFiltersAndSort);
+                    sortByFilter.dataset.bound = "true";
                 }
 
                 applyFiltersAndSort();
             } catch (err) {
-                grid.innerHTML = `<p style="padding:20px; color:var(--danger);">Error connecting to the database: ${err.message}</p>`;
+                grid.innerHTML = `<p style="padding:20px; color:var(--danger);">Error preparing the dashboard: ${err.message}</p>`;
             }
         };
-
-        // --- 4. INTEGRATION WIDGET PROFIL AVEC NOTIFICATIONS ---
-        (function () {
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            const container = document.getElementById('widget-profil-header');
-            if (!container || !isLoggedIn || !user) return;
-
-            container.style.cssText = 'position: relative; perspective: 1000px; display: flex; align-items: center;';
-
-            // Création du badge de notification
-            const notifBadge = document.createElement('div');
-            notifBadge.id = 'notif-badge-avatar';
-            notifBadge.style.cssText = 'position:absolute; top:-2px; right:-2px; width:14px; height:14px; background:#ef4444; border:2px solid #0b0f1a; border-radius:50%; z-index:10; display:none;';
-            container.appendChild(notifBadge);
-
-            const initiales = (user.prenom ? user.prenom[0] : '') + (user.nom ? user.nom[0] : '');
-            const avatar = document.createElement('div');
-            avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); transition: transform 0.3s;';
-            avatar.innerText = initiales.toUpperCase();
-
-            const menu = document.createElement('div');
-            menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); overflow: hidden; opacity: 0; transform: scale(0.9) translateY(-10px); transition: all 0.3s; z-index: 1001;';
-
-            const typeProfil = (user.role || user.profil || 'Étudiant').toUpperCase();
-
-            menu.innerHTML = `
-                <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size: 17px; font-weight: 800; color: #fff;">${user.prenom || ''} ${user.nom || ''}</div>
-                    <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${user.email || ''}</div>
-                    <div style="display: inline-block; margin-top: 10px; padding: 4px 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; color: #10b981;">🟢 Profil ${typeProfil}</div>
-                </div>
-                <div style="padding: 8px;">
-                    <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-                        📊 My History
-                    </a>
-                    <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-                        📈 Statistics
-                    </a>
-                    <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
-                        🚪 Logout
-                    </div>
-                </div>
-            `;
-
-            let isOpen = false;
-            avatar.onclick = async () => {
-                isOpen = !isOpen;
-                if (isOpen) {
-                    menu.style.display = 'block'; setTimeout(() => { menu.style.opacity = '1'; menu.style.transform = 'scale(1) translateY(0)'; }, 10);
-                    // Check notifications au clic
-                    try {
-                        let count = 0;
-                        if (isTeacher) {
-                            const r = await fetch(`/api/submissions/teacher/${user.id}/count`, { headers: { 'x-user-email': user.email } });
-                            const d = await r.json(); count = d.count || 0;
-                        } else {
-                            const r = await fetch(`/api/submissions/student/${user.id}`);
-                            const s = await r.json(); count = s.filter(x => x.status !== 'PENDING').length;
-                        }
-                        notifBadge.style.display = count > 0 ? 'block' : 'none';
-                    } catch (e) { }
-                } else {
-                    menu.style.opacity = '0'; menu.style.transform = 'scale(0.9) translateY(-10px)'; setTimeout(() => menu.style.display = 'none', 300);
-                }
-            };
-            menu.querySelector('#btnFuturLogout').onclick = () => { localStorage.clear(); window.location.href = 'index.html'; };
-            container.appendChild(avatar); container.appendChild(menu);
-
-            // Auto-check notifications au chargement
-            (async () => {
-                try {
-                    let count = 0;
-                    if (isTeacher) {
-                        const r = await fetch(`/api/submissions/teacher/${user.id}/count`, { headers: { 'x-user-email': user.email } });
-                        const d = await r.json(); count = d.count || 0;
-                    } else {
-                        const r = await fetch(`/api/submissions/student/${user.id}`);
-                        const s = await r.json(); count = s.filter(x => x.status !== 'PENDING').length;
-                    }
-                    if (count > 0) notifBadge.style.display = 'block';
-                } catch (e) { }
-            })();
-        })();
 
         // Lancement initial
         initDashboard();
 
     </script>
 
-    <!-- Ce script allows to manage l'inactivité de l'utilisateur : il redirige vers la page d'accueil après 10 minutes d'inactivité -->
+    <!-- Ce script manages inactivity — left in place (not tied to login) -->
     <script src="inactivite.js"></script>
 </body>
 
