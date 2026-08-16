@@ -34,10 +34,10 @@
             // Chercher dans toutes les sources possibles (pending, official, etc.)
             const allPending = JSON.parse(localStorage.getItem('pending_validations') || '[]');
             const allOfficial = JSON.parse(localStorage.getItem('official_custom_exercises') || '[]');
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            const email = (currentUser.email || 'undefined').toLowerCase();
-            const mySaved = JSON.parse(localStorage.getItem(`saved_exercises_${email}`) || '[]');
-            const mySubmits = JSON.parse(localStorage.getItem(`submitted_exercises_${email}`) || '[]');
+
+            // Removed login dependency: use generic keys instead of per-user keys based on currentUser/email
+            const mySaved = JSON.parse(localStorage.getItem('saved_exercises') || '[]');
+            const mySubmits = JSON.parse(localStorage.getItem('submitted_exercises') || '[]');
 
             let allExos = [...allPending, ...allOfficial, ...mySaved, ...mySubmits];
             let exo = allExos.find(e => e && String(e.id).trim() === String(exoId).trim());
