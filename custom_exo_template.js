@@ -40,7 +40,7 @@ async function initProfileWidget() {
 
     const avatar = document.createElement('div');
     avatar.id = 'avatar-btn';
-    avatar.style.cssText = 'position: relative; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, rgb(16, 185, 129), rgb(59, 130, 246)); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: rgba(16, 185, 129, 0.4) 0px 0px 20px, rgba(255, 255, 255, 0.3) 0px 0px 10px inset; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); transform: scale(1) rotate(0deg);';
+    avatar.style.cssText = 'position: relative; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, rgb(16, 185, 129), rgb(59, 130, 246)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; cursor: pointer;';
     avatar.innerHTML = `${initials}${badgeHtml}`;
 
     avatar.onmouseover = () => avatar.style.transform = 'scale(1.1) rotate(5deg)';
@@ -48,7 +48,7 @@ async function initProfileWidget() {
 
     const menu = document.createElement('div');
     menu.id = 'profile-menu';
-    menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0px; width: 260px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.5) 0px 25px 50px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset; overflow: hidden; transform-origin: right top; transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: scale(0.9) translateY(-10px); pointer-events: none; z-index: 1001;';
+    menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0px; width: 260px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 18px; overflow: hidden; z-index: 1000;';
 
     const typeProfil = role.includes('TEACH') || role.includes('ENS') ? 'TEACHER' : role;
 
@@ -56,18 +56,12 @@ async function initProfileWidget() {
       <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: linear-gradient(to bottom, rgba(255,255,255,0.02), transparent);">
         <div style="font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">${currentUser.prenom} ${currentUser.nom}</div>
         <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${currentUser.email || ''}</div>
-        <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 1px;">🟢 Profil ${typeProfil}</div>
+        <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 30px; font-size: 10px; font-weight: 700; color: rgb(52, 211, 153); text-transform: uppercase;">${typeProfil}</div>
       </div>
       <div style="padding: 8px;">
-        <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-          <span style="font-size: 16px;">📊</span> Mon Historique
-        </a>
-        <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#60a5fa'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.color='#e2e8f0'; this.style.transform='translateX(0)';">
-          <span style="font-size: 16px;">📈</span> Mes Statistiques
-        </a>
-        <div id="logout-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer; margin-top: 2px;" onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='translateX(5px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)';">
-          <span style="font-size: 16px;">🚪</span> Déconnexion
-        </div>
+        <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500;">📊 Mon Historique</a>
+        <a href="statsetudiant.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 500;">📈 Mes Statistiques</a>
+        <div id="logout-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;">🚪 Déconnexion</div>
       </div>
     `;
 
