@@ -2,35 +2,32 @@ name: Semi-Local Build & Vercel Deploy
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout le code
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 2. Setup Node.js
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
-      # 3. Installer les dépendances
       - name: Install dependencies
         run: npm install
 
-      # 4. Build l'application (frontend + API)
       - name: Build application
         run: npm run build
         env:
           NODE_ENV: production
 
-      # 5. Vérifier que les fichiers sont générés
       - name: Verify build output
         run: |
           if [ ! -d "dist" ]; then
@@ -40,27 +37,25 @@ jobs:
           echo "✅ Build successful: dist folder created"
           ls -la dist/
 
-      # 6. Test API routes (sans Supabase, en mode mock)
       - name: Test API endpoints (mock mode)
+        continue-on-error: true
         run: |
           echo "🧪 Testing API endpoints..."
           timeout 10 node server.local.js &
           SERVER_PID=$!
           sleep 3
-          
+
           curl -f http://localhost:3000/health || {
-            echo "⚠️  Healthcheck failed (expected without Supabase)"
+            echo "⚠️ Healthcheck failed (expected without Supabase)"
           }
-          
+
           kill $SERVER_PID 2>/dev/null || true
-        continue-on-error: true
         env:
           NODE_ENV: development
           SUPABASE_URL: https://mock.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: mock-key
           RESEND_API_KEY: mock-key
 
-      # 7. Upload build artifacts (v4 au lieu de v3)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -74,36 +69,31 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
-      # 1. Installer les dépendances
       - name: Install dependencies
         run: npm install
 
-      # 2. Build pour production
       - name: Build for production
         run: npm run build
         env:
           NODE_ENV: production
 
-      # 3. Déployer sur Vercel
       - name: Deploy to Vercel
         run: |
-         npm install -g vercel
-         vercel --token ${{ secrets.VERCEL_TOKEN }} \
-            --scope ${{ secrets.VERCEL_ORG_ID }} \
-            --project-id ${{ secrets.VERCEL_PROJECT_ID }} \
-            --prod
+          npm install -g vercel
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
         env:
-           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # 4. Notification
       - name: Deployment Status
         run: |
           echo "✅ Vercel deployment completed!"
