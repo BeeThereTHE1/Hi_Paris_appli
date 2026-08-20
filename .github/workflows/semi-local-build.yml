@@ -1,0 +1,118 @@
+name: Semi-Local Build & Vercel Deploy
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout le code
+      - uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # 3. Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Linter (optionnel)
+      - name: Run linter
+        run: |
+          if [ -f ".eslintrc" ] || [ -f ".eslintrc.json" ]; then
+            npm run lint || true
+          fi
+
+      # 5. Build l'application (frontend + API)
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      # 6. Vérifier que les fichiers sont générés
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "❌ Build failed: dist folder not found"
+            exit 1
+          fi
+          echo "✅ Build successful: dist folder created"
+          ls -la dist/
+
+      # 7. Test API routes (sans Supabase, en mode mock)
+      - name: Test API endpoints (mock mode)
+        run: |
+          echo "🧪 Testing API endpoints..."
+          timeout 10 node server.local.js &
+          SERVER_PID=$!
+          sleep 3
+          
+          curl -f http://localhost:3000/health || {
+            echo "❌ Healthcheck failed"
+            kill $SERVER_PID
+            exit 1
+          }
+          
+          echo "✅ API healthcheck passed"
+          kill $SERVER_PID
+        continue-on-error: true
+        env:
+          NODE_ENV: development
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://mock.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'mock-key' }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY || 'mock-key' }}
+
+      # 8. Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-folder
+          path: dist/
+          retention-days: 7
+
+  deploy-vercel:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # 1. Installer les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # 2. Build pour production
+      - name: Build for production
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      # 3. Déployer sur Vercel
+      - name: Deploy to Vercel
+        uses: vercel/action@master
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
+      # 4. Notification
+      - name: Deployment Status
+        run: |
+          echo "✅ Vercel deployment completed!"
+          echo "🔗 Check your app at: https://hi-paris-parcours-pedagogique-playg.vercel.app"
