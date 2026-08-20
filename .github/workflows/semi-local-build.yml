@@ -93,13 +93,15 @@ jobs:
 
       # 3. Déployer sur Vercel
       - name: Deploy to Vercel
-        uses: vercel/action@master
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+         npm install -g vercel
+         vercel --token ${{ secrets.VERCEL_TOKEN }} \
+            --scope ${{ secrets.VERCEL_ORG_ID }} \
+            --project-id ${{ secrets.VERCEL_PROJECT_ID }} \
+            --prod
+        env:
+           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       # 4. Notification
       - name: Deployment Status
