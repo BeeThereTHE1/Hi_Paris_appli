@@ -309,7 +309,7 @@ function startTutorial() {
 
   // Word count reading time (s) = words / 200 * 60
   const wordCount = text.split(/\s+/).length;
-  let timeLeft = 2; // around 12 seconds
+  let timeLeft = 7; // around 12 seconds
 
   function updateTimer() {
     if (timeLeft > 0) {
