@@ -615,14 +615,14 @@ function runStep3() {
     leftPopup.id = 'exo1-step3-leftpopup';
     var h3 = document.createElement('h3');
     var startText = translations && translations.start_marker ? translations.start_marker : "Let’s Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
-    var titleText = "Let’s Start! [6]";
+    var titleText = "Let’s Start!";
     var bodyText = startText;
     if (startText.startsWith("Let's Start!")) {
         titleText = "Let's Start!";
         bodyText = startText.substring("Let's Start!".length).trim();
     }
     else if (startText.startsWith("Let’s Start!")) {
-        titleText = "Let’s Start! [6]";
+        titleText = "Let’s Start!";
         bodyText = startText.substring("Let’s Start!".length).trim();
     }
     h3.innerText = titleText;
