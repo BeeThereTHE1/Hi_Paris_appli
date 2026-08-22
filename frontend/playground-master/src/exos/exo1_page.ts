@@ -610,13 +610,13 @@ function runStep3() {
 
   const h3 = document.createElement('h3');
   const startText = translations && translations.start_marker ? translations.start_marker : "Let’s Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified";
-  let titleText = "Let’s Start! [6]";
+  let titleText = "Let’s Start!";
   let bodyText = startText;
   if (startText.startsWith("Let's Start!")) {
     titleText = "Let's Start!";
     bodyText = startText.substring("Let's Start!".length).trim();
   } else if (startText.startsWith("Let’s Start!")) {
-    titleText = "Let’s Start! [6]";
+    titleText = "Let’s Start!";
     bodyText = startText.substring("Let’s Start!".length).trim();
   }
   h3.innerText = titleText;
@@ -668,7 +668,7 @@ function showStep5Congrats() {
 
   const h3 = document.createElement('h3');
   h3.style.color = '#FFFFFF';
-  h3.innerText = "Great job! [8]";
+  h3.innerText = "Great job!";
 
   const p = document.createElement('p');
   p.style.color = '#FFFFFF';
