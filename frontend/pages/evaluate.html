@@ -663,7 +663,7 @@
       
       // Formule demandée : (mots / 200) * 60 (donnant environ 2 secondes)
       // Ajustement : Si la formule donne moins de 2s, on force à 2s.
-      let duration = Math.max(Math.round((wordsCount / 200) * 60), 2);
+      let duration = Math.max(Math.round((wordsCount / 200) * 60), 7);
       const btnNext = document.getElementById('btnNext');
 
       let timer = setInterval(() => {
