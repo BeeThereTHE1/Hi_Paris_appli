@@ -150,7 +150,7 @@ function initQuiz() {
     } else {
       cardsHtml = `
           <div class="drag-card" draggable="true" id="card-1" data-answer="true">The basics of a neural network is a linear classifier</div>
-          <div class="drag-card" draggable="true" id="card-2" data-answer="true">A simple logistic regression can only separate data that is linearly separable.</div>
+          <div class="drag-card" draggable="true" id="card-2" data-answer="true">A simple logistic regression can only separate data that are linearly separable.</div>
           <div class="drag-card" draggable="true" id="card-3" data-answer="false">Hidden layers are necessary to classify a linear binary dataset</div>
           <div class="drag-card" draggable="true" id="card-4" data-answer="false">If a dataset has two clusters, it is always possible to draw a straight boundary between them.</div>
       `;
