@@ -68,7 +68,7 @@
                 "statements": [
                     {
                         "id": 1,
-                        "statement": "A neural network works as a linear classifier.",
+                        "statement": "A neural network can work as a linear classifier.",
                         "answer": true,
                         "feedback": "A neural network without hidden layers behaves like a linear model. It becomes non-linear only when hidden layers and activation functions are added."
                     },
