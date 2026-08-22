@@ -665,7 +665,7 @@ function showStep5Congrats() {
     popup.style.background = '#004676';
     var h3 = document.createElement('h3');
     h3.style.color = '#FFFFFF';
-    h3.innerText = "Great job! [8]";
+    h3.innerText = "Great job!";
     var p = document.createElement('p');
     p.style.color = '#FFFFFF';
     var congratsText = translations && translations.target_achieved ? translations.target_achieved : "Your settings lead to a good classification of our data into two clusters.\nLet's review together what you’ve learned from this exercise.";
