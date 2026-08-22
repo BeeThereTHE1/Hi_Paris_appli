@@ -1,3 +1,4 @@
 node_modules/
 *.log
 .vscode
+echo frontend/playground-master/src/exos/**/*.js >> .gitignore
