@@ -353,7 +353,7 @@ function initQuiz() {
         <h2 class="completion-title">Well Done!</h2>
         <p class="completion-msg">You have finished this exercise.<br>
           Go back home to the dashboard,<br>
-          <strong>next exercise has been unlocked!</strong>
+          <strong>Next exercise has been unlocked!</strong>
         </p>
 
         <!-- CTA buttons -->
