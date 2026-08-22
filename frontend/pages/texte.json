@@ -7,7 +7,7 @@
                 "text": "Adjust the model parameters to classify the Gaussian dataset. Monitor how each change impacts your results. Once the classification is good enough, you will progress to two activities that validate this exercise. First, hover over parameters to view their definitions."
             },
             "start_marker": "Let's Start! Use the slider to change the weight of the features X1 and X2 to find out if your dataset can be classified.",
-            "target_achieved": "Great job! Your settings lead to a good classification of our data into two clusters. Let's review together what you've learned from this exercise",
+            "target_achieved": "Great job! Your settings lead to a good classification of our data into two clusters. Let's review together what you've learned from this exercise.",
             "definitions": {
                 "data": {
                     "term": "Data",
@@ -35,7 +35,7 @@
                 },
                 "weight": {
                     "term": "Weight",
-                    "definition": "A weight is a value that controls how much an input influences the output.\nDuring training, the model adjusts the weights to reduce its prediction errors.\nIn a neural network the weight determines the strength or importance of a connection between neurons"
+                    "definition": "A weight is a value that controls how much an input influences the output.\nDuring training, the model adjusts the weights to reduce its prediction errors.\nIn a neural network the weight determines the strength or importance of a connection between neurons."
                 }
             },
             "qcm": {
