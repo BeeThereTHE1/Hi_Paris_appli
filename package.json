@@ -13,7 +13,11 @@
     "build-css": "concat node_modules/material-design-lite/material.min.css frontend/styles/style.css frontend/playground-master/styles.css > dist/playground/bundle.css && shx cp dist/playground/bundle.css dist/bundle.css",
     "build-html": "copyfiles -u 2 \"frontend/pages/**/*.html\" \"frontend/pages/**/*.js\" \"frontend/pages/**/*.json\" \"frontend/pages/**/Image/*\" dist && copyfiles -u 1 \"frontend/styles/*.css\" dist && copyfiles -u 1 \"frontend/playground-master/src/exos/*.js\" dist && shx cp frontend/playground-master/OLD_index.html dist/playground/index.html && copyfiles -j \"frontend/playground-master/images/*\" dist/playground/images && shx cp -r frontend/assets dist/",
     "build-js": "browserify frontend/playground-master/src/playground.ts -p [tsify] | uglifyjs -c > dist/playground/bundle.js && shx cp dist/playground/bundle.js dist/bundle.js",
+    "sync-frontend": "copyfiles -u 2 \"frontend/pages/**/*.html\" \"frontend/pages/**/*.js\" \"frontend/pages/**/*.json\" dist",
     "build": "npm run clean && npm run prep && npm run build-js && npm run build-css && npm run build-html",
+    "dev": "npm run build && npm run serve",
+    "dev:watch": "npm run build && concurrently \"npm run serve\" \"npm run watch:frontend\"",
+    "watch:frontend": "chokidar \"frontend/pages/**/*.{html,js,json}\" -c \"npm run sync-frontend\"",
     "serve": "npx serve dist/"
   },
   "devDependencies": {
@@ -22,6 +26,7 @@
     "@types/seedrandom": "^3.0.8",
     "@types/ws": "^8.18.1",
     "browserify": "^17.0.0",
+    "chokidar-cli": "^3.0.0",
     "concat": "^1.0.3",
     "concurrently": "3.1.0",
     "copyfiles": "1.0.0",
