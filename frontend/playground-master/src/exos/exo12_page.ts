@@ -338,7 +338,7 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #13 : Overfitting & Generalization";
+    h3.innerText = "Exercise #12 : Overfitting & Generalization";
 
     const p = document.createElement('p');
     const introText = "In this exercise, you will explore Training/Test Loss, Overfitting, and Generalization. Run the model in the simulator, monitor the learning curves, and observe how complexity affects the model's performance on unseen data. First, let's review the key concepts by completing a drag-and-drop matching activity on the right panel.";
@@ -359,7 +359,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 2;
+    let timeLeft = 10;
 
     function updateTimer() {
         if (timeLeft > 0) {
