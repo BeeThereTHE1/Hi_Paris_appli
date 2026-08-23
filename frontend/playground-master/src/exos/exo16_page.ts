@@ -310,7 +310,7 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #12 : Gradient Killing & Sigmoid vs ReLU";
+    h3.innerText = "Exercise #16 : Gradient Killing & Sigmoid vs ReLU";
 
     const p = document.createElement('p');
     p.innerText = "In this exercise, we will compare the behavior of two activation functions: Sigmoid and ReLU in a deep neural network (6 hidden layers, LR = 10, Spiral dataset). First, let's closely examine the definition of a gradient in a neural network.";
@@ -330,7 +330,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 2; // 8 seconds reading timer
+    let timeLeft = 7; // 8 seconds reading timer
 
     function updateTimer() {
         if (timeLeft > 0) {
