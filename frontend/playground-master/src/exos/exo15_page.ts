@@ -338,7 +338,7 @@ function startTutorial() {
     popup.className = 'tutorial-popup';
 
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #14 : Training & Test Datasets";
+    h3.innerText = "Exercise #15 : Training & Test Datasets";
 
     const p = document.createElement('p');
     const introText = "In this exercise, you will examine the distinct roles of the Training dataset and the Test dataset. You will classify statements, run the simulator on a small training split (10%), and observe the consequences on generalization. First, let's review the key notions by classifying statements on the right panel.";
@@ -359,7 +359,7 @@ function startTutorial() {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    let timeLeft = 2;
+    let timeLeft = 7;
 
     function updateTimer() {
         if (timeLeft > 0) {
