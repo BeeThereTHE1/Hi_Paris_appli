@@ -282,7 +282,7 @@ function startTutorial() {
   popup.className = 'tutorial-popup';
 
   const h3 = document.createElement('h3');
-  h3.innerText = translations && translations.title ? translations.title : "Exercice #1 : Separate the data";
+  h3.innerText = translations && translations.title ? translations.title : "Exercise #1 : Separate the data";
 
   const p = document.createElement('p');
   const defaultText = "Vous devez modifier les poids de la liaison entre X1 et l'output et X2 et l'output afin d'obtenir une line that separates le plan en deux regions distinctes. Les points oranges et bleues doivent se trouver in each region.";
