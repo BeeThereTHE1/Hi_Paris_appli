@@ -637,7 +637,7 @@ function startTutorial() {
     const popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     const h3 = document.createElement('h3');
-    h3.innerText = "Exercise #11 : Iterative Learning Cycle";
+    h3.innerText = "Exercise #13 : Iterative Learning Cycle";
     const p = document.createElement('p');
     p.innerText = "Observe the evolution of the decision frontier over the epochs. Pause at different times during the training (epoch 10, 100, 500) and describe what is happening visually.";
     const timerSpan = document.createElement('span');
@@ -652,7 +652,7 @@ function startTutorial() {
     popup.appendChild(nextBtn);
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-    let timeLeft = 2;
+    let timeLeft = 5;
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = `Temps de lecture restant : ${timeLeft}s`;
