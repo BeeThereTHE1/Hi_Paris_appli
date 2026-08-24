@@ -26,6 +26,6 @@ function copyDir(src, dest) {
   });
 }
 
-// Synchronise frontend/pages vers dist
-copyDir('frontend/pages', 'dist');
-console.log('✨ Synchronisation complète !');
+// Synchronise TOUT le frontend vers dist
+copyDir('frontend', 'dist');
+console.log('✨ Synchronisation complète du frontend !');
