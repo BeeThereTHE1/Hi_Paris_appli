@@ -216,7 +216,7 @@ function showCompletionScreen() {
   (async () => {
     if (window.StorageService) {
       await window.StorageService.complete(15);
-      console.log(`✅ Exercice 15 marqué COMPLETED.`);
+      console.log(`✅ Exercise 15 marked as COMPLETED.`);
     }
   })();
 }
