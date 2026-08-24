@@ -501,7 +501,7 @@ function showCompletionScreen() {
 
       <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 15px 0; z-index: 2; position: relative;">Congratulations !</h2>
       <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6; margin: 0 0 30px 0; z-index: 2; position: relative;">
-        You have successfully completed Exercise 9.<br>
+        You have successfully completed Exercise 11.<br>
         The role and impact of the learning rate on convergence are now clear.<br>
       </p>
 
