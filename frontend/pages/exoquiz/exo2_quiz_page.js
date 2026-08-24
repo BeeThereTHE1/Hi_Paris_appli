@@ -199,7 +199,7 @@
 
     if (window.StorageService) {
       await window.StorageService.complete(2);
-      console.log("✅ Exercice 2 marqué COMPLETED.");
+      console.log("✅ Exercise 2 marked as COMPLETED.");
     }
 
     window.location.href = `../exo2.html?completed=true`;
