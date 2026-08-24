@@ -63,7 +63,7 @@ function initQuiz() {
   ddOverlay.innerHTML = `
     <div class="dragdrop-container" style="margin: 20px; max-width: 650px;">
       <div class="dragdrop-header">
-        <span class="dragdrop-badge">Quiz 4</span>
+        <span class="dragdrop-badge">Quiz 6</span>
         <h2>Drag & Drop Statements</h2>
         <h3> True Or False ?</h3>
       </div>
@@ -237,7 +237,7 @@ function initQuiz() {
       // Save completed status via StorageService
       if (window.StorageService) {
         await window.StorageService.complete(6);
-        console.log("✅ Exercice 4 marqué COMPLETED.");
+        console.log("✅ Exercise 6 marqued as COMPLETED.");
       }
 
       // Redirect back with completed parameter to trigger inactivite.js completion overlays
