@@ -321,7 +321,7 @@ function initQuiz() {
           const exoId = window.__currentQuizExoId || 1;
           if (window.StorageService) {
             await window.StorageService.complete(exoId);
-            console.log(`✅ Exercice ${exoId} marqué COMPLETED.`);
+            console.log(`✅ Exercise ${exoId} marked as COMPLETED.`);
           }
 
           // Revenir à la page principale de l'exercice avec l'état complété
