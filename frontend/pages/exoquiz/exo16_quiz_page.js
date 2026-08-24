@@ -684,7 +684,7 @@ function showCompletionScreen() {
         localStorage.setItem('quiz_section_4_completed', 'true');
         if (window.StorageService) {
             await window.StorageService.complete(16);
-            console.log("✅ Exercise 16 marked COMPLETED.");
+            console.log("✅ Exercise 16 marked as COMPLETED.");
         }
     })();
 }
