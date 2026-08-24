@@ -213,7 +213,7 @@ function showCompletionScreen() {
       <!-- Completion Message -->
       <h2 class="completion-title">Congratulation !</h2>
       <p class="completion-msg">
-        You have successfully completed exercise 5.<br>
+        You have successfully completed exercise 4.<br>
         The impact of bias on the decision boundary is now understood.<br>
 <strong>The following exercise has been unlocked!</strong>
       </p>
@@ -246,7 +246,7 @@ function showCompletionScreen() {
   (async () => {
     if (window.StorageService) {
       await window.StorageService.complete(4);
-      console.log("✅ Exercice 5 marqué COMPLETED.");
+      console.log("✅ Exercise 4 marqued as COMPLETED.");
     }
   })();
 }
