@@ -105,7 +105,7 @@
     // Render table
     qDiv1.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 6</div>
+          <div class="quiz-question-badge">Quiz 7</div>
           <div class="quiz-question-card">
               Using the graphical representations of each activation function, and by testing them again in the Playground, drag the properties below into the correct columns.
           </div>
