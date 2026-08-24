@@ -9,6 +9,16 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="../../styles/exo.css" />
   <link rel="stylesheet" href="../../styles/exo_quiz.css" /></head>
+  <style>
+    html body main.quiz-layout-container .simulator-container {
+      width: 50% !important;
+    }
+
+    html body main.quiz-layout-container .quiz-panel-container {
+      width: 50% !important;
+    }
+  </style>
+</head>
 
 <body>
 
@@ -63,13 +73,13 @@
 
   <main class="quiz-layout-container">
     <div class="simulator-container">
-      <iframe class="exo-frame" src="../playground/index.html?exo=14"></iframe>
+      <iframe class="exo-frame" id="iframe-playground" src="../playground/index.html?exo=14"></iframe>
     </div>
     <div class="quiz-panel-container">
-      <div class="quiz-div-1">
+      <div class="quiz-div-1" id="quiz-question-panel">
         <!-- Contenu de la partie haute du quiz -->
       </div>
-      <div class="quiz-div-2">
+      <div class="quiz-div-2" id="quiz-feedback-panel">
         <!-- Content of the bottom part of the quiz -->
       </div>
     </div>
