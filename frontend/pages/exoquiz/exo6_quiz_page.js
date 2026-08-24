@@ -237,7 +237,7 @@ function initQuiz() {
       // Save completed status via StorageService
       if (window.StorageService) {
         await window.StorageService.complete(6);
-        console.log("✅ Exercise 6 marqued as COMPLETED.");
+        console.log("✅ Exercise 6 marked as COMPLETED.");
       }
 
       // Redirect back with completed parameter to trigger inactivite.js completion overlays
