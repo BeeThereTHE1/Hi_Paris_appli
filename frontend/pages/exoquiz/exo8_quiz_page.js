@@ -48,7 +48,7 @@
 
     qPanel.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 7 - Q1</div>
+          <div class="quiz-question-badge">Quiz 8 - Q1</div>
           <div class="quiz-question-card">
               What differences do you observe between the two results? (Select all correct answers)
           </div>
@@ -140,7 +140,7 @@
 
     qPanel.innerHTML = `
       <div class="quiz-question-wrapper">
-          <div class="quiz-question-badge">Quiz 7 - Q2</div>
+          <div class="quiz-question-badge">Quiz 8 - Q2</div>
           <div class="quiz-question-card">
               You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (Select all correct answers)
           </div>
