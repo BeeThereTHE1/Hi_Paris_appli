@@ -318,7 +318,7 @@ function showCompletionScreen() {
     localStorage.setItem('quiz_section_1_completed', 'true');
     if (window.StorageService) {
       await window.StorageService.complete(3);
-      console.log("✅ Exercice 3 marked COMPLETED in database.");
+      console.log("✅ Exercise 3 marked as COMPLETED in database.");
     }
   })();
 }
