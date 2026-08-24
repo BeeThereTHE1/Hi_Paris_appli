@@ -15,6 +15,7 @@
     "build-js": "browserify frontend/playground-master/src/playground.ts -p [tsify] | uglifyjs -c > dist/playground/bundle.js && shx cp dist/playground/bundle.js dist/bundle.js",
     "synclocal": "node synclocal.js",
     "build": "npm run clean && npm run prep && npm run build-js && npm run build-css && npm run build-html",
+    "build:exoquiz": "cd frontend/playground-master && npx tsc",
     "dev": "npm run build && npm run serve",
     "serve": "npx serve dist/"
   },
