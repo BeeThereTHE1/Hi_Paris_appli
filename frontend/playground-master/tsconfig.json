@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES2020",
+    "target": "es2015",
     "outDir": "./dist/exoquizjs",
-    "rootDir": "./src/exos",
     "removeComments": true,
     "preserveConstEnums": true,
     "skipLibCheck": true,
@@ -11,8 +10,9 @@
     "declaration": false,
     "sourceMap": false
   },
-  "include": ["src/exos/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": [
-    "node_modules" 
+    "node_modules",
+    "dist"
   ]
 }
