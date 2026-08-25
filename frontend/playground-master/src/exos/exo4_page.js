@@ -290,7 +290,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #5 : Bias Editor";
+    h3.innerText = translations && translations.title ? translations.title : "Exercise #4 : Bias Editor";
     var p = document.createElement('p');
     var defaultText = "Instructions: In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.";
     var text = translations && translations.instructions && translations.instructions.general ? translations.instructions.general : defaultText;
