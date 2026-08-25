@@ -1,50 +1,58 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const srcDir = './src';
 const srcExosDir = './src/exos';
 const outDir = './dist/exoquizjs';
 const outExosDir = './dist/exoquizjs/exos';
 
-// Crée les dossiers
-if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-if (!fs.existsSync(outExosDir)) fs.mkdirSync(outExosDir, { recursive: true });
+// Crée les dossiers de sortie
+if (!fs.existsSync(outDir)) {
+  fs.mkdirSync(outDir, { recursive: true });
+  console.log(`📁 Dossier créé: ${outDir}`);
+}
+if (!fs.existsSync(outExosDir)) {
+  fs.mkdirSync(outExosDir, { recursive: true });
+  console.log(`📁 Dossier créé: ${outExosDir}`);
+}
 
-// Copie les fichiers de base
+// ===== Copie les fichiers de base (dataset.js, heatmap.js, etc.) =====
 const filesToCopy = ['dataset.js', 'heatmap.js', 'linechart.js', 'nn.js', 'playground.js', 'state.js'];
+
 filesToCopy.forEach(file => {
   const srcFile = path.join(srcDir, file);
   const destFile = path.join(outDir, file);
+  
   if (fs.existsSync(srcFile)) {
     fs.copyFileSync(srcFile, destFile);
     console.log(`📋 Copié: ${file}`);
+  } else {
+    console.log(`⚠️  ${file} non trouvé`);
   }
 });
 
-// Compile TOUS les .ts du dossier exos (ignore les erreurs de types Node.js)
-const tsFiles = fs.readdirSync(srcExosDir).filter(f => f.endsWith('.ts'));
-tsFiles.forEach(file => {
-  const input = path.join(srcExosDir, file);
-  const output = path.join(outExosDir, file.replace('.ts', '.js'));
+// ===== Copie TOUS les fichiers .js du dossier exos =====
+// (Plus de compilation TypeScript - utilise les .js existants)
+if (fs.existsSync(srcExosDir)) {
+  const jsFiles = fs.readdirSync(srcExosDir).filter(f => f.endsWith('.js'));
   
-  try {
-    // Force la compilation même avec des erreurs
-    execSync(
-      `npx tsc "${input}" --outFile "${output}" ` +
-      `--noImplicitAny false --noEmitOnError false --skipLibCheck true ` +
-      `--lib es2015,dom --allowJs true`,
-      { stdio: 'pipe' }
-    );
-    console.log(`✅ Compilé: ${file}`);
-  } catch (e) {
-    // Même si tsc crash, on continue
-    console.log(`⚠️  ${file} - Compilation forcée (ignoré erreurs)`);
-    // Vérifie si le fichier .js a quand même été créé
-    if (fs.existsSync(output)) {
-      console.log(`   → Fichier généré malgré les erreurs`);
+  jsFiles.forEach(file => {
+    const srcFile = path.join(srcExosDir, file);
+    const destFile = path.join(outExosDir, file);
+    
+    try {
+      fs.copyFileSync(srcFile, destFile);
+      console.log(`📋 Copié exo: ${file}`);
+    } catch (e) {
+      console.error(`❌ Erreur en copiant ${file}: ${e.message}`);
     }
-  }
-});
+  });
+  
+  const jsCount = jsFiles.length;
+  console.log(`\n✨ Build terminé ! ${filesToCopy.length} fichiers de base + ${jsCount} fichiers exos copiés.`);
+} else {
+  console.log(`\n⚠️  Dossier ${srcExosDir} non trouvé - Aucun fichier exo copié.`);
+  console.log(`\n✨ Build terminé ! ${filesToCopy.length} fichiers de base copiés.`);
+}
 
-console.log(`✨ Build terminé !`);
+console.log(`\n📦 Fichiers prêts dans: ${outDir}`);
