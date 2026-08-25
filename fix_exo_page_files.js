@@ -1,18 +1,27 @@
 #!/usr/bin/env node
 
 /**
- * Script pour récupérer les fichiers exo*_page.js d'Éric et corriger les numéros
+ * Script pour récupérer les fichiers exo*_page.js d'Éric et les push sur GitHub
+ * avec correction automatique des numéros
+ * 
  * Usage: node fix_exo_page_files.js
+ * 
+ * Requires:
+ *   - GITHUB_TOKEN en variable d'environnement
+ *   - Permissions: repo (write)
  */
 
-const fs = require('fs');
-const path = require('path');
 const https = require('https');
+const fs = require('fs');
 
+// Configuration
 const ERIC_REPO = 'https://raw.githubusercontent.com/ericpapain/Hi_Paris_Parcours_pedagogique/e03df3e300abcc23d574d61477ad2bcba53ba888';
-const TARGET_DIR = 'frontend/playground-master/src/exos';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = 'BeeThereTHE1';
+const GITHUB_REPO = 'Hi_Paris_appli';
+const TARGET_PATH = 'frontend/playground-master/src/exos';
 
-// Liste des fichiers à récupérer avec les corrections de numéro
+// Liste des fichiers à récupérer avec correction de numéro
 const FILES_TO_FIX = [
     { name: 'exo1_page.js', correctNumber: '1' },
     { name: 'exo2_page.js', correctNumber: '2' },
@@ -29,12 +38,6 @@ const FILES_TO_FIX = [
     { name: 'exo15_page.js', correctNumber: '15' },
     { name: 'exo16_page.js', correctNumber: '16' },
 ];
-
-// Crée le dossier cible s'il n'existe pas
-if (!fs.existsSync(TARGET_DIR)) {
-    fs.mkdirSync(TARGET_DIR, { recursive: true });
-    console.log(`📁 Dossier créé: ${TARGET_DIR}`);
-}
 
 // Fonction pour télécharger un fichier
 function downloadFile(url) {
@@ -55,29 +58,71 @@ function downloadFile(url) {
 function fixExerciseNumbers(content, exerciseNum) {
     let fixed = content;
     
-    // Cherche tous les numéros incorrects (pattern: "Exercise #X" ou "ExerciseX")
-    // Remplace par le bon numéro
+    // Pattern 1: "Exercise #12 : " → "Exercise #X : "
+    fixed = fixed.replace(/Exercise\s+#(\d+)\s*:/g, `Exercise #${exerciseNum}:`);
     
-    // Pattern 1: "Exercise #12 : " (numéro mal placé)
-    fixed = fixed.replace(/Exercise #(\d+)\s*:/g, `Exercise #${exerciseNum}:`);
-    
-    // Pattern 2: Stockage: .save(16) → .save(exerciseNum)
-    fixed = fixed.replace(/window\.StorageService\.save\((\d+)\)/g, `window.StorageService.save(${exerciseNum})`);
+    // Pattern 2: .save(16) → .save(exerciseNum)
+    fixed = fixed.replace(/\.save\((\d+)\)/g, `.save(${exerciseNum})`);
     
     // Pattern 3: .complete(16) → .complete(exerciseNum)
-    fixed = fixed.replace(/window\.StorageService\.complete\((\d+)\)/g, `window.StorageService.complete(${exerciseNum})`);
+    fixed = fixed.replace(/\.complete\((\d+)\)/g, `.complete(${exerciseNum})`);
     
-    // Pattern 4: Dans les commentaires ou strings "Exercise #X"
+    // Pattern 4: "Exercise #X" partout
     fixed = fixed.replace(/Exercise\s+#(\d+)/g, `Exercise #${exerciseNum}`);
-    
-    // Pattern 5: Commentaires TypeScript "// @ts-nocheck" au début
-    // (on les garde, c'est normal)
     
     return fixed;
 }
 
+// Fonction pour créer/mettre à jour un fichier sur GitHub
+async function pushFileToGithub(filePath, fileName, content) {
+    return new Promise((resolve, reject) => {
+        const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}/${fileName}`;
+        
+        const data = JSON.stringify({
+            message: `fix: add ${fileName} with corrected exercise number (from ericpapain/Hi_Paris_Parcours_pedagogique)`,
+            content: Buffer.from(content).toString('base64'),
+            branch: 'main'
+        });
+
+        const options = {
+            hostname: 'api.github.com',
+            path: `/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}/${fileName}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'User-Agent': 'fix-exo-pages-script',
+                'Content-Type': 'application/json',
+                'Content-Length': data.length
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let responseData = '';
+            res.on('data', chunk => responseData += chunk);
+            res.on('end', () => {
+                if (res.statusCode === 201 || res.statusCode === 200) {
+                    resolve(JSON.parse(responseData));
+                } else {
+                    reject(new Error(`GitHub API ${res.statusCode}: ${responseData}`));
+                }
+            });
+        });
+
+        req.on('error', reject);
+        req.write(data);
+        req.end();
+    });
+}
+
 // Fonction principale
 async function main() {
+    // Vérifie le token
+    if (!GITHUB_TOKEN) {
+        console.error('❌ GITHUB_TOKEN non défini !');
+        console.error('   Définis: export GITHUB_TOKEN=ghp_xxxxxxxxxxxx');
+        process.exit(1);
+    }
+
     console.log('\n🚀 Récupération des fichiers exo*_page.js d\'Éric...\n');
     
     let successCount = 0;
@@ -94,14 +139,14 @@ async function main() {
             // Corrige les numéros
             content = fixExerciseNumbers(content, file.correctNumber);
             
-            // Écrit le fichier localement
-            const targetPath = path.join(TARGET_DIR, file.name);
-            fs.writeFileSync(targetPath, content, 'utf8');
+            // Push sur GitHub
+            console.log(`   📤 Push sur GitHub...`);
+            await pushFileToGithub(TARGET_PATH, file.name, content);
             
-            console.log(`✅ ${file.name} - Sauvegardé (Exo #${file.correctNumber})`);
+            console.log(`✅ ${file.name} - Créé sur GitHub (Exo #${file.correctNumber})\n`);
             successCount++;
         } catch (error) {
-            console.error(`❌ ${file.name} - Erreur: ${error.message}`);
+            console.error(`❌ ${file.name} - Erreur: ${error.message}\n`);
             errorCount++;
         }
     }
@@ -112,10 +157,15 @@ async function main() {
     console.log(`\n✨ Terminé!\n`);
     
     if (errorCount === 0) {
-        console.log('🎉 Tous les fichiers ont été récupérés et corrigés!');
+        console.log('🎉 Tous les fichiers ont été pushés sur GitHub!');
         console.log('\nProchaine étape: npm run build:exoquiz');
     }
+    
+    process.exit(errorCount > 0 ? 1 : 0);
 }
 
 // Lance le script
-main().catch(console.error);
+main().catch(error => {
+    console.error('Erreur fatale:', error);
+    process.exit(1);
+});
