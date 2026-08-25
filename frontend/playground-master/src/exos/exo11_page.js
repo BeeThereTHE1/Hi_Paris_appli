@@ -265,7 +265,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #11 : Learning Rate";
+    h3.innerText = translations && translations.title ? translations.title : "Exercise #11 : Learning Rate";
     var p = document.createElement('p');
     var text = "In this exercise, you will investigate how the learning rate controls the speed and stability of training. First, open the definition of the learning rate by clicking on the question mark (?) near the Learning Rate parameter.";
     p.innerText = text;
