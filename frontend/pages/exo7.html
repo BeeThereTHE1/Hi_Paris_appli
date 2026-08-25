@@ -30,7 +30,7 @@
         </svg>
         Back to exercises page
       </a>
-      <a class="btn-header" href="exo4.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
+      <a class="btn-header" href="exo6.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
       <a class="btn-header" href="exo8.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
       <a class="btn-header" href="Page-demo/historique.html">My history</a>
       <div id="widget-profil-header" style="margin-left: 20px;"></div>
@@ -56,13 +56,35 @@
     </p>
   </section>
 
-  <main class="exo-main">
-    <iframe class="exo-frame" src="./playground/index.html?exo=7"></iframe>
+  <main class="exo-main" id="main-content">
+    <!-- Phase 1: Simulator en plein écran -->
+    <div id="simulator-phase" style="width: 100%; height: 100%;">
+      <iframe class="exo-frame" src="./playground/index.html?exo=7"></iframe>
+    </div>
+    
+    <!-- Phase 2: Quiz panel en plein écran (caché au départ) -->
+    <div id="quiz-phase" style="display: none; width: 100%; height: 100%; overflow-y: auto; padding: 20px;">
+      <div class="quiz-div-1" id="quiz-question-panel"></div>
+      <div class="quiz-div-2" id="quiz-feedback-panel"></div>
+    </div>
   </main>
 
   <script src="inactivite.js"></script>
   <script src="../playground-master/src/exos/storage_service.js"></script>
   <script src="../playground-master/src/exos/exo7_page.js"></script>
+  
+  <!-- Script pour gérer la transition simulator → quiz -->
+  <script>
+    // Écoute le bouton "Take the quiz"
+    const btnRealise = document.getElementById('btn-realise');
+    if (btnRealise) {
+      btnRealise.addEventListener('click', () => {
+        // Cache le simulator
+        document.getElementById('simulator-phase').style.display = 'none';
+        // Affiche le quiz
+        document.getElementById('quiz-phase').style.display = 'block';
+      });
+    }
+  </script>
 </body>
-
 </html>
