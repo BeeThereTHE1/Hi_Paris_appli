@@ -1,27 +1,14 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Exercise 7</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
-  <link rel="stylesheet" href="../styles/exo_quiz.css" />
-  <style>
-    html body main.quiz-layout-container .simulator-container {
-      width: 50% !important;
-    }
-    html body main.quiz-layout-container .quiz-panel-container {
-      width: 50% !important;
-    }
-  </style>
 </head>
 
 <body>
-
-
   <div id="background-container"></div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -45,13 +32,17 @@
       </a>
       <a class="btn-header" href="exo4.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
       <a class="btn-header" href="exo8.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
+      <a class="btn-header" href="Page-demo/historique.html">My history</a>
+      <div id="widget-profil-header" style="margin-left: 20px;"></div>
     </div>
   </header>
 
   <div class="exo-actions-footer">
-    <!-- Login/profile-related UI removed: Save draft button and profile widget -->
+    <button id="btn-sauvegarder" class="btn-action-premium" style="background-color: #004676;">
+      <span class="icon">💾</span> Save draft
+    </button>
     <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
-      <span class="icon">✅</span> Exercise Successful !!
+      <span class="icon">📝</span> Take the quiz
     </button>
   </div>
 
@@ -65,24 +56,13 @@
     </p>
   </section>
 
-  <div id="main-part">
-    <main class="quiz-layout-container">
-      <div class="simulator-container">
-        <iframe class="exo-frame" src="./playground/index.html?exo=7"></iframe>
-      </div>
-      <div class="quiz-panel-container">
-        <div class="quiz-div-1" id="quiz-question-panel">
-          <!-- Dynamically populated activity cards -->
-        </div>
-        <div class="quiz-div-2" id="quiz-feedback-panel">
-          <!-- Dynamically populated explanation feedback bubbles -->
-        </div>
-      </div>
-    </main>
-  </div>
+  <main class="exo-main">
+    <iframe class="exo-frame" src="./playground/index.html?exo=7"></iframe>
+  </main>
 
   <script src="inactivite.js"></script>
-  <!-- storage_service.js removed because it is tied to user storage/profile actions -->
+  <script src="../playground-master/src/exos/storage_service.js"></script>
   <script src="../playground-master/src/exos/exo7_page.js"></script>
 </body>
+
 </html>
