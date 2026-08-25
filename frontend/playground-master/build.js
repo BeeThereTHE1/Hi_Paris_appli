@@ -11,10 +11,28 @@ if (!fs.existsSync(outDir)) {
   console.log(`📁 Dossier créé: ${outDir}`);
 }
 
-// Compile chaque fichier .ts individuellement
-const files = fs.readdirSync(srcDir).filter(f => f.endsWith('.ts'));
+// Fichiers à copier directement (au lieu de compiler)
+const filesToCopy = ['dataset.js', 'heatmap.js', 'linechart.js', 'nn.js', 'playground.js', 'state.js'];
 
-files.forEach(file => {
+// Copie les fichiers .js existants
+filesToCopy.forEach(file => {
+  const srcFile = path.join(srcDir, file);
+  const destFile = path.join(outDir, file);
+  
+  if (fs.existsSync(srcFile)) {
+    fs.copyFileSync(srcFile, destFile);
+    console.log(`📋 Copié: ${file} → ${destFile}`);
+  } else {
+    console.log(`⚠️  ${file} non trouvé`);
+  }
+});
+
+// Compile uniquement les fichiers .ts (sauf ceux à copier)
+const tsFiles = fs.readdirSync(srcDir).filter(f => {
+  return f.endsWith('.ts') && !filesToCopy.map(f => f.replace('.js', '.ts')).includes(f);
+});
+
+tsFiles.forEach(file => {
   const input = path.join(srcDir, file);
   const output = path.join(outDir, file.replace('.ts', '.js'));
   
@@ -28,4 +46,4 @@ files.forEach(file => {
   }
 });
 
-console.log(`✨ Build terminé ! ${files.length} fichiers compilés.`);
+console.log(`✨ Build terminé ! ${filesToCopy.length} fichiers copiés, ${tsFiles.length} fichiers compilés.`);
