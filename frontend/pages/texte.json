@@ -1,7 +1,7 @@
 {
     "exercises": {
         "exercise_1": {
-            "title": "Exercise #1",
+            "title": "Exercise #1 : Linear classification",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran (Data, output, features, colorscale, weight)",
             "instructions": {
                 "text": "Adjust the model parameters to classify the Gaussian dataset. Monitor how each change impacts your results. Once the classification is good enough, you will progress to two activities that validate this exercise. First, hover over parameters to view their definitions."
@@ -98,7 +98,7 @@
             }
         },
         "exercise_2": {
-            "title": "Exercise #2",
+            "title": "Exercise #2 : Train the network",
             "instructions": {
                 "text": "Launch the training of the neural network using the step-by-step button and observe how the weighs change and the loss decreases over time. Once training is complete, we will walk through the training process step by step.\n\nFirst, hover over parameters to view their definitions."
             },
@@ -183,7 +183,7 @@
             }
         },
         "exercise_3": {
-            "title": "Exercise #3",
+            "title": "Exercise #3 : Linear and non-linear features",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will observe the limitations of a linear model and the role of non-linear features in learning complex patterns.",
@@ -305,7 +305,7 @@
             }
         },
         "exercise_6": {
-            "title": "Exercise #4",
+            "title": "Exercise #6 : Neurons & Hidden Layers",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will explore how a neural network builds its prediction step by step. First compare a simple model using only x₁ and x₂ with a model that includes one hidden layer with four neurons.",
@@ -398,7 +398,7 @@
             }
         },
         "exercise_4": {
-            "title": "Exercise #5",
+            "title": "Exercise #4 : Neuron Bias",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.",
@@ -426,7 +426,7 @@
             "validation": "Let's get to the next exercise"
         },
         "exercise_7": {
-            "title": "Exercise #6 Activation Functions",
+            "title": "Exercise #7 : Activation Functions",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Explore how different activation functions affect the model's behavior and learning.",
@@ -519,7 +519,7 @@
             }
         },
         "exercise_8": {
-            "title": "Exercise #7 Instability",
+            "title": "Exercise #8 : Instability",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Run the two models below (same dataset and settings) and identify what explains the differences between their results",
@@ -749,7 +749,7 @@
             }
         },
         "exercise_11": {
-            "title": "Exercise # 9 Learning rate",
+            "title": "Exercise #11 : Learning rate",
             "instructions": {
                 "general": "Explore how different Learning rates affect learning",
                 "activity_3": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
@@ -884,7 +884,7 @@
             }
         },
         "exercise_12": {
-            "title": "Exercise #12 training loss, train loss and overfitting",
+            "title": "Exercise #12 : Overfitting & Generalization",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Train a complex model and observe how training loss and test loss evolve to identify signs of overfitting.",
@@ -1119,7 +1119,7 @@
             }
         },
         "exercise_15": {
-            "title": "Exercise #15 training loss, train loss and generalisation",
+            "title": "Exercise #15 : Training & Test Datasets",
             "visible_parameters": "Valider/ modifier les éléments qui apparaissent en vous référant à l'écran de base",
             "instructions": {
                 "general": "Observe how the training loss and test loss evolve over time in a complex neural network. Use these observations to evaluate the model's ability to generalize to unseen data and identify signs of overfitting.",
@@ -1204,7 +1204,7 @@
             }
         },
         "exercise_17": {
-            "title": "Exercise # 10",
+            "title": "Exercise #17 : Learning Rate Stability",
             "instructions": {
                 "general": "Explore how increasing the learning rate affects training stability on a separable dataset using a logistic regression model.",
                 "activity_1": "Test the different learning rates. Run the model for each learning rate and assess whether it converges or diverges. Use up to 3000 epochs if needed. Pause the model once you can determine the outcome, Remember to reset it before each new run!"
@@ -1356,7 +1356,7 @@
             }
         },
         "exercise_16": {
-            "title": "Exercise #12 Gradient",
+            "title": "Exercise #16 : Gradient Killing & Sigmoid vs ReLU",
             "visible_parameters": "Validate/modify the elements that appear by referring to the base screen",
             "instructions": {
                 "general": "In this exercise, you will explore how the choice of activation function affects learning in a deep neural network and influences gradient propagation.",
@@ -1440,7 +1440,7 @@
             }
         },
         "quiz_final": {
-            "title": "Exercise Quiz final",
+            "title": "Final Quiz",
             "activity_1": {
                 "instruction": "Drag and drop - Match the right answer to each question",
                 "pairs": [
@@ -1505,7 +1505,7 @@
             }
         },
         "exercise_7": {
-            "title": "Exercise #6",
+            "title": "Exercise #7 : Activation functions",
             "instructions": {
                 "general": "In this exercise, you will investigate how activation functions affect the model's ability to learn non-linear boundaries. Test each activation function on the Circle dataset, fill out the Yes/No table, and answer the statements about how activation functions affect learning.",
                 "activity_1": "Test the model with each activation function, observe what changes after each run, and identify which activation function can classify the dataset."
