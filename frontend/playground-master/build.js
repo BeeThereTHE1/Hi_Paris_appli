@@ -33,6 +33,7 @@ filesToCopy.forEach(file => {
 
 // ===== Copie TOUS les fichiers .js du dossier exos =====
 // (Plus de compilation TypeScript - utilise les .js existants)
+// Inclut : exo*.js, exo*_page.js, custom_exo_template.js, exercises.js, storage_service.js
 if (fs.existsSync(srcExosDir)) {
   const jsFiles = fs.readdirSync(srcExosDir).filter(f => f.endsWith('.js'));
   
