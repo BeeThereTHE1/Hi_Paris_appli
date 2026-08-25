@@ -462,7 +462,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercice #2 : Train the network";
+    h3.innerText = "Exercise #2 : Train the network";
     var p = document.createElement('p');
     var text = "Launch the training of the neural network using the step-by-step button and observe how the weighs change and the loss decreases over time. Once training is complete, we will walk through the training process step by step.First, hover over parameters to view their definitions.";
     p.innerText = text;
