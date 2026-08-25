@@ -537,7 +537,7 @@ function startTutorial() {
     popup.appendChild(nextBtn);
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-    var timeLeft = 2;
+    var timeLeft = 5;
     function updateTimer() {
         if (timeLeft > 0) {
             timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
