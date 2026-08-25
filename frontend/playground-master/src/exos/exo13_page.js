@@ -522,7 +522,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = "Exercise #13: Iterative Learning Cycle";
+    h3.innerText = "Exercise #13 : Iterative Learning Cycle";
     var p = document.createElement('p');
     p.innerText = "Observe the evolution of the decision frontier over the epochs. Pause at different times during the training (epoch 10, 100, 500) and describe what is happening visually.";
     var timerSpan = document.createElement('span');
