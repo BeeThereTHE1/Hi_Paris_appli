@@ -273,7 +273,7 @@ function startTutorial() {
     var popup = document.createElement('div');
     popup.className = 'tutorial-popup';
     var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercice #7 Instability";
+    h3.innerText = translations && translations.title ? translations.title : "Exercise #8 : Instability";
     var p = document.createElement('p');
     var text = translations && translations.instructions && translations.instructions.general
         ? translations.instructions.general
