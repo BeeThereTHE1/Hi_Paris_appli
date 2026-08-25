@@ -1,32 +1,14 @@
 <!doctype html>
 <html lang="fr">
-
-<!doctype html>
-<html lang="fr">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Exercise 16</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/exo.css" />
-  <link rel="stylesheet" href="../styles/exo_quiz.css" />
-  <style>
-    html body main.quiz-layout-container .simulator-container {
-      width: 50% !important;
-    }
-
-    html body main.quiz-layout-container .quiz-panel-container {
-      width: 50% !important;
-      overflow-y: auto;
-    }
-  </style>
 </head>
 
 <body>
-
-
   <div id="background-container"></div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -35,25 +17,21 @@
   <header class="universal-header">
     <a class="header-brand" href="index.html">
       <div class="brand-icon">
-        <img src="Page-demo/Image/logo_f.png"
-          style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo">
+        <img src="Page-demo/Image/logo_f.png" style="width: 100%; height: 100%; border-radius: 10%; object-fit: contain;" alt="Logo">
       </div>
       <span class="brand-name">Neural Playground</span>
     </a>
 
     <div class="header-right">
       <a class="btn-header" href="Page-demo/exercises.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="19" y1="12" x2="5" y2="12" />
           <polyline points="12 19 5 12 12 5" />
         </svg>
         Back to exercises page
       </a>
-      <a class="btn-header" href="exo15.html"
-        style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
-      <a class="btn-header" href="exo12.html"
-        style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
+      <a class="btn-header" href="exo15.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">⏮️ Previous exercise</a>
+      <a class="btn-header" href="exo17.html" style="background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">Next exercise ⏭️</a>
       <a class="btn-header" href="Page-demo/historique.html">My history</a>
       <div id="widget-profil-header" style="margin-left: 20px;"></div>
     </div>
@@ -64,7 +42,7 @@
       <span class="icon">💾</span> Save draft
     </button>
     <button id="btn-realise" class="btn-action-premium btn-disabled" disabled>
-      <span class="icon">✅</span> Exercise Successful !!
+      <span class="icon">📝</span> Take the quiz
     </button>
   </div>
 
@@ -78,38 +56,28 @@
     </p>
   </section>
 
-  <div id="main-part">
-    <main class="quiz-layout-container">
-      <div class="simulator-container" style="display: flex; flex-direction: column; gap: 15px; height: 100%;">
-        <div class="iframe-wrapper" style="flex: 1; position: relative; min-height: 280px; height: 50%;">
-          <div class="iframe-label"
-            style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 70, 118, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; pointer-events: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-            Sigmoid Model</div>
-          <iframe class="exo-frame" id="iframe-sigmoid" src="./playground/index.html?exo=16&activation=sigmoid"
-            style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"></iframe>
-        </div>
-        <div class="iframe-wrapper" style="flex: 1; position: relative; min-height: 280px; height: 50%;">
-          <div class="iframe-label"
-            style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(255, 3, 77, 0.9); color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; pointer-events: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-            ReLU Model</div>
-          <iframe class="exo-frame" id="iframe-relu" src="./playground/index.html?exo=16&activation=relu"
-            style="width: 100%; height: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"></iframe>
-        </div>
-      </div>
-      <div class="quiz-panel-container">
-        <div class="quiz-div-1" id="quiz-question-panel">
-          <!-- Dynamically populated activity cards -->
-        </div>
-        <div class="quiz-div-2" id="quiz-feedback-panel">
-          <!-- Dynamically populated explanation feedback bubbles -->
-        </div>
-      </div>
-    </main>
-  </div>
+  <main class="exo-main" id="main-content">
+    <div id="simulator-phase" style="width: 100%; height: 100%; display: flex; flex-direction: column; gap: 10px;">
+      <iframe class="exo-frame" src="./playground/index.html?exo=16&activation=sigmoid" style="flex: 1; min-height: 300px;"></iframe>
+      <iframe class="exo-frame" src="./playground/index.html?exo=16&activation=relu" style="flex: 1; min-height: 300px;"></iframe>
+    </div>
+    <div id="quiz-phase" style="display: none; width: 100%; height: 100%; overflow-y: auto; padding: 20px;">
+      <div class="quiz-div-1" id="quiz-question-panel"></div>
+      <div class="quiz-div-2" id="quiz-feedback-panel"></div>
+    </div>
+  </main>
 
   <script src="inactivite.js"></script>
   <script src="../playground-master/src/exos/storage_service.js"></script>
   <script src="../playground-master/src/exos/exo16_page.js"></script>
+  <script>
+    const btnRealise = document.getElementById('btn-realise');
+    if (btnRealise) {
+      btnRealise.addEventListener('click', () => {
+        document.getElementById('simulator-phase').style.display = 'none';
+        document.getElementById('quiz-phase').style.display = 'block';
+      });
+    }
+  </script>
 </body>
-
 </html>
