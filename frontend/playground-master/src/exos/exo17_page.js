@@ -1,49 +1,6 @@
 // Script Exercice 17
+window.ExoCommonPage && window.ExoCommonPage.initProfileWidget({ showStats: false, historyLabel: 'My History', logoutLabel: 'Logout' });
 (function () {
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  const container = document.getElementById('widget-profil-header');
-  if (container) {
-    container.style.cssText = 'position: relative; font-family: "Inter", sans-serif; perspective: 1000px; display: flex; align-items: center;';
-    if (!isLoggedIn || !currentUser) {
-      const visitorBtn = document.createElement('a');
-      visitorBtn.href = 'Page-demo/register.html';
-      visitorBtn.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.05); padding:6px 20px 6px 6px; border-radius:50px; color:#fff; text-decoration:none; backdrop-filter:blur(20px); border:1px solid rgba(139,92,246,0.3); font-size:14px; box-shadow: 0 0 15px rgba(139,92,246,0.2); transition: 0.3s;';
-      visitorBtn.innerHTML = '<div style="background:linear-gradient(135deg, #8b5cf6, #3b82f6); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px rgba(139,92,246,0.5);">👤</div> <span style="font-weight:600; letter-spacing:0.5px;">You are not connected!</span>';
-      container.appendChild(visitorBtn);
-    } else {
-      const initiales = (currentUser.prenom ? currentUser.prenom[0] : '') + (currentUser.nom ? currentUser.nom[0] : '');
-      const avatar = document.createElement('div');
-      avatar.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #3b82f6); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); transition: 0.3s;';
-      avatar.innerText = initiales.toUpperCase();
-      const menu = document.createElement('div');
-      menu.style.cssText = 'display: none; position: absolute; top: 60px; right: 0; width: 260px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); opacity: 0; transform: scale(0.9) translateY(-10px); z-index: 1001; transition: 0.3s;';
-      const p = currentUser.profil || currentUser.profile || currentUser.role || 'étudiant';
-      const typeProfil = p.charAt(0).toUpperCase() + p.slice(1);
-      menu.innerHTML = `
-        <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-          <div style="font-size: 17px; font-weight: 800; color: #fff;">${currentUser.prenom || ''} ${currentUser.nom || ''}</div>
-          <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">${currentUser.email || ''}</div>
-          <div style="display: inline-block; margin-top: 12px; padding: 4px 10px; background: rgba(16, 185, 129, 0.15); border-radius: 30px; font-size: 10px; font-weight: 700; color: #10b981; text-transform: uppercase;">🟢 Profil ${typeProfil}</div>
-        </div>
-        <div style="padding: 8px;">
-          <a href="Page-demo/historique.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; font-size: 13px;">📊 My History</a>
-          <div id="btnFuturLogout" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #f87171; font-size: 13px; cursor: pointer;">🚪 Logout</div>
-        </div>
-      `;
-      let isOpen = false;
-      avatar.onclick = () => {
-        isOpen = !isOpen;
-        if (isOpen) {
-          menu.style.display = 'block'; setTimeout(() => { menu.style.opacity = '1'; menu.style.transform = 'scale(1) translateY(0)'; }, 10);
-        } else {
-          menu.style.opacity = '0'; menu.style.transform = 'scale(0.9) translateY(-10px)'; setTimeout(() => menu.style.display = 'none', 300);
-        }
-      };
-      menu.querySelector('#btnFuturLogout').onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = 'index.html'; };
-      container.appendChild(avatar); container.appendChild(menu);
-    }
-  }
 
   // --- Sauvegarde et validation ---
   const btnSauvegarder = document.getElementById('btn-sauvegarder');
@@ -75,6 +32,9 @@
   }
 
   function saveToStorage(key, exoData) {
+    if (window.ExoCommonPage) {
+      return window.ExoCommonPage.saveToStorage(key, exoData);
+    }
     const user = JSON.parse(localStorage.getItem('currentUser'));
     if (!user || !user.email) return false;
     const userKey = `${key}_${user.email}`;
