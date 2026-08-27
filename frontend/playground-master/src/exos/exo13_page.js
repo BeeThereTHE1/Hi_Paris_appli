@@ -51,6 +51,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 window.ExoCommonPage && window.ExoCommonPage.initProfileWidget();
 window.ExoCommonPage && window.ExoCommonPage.initBackgroundAnimation();
+var apiClient = window.MLPlaygroundApiClient ? new window.MLPlaygroundApiClient() : null;
+var exerciseId = 13;
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  .flow-arrow {\n    stroke: #FF034D;\n    stroke-width: 8;\n    fill: none;\n    stroke-linecap: round;\n    stroke-dasharray: 16 10;\n    animation: flow-anim 1s linear infinite;\n  }\n  .flow-arrow-blue {\n    stroke: #004676;\n    stroke-width: 8;\n    fill: none;\n    stroke-linecap: round;\n    stroke-dasharray: 16 10;\n    animation: flow-anim 1.2s linear infinite;\n  }\n  .flow-arrow-grey {\n    stroke: rgba(148, 163, 184, 0.55);\n    stroke-width: 5;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-dasharray: 10 8;\n    animation: flow-anim-grey 12s linear infinite;\n  }\n  @keyframes flow-anim {\n    to {\n      stroke-dashoffset: -26;\n    }\n  }\n  @keyframes flow-anim-grey {\n    to {\n      stroke-dashoffset: -36;\n    }\n  }\n\n  .step-card {\n    position: fixed;\n    background: rgba(15, 23, 42, 0.95);\n    border: 1.5px solid rgba(255, 255, 255, 0.15);\n    border-radius: 12px;\n    padding: 12px;\n    width: 220px;\n    color: #fff;\n    z-index: 10010;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n    font-family: 'Inter', sans-serif;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    pointer-events: auto;\n  }\n  .step-card.inactive {\n    opacity: 0.35;\n    transform: scale(0.95);\n    pointer-events: none;\n  }\n  .step-card.active {\n    opacity: 1;\n    transform: scale(1.02);\n    border-color: #004676;\n    box-shadow: 0 12px 30px rgba(0, 70, 118, 0.4), 0 0 15px rgba(0, 70, 118, 0.2);\n    pointer-events: auto;\n  }\n  .step-card h3 {\n    margin-top: 0;\n    font-size: 13px;\n    font-weight: 800;\n    color: #FF034D;\n    margin-bottom: 6px;\n  }\n  .step-card p {\n    font-size: 10.5px;\n    line-height: 1.4;\n    color: #cbd5e1;\n    margin-bottom: 8px;\n  }\n  .step-card .btn-right {\n    display: flex;\n    justify-content: flex-end;\n  }\n  .step-card button {\n    background: #10b981;\n    color: white;\n    border: none;\n    padding: 4px 12px;\n    border-radius: 5px;\n    font-weight: 700;\n    cursor: pointer;\n    font-size: 11px;\n    transition: all 0.2s;\n  }\n  .step-card button:hover {\n    transform: translateY(-1px);\n    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);\n  }\n";
 document.head.appendChild(styleEl);
@@ -87,6 +89,40 @@ var steps = [
     }
 ];
 var currentStepIndex = -1;
+function getCurrentUserId() {
+    try {
+        var user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        return user.id || user.email || null;
+    }
+    catch (e) {
+        return null;
+    }
+}
+function loadExerciseDataFromApi() {
+    if (!apiClient) {
+        return Promise.resolve();
+    }
+    var userId = getCurrentUserId();
+    return apiClient
+        .getExercise(exerciseId)
+        .then(function (exoConfig) {
+        if (exoConfig && Array.isArray(exoConfig.steps) && exoConfig.steps.length > 0) {
+            steps = exoConfig.steps;
+        }
+        if (!userId) {
+            return null;
+        }
+        return apiClient.getProgress(exerciseId, userId);
+    })
+        .then(function (progress) {
+        if (progress && Number.isInteger(progress.current_step)) {
+            currentStepIndex = progress.current_step;
+        }
+    })
+        .catch(function (error) {
+        console.warn('Unable to load exercise data from API.', error);
+    });
+}
 function getElementCoords(selector) {
     var iframe = document.getElementById('iframe-playground');
     if (!iframe)
@@ -418,21 +454,55 @@ window.onresize = function () {
 var iframe = document.getElementById('iframe-playground');
 if (iframe) {
     iframe.addEventListener('load', function () {
-        setTimeout(function () {
-            startTutorial();
-        }, 1200);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, loadExerciseDataFromApi()];
+                    case 1:
+                        _a.sent();
+                        setTimeout(function () {
+                            startTutorial();
+                        }, 1200);
+                        return [2];
+                }
+            });
+        });
     });
 }
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () {
     return __awaiter(_this, void 0, void 0, function () {
-        var success;
+        var success, userId, progressData;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4, window.StorageService.save(13)];
+                case 0:
+                    success = false;
+                    if (!apiClient) return [3, 3];
+                    userId = getCurrentUserId();
+                    if (!userId) {
+                        alert("Please log in to save this exercise.");
+                        return [2];
+                    }
+                    progressData = {
+                        status: 'IN_PROGRESS',
+                        current_step: Math.max(currentStepIndex, 0),
+                        score_details: {
+                            completed_steps: Math.max(currentStepIndex + 1, 0),
+                            total_steps: steps.length
+                        }
+                    };
+                    return [4, apiClient.saveProgress(exerciseId, userId, progressData).then(function () { return true; }).catch(function () { return false; })];
                 case 1:
                     success = _a.sent();
+                    return [3, 5];
+                case 3:
+                    if (!(window.StorageService && window.StorageService.save)) return [3, 5];
+                    return [4, window.StorageService.save(13)];
+                case 4:
+                    success = _a.sent();
+                    _a.label = 5;
+                case 5:
                     if (success) {
                         btnSauvegarder.innerHTML = '✅ Saved !';
                         btnSauvegarder.disabled = true;

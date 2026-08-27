@@ -1,0 +1,22 @@
+{
+  "id": 0,
+  "title": "Exercise #0: Playground Warm-up",
+  "description": "Initial onboarding exercise to verify environment setup and navigation in the ML playground.",
+  "steps": [
+    {
+      "id": 0,
+      "title": "Step 0 – Open the playground",
+      "text": "Launch the interface and locate the interactive area, controls and profile section before starting later exercises."
+    },
+    {
+      "id": 1,
+      "title": "Step 1 – Run one iteration",
+      "text": "Trigger one training run and observe how the displayed metrics react to the first update."
+    }
+  ],
+  "config": {
+    "numFormulas": 10,
+    "numNeurons": 12,
+    "numConnections": 18
+  }
+}
