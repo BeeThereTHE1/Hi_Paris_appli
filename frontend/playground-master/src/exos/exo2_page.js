@@ -1,3 +1,65 @@
+(function () {
+    var ExoBase = window.MLPlaygroundExoBase;
+    var ApiClient = window.MLPlaygroundApiClient;
+    if (!ExoBase) {
+        console.error('ExoBase is not available for exercise 2.');
+        return;
+    }
+    class Exo2 extends ExoBase {
+        constructor() {
+            super();
+            this.apiClient = ApiClient ? new ApiClient() : null;
+            this.exoId = 2;
+            this.currentStepIndex = -1;
+            this.steps = [];
+            this.initExercise();
+        }
+
+        async initExercise() {
+            try {
+                if (this.apiClient) {
+                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
+                    if (exoConfig && Array.isArray(exoConfig.steps)) {
+                        this.steps = exoConfig.steps;
+                    }
+                    var userId = this.getCurrentUserIdentifier();
+                    if (userId) {
+                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
+                        if (progress && Number.isInteger(progress.current_step)) {
+                            this.currentStepIndex = progress.current_step;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to initialize exercise 2.', error);
+            }
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {}
+
+        async saveProgress(stepIndex, status, scoreDetails) {
+            if (!this.apiClient) return false;
+            var userId = this.getCurrentUserIdentifier();
+            if (!userId) return false;
+            try {
+                await this.apiClient.saveProgress(this.exoId, userId, {
+                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
+                    status: status || 'IN_PROGRESS',
+                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
+                });
+                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
+                return true;
+            } catch (error) {
+                console.warn('Unable to save progress for exercise 2.', error);
+                return false;
+            }
+        }
+    }
+
+    window.exo2Page = new Exo2();
+})();
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,7 +96,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-window.ExoCommonPage && window.ExoCommonPage.initProfileWidget();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 function showExerciseSuccessCongrats() {
@@ -141,7 +202,6 @@ btnRealise.onclick = function () {
         });
     });
 };
-window.ExoCommonPage && window.ExoCommonPage.initBackgroundAnimation();
 var activeHighlightBox = null;
 var activeTooltip = null;
 var activeIndicator = null;
