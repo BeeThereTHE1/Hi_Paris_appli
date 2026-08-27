@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
-var nn = require("./nn");
-var dataset = require("./dataset");
-var HIDE_STATE_SUFFIX = "_hide";
+Object.defineProperty(exports, "__esModule", { value: true });
+const nn = require("./nn");
+const dataset = require("./dataset");
+const HIDE_STATE_SUFFIX = "_hide";
 exports.activations = {
     "relu": nn.Activations.RELU,
     "tanh": nn.Activations.TANH,
@@ -18,14 +18,14 @@ exports.datasets = {
     "circle": dataset.classifyCircleData,
     "xor": dataset.classifyXORData,
     "gauss": dataset.classifyTwoGaussData,
-    "spiral": dataset.classifySpiralData
+    "spiral": dataset.classifySpiralData,
 };
 exports.regDatasets = {
     "reg-plane": dataset.regressPlane,
     "reg-gauss": dataset.regressGaussian
 };
 function getKeyFromValue(obj, value) {
-    for (var key in obj) {
+    for (let key in obj) {
         if (obj[key] === value) {
             return key;
         }
@@ -37,8 +37,8 @@ function endsWith(s, suffix) {
     return s.substr(-suffix.length) === suffix;
 }
 function getHideProps(obj) {
-    var result = [];
-    for (var prop in obj) {
+    let result = [];
+    for (let prop in obj) {
         if (endsWith(prop, HIDE_STATE_SUFFIX)) {
             result.push(prop);
         }
@@ -64,8 +64,8 @@ exports.problems = {
     "regression": Problem.REGRESSION
 };
 ;
-var State = (function () {
-    function State() {
+class State {
+    constructor() {
         this.learningRate = 0.03;
         this.regularizationRate = 0;
         this.showTestData = false;
@@ -95,22 +95,20 @@ var State = (function () {
         this.dataset = dataset.classifyCircleData;
         this.regDataset = dataset.regressPlane;
     }
-    State.deserializeState = function () {
-        var map = {};
-        for (var _i = 0, _a = window.location.hash.slice(1).split("&"); _i < _a.length; _i++) {
-            var keyvalue = _a[_i];
-            var _b = keyvalue.split("="), name_1 = _b[0], value = _b[1];
-            map[name_1] = value;
+    static deserializeState() {
+        let map = {};
+        for (let keyvalue of window.location.hash.slice(1).split("&")) {
+            let [name, value] = keyvalue.split("=");
+            map[name] = value;
         }
-        var state = new State();
+        let state = new State();
         function hasKey(name) {
             return name in map && map[name] != null && map[name].trim() !== "";
         }
         function parseArray(value) {
             return value.trim() === "" ? [] : value.split(",");
         }
-        State.PROPS.forEach(function (_a) {
-            var name = _a.name, type = _a.type, keyMap = _a.keyMap;
+        State.PROPS.forEach(({ name, type, keyMap }) => {
             switch (type) {
                 case Type.OBJECT:
                     if (keyMap == null) {
@@ -150,7 +148,7 @@ var State = (function () {
                     throw Error("Encountered an unknown type for a state variable");
             }
         });
-        getHideProps(map).forEach(function (prop) {
+        getHideProps(map).forEach(prop => {
             state[prop] = (map[prop] === "true") ? true : false;
         });
         state.numHiddenLayers = state.networkShape.length;
@@ -159,13 +157,11 @@ var State = (function () {
         }
         Math.seedrandom(state.seed);
         return state;
-    };
-    State.prototype.serialize = function () {
-        var _this = this;
-        var props = [];
-        State.PROPS.forEach(function (_a) {
-            var name = _a.name, type = _a.type, keyMap = _a.keyMap;
-            var value = _this[name];
+    }
+    serialize() {
+        let props = [];
+        State.PROPS.forEach(({ name, type, keyMap }) => {
+            let value = this[name];
             if (value == null) {
                 return;
             }
@@ -176,54 +172,53 @@ var State = (function () {
                 type === Type.ARRAY_STRING) {
                 value = value.join(",");
             }
-            props.push(name + "=" + value);
+            props.push(`${name}=${value}`);
         });
-        getHideProps(this).forEach(function (prop) {
-            props.push(prop + "=" + _this[prop]);
+        getHideProps(this).forEach(prop => {
+            props.push(`${prop}=${this[prop]}`);
         });
         window.location.hash = props.join("&");
-    };
-    State.prototype.getHiddenProps = function () {
-        var result = [];
-        for (var prop in this) {
+    }
+    getHiddenProps() {
+        let result = [];
+        for (let prop in this) {
             if (endsWith(prop, HIDE_STATE_SUFFIX) && String(this[prop]) === "true") {
                 result.push(prop.replace(HIDE_STATE_SUFFIX, ""));
             }
         }
         return result;
-    };
-    State.prototype.setHideProperty = function (name, hidden) {
+    }
+    setHideProperty(name, hidden) {
         this[name + HIDE_STATE_SUFFIX] = hidden;
-    };
-    State.PROPS = [
-        { name: "activation", type: Type.OBJECT, keyMap: exports.activations },
-        { name: "regularization", type: Type.OBJECT, keyMap: exports.regularizations },
-        { name: "batchSize", type: Type.NUMBER },
-        { name: "dataset", type: Type.OBJECT, keyMap: exports.datasets },
-        { name: "regDataset", type: Type.OBJECT, keyMap: exports.regDatasets },
-        { name: "learningRate", type: Type.NUMBER },
-        { name: "regularizationRate", type: Type.NUMBER },
-        { name: "noise", type: Type.NUMBER },
-        { name: "networkShape", type: Type.ARRAY_NUMBER },
-        { name: "seed", type: Type.STRING },
-        { name: "showTestData", type: Type.BOOLEAN },
-        { name: "discretize", type: Type.BOOLEAN },
-        { name: "percTrainData", type: Type.NUMBER },
-        { name: "x", type: Type.BOOLEAN },
-        { name: "y", type: Type.BOOLEAN },
-        { name: "xTimesY", type: Type.BOOLEAN },
-        { name: "xSquared", type: Type.BOOLEAN },
-        { name: "ySquared", type: Type.BOOLEAN },
-        { name: "cosX", type: Type.BOOLEAN },
-        { name: "sinX", type: Type.BOOLEAN },
-        { name: "cosY", type: Type.BOOLEAN },
-        { name: "sinY", type: Type.BOOLEAN },
-        { name: "collectStats", type: Type.BOOLEAN },
-        { name: "tutorial", type: Type.STRING },
-        { name: "problem", type: Type.OBJECT, keyMap: exports.problems },
-        { name: "initZero", type: Type.BOOLEAN },
-        { name: "hideText", type: Type.BOOLEAN }
-    ];
-    return State;
-}());
+    }
+}
+State.PROPS = [
+    { name: "activation", type: Type.OBJECT, keyMap: exports.activations },
+    { name: "regularization", type: Type.OBJECT, keyMap: exports.regularizations },
+    { name: "batchSize", type: Type.NUMBER },
+    { name: "dataset", type: Type.OBJECT, keyMap: exports.datasets },
+    { name: "regDataset", type: Type.OBJECT, keyMap: exports.regDatasets },
+    { name: "learningRate", type: Type.NUMBER },
+    { name: "regularizationRate", type: Type.NUMBER },
+    { name: "noise", type: Type.NUMBER },
+    { name: "networkShape", type: Type.ARRAY_NUMBER },
+    { name: "seed", type: Type.STRING },
+    { name: "showTestData", type: Type.BOOLEAN },
+    { name: "discretize", type: Type.BOOLEAN },
+    { name: "percTrainData", type: Type.NUMBER },
+    { name: "x", type: Type.BOOLEAN },
+    { name: "y", type: Type.BOOLEAN },
+    { name: "xTimesY", type: Type.BOOLEAN },
+    { name: "xSquared", type: Type.BOOLEAN },
+    { name: "ySquared", type: Type.BOOLEAN },
+    { name: "cosX", type: Type.BOOLEAN },
+    { name: "sinX", type: Type.BOOLEAN },
+    { name: "cosY", type: Type.BOOLEAN },
+    { name: "sinY", type: Type.BOOLEAN },
+    { name: "collectStats", type: Type.BOOLEAN },
+    { name: "tutorial", type: Type.STRING },
+    { name: "problem", type: Type.OBJECT, keyMap: exports.problems },
+    { name: "initZero", type: Type.BOOLEAN },
+    { name: "hideText", type: Type.BOOLEAN }
+];
 exports.State = State;
