@@ -1,3 +1,65 @@
+(function () {
+    var ExoBase = window.MLPlaygroundExoBase;
+    var ApiClient = window.MLPlaygroundApiClient;
+    if (!ExoBase) {
+        console.error('ExoBase is not available for exercise 16.');
+        return;
+    }
+    class Exo16 extends ExoBase {
+        constructor() {
+            super();
+            this.apiClient = ApiClient ? new ApiClient() : null;
+            this.exoId = 16;
+            this.currentStepIndex = -1;
+            this.steps = [];
+            this.initExercise();
+        }
+
+        async initExercise() {
+            try {
+                if (this.apiClient) {
+                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
+                    if (exoConfig && Array.isArray(exoConfig.steps)) {
+                        this.steps = exoConfig.steps;
+                    }
+                    var userId = this.getCurrentUserIdentifier();
+                    if (userId) {
+                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
+                        if (progress && Number.isInteger(progress.current_step)) {
+                            this.currentStepIndex = progress.current_step;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to initialize exercise 16.', error);
+            }
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {}
+
+        async saveProgress(stepIndex, status, scoreDetails) {
+            if (!this.apiClient) return false;
+            var userId = this.getCurrentUserIdentifier();
+            if (!userId) return false;
+            try {
+                await this.apiClient.saveProgress(this.exoId, userId, {
+                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
+                    status: status || 'IN_PROGRESS',
+                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
+                });
+                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
+                return true;
+            } catch (error) {
+                console.warn('Unable to save progress for exercise 16.', error);
+                return false;
+            }
+        }
+    }
+
+    window.exo16Page = new Exo16();
+})();
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,7 +96,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-window.ExoCommonPage && window.ExoCommonPage.initProfileWidget();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () {
@@ -84,7 +145,6 @@ btnRealise.onclick = function () {
         });
     });
 };
-window.ExoCommonPage && window.ExoCommonPage.initBackgroundAnimation();
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  .def-box {\n    background: rgba(30, 41, 59, 0.7);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-left: 4px solid #004676;\n    border-radius: 8px;\n    padding: 12px 15px;\n    margin-bottom: 12px;\n    opacity: 0;\n    transform: translateY(10px);\n    transition: all 0.5s ease;\n    text-align: left;\n  }\n  .def-box.show {\n    opacity: 1; transform: translateY(0);\n  }\n  .def-box h4 {\n    margin: 0 0 5px 0; color: #8b5cf6; font-size: 13px; font-weight: 700;\n  }\n  .def-box p {\n    margin: 0; font-size: 12px; color: #cbd5e1; line-height: 1.4;\n  }\n  .def-box.color-1 { border-left-color: #004676; }\n  .def-box.color-2 { border-left-color: #FF034D; }\n  .def-box.color-3 { border-left-color: #10b981; }\n  .def-box.color-4 { border-left-color: #f59e0b; }\n\n  .formula-images {\n    display: flex; gap: 15px; justify-content: center; margin-top: 10px;\n  }\n  .formula-img-container {\n    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);\n    border-radius: 6px; padding: 5px; text-align: center; width: 100px;\n  }\n  .formula-img-container img {\n    max-width: 100%; height: auto; border-radius: 4px;\n  }\n  .formula-img-container span {\n    display: block; font-size: 9px; margin-top: 4px; color: #94a3b8;\n  }\n\n  /* Clignotement NEXT */\n  @keyframes btn-blink {\n    0%, 100% { transform: scale(1); box-shadow: 0 0 5px #8b5cf6; }\n    50% { transform: scale(1.05); box-shadow: 0 0 20px #8b5cf6; }\n  }\n  .blink-next {\n    animation: btn-blink 1.2s infinite;\n  }\n\n  /* Table Style */\n  .comparison-table {\n    width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; color: #e2e8f0;\n  }\n  .comparison-table th, .comparison-table td {\n    border: 1px solid rgba(255,255,255,0.1); padding: 5px; text-align: center;\n  }\n  .comparison-table th {\n    background: rgba(15, 23, 42, 0.6); font-weight: 700; font-size: 10.5px;\n  }\n  .comparison-table td.criteria-col {\n    background: rgba(255, 255, 255, 0.02); font-weight: 600; text-align: left; width: 22%;\n  }\n  .drop-zone-cell {\n    background: rgba(255, 255, 255, 0.01); min-height: 40px; transition: all 0.2s;\n    cursor: pointer; position: relative; width: 39%; vertical-align: middle;\n  }\n  .drop-zone-cell.dragover {\n    background: rgba(139, 92, 246, 0.15) !important; border: 1.5px dashed #8b5cf6 !important;\n  }\n  .drop-zone-cell.correct-drop {\n    background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3);\n  }\n  \n  .observation-card {\n    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);\n    border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #e2e8f0;\n    cursor: grab; user-select: none; transition: all 0.2s; display: inline-block;\n    margin: 3px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); line-height: 1.35;\n    vertical-align: middle;\n  }\n  .observation-card:hover {\n    background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.22);\n    transform: translateY(-1px);\n  }\n  .observation-card:active { cursor: grabbing; }\n  .observation-card.dragging { opacity: 0.3; }\n  .observation-card.selected {\n    border: 2px solid #8b5cf6 !important; background: rgba(139, 92, 246, 0.15) !important;\n    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);\n  }\n\n  .pill-matched {\n    background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);\n    color: #10b981; border-radius: 4px; padding: 4px 6px; font-size: 10.5px;\n    line-height: 1.3; animation: scaleIn 0.3s ease; text-align: center;\n  }\n\n  @keyframes scaleIn {\n    from { transform: scale(0.95); opacity: 0; }\n    to { transform: scale(1); opacity: 1; }\n  }\n  @keyframes shake {\n    0%, 100% { transform: translateX(0); }\n    20%, 60% { transform: translateX(-5px); }\n    40%, 80% { transform: translateX(5px); }\n  }\n  .shake-error {\n    animation: shake 0.4s ease-in-out;\n    border-color: #ef4444 !important;\n    background: rgba(239, 68, 68, 0.15) !important;\n  }\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05); border-left: 4px solid #8b5cf6;\n    padding: 10px 12px; border-radius: 4px; font-size: 12.5px; color: #e2e8f0;\n    line-height: 1.4; margin-top: 10px; animation: fadeIn 0.3s ease;\n  }\n  @keyframes fadeIn {\n    from { opacity: 0; } to { opacity: 1; }\n  }\n";
 document.head.appendChild(styleEl);

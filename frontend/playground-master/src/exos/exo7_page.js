@@ -1,3 +1,65 @@
+(function () {
+    var ExoBase = window.MLPlaygroundExoBase;
+    var ApiClient = window.MLPlaygroundApiClient;
+    if (!ExoBase) {
+        console.error('ExoBase is not available for exercise 7.');
+        return;
+    }
+    class Exo7 extends ExoBase {
+        constructor() {
+            super();
+            this.apiClient = ApiClient ? new ApiClient() : null;
+            this.exoId = 7;
+            this.currentStepIndex = -1;
+            this.steps = [];
+            this.initExercise();
+        }
+
+        async initExercise() {
+            try {
+                if (this.apiClient) {
+                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
+                    if (exoConfig && Array.isArray(exoConfig.steps)) {
+                        this.steps = exoConfig.steps;
+                    }
+                    var userId = this.getCurrentUserIdentifier();
+                    if (userId) {
+                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
+                        if (progress && Number.isInteger(progress.current_step)) {
+                            this.currentStepIndex = progress.current_step;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to initialize exercise 7.', error);
+            }
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {}
+
+        async saveProgress(stepIndex, status, scoreDetails) {
+            if (!this.apiClient) return false;
+            var userId = this.getCurrentUserIdentifier();
+            if (!userId) return false;
+            try {
+                await this.apiClient.saveProgress(this.exoId, userId, {
+                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
+                    status: status || 'IN_PROGRESS',
+                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
+                });
+                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
+                return true;
+            } catch (error) {
+                console.warn('Unable to save progress for exercise 7.', error);
+                return false;
+            }
+        }
+    }
+
+    window.exo7Page = new Exo7();
+})();
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,7 +96,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-window.ExoCommonPage && window.ExoCommonPage.initProfileWidget();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () {
@@ -86,7 +147,6 @@ btnRealise.onclick = function () {
         });
     });
 };
-window.ExoCommonPage && window.ExoCommonPage.initBackgroundAnimation();
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .yes-no-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-top: 15px;\n    font-family: 'Inter', sans-serif;\n  }\n  .yes-no-table th, .yes-no-table td {\n    padding: 10px;\n    text-align: center;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n  }\n  .yes-no-table th {\n    color: #94a3b8;\n    font-weight: 600;\n    font-size: 13px;\n    text-transform: uppercase;\n  }\n  .yes-no-table td:first-child {\n    text-align: left;\n    font-weight: 700;\n    color: #e2e8f0;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 60px;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n  .statement-container {\n    margin-top: 15px;\n    display: flex;\n    flex-direction: column;\n    gap: 15px;\n  }\n  .statement-row {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid rgba(255, 255, 255, 0.05);\n    padding: 12px;\n    border-radius: 8px;\n    display: flex;\n    flex-direction: column;\n    gap: 10px;\n    transition: border-color 0.3s;\n  }\n  .statement-row.correct-locked {\n    border-color: rgba(16, 185, 129, 0.4);\n    background: rgba(16, 185, 129, 0.03);\n  }\n  .statement-text {\n    font-size: 13.5px;\n    color: #cbd5e1;\n    line-height: 1.4;\n  }\n  .statement-actions {\n    display: flex;\n    justify-content: flex-end;\n    gap: 10px;\n  }\n  \n  .tutorial-overlay {\n    position: fixed;\n    top: 0; left: 0; right: 0; bottom: 0;\n    background: rgba(15, 23, 42, 0.85);\n    backdrop-filter: blur(8px);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    z-index: 9999;\n  }\n  .tutorial-popup {\n    background: #0f172a;\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    border-radius: 16px;\n    padding: 30px;\n    max-width: 500px;\n    width: 90%;\n    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);\n    text-align: center;\n  }\n  .tutorial-popup h3 {\n    margin-top: 0;\n    font-size: 20px;\n    font-weight: 800;\n    color: #fff;\n  }\n  .tutorial-popup p {\n    font-size: 14.5px;\n    color: #94a3b8;\n    line-height: 1.6;\n    margin-bottom: 20px;\n  }\n  .tutorial-btn {\n    background: #ff034d;\n    border: none;\n    color: white;\n    padding: 10px 24px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .tutorial-btn:disabled {\n    background: #475569;\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n  \n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
 document.head.appendChild(styleEl);

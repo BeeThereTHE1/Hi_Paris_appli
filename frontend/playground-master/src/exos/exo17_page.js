@@ -1,3 +1,65 @@
+(function () {
+    var ExoBase = window.MLPlaygroundExoBase;
+    var ApiClient = window.MLPlaygroundApiClient;
+    if (!ExoBase) {
+        console.error('ExoBase is not available for exercise 17.');
+        return;
+    }
+    class Exo17 extends ExoBase {
+        constructor() {
+            super();
+            this.apiClient = ApiClient ? new ApiClient() : null;
+            this.exoId = 17;
+            this.currentStepIndex = -1;
+            this.steps = [];
+            this.initExercise();
+        }
+
+        async initExercise() {
+            try {
+                if (this.apiClient) {
+                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
+                    if (exoConfig && Array.isArray(exoConfig.steps)) {
+                        this.steps = exoConfig.steps;
+                    }
+                    var userId = this.getCurrentUserIdentifier();
+                    if (userId) {
+                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
+                        if (progress && Number.isInteger(progress.current_step)) {
+                            this.currentStepIndex = progress.current_step;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to initialize exercise 17.', error);
+            }
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {}
+
+        async saveProgress(stepIndex, status, scoreDetails) {
+            if (!this.apiClient) return false;
+            var userId = this.getCurrentUserIdentifier();
+            if (!userId) return false;
+            try {
+                await this.apiClient.saveProgress(this.exoId, userId, {
+                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
+                    status: status || 'IN_PROGRESS',
+                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
+                });
+                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
+                return true;
+            } catch (error) {
+                console.warn('Unable to save progress for exercise 17.', error);
+                return false;
+            }
+        }
+    }
+
+    window.exo17Page = new Exo17();
+})();
+
 // Script Exercice 17
 window.ExoCommonPage && window.ExoCommonPage.initProfileWidget({ showStats: false, historyLabel: 'My History', logoutLabel: 'Logout' });
 (function () {

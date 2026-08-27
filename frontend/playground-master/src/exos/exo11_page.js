@@ -1,3 +1,65 @@
+(function () {
+    var ExoBase = window.MLPlaygroundExoBase;
+    var ApiClient = window.MLPlaygroundApiClient;
+    if (!ExoBase) {
+        console.error('ExoBase is not available for exercise 11.');
+        return;
+    }
+    class Exo11 extends ExoBase {
+        constructor() {
+            super();
+            this.apiClient = ApiClient ? new ApiClient() : null;
+            this.exoId = 11;
+            this.currentStepIndex = -1;
+            this.steps = [];
+            this.initExercise();
+        }
+
+        async initExercise() {
+            try {
+                if (this.apiClient) {
+                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
+                    if (exoConfig && Array.isArray(exoConfig.steps)) {
+                        this.steps = exoConfig.steps;
+                    }
+                    var userId = this.getCurrentUserIdentifier();
+                    if (userId) {
+                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
+                        if (progress && Number.isInteger(progress.current_step)) {
+                            this.currentStepIndex = progress.current_step;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to initialize exercise 11.', error);
+            }
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {}
+
+        async saveProgress(stepIndex, status, scoreDetails) {
+            if (!this.apiClient) return false;
+            var userId = this.getCurrentUserIdentifier();
+            if (!userId) return false;
+            try {
+                await this.apiClient.saveProgress(this.exoId, userId, {
+                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
+                    status: status || 'IN_PROGRESS',
+                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
+                });
+                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
+                return true;
+            } catch (error) {
+                console.warn('Unable to save progress for exercise 11.', error);
+                return false;
+            }
+        }
+    }
+
+    window.exo11Page = new Exo11();
+})();
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -34,7 +96,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-window.ExoCommonPage && window.ExoCommonPage.initProfileWidget();
 var btnSauvegarder = document.getElementById('btn-sauvegarder');
 var btnRealise = document.getElementById('btn-realise');
 btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -82,7 +143,6 @@ btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, funct
         }
     });
 }); };
-window.ExoCommonPage && window.ExoCommonPage.initBackgroundAnimation();
 var styleEl = document.createElement('style');
 styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 70px;\n    text-align: center;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n\n  .true-false-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-top: 15px;\n  }\n  .true-false-table th {\n    text-align: center;\n    padding: 8px;\n    font-size: 12px;\n    color: #94a3b8;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n  }\n  .true-false-table th:first-child {\n    text-align: left;\n  }\n  .true-false-table td {\n    padding: 10px 8px;\n    font-size: 13.5px;\n    color: #f1f5f9;\n    border-bottom: 1px solid rgba(255,255,255,0.05);\n    vertical-align: middle;\n  }\n  .true-false-table td:not(:first-child) {\n    text-align: center;\n  }\n  .true-false-row-card {\n    background: rgba(255,255,255,0.02);\n    border: 1px solid rgba(255,255,255,0.05);\n    border-radius: 6px;\n    padding: 10px;\n    margin-bottom: 10px;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 15px;\n  }\n  .true-false-row-card .statement-text {\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n  }\n  .true-false-row-card .button-group {\n    display: flex;\n    gap: 6px;\n  }\n";
 document.head.appendChild(styleEl);
