@@ -1,0 +1,13 @@
+{
+  "name": "ml-playground",
+  "version": "1.0.0",
+  "description": "Core shared logic for the ML Playground exercise pages",
+  "main": "src/core/ExoBase.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["ml", "playground", "education"],
+  "author": "",
+  "license": "ISC"
+}
