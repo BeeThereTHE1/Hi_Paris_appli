@@ -260,7 +260,7 @@
             var timeLeft = 5;
             function updateTimer() {
                 if (timeLeft > 0) {
-                    timerSpan.innerText = 'Temps de lecture restant : ' + timeLeft + 's';
+                    timerSpan.innerText = 'Reading time remaining: ' + timeLeft + 's';
                     timeLeft -= 1;
                     setTimeout(updateTimer, 1000);
                 } else {
