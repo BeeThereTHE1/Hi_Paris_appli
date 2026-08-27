@@ -9,7 +9,8 @@ function createHttpError(status, message) {
   return error;
 }
 
-async function resolveUserId(rawUserId) {
+async function resolveUserId(rawUserId, options = {}) {
+  const { allowMissing = false } = options;
   if (!rawUserId) return null;
 
   const normalized = String(rawUserId).trim();
@@ -29,6 +30,7 @@ async function resolveUserId(rawUserId) {
   }
 
   if (!data || !data.id) {
+    if (allowMissing) return null;
     throw createHttpError(404, 'User not found for provided email.');
   }
 
@@ -98,9 +100,11 @@ async function upsertLegacyProgress(payload, rawUserId) {
   const legacyPayload = {
     status: payload.status,
     score_details: payload.score_details,
-    completed_at: payload.completed_at,
     updated_at: new Date().toISOString(),
   };
+  if (payload.completed_at) {
+    legacyPayload.completed_at = payload.completed_at;
+  }
 
   if (Number.isInteger(payload.current_step)) {
     legacyPayload.current_step = payload.current_step;
@@ -166,11 +170,14 @@ async function getUserProgress(req, res, next) {
   try {
     const exoId = Number(req.params.exoId);
     const rawUserId = req.params.userId;
-    const resolvedUserId = await resolveUserId(rawUserId);
+    const resolvedUserId = await resolveUserId(rawUserId, { allowMissing: true });
+    let progress = null;
 
-    let progress = await getProgressFromMlTable(exoId, resolvedUserId);
+    if (resolvedUserId) {
+      progress = await getProgressFromMlTable(exoId, resolvedUserId);
+    }
 
-    if (progress.error || !progress.data) {
+    if (!progress || progress.error || !progress.data) {
       progress = await getProgressFromLegacyTable(exoId, rawUserId, resolvedUserId);
       if (progress.error) {
         throw createHttpError(500, 'Unable to load exercise progress.');
@@ -193,25 +200,33 @@ async function saveUserProgress(req, res, next) {
       throw createHttpError(400, validation.errors.join(' '));
     }
 
-    const resolvedUserId = await resolveUserId(rawUserId);
+    const resolvedUserId = await resolveUserId(rawUserId, { allowMissing: true });
+    const isEmailLike = String(rawUserId).includes('@');
 
-    if (!resolvedUserId) {
+    if (!resolvedUserId && !isEmailLike) {
       throw createHttpError(400, 'user_id is required.');
     }
 
+    const nowIso = new Date().toISOString();
     const payload = {
       user_id: resolvedUserId,
       exercise_id: exoId,
       status: validation.value.status,
       current_step: validation.value.current_step,
       score_details: validation.value.score_details,
-      completed_at: validation.value.status === 'COMPLETED' ? new Date().toISOString() : null,
-      updated_at: new Date().toISOString(),
+      updated_at: nowIso,
     };
+    if (validation.value.status === 'COMPLETED') {
+      payload.completed_at = nowIso;
+    }
 
-    let saved = await upsertMlProgress(payload);
+    let saved = null;
 
-    if (saved.error) {
+    if (resolvedUserId) {
+      saved = await upsertMlProgress(payload);
+    }
+
+    if (!saved || saved.error) {
       saved = await upsertLegacyProgress(payload, rawUserId);
       if (saved.error) {
         throw createHttpError(500, 'Unable to save exercise progress.');

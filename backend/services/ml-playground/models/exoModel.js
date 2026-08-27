@@ -59,9 +59,13 @@ class Exercise {
       return null;
     }
 
-    const rawText = fs.readFileSync(filePath, 'utf8');
-    const parsed = JSON.parse(rawText);
-    return new Exercise(parsed);
+    try {
+      const rawText = fs.readFileSync(filePath, 'utf8');
+      const parsed = JSON.parse(rawText);
+      return new Exercise(parsed);
+    } catch (_error) {
+      return null;
+    }
   }
 
   static getAllExercises({ limit = 50, offset = 0 } = {}) {
@@ -79,18 +83,23 @@ class Exercise {
     const items = exerciseFiles
       .slice(offset, offset + limit)
       .map((fileName) => {
-        const rawText = fs.readFileSync(path.join(DATA_DIR, fileName), 'utf8');
-        const parsed = JSON.parse(rawText);
-        const exercise = new Exercise(parsed);
+        try {
+          const rawText = fs.readFileSync(path.join(DATA_DIR, fileName), 'utf8');
+          const parsed = JSON.parse(rawText);
+          const exercise = new Exercise(parsed);
 
-        return {
-          id: exercise.id,
-          title: exercise.title,
-          description: exercise.description,
-          step_count: exercise.steps.length,
-          config: exercise.config,
-        };
-      });
+          return {
+            id: exercise.id,
+            title: exercise.title,
+            description: exercise.description,
+            step_count: exercise.steps.length,
+            config: exercise.config,
+          };
+        } catch (_error) {
+          return null;
+        }
+      })
+      .filter(Boolean);
 
     return { items, total };
   }
