@@ -1,0 +1,42 @@
+{
+  "id": 13,
+  "title": "Exercise #13: Iterative Learning Cycle",
+  "description": "Observe the evolution of the decision frontier over the epochs and identify each major training phase.",
+  "steps": [
+    {
+      "id": 0,
+      "title": "Step 0 – Initialize the parameters",
+      "text": "Before learning begins, the weights and biases of the network are initialized randomly. This establishes the initial starting point of the network's parameters."
+    },
+    {
+      "id": 1,
+      "title": "Step 1 – Forward pass (make a prediction)",
+      "text": "The input data travels forward through the network. Each neuron calculates a weighted sum of its inputs, adds a bias, applies the activation function, and passes the result to the next layer to make a prediction."
+    },
+    {
+      "id": 2,
+      "title": "Step 2 – Compute the error (loss)",
+      "text": "The predicted outputs are compared with the actual target values using a loss function. This measures the error of the model's current predictions."
+    },
+    {
+      "id": 3,
+      "title": "Step 3 – Backward pass (compute corrections)",
+      "text": "The gradient of the loss function is calculated with respect to each weight and bias, propagating the error backwards from the output layer through the hidden layers."
+    },
+    {
+      "id": 4,
+      "title": "Step 4 – Update the weights",
+      "text": "The optimizer updates the weights and biases of the network in the opposite direction of the gradient, scaled by the learning rate, to reduce the loss."
+    },
+    {
+      "id": 5,
+      "title": "Then the loop repeats from step 1",
+      "text": "With the updated parameters, the cycle starts again. Over thousands of iterations, the network progressively learns the complex decision boundary to classify the dataset."
+    }
+  ],
+  "config": {
+    "numFormulas": 25,
+    "numNeurons": 30,
+    "numConnections": 50
+  }
+}

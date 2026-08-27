@@ -14,6 +14,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 const { supabase } = require('./supabaseClient');
+const mlPlaygroundExosRouter = require('./services/ml-playground/routes/exos');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -55,6 +56,7 @@ const corsOptions = corsOrigin
 app.use(cors(corsOptions));
 
 app.use(express.json());
+app.use('/api/ml-playground', mlPlaygroundExosRouter);
 
 // Shared validation error handler
 function handleValidation(req, res, next) {
@@ -410,4 +412,7 @@ server = app.listen(PORT, () => {
   console.log(`   POST /api/exercises          → Créer un exercice (Studio)`);
   console.log(`   POST /api/submissions        → Soumettre à un prof`);
   console.log(`   POST /api/progress           → Sauvegarder la progression`);
+  console.log(`   GET  /api/ml-playground/exos/:exoId → Config + tutoriel d'un exo`);
+  console.log(`   GET  /api/ml-playground/exos/:exoId/progress/:userId → Progression d'un utilisateur`);
+  console.log(`   POST /api/ml-playground/exos/:exoId/progress → Sauvegarder progression playground`);
 });

@@ -1,0 +1,17 @@
+{
+  "id": 999,
+  "title": "Exercise #N: Template",
+  "description": "Template exercise definition to duplicate for additional exercises.",
+  "steps": [
+    {
+      "id": 0,
+      "title": "Step 0 – Title",
+      "text": "Describe the expected learner action for this step."
+    }
+  ],
+  "config": {
+    "numFormulas": 0,
+    "numNeurons": 0,
+    "numConnections": 0
+  }
+}
