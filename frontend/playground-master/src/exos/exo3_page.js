@@ -20,6 +20,8 @@
       });
 
       this._successShown = false;
+      this._boundMessageHandler = null;
+
       this.init();
     }
 
@@ -27,7 +29,7 @@
       await this.initProgressContext();
       this.wireStandardActionButtons();
 
-      window.addEventListener('message', (event) => {
+      this._boundMessageHandler = (event) => {
         if (!event || !event.data) return;
         if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 3 || event.data.exoId == '3')) {
           this.unlockQuizButton(this.doneBtnId, '✨ Exercise Successful !!');
@@ -36,12 +38,22 @@
             this.showExerciseSuccessCongrats();
           }
         }
-      });
+      };
+      window.addEventListener('message', this._boundMessageHandler);
 
       this.onIframeLoad(() => {
         if (this.isCompletedFromQuery()) return;
         this.startTutorial();
       }, 1200);
+
+      window.addEventListener('beforeunload', () => this.cleanup());
+    }
+
+    cleanup() {
+      if (this._boundMessageHandler) {
+        window.removeEventListener('message', this._boundMessageHandler);
+        this._boundMessageHandler = null;
+      }
     }
 
     startTutorial() {
@@ -102,7 +114,10 @@
             }
           }
         }
-        setTimeout(() => { window.location.href = this.quizUrl; }, 800);
+
+        setTimeout(() => {
+          window.location.href = this.quizUrl;
+        }, 800);
       };
 
       popup.appendChild(nextBtn);
