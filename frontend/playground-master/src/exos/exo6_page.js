@@ -1,532 +1,358 @@
 (function () {
-    var ExoBase = window.MLPlaygroundExoBase;
-    var ApiClient = window.MLPlaygroundApiClient;
-    if (!ExoBase) {
-        console.error('ExoBase is not available for exercise 6.');
+  'use strict';
+
+  var ExoPageBase = window.MLPlaygroundExoPageBase;
+  var ExoHighlightTour = window.ExoHighlightTour;
+
+  if (!ExoPageBase) {
+    console.error('MLPlaygroundExoPageBase is not available for exercise 6.');
+    return;
+  }
+
+  class Exo6 extends ExoPageBase {
+    constructor() {
+      super({
+        exoId: 6,
+        quizUrl: 'exoquiz/exo6_quiz.html',
+        iframeId: 'iframe-playground',
+        saveBtnId: 'btn-sauvegarder',
+        doneBtnId: 'btn-realise',
+        registerUrl: 'Page-demo/register.html'
+      });
+
+      this.translations = null;
+      this.activeArrow = null;
+      this.mathSequenceStarted = false;
+      this._activeDismissClick = null;
+
+      this.tour = ExoHighlightTour
+        ? new ExoHighlightTour({ iframeSelector: '.exo-frame' })
+        : null;
+
+      this.injectLocalStyles();
+      this.init();
+    }
+
+    async init() {
+      await this.initProgressContext();
+      this.wireStandardActionButtons();
+
+      window.addEventListener('message', (event) => this.handleWindowMessage(event));
+
+      this.onIframeLoad(async () => {
+        if (this.isCompletedFromQuery()) return;
+        await this.loadTranslations();
+        this.startTutorial();
+      }, 1200);
+
+      window.addEventListener('beforeunload', () => this.cleanupAll());
+    }
+
+    async loadTranslations() {
+      try {
+        var response = await fetch('texte.json');
+        if (!response.ok) throw new Error('Failed to load translation json');
+        var data = await response.json();
+        this.translations = data && data.exercises ? data.exercises.exercise_6 : null;
+
+        if (this.translations) {
+          if (this.translations.title) {
+            document.title = this.translations.title;
+            var titleEl = document.querySelector('.exo-title');
+            if (titleEl) titleEl.innerText = this.translations.title;
+          }
+          if (this.translations.instructions && this.translations.instructions.general) {
+            var instrEl = document.querySelector('.exo-instructions');
+            if (instrEl) instrEl.innerText = this.translations.instructions.general;
+          }
+        }
+      } catch (error) {
+        console.warn('Could not load translations from JSON.', error);
+      }
+    }
+
+    startTutorial() {
+      var title = (this.translations && this.translations.title) || 'Exercise #6';
+      var text =
+        (this.translations && this.translations.instructions && this.translations.instructions.general) ||
+        'In this exercise, you will explore how a neural network builds its prediction step by step.';
+
+      var handled = this.showTimedIntro({
+        title: title,
+        text: text,
+        seconds: 7,
+        buttonLabel: 'Continue',
+        onContinue: () => this.showFlashingArrow('.timeline-controls', 4)
+      });
+
+      if (!handled) this.showFlashingArrow('.timeline-controls', 4);
+    }
+
+    handleWindowMessage(event) {
+      if (!event || !event.data) return;
+      var data = event.data;
+
+      if (data.type === 'EXO_SUCCESS' && (data.exoId == 6 || data.exoId == '6')) {
+        this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
         return;
-    }
-    class Exo6 extends ExoBase {
-        constructor() {
-            super();
-            this.apiClient = ApiClient ? new ApiClient() : null;
-            this.exoId = 6;
-            this.currentStepIndex = -1;
-            this.steps = [];
-            this.initExercise();
-        }
+      }
 
-        async initExercise() {
-            try {
-                if (this.apiClient) {
-                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
-                    if (exoConfig && Array.isArray(exoConfig.steps)) {
-                        this.steps = exoConfig.steps;
-                    }
-                    var userId = this.getCurrentUserIdentifier();
-                    if (userId) {
-                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
-                        if (progress && Number.isInteger(progress.current_step)) {
-                            this.currentStepIndex = progress.current_step;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn('Unable to initialize exercise 6.', error);
-            }
-            this.setupEventListeners();
-        }
-
-        setupEventListeners() {}
-
-        async saveProgress(stepIndex, status, scoreDetails) {
-            if (!this.apiClient) return false;
-            var userId = this.getCurrentUserIdentifier();
-            if (!userId) return false;
-            try {
-                await this.apiClient.saveProgress(this.exoId, userId, {
-                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
-                    status: status || 'IN_PROGRESS',
-                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
-                });
-                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
-                return true;
-            } catch (error) {
-                console.warn('Unable to save progress for exercise 6.', error);
-                return false;
-            }
-        }
-    }
-
-    window.exo6Page = new Exo6();
-})();
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var _this = this;
-var btnSauvegarder = document.getElementById('btn-sauvegarder');
-var btnRealise = document.getElementById('btn-realise');
-window.addEventListener('message', function (event) {
-    if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 6 || event.data.exoId == "6")) {
-        btnRealise.disabled = false;
-        btnRealise.classList.remove('btn-disabled');
-        btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-    }
-});
-btnSauvegarder.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.save(6)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                    btnSauvegarder.style.opacity = '0.7';
-                    btnSauvegarder.disabled = true;
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
-    });
-}); };
-btnRealise.onclick = function () { return __awaiter(_this, void 0, void 0, function () {
-    var isLoggedIn, success;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                if (!isLoggedIn) {
-                    window.location.href = 'Page-demo/register.html';
-                    return [2];
-                }
-                if (!window.StorageService) return [3, 2];
-                return [4, window.StorageService.complete(6)];
-            case 1:
-                success = _a.sent();
-                if (success) {
-                    btnRealise.innerHTML = '✨ Redirection...';
-                    btnRealise.disabled = true;
-                    setTimeout(function () {
-                        window.location.href = 'exoquiz/exo6_quiz.html';
-                    }, 800);
-                }
-                _a.label = 2;
-            case 2: return [2];
-        }
-    });
-}); };
-var styleEl = document.createElement('style');
-styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n";
-document.head.appendChild(styleEl);
-var translations = null;
-var activeHighlightBox = null;
-var activeTooltip = null;
-var activeArrow = null;
-var currentHighlightSelector = null;
-var currentTooltipSelector = null;
-var currentTooltipTitle = null;
-var currentTooltipText = null;
-var currentTooltipPosition = 'bottom';
-function loadTranslations() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, titleEl, instrEl, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4, fetch('texte.json')];
-                case 1:
-                    response = _a.sent();
-                    if (!response.ok)
-                        throw new Error("Failed to load translation json");
-                    return [4, response.json()];
-                case 2:
-                    data = _a.sent();
-                    translations = data.exercises.exercise_6;
-                    if (translations) {
-                        if (translations.title) {
-                            document.title = translations.title;
-                            titleEl = document.querySelector('.exo-title');
-                            if (titleEl)
-                                titleEl.innerText = translations.title;
-                        }
-                        if (translations.instructions && translations.instructions.general) {
-                            instrEl = document.querySelector('.exo-instructions');
-                            if (instrEl) {
-                                instrEl.innerText = translations.instructions.general;
-                            }
-                        }
-                    }
-                    return [3, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.warn("Could not load translations from JSON.", error_1);
-                    return [3, 4];
-                case 4: return [2];
-            }
-        });
-    });
-}
-function startTutorial() {
-    var overlay = document.createElement('div');
-    overlay.className = 'tutorial-overlay';
-    overlay.id = 'exo6-tutorial-overlay';
-    var popup = document.createElement('div');
-    popup.className = 'tutorial-popup';
-    var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercise #6";
-    var p = document.createElement('p');
-    var text = translations && translations.instructions && translations.instructions.general
-        ? translations.instructions.general
-        : "In this exercise, you will explore how a neural network builds its prediction step by step.";
-    p.innerText = text;
-    var timerSpan = document.createElement('span');
-    timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
-    var nextBtn = document.createElement('button');
-    nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continue";
-    nextBtn.disabled = true;
-    popup.appendChild(h3);
-    popup.appendChild(p);
-    popup.appendChild(timerSpan);
-    popup.appendChild(nextBtn);
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
-    var timeLeft = 7;
-    function updateTimer() {
-        if (timeLeft > 0) {
-            timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
-            timeLeft--;
-            setTimeout(updateTimer, 1000);
-        }
-        else {
-            timerSpan.style.display = 'none';
-            nextBtn.disabled = false;
-        }
-    }
-    updateTimer();
-    nextBtn.onclick = function () {
-        overlay.remove();
-        showFlashingArrow('.timeline-controls', 4);
-    };
-}
-function showFlashingArrow(targetSelectorOrElement, flashesCount) {
-    if (flashesCount === void 0) { flashesCount = 4; }
-    if (activeArrow)
-        activeArrow.remove();
-    var rect = getIframeElementRect(targetSelectorOrElement);
-    if (!rect)
+      if (data.type === 'EXO6_EPOCH_300') {
+        this.showWarningBanner();
+        setTimeout(() => this.showFlashingArrow('.ui-numHiddenLayers', 4), 100);
         return;
-    activeArrow = document.createElement('div');
-    activeArrow.className = 'tutorial-arrow';
-    activeArrow.innerHTML = "\n    <svg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" style=\"filter: drop-shadow(0 0 8px rgba(255, 3, 77, 0.6));\">\n      <path d=\"M50,10 L10,50 M10,50 L25,50 M10,50 L10,35\" stroke=\"#FF034D\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"/>\n    </svg>\n  ";
-    activeArrow.style.left = rect.left + rect.width / 2 + window.scrollX + "px";
-    activeArrow.style.top = rect.top - 60 + window.scrollY + "px";
-    document.body.appendChild(activeArrow);
-    activeArrow.style.animationIterationCount = String(flashesCount);
-    setTimeout(function () {
-        if (activeArrow) {
-            activeArrow.remove();
-            activeArrow = null;
+      }
+
+      if (data.type === 'EXO6_STATE_CHANGE') {
+        var numLayers = data.numHiddenLayers;
+        var shape = data.networkShape;
+
+        if (numLayers > 0) this.removeWarningBanner();
+
+        if (numLayers === 1 && shape && shape[0] === 4) {
+          this.runMathSequence();
         }
-    }, flashesCount * 600);
-}
-function getIframeElementRect(target) {
-    var iframe = document.querySelector('.exo-frame');
-    if (!iframe)
+      }
+    }
+
+    getIframeDoc() {
+      var iframe = document.querySelector('.exo-frame') || document.getElementById(this.iframeId);
+      if (!iframe) return null;
+      try {
+        return iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+      } catch (_e) {
         return null;
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var el = (typeof target === 'string') ? iframeDoc.querySelector(target) : target;
-    if (!el)
-        return null;
-    var iframeRect = iframe.getBoundingClientRect();
-    var elRect = el.getBoundingClientRect();
-    return {
+      }
+    }
+
+    getIframeElement(selector) {
+      var doc = this.getIframeDoc();
+      if (!doc) return null;
+      return doc.querySelector(selector);
+    }
+
+    getFirstHiddenNeuronCanvas() {
+      var doc = this.getIframeDoc();
+      if (!doc) return null;
+      var canvases = doc.querySelectorAll('#network .canvas');
+      return canvases && canvases.length > 0 ? canvases[0] : null;
+    }
+
+    getIframeElementRect(targetSelectorOrElement) {
+      var iframe = document.querySelector('.exo-frame') || document.getElementById(this.iframeId);
+      var doc = this.getIframeDoc();
+      if (!iframe || !doc) return null;
+
+      var el = typeof targetSelectorOrElement === 'string'
+        ? doc.querySelector(targetSelectorOrElement)
+        : targetSelectorOrElement;
+
+      if (!el) return null;
+
+      var iframeRect = iframe.getBoundingClientRect();
+      var elRect = el.getBoundingClientRect();
+
+      return {
         top: iframeRect.top + elRect.top,
         left: iframeRect.left + elRect.left,
         bottom: iframeRect.top + elRect.bottom,
         right: iframeRect.left + elRect.right,
         width: elRect.width,
         height: elRect.height
-    };
-}
-function getIframeElement(selector) {
-    var iframe = document.querySelector('.exo-frame');
-    if (!iframe)
-        return null;
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    return iframeDoc.querySelector(selector);
-}
-function getFirstHiddenNeuronCanvas() {
-    var iframe = document.querySelector('.exo-frame');
-    if (!iframe)
-        return null;
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var canvases = iframeDoc.querySelectorAll('#network .canvas');
-    if (canvases.length > 0) {
-        return canvases[0];
+      };
     }
-    return null;
-}
-function clearHighlights() {
-    if (activeHighlightBox) {
-        activeHighlightBox.remove();
-        activeHighlightBox = null;
+
+    showFlashingArrow(targetSelectorOrElement, flashesCount) {
+      if (flashesCount === undefined) flashesCount = 4;
+      this.removeActiveArrow();
+
+      var rect = this.getIframeElementRect(targetSelectorOrElement);
+      if (!rect) return;
+
+      var arrow = document.createElement('div');
+      arrow.className = 'tutorial-arrow';
+      arrow.innerHTML =
+        '<svg width="60" height="60" viewBox="0 0 60 60" style="filter: drop-shadow(0 0 8px rgba(255, 3, 77, 0.6));">' +
+        '<path d="M50,10 L10,50 M10,50 L25,50 M10,50 L10,35" stroke="#FF034D" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>' +
+        '</svg>';
+
+      arrow.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
+      arrow.style.top = (rect.top - 60 + window.scrollY) + 'px';
+      arrow.style.animationIterationCount = String(flashesCount);
+
+      document.body.appendChild(arrow);
+      this.activeArrow = arrow;
+
+      setTimeout(() => this.removeActiveArrow(), flashesCount * 600);
     }
-    if (activeTooltip) {
-        activeTooltip.remove();
-        activeTooltip = null;
+
+    removeActiveArrow() {
+      if (this.activeArrow) {
+        this.activeArrow.remove();
+        this.activeArrow = null;
+      }
     }
-    if (activeArrow) {
-        activeArrow.remove();
-        activeArrow = null;
+
+    showWarningBanner() {
+      var doc = this.getIframeDoc();
+      if (!doc) return;
+
+      var topControls = doc.querySelector('#top-controls');
+      if (!topControls) return;
+      if (doc.getElementById('exo6-warning-banner')) return;
+
+      var banner = doc.createElement('div');
+      banner.id = 'exo6-warning-banner';
+      banner.style.cssText =
+        'background: rgba(255, 3, 77, 0.12); border: 1px solid #FF034D; color: #ffffff; padding: 12px 18px; border-radius: 8px; margin: 15px auto 5px auto; max-width: 900px; text-align: center; font-size: 14px; line-height: 1.4;';
+
+      var warningText =
+        (this.translations && this.translations.instructions && this.translations.instructions.activity_1) ||
+        'As seen earlier, complex data cannot be classified with linear features only. Try one hidden layer with 4 neurons.';
+      banner.innerHTML = '<strong>⚠️ Note :</strong> ' + warningText;
+
+      topControls.appendChild(banner);
     }
-    currentHighlightSelector = null;
-    currentTooltipSelector = null;
-}
-function showHighlightBox(target, padding) {
-    if (padding === void 0) { padding = 15; }
-}
-function showCustomTooltip(target, title, text, position, onDismiss) {
-    if (position === void 0) { position = 'bottom'; }
-    if (activeTooltip)
-        activeTooltip.remove();
-    currentTooltipSelector = target;
-    currentTooltipTitle = title;
-    currentTooltipText = text;
-    currentTooltipPosition = position;
-    activeTooltip = document.createElement('div');
-    activeTooltip.className = 'tutorial-tooltip';
-    activeTooltip.innerHTML = "\n    <h4 style=\"margin:0 0 8px 0; font-size:15px; font-weight:800; color:#fff;\">" + title + "</h4>\n    <p style=\"margin:0; font-size:13px; color:#cbd5e1; line-height:1.4;\">" + text + "</p>\n    <div style=\"margin-top:10px; font-size:11px; color:#94a3b8; text-align:right; user-select:none;\">Click anywhere to continue</div>\n  ";
-    document.body.appendChild(activeTooltip);
-    repositionActiveElements();
-    var dismissHandler = function () {
-        document.removeEventListener('click', dismissHandler);
-        clearHighlights();
-        if (onDismiss)
-            onDismiss();
-    };
-    setTimeout(function () {
-        document.addEventListener('click', dismissHandler);
-    }, 100);
-}
-function repositionActiveElements() {
-    if (currentHighlightSelector && activeHighlightBox) {
-        var rect = getIframeElementRect(currentHighlightSelector);
-        if (rect) {
-            var padding = 12;
-            activeHighlightBox.style.left = rect.left - padding + window.scrollX + "px";
-            activeHighlightBox.style.top = rect.top - padding + window.scrollY + "px";
-            activeHighlightBox.style.width = rect.width + padding * 2 + "px";
-            activeHighlightBox.style.height = rect.height + padding * 2 + "px";
-        }
+
+    removeWarningBanner() {
+      var doc = this.getIframeDoc();
+      if (!doc) return;
+      var banner = doc.getElementById('exo6-warning-banner');
+      if (banner) banner.remove();
     }
-    if (currentTooltipSelector && activeTooltip) {
-        var rect = getIframeElementRect(currentTooltipSelector);
-        if (rect) {
-            var tooltipRect = activeTooltip.getBoundingClientRect();
-            var top_1 = 0, left = 0;
-            if (currentTooltipPosition === 'bottom') {
-                top_1 = rect.bottom + window.scrollY + 10;
-                left = rect.left + rect.width / 2 - tooltipRect.width / 2 + window.scrollX;
-            }
-            else if (currentTooltipPosition === 'top') {
-                top_1 = rect.top - tooltipRect.height - 10 + window.scrollY;
-                left = rect.left + rect.width / 2 - tooltipRect.width / 2 + window.scrollX;
-            }
-            else if (currentTooltipPosition === 'right') {
-                top_1 = rect.top + rect.height / 2 - tooltipRect.height / 2 + window.scrollY;
-                left = rect.right + 10 + window.scrollX;
-            }
-            else if (currentTooltipPosition === 'left') {
-                top_1 = rect.top + rect.height / 2 - tooltipRect.height / 2 + window.scrollY;
-                left = rect.left - tooltipRect.width - 10 + window.scrollX;
-            }
-            if (left < 10)
-                left = 10;
-            if (left + tooltipRect.width > window.innerWidth - 10)
-                left = window.innerWidth - tooltipRect.width - 10;
-            if (top_1 < 10)
-                top_1 = 10;
-            activeTooltip.style.top = top_1 + "px";
-            activeTooltip.style.left = left + "px";
-        }
-    }
-}
-function showWarningBanner() {
-    var iframe = document.querySelector('.exo-frame');
-    if (!iframe)
-        return;
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var topControls = iframeDoc.querySelector('#top-controls');
-    if (!topControls)
-        return;
-    if (iframeDoc.getElementById('exo6-warning-banner'))
-        return;
-    var banner = iframeDoc.createElement('div');
-    banner.id = 'exo6-warning-banner';
-    banner.style.cssText = "\n    background: rgba(255, 3, 77, 0.12);\n    border: 1px solid #FF034D;\n    color: #ffffff;\n    padding: 12px 18px;\n    border-radius: 8px;\n    margin: 15px auto 5px auto;\n    max-width: 780px;\n    font-family: 'Inter', sans-serif;\n    font-size: 13.5px;\n    line-height: 1.4;\n    text-align: center;\n    box-shadow: 0 4px 12px rgba(255, 3, 77, 0.15);\n  ";
-    var warningText = translations && translations.instructions && translations.instructions.activity_1
-        ? translations.instructions.activity_1
-        : "As seen earlier, it is not possible to classify complex data (such as the two-circle dataset) using linear features. Now try using a hidden layer with four neurons.";
-    banner.innerHTML = "<strong>\u26A0\uFE0F Note :</strong> " + warningText;
-    topControls.appendChild(banner);
-}
-function removeWarningBanner() {
-    var iframe = document.querySelector('.exo-frame');
-    if (!iframe)
-        return;
-    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-    var banner = iframeDoc.getElementById('exo6-warning-banner');
-    if (banner)
-        banner.remove();
-}
-var mathSequenceStarted = false;
-function runMathSequence() {
-    if (mathSequenceStarted)
-        return;
-    mathSequenceStarted = true;
-    removeWarningBanner();
-    clearHighlights();
-    setTimeout(function () {
-        var linkA = getIframeElement('#linkx-1');
+
+    runMathSequence() {
+      if (this.mathSequenceStarted) return;
+      this.mathSequenceStarted = true;
+
+      this.removeWarningBanner();
+      this.clearHighlights();
+
+      setTimeout(() => {
+        var linkA = this.getIframeElement('#linkx-1');
         if (!linkA) {
-            console.warn("Could not find ID #linkx-1 for Overlay A, starting sequence with B instead.");
-            runStepB();
-            return;
+          console.warn('Could not find #linkx-1, starting with step B.');
+          this.runStepB();
+          return;
         }
-        showHighlightBox(linkA);
-        var titleA = "1- " + (translations && translations.pedagogical_overlay && translations.pedagogical_overlay[0]
-            ? translations.pedagogical_overlay[0].title
-            : "Simple model: one equation");
-        var descA = translations && translations.pedagogical_overlay && translations.pedagogical_overlay[0]
-            ? translations.pedagogical_overlay[0].description
-            : "This model directly combines x₁ and x₂ using weights and bias. prediction = f(w1·x1 + w2·x2 + b)";
-        showCustomTooltip(linkA, titleA, descA, 'right', function () {
-            runStepB();
-        });
-    }, 2000);
-}
-function runStepB() {
-    var nodeB = getFirstHiddenNeuronCanvas();
-    if (!nodeB) {
-        runStepC();
-        return;
+
+        var titleA =
+          '1- ' +
+          ((this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[0] && this.translations.pedagogical_overlay[0].title) ||
+            'Simple model: one equation');
+        var descA =
+          (this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[0] && this.translations.pedagogical_overlay[0].description) ||
+          'prediction = f(w1·x1 + w2·x2 + b)';
+
+        this.showStepTooltip(linkA, titleA, descA, 'right', () => this.runStepB());
+      }, 2000);
     }
-    showHighlightBox(nodeB);
-    var titleB = "2- " + (translations && translations.pedagogical_overlay && translations.pedagogical_overlay[1]
-        ? translations.pedagogical_overlay[1].title
-        : "Neural Network: What the hidden layer computes");
-    var descB = translations && translations.pedagogical_overlay && translations.pedagogical_overlay[1]
-        ? translations.pedagogical_overlay[1].description
-        : "Each neuron combines x₁ and x₂ in a different way, producing 4 new features. These values are not predictions, they are features learned from the data.";
-    showCustomTooltip(nodeB, titleB, descB, 'bottom', function () {
-        runStepC();
-    });
-}
-function runStepC() {
-    var linkC = getIframeElement('#link1-5');
-    if (!linkC) {
-        runStepD();
-        return;
+
+    runStepB() {
+      var nodeB = this.getFirstHiddenNeuronCanvas();
+      if (!nodeB) return this.runStepC();
+
+      var titleB =
+        '2- ' +
+        ((this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[1] && this.translations.pedagogical_overlay[1].title) ||
+          'What the hidden layer computes');
+      var descB =
+        (this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[1] && this.translations.pedagogical_overlay[1].description) ||
+        'Each hidden neuron creates a learned feature from x₁ and x₂.';
+
+      this.showStepTooltip(nodeB, titleB, descB, 'bottom', () => this.runStepC());
     }
-    showHighlightBox(linkC);
-    var titleC = "3- " + (translations && translations.pedagogical_overlay && translations.pedagogical_overlay[2]
-        ? translations.pedagogical_overlay[2].title
-        : "How the full model works");
-    var descC = translations && translations.pedagogical_overlay && translations.pedagogical_overlay[2]
-        ? translations.pedagogical_overlay[2].description
-        : "The final prediction is built by combining the learned features. prediction = f(v1·a1 + v2·a2 + v3·a3 + v4·a4 + c)";
-    showCustomTooltip(linkC, titleC, descC, 'top', function () {
-        runStepD();
-    });
-}
-function runStepD() {
-    showHighlightBox('#heatmap');
-    var titleD = "4- " + (translations && translations.pedagogical_overlay && translations.pedagogical_overlay[3]
-        ? translations.pedagogical_overlay[3].title
-        : "In Summary");
-    var descD = translations && translations.pedagogical_overlay && translations.pedagogical_overlay[3]
-        ? translations.pedagogical_overlay[3].description
-        : "A neural network learns new features using neurons, then combines them to solve more complex problems.";
-    showCustomTooltip('#heatmap', titleD, descD, 'bottom', function () {
-        clearHighlights();
-    });
-}
-window.addEventListener('message', function (event) {
-    if (event.data.type === 'EXO6_EPOCH_300') {
-        showWarningBanner();
-        setTimeout(function () {
-            showFlashingArrow('.ui-numHiddenLayers', 4);
-        }, 100);
+
+    runStepC() {
+      var linkC = this.getIframeElement('#link1-5');
+      if (!linkC) return this.runStepD();
+
+      var titleC =
+        '3- ' +
+        ((this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[2] && this.translations.pedagogical_overlay[2].title) ||
+          'How the full model works');
+      var descC =
+        (this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[2] && this.translations.pedagogical_overlay[2].description) ||
+        'prediction = f(v1·a1 + v2·a2 + v3·a3 + v4·a4 + c)';
+
+      this.showStepTooltip(linkC, titleC, descC, 'top', () => this.runStepD());
     }
-    if (event.data.type === 'EXO6_STATE_CHANGE') {
-        var numLayers = event.data.numHiddenLayers;
-        var shape = event.data.networkShape;
-        if (numLayers > 0) {
-            removeWarningBanner();
-        }
-        if (numLayers === 1 && shape && shape[0] === 4) {
-            runMathSequence();
-        }
+
+    runStepD() {
+      var heatmap = this.getIframeElement('#heatmap');
+      if (!heatmap) return this.clearHighlights();
+
+      var titleD =
+        '4- ' +
+        ((this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[3] && this.translations.pedagogical_overlay[3].title) ||
+          'In Summary');
+      var descD =
+        (this.translations && this.translations.pedagogical_overlay && this.translations.pedagogical_overlay[3] && this.translations.pedagogical_overlay[3].description) ||
+        'A neural network learns features, then combines them to solve complex tasks.';
+
+      this.showStepTooltip(heatmap, titleD, descD, 'bottom', () => this.clearHighlights());
     }
-});
-window.addEventListener('resize', repositionActiveElements);
-window.addEventListener('scroll', repositionActiveElements);
-setInterval(repositionActiveElements, 100);
-var iframe = document.querySelector('.exo-frame');
-if (iframe) {
-    iframe.addEventListener('load', function () {
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('completed') === 'true') {
-            return;
-        }
-        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, loadTranslations()];
-                    case 1:
-                        _a.sent();
-                        startTutorial();
-                        return [2];
-                }
-            });
-        }); }, 1200);
-    });
-}
+
+    showStepTooltip(target, title, text, position, onDismiss) {
+      if (!this.tour) return;
+      this.clearHighlights();
+
+      this.tour.startAutoReposition();
+      this.tour.showHighlightBox(target, null);
+      this.tour.showTooltip(target, title, text, position || 'bottom');
+
+      this.armDismissClick(() => {
+        this.clearHighlights();
+        if (onDismiss) onDismiss();
+      });
+    }
+
+    armDismissClick(callback) {
+      this.cleanupDismissClick();
+      var handler = (e) => {
+        if (e) e.stopPropagation();
+        this.cleanupDismissClick();
+        callback();
+      };
+      setTimeout(() => {
+        document.addEventListener('click', handler);
+        this._activeDismissClick = function () {
+          document.removeEventListener('click', handler);
+        };
+      }, 100);
+    }
+
+    cleanupDismissClick() {
+      if (this._activeDismissClick) {
+        this._activeDismissClick();
+        this._activeDismissClick = null;
+      }
+    }
+
+    clearHighlights() {
+      this.cleanupDismissClick();
+      if (this.tour) {
+        this.tour.clear();
+        this.tour.stopAutoReposition();
+      }
+      this.removeActiveArrow();
+    }
+
+    injectLocalStyles() {
+      if (document.getElementById('exo6-local-styles')) return;
+      var styleEl = document.createElement('style');
+      styleEl.id = 'exo6-local-styles';
+      styleEl.textContent =
+        '@keyframes arrow-flash{0%,100%{opacity:0;transform:translate(0,0)}50%{opacity:1;transform:translate(-10px,10px)}}' +
+        '.tutorial-arrow{position:absolute;z-index:10000;pointer-events:none;animation:arrow-flash .6s ease-in-out infinite;}';
+      document.head.appendChild(styleEl);
+    }
+
+    cleanupAll() {
+      this.clearHighlights();
+      this.removeWarningBanner();
+    }
+  }
+
+  window.exo6Page = new Exo6();
+})();
