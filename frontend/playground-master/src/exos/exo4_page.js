@@ -20,9 +20,10 @@
         registerUrl: 'Page-demo/register.html'
       });
 
-      this.translations = null;
       this.tour = ExoHighlightTour ? new ExoHighlightTour({ iframeSelector: '.exo-frame' }) : null;
-      this._currentClickCleanup = null;
+      this._successShown = false;
+      this._boundMessageHandler = null;
+      this._destroyed = false;
 
       this.init();
     }
@@ -31,107 +32,170 @@
       await this.initProgressContext();
       this.wireStandardActionButtons();
 
-      // Keep original EXO_SUCCESS behavior
-      window.addEventListener('message', (event) => {
+      this._boundMessageHandler = (event) => {
         if (!event || !event.data) return;
         if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 4 || event.data.exoId == '4')) {
-          this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
+          this.unlockQuizButton(this.doneBtnId, '✨ Exercise Successful !!');
+          if (!this._successShown) {
+            this._successShown = true;
+            this.showExerciseSuccessCongrats();
+          }
         }
-      });
+      };
+      window.addEventListener('message', this._boundMessageHandler);
 
-      this.onIframeLoad(async () => {
+      this.onIframeLoad(() => {
         if (this.isCompletedFromQuery()) return;
-        await this.loadTranslations();
         this.startTutorial();
       }, 1200);
 
-      window.addEventListener('beforeunload', () => this.cleanupTour());
+      window.addEventListener('beforeunload', () => this.cleanup());
     }
 
-    async loadTranslations() {
-      try {
-        var response = await fetch('texte.json');
-        if (!response.ok) throw new Error('Failed to load translation json');
-        var data = await response.json();
+    cleanup() {
+      if (this._destroyed) return;
+      this._destroyed = true;
 
-        this.translations = data && data.exercises ? data.exercises.exercise_4 : null;
+      if (this._boundMessageHandler) {
+        window.removeEventListener('message', this._boundMessageHandler);
+        this._boundMessageHandler = null;
+      }
 
-        if (this.translations) {
-          if (this.translations.title) {
-            document.title = this.translations.title;
-            var titleEl = document.querySelector('.exo-title');
-            if (titleEl) titleEl.innerText = this.translations.title;
-          }
-          if (this.translations.instructions && this.translations.instructions.general) {
-            var instrEl = document.querySelector('.exo-instructions');
-            if (instrEl) instrEl.innerText = this.translations.instructions.general;
-          }
-        }
-      } catch (error) {
-        console.warn('Could not load translations from JSON, using fallback/default texts.', error);
+      if (this.tour) {
+        this.tour.stopAutoReposition();
+        this.tour.clear();
       }
     }
 
     startTutorial() {
-      var title = (this.translations && this.translations.title) || 'Exercise #4 : Bias Editor';
-      var text =
-        (this.translations && this.translations.instructions && this.translations.instructions.general) ||
-        'Instructions: In this exercise, you will adjust the bias of a neuron to understand its impact on model performance.';
-
       var handled = this.showTimedIntro({
-        title: title,
-        text: text,
-        seconds: 2,
+        title: 'Exercise #4 : Feature Engineering',
+        text: 'Enable non-linear features and observe how the decision boundary improves.',
+        seconds: 3,
         buttonLabel: 'Continue',
-        onContinue: () => this.runStep2Highlight()
+        onContinue: () => this.runGuideStep1()
       });
 
-      if (!handled) this.runStep2Highlight();
+      if (!handled) this.runGuideStep1();
     }
 
-    runStep2Highlight() {
+    runGuideStep1() {
+      this.showTourHint(
+        '1',
+        '.column.features',
+        'Feature panel',
+        'These features transform inputs and can make linear models solve non-linear data.'
+      );
+      this.armOneShotDocumentClick(() => this.runGuideStep2());
+    }
+
+    runGuideStep2() {
+      this.showTourHint(
+        '2',
+        '.column.features .ui-xSquared, .column.features .ui-ySquared',
+        'Try X² and Y²',
+        'Enable quadratic terms to let the model learn curved boundaries.'
+      );
+      this.armOneShotDocumentClick(() => this.runGuideStep3());
+    }
+
+    runGuideStep3() {
+      this.showTourHint(
+        '3',
+        '#heatmap',
+        'Decision boundary',
+        'Watch how the boundary changes once new features are active.'
+      );
+      this.armOneShotDocumentClick(() => this.runGuideStep4());
+    }
+
+    runGuideStep4() {
+      this.showTourHint(
+        '4',
+        '.output-stats.train.ui-trainLoss',
+        'Training loss',
+        'Loss should generally decrease when the model gets a better representation.'
+      );
+      this.armOneShotDocumentClick(() => this.finishGuide());
+    }
+
+    finishGuide() {
+      if (this.tour) {
+        this.tour.stopAutoReposition();
+        this.tour.clear();
+      }
+    }
+
+    showTourHint(label, selector, title, text) {
       if (!this.tour) return;
 
-      this.cleanupClickStep();
       this.tour.clear();
+      this.tour.showHighlightBox(selector, label);
+      this.tour.showTooltip(selector, title, text, 'bottom');
       this.tour.startAutoReposition();
+    }
 
-      this.tour.showHighlightBox('#custom-bias-editor-group', '1');
+    armOneShotDocumentClick(next) {
+      var done = false;
 
-      var tooltipTitle = 'Modify Bias';
-      var tooltipText =
-        'First, modify the value of the bias and train the model.<br>' +
-        'Observe what happens each time the bias is modified.<br><br>' +
-        'Each neuron follows the form: y = f(x) + b';
+      var handler = (e) => {
+        if (done) return;
+        done = true;
+        if (e) e.stopPropagation();
 
-      this.tour.showTooltip('#custom-bias-editor-group', tooltipTitle, tooltipText, 'right');
+        document.removeEventListener('click', handler, true);
 
-      var clickHandler = () => {
-        this.cleanupClickStep();
-        this.cleanupTour();
+        if (this.tour) {
+          this.tour.stopAutoReposition();
+          this.tour.clear();
+        }
+
+        if (typeof next === 'function') next();
       };
 
       setTimeout(() => {
-        document.addEventListener('click', clickHandler);
-        this._currentClickCleanup = function () {
-          document.removeEventListener('click', clickHandler);
-        };
-      }, 100);
+        document.addEventListener('click', handler, true);
+      }, 120);
     }
 
-    cleanupClickStep() {
-      if (this._currentClickCleanup) {
-        this._currentClickCleanup();
-        this._currentClickCleanup = null;
-      }
-    }
+    showExerciseSuccessCongrats() {
+      var overlay = document.createElement('div');
+      overlay.className = 'tutorial-overlay';
+      overlay.id = 'exo4-success-overlay';
 
-    cleanupTour() {
-      this.cleanupClickStep();
-      if (this.tour) {
-        this.tour.clear();
-        this.tour.stopAutoReposition();
-      }
+      var popup = document.createElement('div');
+      popup.className = 'tutorial-popup';
+      popup.style.background = '#004676';
+      popup.innerHTML =
+        '<h3 style="color:#fff;">Great work!</h3>' +
+        '<p style="color:#fff;">You improved the model with feature engineering. Let’s continue with the quiz.</p>';
+
+      var nextBtn = document.createElement('button');
+      nextBtn.className = 'tutorial-btn';
+      nextBtn.style.background = '#FF553F';
+      nextBtn.innerText = 'Go to Quiz';
+
+      nextBtn.onclick = async (e) => {
+        e.stopPropagation();
+        overlay.remove();
+
+        if (window.StorageService) {
+          var success = await window.StorageService.complete(this.exoId);
+          if (success) {
+            var btnDone = document.getElementById(this.doneBtnId);
+            if (btnDone) {
+              btnDone.innerHTML = '✨ Redirection...';
+              btnDone.disabled = true;
+            }
+          }
+        }
+
+        setTimeout(() => { window.location.href = this.quizUrl; }, 800);
+      };
+
+      popup.appendChild(nextBtn);
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
     }
   }
 
