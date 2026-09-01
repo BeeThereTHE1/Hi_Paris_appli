@@ -1,589 +1,452 @@
 (function () {
-    var ExoBase = window.MLPlaygroundExoBase;
-    var ApiClient = window.MLPlaygroundApiClient;
-    if (!ExoBase) {
-        console.error('ExoBase is not available for exercise 8.');
-        return;
-    }
-    class Exo8 extends ExoBase {
-        constructor() {
-            super();
-            this.apiClient = ApiClient ? new ApiClient() : null;
-            this.exoId = 8;
-            this.currentStepIndex = -1;
-            this.steps = [];
-            this.initExercise();
-        }
+  'use strict';
 
-        async initExercise() {
-            try {
-                if (this.apiClient) {
-                    var exoConfig = await this.apiClient.getExercise(this.exoId).catch(function () { return null; });
-                    if (exoConfig && Array.isArray(exoConfig.steps)) {
-                        this.steps = exoConfig.steps;
-                    }
-                    var userId = this.getCurrentUserIdentifier();
-                    if (userId) {
-                        var progress = await this.apiClient.getProgress(this.exoId, userId).catch(function () { return null; });
-                        if (progress && Number.isInteger(progress.current_step)) {
-                            this.currentStepIndex = progress.current_step;
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn('Unable to initialize exercise 8.', error);
-            }
-            this.setupEventListeners();
-        }
+  var ExoPageBase = window.MLPlaygroundExoPageBase;
 
-        setupEventListeners() {}
+  if (!ExoPageBase) {
+    console.error('MLPlaygroundExoPageBase is not available for exercise 8.');
+    return;
+  }
 
-        async saveProgress(stepIndex, status, scoreDetails) {
-            if (!this.apiClient) return false;
-            var userId = this.getCurrentUserIdentifier();
-            if (!userId) return false;
-            try {
-                await this.apiClient.saveProgress(this.exoId, userId, {
-                    current_step: Number.isInteger(stepIndex) ? stepIndex : 0,
-                    status: status || 'IN_PROGRESS',
-                    score_details: scoreDetails && typeof scoreDetails === 'object' ? scoreDetails : {}
-                });
-                this.currentStepIndex = Number.isInteger(stepIndex) ? stepIndex : this.currentStepIndex;
-                return true;
-            } catch (error) {
-                console.warn('Unable to save progress for exercise 8.', error);
-                return false;
-            }
-        }
+  class Exo8 extends ExoPageBase {
+    constructor() {
+      super({
+        exoId: 8,
+        quizUrl: 'exoquiz/exo8_quiz.html',
+        iframeId: 'iframe-model1', // exo8 uses two iframes; primary one for hook timing
+        saveBtnId: 'btn-sauvegarder',
+        doneBtnId: 'btn-realise',
+        registerUrl: 'Page-demo/register.html'
+      });
+
+      this.translations = null;
+      this.activeArrows = [];
+
+      this.q1Answers = { weights: false, features: false, stops: false, boundaries: false };
+      this.q2Answers = { starts: false, dataset: false, random: false };
+
+      this.model1Started = false;
+      this.model2Started = false;
+      this.model1MinLoss = Infinity;
+      this.model2MinLoss = Infinity;
+      this.activity1Rendered = false;
+
+      this.injectLocalStyles();
+      this.init();
     }
 
-    window.exo8Page = new Exo8();
-})();
+    async init() {
+      await this.initProgressContext();
+      this.wireStandardActionButtons();
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var _this = this;
-var btnSauvegarder = document.getElementById('btn-sauvegarder');
-var btnRealise = document.getElementById('btn-realise');
-btnSauvegarder.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!window.StorageService) return [3, 2];
-                    return [4, window.StorageService.save(8)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnSauvegarder.innerHTML = '✅ Sauvegardé !';
-                        btnSauvegarder.style.opacity = '0.7';
-                        btnSauvegarder.disabled = true;
-                    }
-                    _a.label = 2;
-                case 2: return [2];
-            }
-        });
-    });
-};
-btnRealise.onclick = function () {
-    return __awaiter(_this, void 0, void 0, function () {
-        var isLoggedIn, success;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                    if (!isLoggedIn) {
-                        window.location.href = 'Page-demo/register.html';
-                        return [2];
-                    }
-                    if (!window.StorageService) return [3, 2];
-                    return [4, window.StorageService.complete(8)];
-                case 1:
-                    success = _a.sent();
-                    if (success) {
-                        btnRealise.innerHTML = '✨ Redirection...';
-                        btnRealise.disabled = true;
-                        setTimeout(function () {
-                            window.location.href = 'exoquiz/exo8_quiz.html';
-                        }, 800);
-                    }
-                    _a.label = 2;
-                case 2: return [2];
-            }
-        });
-    });
-};
-var styleEl = document.createElement('style');
-styleEl.textContent = "\n  @keyframes arrow-flash {\n    0%, 100% { opacity: 0; transform: translate(0, 0); }\n    50% { opacity: 1; transform: translate(-10px, 10px); }\n  }\n  .tutorial-arrow {\n    position: absolute;\n    pointer-events: none;\n    z-index: 10000;\n    width: 60px;\n    height: 60px;\n    animation: arrow-flash 0.6s ease-in-out infinite;\n  }\n  \n  .btn-choice {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n    padding: 6px 16px;\n    border-radius: 6px;\n    cursor: pointer;\n    font-weight: 600;\n    transition: all 0.2s ease;\n    min-width: 60px;\n  }\n  .btn-choice:hover {\n    background: rgba(255, 255, 255, 0.15);\n  }\n  .btn-choice.active-yes {\n    background: #10b981;\n    border-color: #10b981;\n    color: white;\n    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);\n  }\n  .btn-choice.active-no {\n    background: #ef4444;\n    border-color: #ef4444;\n    color: white;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);\n  }\n  \n  .btn-validate {\n    display: block;\n    width: 100%;\n    margin-top: 20px;\n    background: #8b5cf6;\n    border: none;\n    color: white;\n    padding: 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    cursor: pointer;\n    transition: all 0.2s;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n  }\n  .btn-validate:hover {\n    background: #7c3aed;\n    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);\n  }\n  \n\n  .feedback-box {\n    background: rgba(255, 255, 255, 0.05);\n    border-left: 4px solid #8b5cf6;\n    padding: 12px;\n    border-radius: 4px;\n    font-size: 13.5px;\n    color: #e2e8f0;\n    line-height: 1.4;\n    margin-top: 10px;\n    animation: fadeIn 0.3s ease;\n  }\n  \n  @keyframes fadeIn {\n    from { opacity: 0; transform: translateY(5px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n";
-document.head.appendChild(styleEl);
-var translations = null;
-var activeArrows = [];
-function loadTranslations() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, titleEl, instrEl, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4, fetch('texte.json')];
-                case 1:
-                    response = _a.sent();
-                    if (!response.ok)
-                        throw new Error("Failed to load translation json");
-                    return [4, response.json()];
-                case 2:
-                    data = _a.sent();
-                    translations = data.exercises.exercise_8;
-                    if (translations) {
-                        if (translations.title) {
-                            document.title = translations.title;
-                            titleEl = document.querySelector('.exo-title');
-                            if (titleEl)
-                                titleEl.innerText = translations.title;
-                        }
-                        if (translations.instructions && translations.instructions.general) {
-                            instrEl = document.querySelector('.exo-instructions');
-                            if (instrEl) {
-                                instrEl.innerText = translations.instructions.general;
-                            }
-                        }
-                    }
-                    return [3, 4];
-                case 3:
-                    error_1 = _a.sent();
-                    console.warn("Could not load translations from JSON.", error_1);
-                    return [3, 4];
-                case 4: return [2];
-            }
-        });
-    });
-}
-function startTutorial() {
-    var overlay = document.createElement('div');
-    overlay.className = 'tutorial-overlay';
-    overlay.id = 'exo8-tutorial-overlay';
-    var popup = document.createElement('div');
-    popup.className = 'tutorial-popup';
-    var h3 = document.createElement('h3');
-    h3.innerText = translations && translations.title ? translations.title : "Exercise #8 : Instability";
-    var p = document.createElement('p');
-    var text = translations && translations.instructions && translations.instructions.general
-        ? translations.instructions.general
-        : "Run the two models below (same dataset and settings) and identify what explains the differences between their results.";
-    p.innerText = text;
-    var timerSpan = document.createElement('span');
-    timerSpan.style.cssText = 'display: block; margin-top: 15px; font-size: 13px; color: #94a3b8;';
-    var nextBtn = document.createElement('button');
-    nextBtn.className = 'tutorial-btn';
-    nextBtn.innerText = "Continue";
-    nextBtn.disabled = true;
-    popup.appendChild(h3);
-    popup.appendChild(p);
-    popup.appendChild(timerSpan);
-    popup.appendChild(nextBtn);
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
-    var wordCount = text.split(/\s+/).length;
-    var timeLeft = 2;
-    function updateTimer() {
-        if (timeLeft > 0) {
-            timerSpan.innerText = "Temps de lecture restant : " + timeLeft + "s";
-            timeLeft--;
-            setTimeout(updateTimer, 1000);
+      window.addEventListener('message', (event) => this.handleWindowMessage(event));
+      window.addEventListener('resize', () => this.repositionArrows());
+      window.addEventListener('scroll', () => this.repositionArrows());
+      window.addEventListener('beforeunload', () => this.clearArrows());
+
+      this.onIframeLoad(async () => {
+        if (this.isCompletedFromQuery()) {
+          this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
+          this.renderCompletedState();
+          return;
         }
-        else {
-            timerSpan.style.display = 'none';
-            nextBtn.disabled = false;
-        }
+        await this.loadTranslations();
+        this.startTutorial();
+      }, 1200);
     }
-    updateTimer();
-    nextBtn.onclick = function () {
-        overlay.remove();
-        setTimeout(function () {
-            showFlashingArrows();
-            renderActivity0();
-        }, 1000);
-    };
-}
-function getIframeElementRect(iframeId, targetSelector) {
-    var iframe = document.getElementById(iframeId);
-    if (!iframe)
-        return null;
-    try {
-        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        var el = iframeDoc.querySelector(targetSelector);
-        if (!el)
-            return null;
-        var iframeRect = iframe.getBoundingClientRect();
-        var elRect = el.getBoundingClientRect();
+
+    async loadTranslations() {
+      try {
+        var response = await fetch('texte.json');
+        if (!response.ok) throw new Error('Failed to load translation json');
+        var data = await response.json();
+        this.translations = data && data.exercises ? data.exercises.exercise_8 : null;
+
+        if (this.translations) {
+          if (this.translations.title) {
+            document.title = this.translations.title;
+            var titleEl = document.querySelector('.exo-title');
+            if (titleEl) titleEl.innerText = this.translations.title;
+          }
+          if (this.translations.instructions && this.translations.instructions.general) {
+            var instrEl = document.querySelector('.exo-instructions');
+            if (instrEl) instrEl.innerText = this.translations.instructions.general;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load translations from JSON.', e);
+      }
+    }
+
+    startTutorial() {
+      var title = (this.translations && this.translations.title) || 'Exercise #8 : Instability';
+      var text =
+        (this.translations && this.translations.instructions && this.translations.instructions.general) ||
+        'Run both models and identify what explains result differences.';
+
+      var handled = this.showTimedIntro({
+        title: title,
+        text: text,
+        seconds: 2,
+        buttonLabel: 'Continue',
+        onContinue: () => {
+          setTimeout(() => {
+            this.showFlashingArrows();
+            this.renderActivity0();
+          }, 1000);
+        }
+      });
+
+      if (!handled) {
+        this.showFlashingArrows();
+        this.renderActivity0();
+      }
+    }
+
+    renderCompletedState() {
+      var qPanel = document.getElementById('quiz-question-panel');
+      if (!qPanel) return;
+      qPanel.innerHTML =
+        '<div class="quiz-question-wrapper">' +
+          '<div class="quiz-question-badge">Exercise Successful</div>' +
+          '<div class="quiz-question-card">You already completed this exercise. You can take the quiz now.</div>' +
+        '</div>';
+    }
+
+    getIframeElementRect(iframeId, selector) {
+      var iframe = document.getElementById(iframeId);
+      if (!iframe) return null;
+
+      try {
+        var doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+        if (!doc) return null;
+        var el = doc.querySelector(selector);
+        if (!el) return null;
+
+        var i = iframe.getBoundingClientRect();
+        var r = el.getBoundingClientRect();
+
         return {
-            top: iframeRect.top + elRect.top,
-            left: iframeRect.left + elRect.left,
-            bottom: iframeRect.top + elRect.bottom,
-            right: iframeRect.left + elRect.right,
-            width: elRect.width,
-            height: elRect.height
+          left: i.left + r.left,
+          top: i.top + r.top,
+          width: r.width,
+          height: r.height
         };
-    }
-    catch (e) {
+      } catch (_e) {
         return null;
+      }
     }
-}
-function showFlashingArrows() {
-    activeArrows.forEach(function (a) { return a.remove(); });
-    activeArrows = [];
-    ['iframe-model1', 'iframe-model2'].forEach(function (iframeId) {
-        var rect = getIframeElementRect(iframeId, '#play-pause-button');
-        if (!rect)
-            return;
+
+    showFlashingArrows() {
+      this.clearArrows();
+
+      ['iframe-model1', 'iframe-model2'].forEach((iframeId) => {
+        var rect = this.getIframeElementRect(iframeId, '#play-pause-button');
+        if (!rect) return;
+
         var arrow = document.createElement('div');
         arrow.className = 'tutorial-arrow';
-        arrow.innerHTML = "\n            <svg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" style=\"filter: drop-shadow(0 0 8px rgba(255, 3, 77, 0.6));\">\n              <path d=\"M50,10 L10,50 M10,50 L25,50 M10,50 L10,35\" stroke=\"#FF034D\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"/>\n            </svg>\n        ";
-        arrow.style.position = 'absolute';
-        arrow.style.pointerEvents = 'none';
-        arrow.style.zIndex = '10000';
-        arrow.style.animation = 'arrow-flash 0.6s ease-in-out infinite';
-        arrow.style.left = rect.left + rect.width / 2 + window.scrollX + "px";
-        arrow.style.top = rect.top - 60 + window.scrollY + "px";
+        arrow.dataset.iframeId = iframeId;
+        arrow.dataset.selector = '#play-pause-button';
+        arrow.innerHTML =
+          '<svg width="60" height="60" viewBox="0 0 60 60" style="filter: drop-shadow(0 0 8px rgba(255,3,77,.6));">' +
+          '<path d="M50,10 L10,50 M10,50 L25,50 M10,50 L10,35" stroke="#FF034D" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>' +
+          '</svg>';
+
+        arrow.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
+        arrow.style.top = (rect.top - 60 + window.scrollY) + 'px';
+
         document.body.appendChild(arrow);
-        activeArrows.push(arrow);
-    });
-    var dismissArrows = function () {
-        activeArrows.forEach(function (a) { return a.remove(); });
-        activeArrows = [];
-        document.removeEventListener('click', dismissArrows);
-        ['iframe-model1', 'iframe-model2'].forEach(function (iframeId) {
-            try {
-                var iframe_1 = document.getElementById(iframeId);
-                if (iframe_1 && iframe_1.contentWindow) {
-                    iframe_1.contentWindow.document.removeEventListener('click', dismissArrows);
-                }
+        this.activeArrows.push(arrow);
+      });
+
+      var dismiss = () => this.clearArrows();
+      setTimeout(() => {
+        document.addEventListener('click', dismiss, { once: true });
+        ['iframe-model1', 'iframe-model2'].forEach((iframeId) => {
+          try {
+            var iframe = document.getElementById(iframeId);
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.document.addEventListener('click', dismiss, { once: true });
             }
-            catch (e) { }
+          } catch (_e) {}
         });
-    };
-    setTimeout(function () {
-        document.addEventListener('click', dismissArrows);
-        ['iframe-model1', 'iframe-model2'].forEach(function (iframeId) {
-            try {
-                var iframe_2 = document.getElementById(iframeId);
-                if (iframe_2 && iframe_2.contentWindow) {
-                    iframe_2.contentWindow.document.addEventListener('click', dismissArrows);
-                }
-            }
-            catch (e) { }
-        });
-    }, 100);
-}
-function renderActivity0() {
-    var qPanel = document.getElementById('quiz-question-panel');
-    var fPanel = document.getElementById('quiz-feedback-panel');
-    if (!qPanel || !fPanel)
-        return;
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 1</div>\n            <div class=\"quiz-question-card\">\n             Launch both models by clicking the play button on each of them, and wait for the training losses to decrease below 0.01.\n            </div>\n        </div>\n        <div style=\"margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);\">\n            <div style=\"display:flex; justify-content:space-between; margin-bottom:10px; font-size:13.5px;\">\n                <span>Model 1 (Seed A) :</span>\n                <span id=\"model1-status-text\" style=\"font-weight:700; color:#ef4444;\">Not launched \u23F3</span>\n            </div>\n            <div style=\"display:flex; justify-content:space-between; font-size:13.5px;\">\n                <span>Model 2 (Seed B) :</span>\n                <span id=\"model2-status-text\" style=\"font-weight:700; color:#ef4444;\">Not launched \u23F3</span>\n            </div>\n        </div>\n    ";
-    fPanel.innerHTML = '';
-}
-var q1Answers = {
-    weights: false,
-    features: false,
-    stops: false,
-    boundaries: false
-};
-function renderActivity1() {
-    var qPanel = document.getElementById('quiz-question-panel');
-    var fPanel = document.getElementById('quiz-feedback-panel');
-    if (!qPanel || !fPanel)
-        return;
-    fPanel.innerHTML = '';
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 1</div>\n            <div class=\"quiz-question-card\">\n                What differences do you observe between the two results? (S\u00E9lectionnez toutes the correct answers)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"weights\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The final weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"features\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The input features change</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"stops\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The training stops earlier in one model</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"boundaries\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The decision boundaries are different</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act1\">Submit</button>\n    ";
-    var optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
-    var _loop_1 = function (i) {
-        var btn = optionBtns[i];
-        var key = btn.getAttribute('data-key');
-        btn.onclick = function () {
-            q1Answers[key] = !q1Answers[key];
-            var checkbox = btn.querySelector('.quiz-option-checkbox');
-            if (q1Answers[key]) {
-                checkbox.style.backgroundColor = '#8b5cf6';
-                checkbox.innerHTML = '✓';
-                checkbox.style.display = 'inline-flex';
-                checkbox.style.alignItems = 'center';
-                checkbox.style.justifyContent = 'center';
-                checkbox.style.color = '#fff';
-                checkbox.style.fontSize = '12px';
-            }
-            else {
-                checkbox.style.backgroundColor = 'transparent';
-                checkbox.innerHTML = '';
-            }
-        };
-    };
-    for (var i = 0; i < optionBtns.length; i++) {
-        _loop_1(i);
+      }, 100);
     }
-    var validateBtn = document.getElementById('btn-validate-act1');
-    validateBtn.onclick = function () {
-        var isCorrect = q1Answers.weights && !q1Answers.features && !q1Answers.stops && q1Answers.boundaries;
-        if (isCorrect) {
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                    <strong>That\u2019s right!</strong> The models use the same data and settings, but their results differ (boundaries and weights).\n                    <button class=\"btn-validate\" id=\"btn-ok-act1\" style=\"margin-top:10px; padding:6px 12px; font-size:12px;\">OK</button>\n                </div>\n            ";
-            var okBtn = document.getElementById('btn-ok-act1');
-            okBtn.onclick = function () {
-                renderActivity2();
-            };
-        }
-        else {
-            var fbMsg = "";
-            if (q1Answers.features) {
-                fbMsg = "The input features change: The input features remain the same in both models.";
-            }
-            else if (q1Answers.stops) {
-                fbMsg = "The training stops earlier in one model: Both models use the same training process.";
-            }
-            else {
-                fbMsg = "Essayez à nouveau de repérer all the differences réelles (poids et frontières).";
-            }
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    " + fbMsg + "\n                    <button class=\"btn-validate\" id=\"btn-retry-act1\" style=\"margin-top:10px; padding:6px 12px; font-size:12px; background:#475569;\">OK</button>\n                </div>\n            ";
-            var retryBtn = document.getElementById('btn-retry-act1');
-            retryBtn.onclick = function () {
-                fPanel.innerHTML = '';
-            };
-        }
-    };
-}
-var q2Answers = {
-    starts: false,
-    dataset: false,
-    random: false
-};
-function renderActivity2() {
-    var qPanel = document.getElementById('quiz-question-panel');
-    var fPanel = document.getElementById('quiz-feedback-panel');
-    if (!qPanel || !fPanel)
-        return;
-    fPanel.innerHTML = '';
-    qPanel.innerHTML = "\n        <div class=\"quiz-question-wrapper\">\n            <div class=\"quiz-question-badge\">Activity 2</div>\n            <div class=\"quiz-question-card\">\n                You observed that the decision boundaries are different in each run, even though nothing was changed. What is the main reason? (S\u00E9lectionnez toutes the correct answers)\n            </div>\n        </div>\n        <div class=\"quiz-options-container\" style=\"display:flex; flex-direction:column; gap:10px; margin-top:15px;\">\n            <button class=\"quiz-option-btn\" data-key=\"starts\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">Each run starts from a different set of weights</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"dataset\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The dataset changes slightly between runs</span>\n            </button>\n            <button class=\"quiz-option-btn\" data-key=\"random\" style=\"display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:12px; border-radius:8px; cursor:pointer;\">\n                <span class=\"quiz-option-checkbox\" style=\"width:16px; height:16px; border:1px solid #fff; border-radius:3px; display:inline-block;\"></span>\n                <span class=\"quiz-option-text\">The initial weights are randomly assigned at the start</span>\n            </button>\n        </div>\n        <button class=\"btn-validate\" id=\"btn-validate-act2\">Submit</button>\n    ";
-    var optionBtns = qPanel.querySelectorAll('.quiz-option-btn');
-    var _loop_2 = function (i) {
-        var btn = optionBtns[i];
-        var key = btn.getAttribute('data-key');
-        btn.onclick = function () {
-            q2Answers[key] = !q2Answers[key];
-            var checkbox = btn.querySelector('.quiz-option-checkbox');
-            if (q2Answers[key]) {
-                checkbox.style.backgroundColor = '#8b5cf6';
-                checkbox.innerHTML = '✓';
-                checkbox.style.display = 'inline-flex';
-                checkbox.style.alignItems = 'center';
-                checkbox.style.justifyContent = 'center';
-                checkbox.style.color = '#fff';
-                checkbox.style.fontSize = '12px';
-            }
-            else {
-                checkbox.style.backgroundColor = 'transparent';
-                checkbox.innerHTML = '';
-            }
-        };
-    };
-    for (var i = 0; i < optionBtns.length; i++) {
-        _loop_2(i);
+
+    repositionArrows() {
+      if (!this.activeArrows.length) return;
+
+      this.activeArrows.forEach((arrow) => {
+        var iframeId = arrow.dataset.iframeId;
+        var selector = arrow.dataset.selector;
+        if (!iframeId || !selector) return;
+        var rect = this.getIframeElementRect(iframeId, selector);
+        if (!rect) return;
+        arrow.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
+        arrow.style.top = (rect.top - 60 + window.scrollY) + 'px';
+      });
     }
-    var validateBtn = document.getElementById('btn-validate-act2');
-    validateBtn.onclick = function () {
-        var isCorrect = q2Answers.starts && !q2Answers.dataset && q2Answers.random;
-        if (isCorrect) {
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.1);\">\n                    <strong>That\u2019s correct!</strong> Each run starts with randomly initialized weights, so the model begins learning from a different starting point and converges to a different solution (different boundary and final weights).\n                    <button class=\"btn-validate\" id=\"btn-ok-act2\" style=\"margin-top:10px; padding:6px 12px; font-size:12px;\">OK</button>\n                </div>\n            ";
-            var okBtn = document.getElementById('btn-ok-act2');
-            okBtn.onclick = function () {
-                showFinalSummary();
-            };
-        }
-        else {
-            var fbMsg = "Certaines réponses sont incorrectes.";
-            if (q2Answers.dataset) {
-                fbMsg = "The dataset does not change. Both models use exactly the same data — the difference comes from how the model is initialized, not from the data itself.";
-            }
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1);\">\n                    " + fbMsg + "\n                    <button class=\"btn-validate\" id=\"btn-retry-act2\" style=\"margin-top:10px; padding:6px 12px; font-size:12px; background:#475569;\">OK</button>\n                </div>\n            ";
-            var retryBtn = document.getElementById('btn-retry-act2');
-            retryBtn.onclick = function () {
-                fPanel.innerHTML = '';
-            };
-        }
-    };
-}
-function showFinalSummary() {
-    var overlay = document.createElement('div');
-    overlay.className = 'tutorial-overlay';
-    overlay.style.zIndex = '10005';
-    var popup = document.createElement('div');
-    popup.className = 'tutorial-popup';
-    popup.style.maxWidth = '550px';
-    var h3 = document.createElement('h3');
-    h3.innerText = "The model is unstable.";
-    var p = document.createElement('p');
-    p.innerHTML = "A neural network learns by adjusting its weights step by step. Without a fixed seed, random weight initialization leads to different starting points. As a result, each run can produce a different model, even with the same data and parameters.";
-    p.style.textAlign = 'left';
-    var okBtn = document.createElement('button');
-    okBtn.className = 'tutorial-btn';
-    okBtn.innerText = "OK";
-    popup.appendChild(h3);
-    popup.appendChild(p);
-    popup.appendChild(okBtn);
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
-    okBtn.onclick = function () {
+
+    clearArrows() {
+      this.activeArrows.forEach(function (a) { a.remove(); });
+      this.activeArrows = [];
+    }
+
+    renderActivity0() {
+      var p = this.getPanels('quiz-question-panel', 'quiz-feedback-panel');
+      if (!p.questionPanel || !p.feedbackPanel) return;
+
+      p.questionPanel.innerHTML =
+        '<div class="quiz-question-wrapper">' +
+          '<div class="quiz-question-badge">Activity 0</div>' +
+          '<div class="quiz-question-card">' +
+            'Run both models until they converge (very low loss), then continue.' +
+            '<div style="margin-top:10px;">' +
+              'Model 1: <span id="model1-status-text" style="color:#ef4444;">Not started ⏳</span><br>' +
+              'Model 2: <span id="model2-status-text" style="color:#ef4444;">Not started ⏳</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      p.feedbackPanel.innerHTML = '';
+    }
+
+    renderActivity1() {
+      var p = this.getPanels('quiz-question-panel', 'quiz-feedback-panel');
+      if (!p.questionPanel || !p.feedbackPanel) return;
+
+      this.q1Answers = { weights: false, features: false, stops: false, boundaries: false };
+      p.feedbackPanel.innerHTML = '';
+
+      p.questionPanel.innerHTML =
+        '<div class="quiz-question-wrapper">' +
+          '<div class="quiz-question-badge">Activity 1</div>' +
+          '<div class="quiz-question-card">Which differences did you observe between model outputs?</div>' +
+        '</div>' +
+        this.optionBtn('weights', 'Weights are different') +
+        this.optionBtn('features', 'Input features change') +
+        this.optionBtn('stops', 'Training stops earlier in one model') +
+        this.optionBtn('boundaries', 'Decision boundaries are different') +
+        '<div style="margin-top:10px;"><button id="btn-validate-act1" class="tutorial-btn">Validate</button></div>';
+
+      this.bindOptionButtons(this.q1Answers);
+
+      var validateBtn = document.getElementById('btn-validate-act1');
+      if (validateBtn) validateBtn.onclick = () => this.validateActivity1();
+    }
+
+    renderActivity2() {
+      var p = this.getPanels('quiz-question-panel', 'quiz-feedback-panel');
+      if (!p.questionPanel || !p.feedbackPanel) return;
+
+      this.q2Answers = { starts: false, dataset: false, random: false };
+      p.feedbackPanel.innerHTML = '';
+
+      p.questionPanel.innerHTML =
+        '<div class="quiz-question-wrapper">' +
+          '<div class="quiz-question-badge">Activity 2</div>' +
+          '<div class="quiz-question-card">Why can two runs produce different results?</div>' +
+        '</div>' +
+        this.optionBtn('starts', 'Different random starting weights') +
+        this.optionBtn('dataset', 'Different datasets are used') +
+        this.optionBtn('random', 'Random initialization without fixed seed') +
+        '<div style="margin-top:10px;"><button id="btn-validate-act2" class="tutorial-btn">Validate</button></div>';
+
+      this.bindOptionButtons(this.q2Answers);
+
+      var validateBtn = document.getElementById('btn-validate-act2');
+      if (validateBtn) validateBtn.onclick = () => this.validateActivity2();
+    }
+
+    optionBtn(key, label) {
+      return (
+        '<button class="quiz-option-btn" data-key="' + key + '">' +
+          '<span class="quiz-option-checkbox"></span>' +
+          '<span>' + label + '</span>' +
+        '</button>'
+      );
+    }
+
+    bindOptionButtons(stateObj) {
+      var buttons = document.querySelectorAll('.quiz-option-btn');
+      buttons.forEach((btn) => {
+        var key = btn.getAttribute('data-key');
+        if (!key) return;
+
+        btn.onclick = () => {
+          stateObj[key] = !stateObj[key];
+          var checkbox = btn.querySelector('.quiz-option-checkbox');
+          if (!checkbox) return;
+
+          if (stateObj[key]) {
+            checkbox.style.backgroundColor = '#8b5cf6';
+            checkbox.innerHTML = '✓';
+            checkbox.style.display = 'inline-flex';
+            checkbox.style.alignItems = 'center';
+            checkbox.style.justifyContent = 'center';
+            checkbox.style.color = '#fff';
+            checkbox.style.fontSize = '12px';
+          } else {
+            checkbox.style.backgroundColor = 'transparent';
+            checkbox.innerHTML = '';
+          }
+        };
+      });
+    }
+
+    validateActivity1() {
+      var fPanel = document.getElementById('quiz-feedback-panel');
+      if (!fPanel) return;
+
+      var isCorrect = this.q1Answers.weights && !this.q1Answers.features && !this.q1Answers.stops && this.q1Answers.boundaries;
+      if (isCorrect) {
+        fPanel.innerHTML =
+          '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.1);">' +
+            '<strong>That’s right.</strong> The key observed differences are weights and boundaries.' +
+          '</div>' +
+          '<div style="margin-top:10px;"><button id="btn-ok-act1" class="tutorial-btn">Continue</button></div>';
+        var okBtn = document.getElementById('btn-ok-act1');
+        if (okBtn) okBtn.onclick = () => this.renderActivity2();
+      } else {
+        var msg = 'Try again by focusing on actual model-output differences.';
+        if (this.q1Answers.features) msg = 'Input features do not change between the two models.';
+        else if (this.q1Answers.stops) msg = 'Both use the same training process; early stop is not the explanation here.';
+        fPanel.innerHTML =
+          '<div class="feedback-box" style="border-left-color:#ef4444;background:rgba(239,68,68,.1);">' + msg + '</div>';
+      }
+    }
+
+    validateActivity2() {
+      var fPanel = document.getElementById('quiz-feedback-panel');
+      if (!fPanel) return;
+
+      var isCorrect = this.q2Answers.starts && !this.q2Answers.dataset && this.q2Answers.random;
+      if (isCorrect) {
+        fPanel.innerHTML =
+          '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.1);">' +
+            '<strong>Correct.</strong> Random initialization changes the optimization path.' +
+          '</div>' +
+          '<div style="margin-top:10px;"><button id="btn-ok-act2" class="tutorial-btn">Finish</button></div>';
+        var okBtn = document.getElementById('btn-ok-act2');
+        if (okBtn) okBtn.onclick = () => this.showFinalSummary();
+      } else {
+        var msg2 = 'Some answers are incorrect.';
+        if (this.q2Answers.dataset) msg2 = 'Dataset is identical in both runs; randomness comes from initialization.';
+        fPanel.innerHTML =
+          '<div class="feedback-box" style="border-left-color:#ef4444;background:rgba(239,68,68,.1);">' + msg2 + '</div>';
+      }
+    }
+
+    showFinalSummary() {
+      var overlay = document.createElement('div');
+      overlay.className = 'tutorial-overlay';
+      overlay.style.zIndex = '10005';
+
+      var popup = document.createElement('div');
+      popup.className = 'tutorial-popup';
+      popup.style.maxWidth = '550px';
+      popup.innerHTML =
+        '<h3>The model is unstable.</h3>' +
+        '<p style="text-align:left;">Without a fixed seed, random initialization gives different starting points, so each run can converge differently.</p>';
+
+      var okBtn = document.createElement('button');
+      okBtn.className = 'tutorial-btn';
+      okBtn.innerText = 'OK';
+      okBtn.onclick = () => {
         overlay.remove();
-        btnRealise.removeAttribute('disabled');
-        btnRealise.classList.remove('btn-disabled');
-        btnRealise.classList.add('btn-success-ready');
-        btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
+        this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
+
         var fPanel = document.getElementById('quiz-feedback-panel');
         if (fPanel) {
-            fPanel.innerHTML = "\n                <div class=\"feedback-box\" style=\"border-left-color: #10b981; background: rgba(16, 185, 129, 0.15); margin-top: 15px; font-weight: 700;\">\n                    \u2728 Exercise Successful!! Click on the \"Take the quiz\" button at the bottom right to continue to the final quiz of the exercise.\n                </div>\n            ";
+          fPanel.innerHTML =
+            '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.15);margin-top:15px;font-weight:700;">' +
+              '✅ You can now proceed to the quiz.' +
+            '</div>';
         }
-    };
-}
-var model1Started = false;
-var model2Started = false;
-var model1MinLoss = Infinity;
-var model2MinLoss = Infinity;
-var activity1Rendered = false;
-window.addEventListener('message', function (event) {
-    if (event.data.type === 'EXO8_STEP') {
-        var _a = event.data, modelId = _a.modelId, lossTrain = _a.lossTrain, iter = _a.iter;
+      };
+
+      popup.appendChild(okBtn);
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+    }
+
+    handleWindowMessage(event) {
+      if (!event || !event.data) return;
+      var d = event.data;
+
+      if (d.type === 'EXO8_STEP') {
+        var modelId = d.modelId;
+        var lossTrain = typeof d.lossTrain === 'number' ? d.lossTrain : Number(d.lossTrain);
+
         if (modelId === '1') {
-            model1Started = true;
-            if (lossTrain < model1MinLoss)
-                model1MinLoss = lossTrain;
-            var model1Status = document.getElementById('model1-status-text');
-            if (model1Status) {
-                if (model1MinLoss <= 0.01) {
-                    model1Status.innerHTML = "Pr\u00EAt ! loss = " + model1MinLoss.toFixed(5) + " \u2705";
-                    model1Status.style.color = '#10b981';
-                }
-                else {
-                    model1Status.innerHTML = "In progress (loss: " + lossTrain.toFixed(4) + ") \u23F3";
-                    model1Status.style.color = '#3b82f6';
-                }
-            }
+          this.model1Started = true;
+          if (lossTrain < this.model1MinLoss) this.model1MinLoss = lossTrain;
+          this.updateModelStatus('model1-status-text', this.model1MinLoss, lossTrain);
+        } else if (modelId === '2') {
+          this.model2Started = true;
+          if (lossTrain < this.model2MinLoss) this.model2MinLoss = lossTrain;
+          this.updateModelStatus('model2-status-text', this.model2MinLoss, lossTrain);
         }
-        else if (modelId === '2') {
-            model2Started = true;
-            if (lossTrain < model2MinLoss)
-                model2MinLoss = lossTrain;
-            var model2Status = document.getElementById('model2-status-text');
-            if (model2Status) {
-                if (model2MinLoss <= 0.01) {
-                    model2Status.innerHTML = "Pr\u00EAt ! loss = " + model2MinLoss.toFixed(5) + " \u2705";
-                    model2Status.style.color = '#10b981';
-                }
-                else {
-                    model2Status.innerHTML = "In progress (loss: " + lossTrain.toFixed(4) + ") \u23F3";
-                    model2Status.style.color = '#3b82f6';
-                }
-            }
+
+        if (
+          this.model1Started &&
+          this.model2Started &&
+          this.model1MinLoss <= 0.01 &&
+          this.model2MinLoss <= 0.01 &&
+          !this.activity1Rendered
+        ) {
+          this.activity1Rendered = true;
+          this.clearArrows();
+          setTimeout(() => this.renderActivity1(), 900);
         }
-        if (model1Started && model2Started && model1MinLoss <= 0.01 && model2MinLoss <= 0.01 && !activity1Rendered) {
-            activity1Rendered = true;
-            activeArrows.forEach(function (a) { return a.remove(); });
-            activeArrows = [];
-            setTimeout(function () {
-                renderActivity1();
-            }, 1000);
+      }
+
+      if (d.type === 'EXO8_RESET') {
+        if (d.modelId === '1') {
+          this.model1Started = false;
+          this.model1MinLoss = Infinity;
+          this.resetModelStatus('model1-status-text');
+        } else if (d.modelId === '2') {
+          this.model2Started = false;
+          this.model2MinLoss = Infinity;
+          this.resetModelStatus('model2-status-text');
         }
+      }
     }
-    else if (event.data.type === 'EXO8_RESET') {
-        var modelId = event.data.modelId;
-        if (modelId === '1') {
-            model1Started = false;
-            model1MinLoss = Infinity;
-            var model1Status = document.getElementById('model1-status-text');
-            if (model1Status) {
-                model1Status.innerHTML = "Non lancé ⏳";
-                model1Status.style.color = '#ef4444';
-            }
-        }
-        else if (modelId === '2') {
-            model2Started = false;
-            model2MinLoss = Infinity;
-            var model2Status = document.getElementById('model2-status-text');
-            if (model2Status) {
-                model2Status.innerHTML = "Non lancé ⏳";
-                model2Status.style.color = '#ef4444';
-            }
-        }
+
+    updateModelStatus(elId, minLoss, currentLoss) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+
+      if (minLoss <= 0.01) {
+        el.innerHTML = 'Ready! loss = ' + minLoss.toFixed(5) + ' ✅';
+        el.style.color = '#10b981';
+      } else {
+        el.innerHTML = 'In progress (loss: ' + currentLoss.toFixed(4) + ') ⏳';
+        el.style.color = '#3b82f6';
+      }
     }
-});
-window.addEventListener('resize', function () {
-    if (activeArrows.length > 0) {
-        showFlashingArrows();
+
+    resetModelStatus(elId) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+      el.innerHTML = 'Not started ⏳';
+      el.style.color = '#ef4444';
     }
-});
-window.addEventListener('scroll', function () {
-    if (activeArrows.length > 0) {
-        showFlashingArrows();
+
+    injectLocalStyles() {
+      if (document.getElementById('exo8-local-styles')) return;
+      var styleEl = document.createElement('style');
+      styleEl.id = 'exo8-local-styles';
+      styleEl.textContent =
+        '@keyframes arrow-flash{0%,100%{opacity:0;transform:translate(0,0)}50%{opacity:1;transform:translate(-10px,10px)}}' +
+        '.tutorial-arrow{position:absolute;pointer-events:none;z-index:10000;animation:arrow-flash .6s ease-in-out infinite;}' +
+        '.quiz-option-btn{display:flex;gap:10px;align-items:center;width:100%;margin:8px 0;padding:10px 12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);border-radius:8px;cursor:pointer;color:#e2e8f0;text-align:left;}' +
+        '.quiz-option-checkbox{width:18px;height:18px;border:1px solid #8b5cf6;border-radius:4px;display:inline-block;}';
+      document.head.appendChild(styleEl);
     }
-});
-var iframe1 = document.getElementById('iframe-model1');
-if (iframe1) {
-    iframe1.addEventListener('load', function () {
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('completed') === 'true') {
-            btnRealise.removeAttribute('disabled');
-            btnRealise.classList.remove('btn-disabled');
-            btnRealise.classList.add('btn-success-ready');
-            btnRealise.innerHTML = '<span class="icon">📝</span> Take the quiz';
-            var qPanel = document.getElementById('quiz-question-panel');
-            if (qPanel) {
-                qPanel.innerHTML = "\n                    <div class=\"quiz-question-wrapper\">\n                        <div class=\"quiz-question-badge\">Exercise Successful</div>\n                        <div class=\"quiz-question-card\">\n                            You have already validated this exercise ! Vous pouvez passer au quiz final.\n                        </div>\n                    </div>\n                ";
-            }
-            return;
-        }
-        setTimeout(function () {
-            return __awaiter(_this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, loadTranslations()];
-                        case 1:
-                            _a.sent();
-                            startTutorial();
-                            return [2];
-                    }
-                });
-            });
-        }, 1200);
-    });
-}
+  }
+
+  window.exo8Page = new Exo8();
+})();
