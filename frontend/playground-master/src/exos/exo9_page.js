@@ -12,6 +12,7 @@
     constructor() {
       super({
         exoId: 9,
+        // quizUrl reste utile en fallback si page dédiée
         quizUrl: 'exoquiz/exo9_quiz.html',
         iframeId: 'iframe-model1',
         saveBtnId: 'btn-sauvegarder',
@@ -56,6 +57,10 @@
       this._boundScroll = null;
       this._activeHighlightEl = null;
 
+      // Window mode
+      this.activeWindow = 'sim'; // 'sim' | 'quiz'
+      this.quizLoaded = false;
+
       this.init();
     }
 
@@ -63,9 +68,14 @@
       await this.initProgressContext();
 
       if (window.ExoCommonPage && window.ExoCommonPage.initProfileWidget) {
-        window.ExoCommonPage.initProfileWidget({ showStats: false, historyLabel: 'Mon Historique', logoutLabel: 'Logout' });
+        window.ExoCommonPage.initProfileWidget({
+          showStats: false,
+          historyLabel: 'Mon Historique',
+          logoutLabel: 'Logout'
+        });
       }
 
+      this.setupWindowedLayout();
       this.setupButtons();
       this.setupGuideFlow();
       this.disableSimulatorInteraction();
@@ -74,17 +84,131 @@
       window.addEventListener('beforeunload', () => this.cleanup());
     }
 
+    // =========================
+    // Windowed Layout (Full Screen Switch)
+    // =========================
+    setupWindowedLayout() {
+      // Root containers expected in page:
+      // - #main-part (simulation area existing)
+      // We'll create:
+      // - top switch bar
+      // - #exo9-window-sim (wrap main-part)
+      // - #exo9-window-quiz (quiz iframe full area)
+      var mainPart = document.getElementById('main-part');
+      if (!mainPart) return;
+
+      // Create top switch bar
+      var switchBar = document.createElement('div');
+      switchBar.id = 'exo9-window-switchbar';
+      switchBar.style.display = 'flex';
+      switchBar.style.gap = '8px';
+      switchBar.style.padding = '10px 12px';
+      switchBar.style.background = '#0f172a';
+      switchBar.style.borderBottom = '1px solid #1e293b';
+      switchBar.style.position = 'sticky';
+      switchBar.style.top = '0';
+      switchBar.style.zIndex = '1000';
+
+      var btnSim = document.createElement('button');
+      btnSim.id = 'exo9-btn-window-sim';
+      btnSim.className = 'tutorial-btn';
+      btnSim.style.background = '#FF553F';
+      btnSim.style.color = '#fff';
+      btnSim.innerText = '🧪 Simulation';
+
+      var btnQuiz = document.createElement('button');
+      btnQuiz.id = 'exo9-btn-window-quiz';
+      btnQuiz.className = 'tutorial-btn';
+      btnQuiz.style.background = '#334155';
+      btnQuiz.style.color = '#fff';
+      btnQuiz.innerText = '📝 Quiz';
+
+      switchBar.appendChild(btnSim);
+      switchBar.appendChild(btnQuiz);
+
+      // Insert bar before main content
+      var parent = mainPart.parentNode;
+      parent.insertBefore(switchBar, mainPart);
+
+      // Wrap simulation in its own window container
+      var simWindow = document.createElement('section');
+      simWindow.id = 'exo9-window-sim';
+      simWindow.style.display = 'block';
+      simWindow.style.minHeight = 'calc(100vh - 64px)';
+      simWindow.style.padding = '8px 0 0 0';
+
+      parent.insertBefore(simWindow, mainPart);
+      simWindow.appendChild(mainPart);
+
+      // Create quiz window container
+      var quizWindow = document.createElement('section');
+      quizWindow.id = 'exo9-window-quiz';
+      quizWindow.style.display = 'none';
+      quizWindow.style.minHeight = 'calc(100vh - 64px)';
+      quizWindow.style.padding = '8px 0 0 0';
+
+      var quizFrame = document.createElement('iframe');
+      quizFrame.id = 'exo9-quiz-iframe';
+      quizFrame.title = 'Exercise 9 Quiz';
+      quizFrame.style.width = '100%';
+      quizFrame.style.height = 'calc(100vh - 90px)';
+      quizFrame.style.border = '0';
+      quizFrame.style.borderRadius = '10px';
+      quizFrame.style.background = '#fff';
+
+      // Important:
+      // If you already have an embedded quiz route/page that can run standalone, put it here.
+      // Fallback to existing exo quiz URL.
+      quizFrame.src = this.quizUrl;
+
+      quizWindow.appendChild(quizFrame);
+      parent.insertBefore(quizWindow, simWindow.nextSibling);
+
+      // Bind switch
+      btnSim.addEventListener('click', () => this.switchWindow('sim'));
+      btnQuiz.addEventListener('click', () => this.switchWindow('quiz'));
+
+      this.switchWindow('sim');
+    }
+
+    switchWindow(mode) {
+      this.activeWindow = mode === 'quiz' ? 'quiz' : 'sim';
+
+      var simWindow = document.getElementById('exo9-window-sim');
+      var quizWindow = document.getElementById('exo9-window-quiz');
+      var btnSim = document.getElementById('exo9-btn-window-sim');
+      var btnQuiz = document.getElementById('exo9-btn-window-quiz');
+
+      if (!simWindow || !quizWindow || !btnSim || !btnQuiz) return;
+
+      var isSim = this.activeWindow === 'sim';
+
+      simWindow.style.display = isSim ? 'block' : 'none';
+      quizWindow.style.display = isSim ? 'none' : 'block';
+
+      btnSim.style.background = isSim ? '#FF553F' : '#334155';
+      btnQuiz.style.background = isSim ? '#334155' : '#FF553F';
+
+      // keep guide correctly positioned when returning to sim
+      if (isSim) this.repositionCurrentGuide();
+    }
+
+    // =========================
+    // Existing buttons/save flow
+    // =========================
     setupButtons() {
       var btnSave = document.getElementById(this.saveBtnId);
       var btnDone = document.getElementById(this.doneBtnId);
 
       if (btnDone) {
-        btnDone.disabled = true;
-        btnDone.classList.add('btn-disabled');
+        // Ici on n'impose pas un lock strict: coexistence sim+quiz demandée
+        btnDone.disabled = false;
+        btnDone.classList.remove('btn-disabled');
+        btnDone.innerHTML = '📝 Open Quiz Window';
       }
 
       if (btnSave) btnSave.onclick = () => this.handleSaveDraft();
-      if (btnDone) btnDone.onclick = () => this.goToQuiz();
+      if (btnDone) btnDone.onclick = () => this.switchWindow('quiz');
     }
 
     async handleSaveDraft() {
@@ -95,7 +219,8 @@
 
       var ok = await this.saveProgress(Math.max(this.currentStepIndex, 0), 'IN_PROGRESS', {
         completed_steps: 0,
-        total_steps: this.guideSteps.length
+        total_steps: this.guideSteps.length,
+        mode: 'windowed_sim_quiz'
       });
 
       if (!ok) {
@@ -111,10 +236,9 @@
       }
     }
 
-    goToQuiz() {
-      window.location.href = this.quizUrl;
-    }
-
+    // =========================
+    // Guide flow
+    // =========================
     setupGuideFlow() {
       var btnNext = document.getElementById('btnNext');
       var overlay = document.getElementById('readingOverlay');
@@ -153,10 +277,11 @@
     startGuideSequence() {
       this.currentGuideIndex = 0;
       var guideTopBox = document.getElementById('guide-top-box');
-      if (!guideTopBox) {
-        this.finishGuide();
-        return;
-      }
+      if (!guideTopBox) return this.finishGuide();
+
+      // force simulation window during guide
+      this.switchWindow('sim');
+
       guideTopBox.style.display = 'block';
       guideTopBox.style.position = 'absolute';
       this.showGuideStep(this.currentGuideIndex);
@@ -167,15 +292,8 @@
       var guideText = document.getElementById('guide-text-content');
       var btnGuideOk = document.getElementById('btn-guide-ok');
 
-      if (!guideTopBox || !guideText || !btnGuideOk) {
-        this.finishGuide();
-        return;
-      }
-
-      if (index >= this.guideSteps.length) {
-        this.finishGuide();
-        return;
-      }
+      if (!guideTopBox || !guideText || !btnGuideOk) return this.finishGuide();
+      if (index >= this.guideSteps.length) return this.finishGuide();
 
       var step = this.guideSteps[index];
       guideText.innerText = step.text;
@@ -208,10 +326,14 @@
       this.clearCurrentHighlight();
       this.enableSimulatorInteraction();
 
-      this.unlockQuizButton(this.doneBtnId, '📝 Take the Quiz');
-
+      // bouton principal = bascule vers fenêtre quiz
       var btnDone = document.getElementById(this.doneBtnId);
-      if (btnDone) btnDone.onclick = () => this.goToQuiz();
+      if (btnDone) {
+        btnDone.disabled = false;
+        btnDone.classList.remove('btn-disabled');
+        btnDone.innerHTML = '📝 Open Quiz Window';
+        btnDone.onclick = () => this.switchWindow('quiz');
+      }
     }
 
     applyHighlight(elId) {
@@ -230,6 +352,8 @@
     }
 
     positionGuideNear(targetId) {
+      if (this.activeWindow !== 'sim') return;
+
       var guideTopBox = document.getElementById('guide-top-box');
       var targetEl = document.getElementById(targetId);
       if (!guideTopBox || !targetEl) return;
@@ -269,14 +393,16 @@
     }
 
     bindRepositionEvents() {
+      // léger et naturel (pas d'interval agressif)
       this._boundResize = () => this.repositionCurrentGuide();
       this._boundScroll = () => this.repositionCurrentGuide();
 
       window.addEventListener('resize', this._boundResize);
-      window.addEventListener('scroll', this._boundScroll);
+      window.addEventListener('scroll', this._boundScroll, { passive: true });
     }
 
     repositionCurrentGuide() {
+      if (this.activeWindow !== 'sim') return;
       if (this.currentGuideIndex < 0 || this.currentGuideIndex >= this.guideSteps.length) return;
       var step = this.guideSteps[this.currentGuideIndex];
       if (!step) return;
