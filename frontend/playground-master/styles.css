@@ -1625,4 +1625,45 @@ body[data-exo="1"] .dataset[title="Spiral"] {
   z-index: 9999;
   line-height: 1.5;
   font-weight: 400;
-}
+}
+
+/* Exo9 window switcher (simulation <-> quiz) */
+#exo9-window-switchbar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+#exo9-window-switchbar .tutorial-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+
+#exo9-window-sim,
+#exo9-window-quiz {
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+#exo9-window-quiz {
+  background: #0b1220;
+}
+
+#exo9-quiz-iframe {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 90px);
+  border: 0;
+  border-radius: 10px;
+  background: #fff;
+}
