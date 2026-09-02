@@ -179,7 +179,6 @@ async function main() {
     
     if (errorCount === 0) {
         console.log('🎉 Tous les fichiers ont été pushés sur GitHub!');
-        console.log('\nProchaine étape: npm run build:exoquiz');
     }
     
     process.exit(errorCount > 0 ? 1 : 0);
