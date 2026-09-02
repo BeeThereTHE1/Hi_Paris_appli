@@ -24,8 +24,26 @@
     async init() {
       await this.initProgressContext();
       this.setupEventListeners();
+      this.startTutorial();
     }
-
+    startTutorial() {
+          // Intro popup (lecture obligatoire)
+          // Repose sur ExoInteractions.showTimedIntro via ExoPageBase
+          var shown = this.showTimedIntro({
+            title: 'Exercise #10',
+            text: 'Please read the instructions carefully before continuing.',
+            seconds: 2,
+            buttonLabel: 'Continue',
+            onContinue: () => {
+              // point d’extension futur si besoin
+            }
+          });
+    
+          // Fallback de sécurité si ExoInteractions n'est pas chargé
+          if (!shown) {
+            console.warn('Timed intro unavailable for exercise 10 (ExoInteractions not loaded).');
+          }
+        }
     setupEventListeners() {
       var btnSave = document.getElementById(this.saveBtnId);
       var btnDone = document.getElementById(this.doneBtnId);
