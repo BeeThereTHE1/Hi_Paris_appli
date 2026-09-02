@@ -2,6 +2,7 @@
   'use strict';
 
   var ExoPageBase = window.MLPlaygroundExoPageBase;
+  var ExoHighlightTour = window.ExoHighlightTour;
 
   if (!ExoPageBase) {
     console.error('MLPlaygroundExoPageBase is not available for exercise 7.');
@@ -19,19 +20,12 @@
         registerUrl: 'Page-demo/register.html'
       });
 
-      this.translations = null;
-      this.activeArrow = null;
+      this.tour = ExoHighlightTour ? new ExoHighlightTour({ iframeSelector: '.exo-frame' }) : null;
+      this._boundMessageHandler = null;
+      this._activeDocClickCleanup = null;
+      this._successShown = false;
+      this._destroyed = false;
 
-      this.selectedAnswersAct1 = {
-        relu: null,
-        tanh: null,
-        sigmoid: null,
-        linear: null
-      };
-
-      this.statementCorrectStates = [false, false, false, false];
-
-      this.injectLocalStyles();
       this.init();
     }
 
@@ -39,357 +33,196 @@
       await this.initProgressContext();
       this.wireStandardActionButtons();
 
-      this.onIframeLoad(async () => {
-        if (this.isCompletedFromQuery()) {
-          this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
-          return;
-        }
-        await this.loadTranslations();
-        this.startTutorial();
-      }, 1200);
+      this._boundMessageHandler = (event) => {
+        if (!event || !event.data) return;
 
-      window.addEventListener('resize', () => this.repositionArrowIfNeeded());
-      window.addEventListener('scroll', () => this.repositionArrowIfNeeded());
-      window.addEventListener('beforeunload', () => this.removeArrow());
+        if (event.data.type === 'EXO_SUCCESS' && (event.data.exoId == 7 || event.data.exoId == '7')) {
+          this.unlockQuizButton(this.doneBtnId, '✨ Exercise Successful !!');
+          if (!this._successShown) {
+            this._successShown = true;
+            this.showExerciseSuccessCongrats();
+          }
+        }
+      };
+      window.addEventListener('message', this._boundMessageHandler);
+
+      this.onIframeLoad(() => {
+        if (this.isCompletedFromQuery()) return;
+        this.startTutorial();
+      }, 1000);
+
+      window.addEventListener('beforeunload', () => this.cleanup());
     }
 
-    async loadTranslations() {
-      try {
-        var response = await fetch('texte.json');
-        if (!response.ok) throw new Error('Failed to load translation json');
-        var data = await response.json();
-        this.translations = data && data.exercises ? data.exercises.exercise_7 : null;
+    cleanup() {
+      if (this._destroyed) return;
+      this._destroyed = true;
 
-        if (this.translations) {
-          if (this.translations.title) {
-            document.title = this.translations.title;
-            var titleEl = document.querySelector('.exo-title');
-            if (titleEl) titleEl.innerText = this.translations.title;
-          }
-          if (this.translations.instructions && this.translations.instructions.general) {
-            var instrEl = document.querySelector('.exo-instructions');
-            if (instrEl) instrEl.innerText = this.translations.instructions.general;
-          }
-        }
-      } catch (e) {
-        console.warn('Could not load translations from JSON.', e);
+      if (this._boundMessageHandler) {
+        window.removeEventListener('message', this._boundMessageHandler);
+        this._boundMessageHandler = null;
+      }
+
+      this.clearStepClickListener();
+
+      if (this.tour) {
+        this.tour.stopAutoReposition();
+        this.tour.clear();
       }
     }
 
     startTutorial() {
-      var title = (this.translations && this.translations.title) || 'Exercise #7';
-      var text =
-        (this.translations && this.translations.instructions && this.translations.instructions.general) ||
-        'Investigate how activation functions affect non-linear learning.';
-
       var handled = this.showTimedIntro({
-        title: title,
-        text: text,
-        seconds: 2,
+        title: 'Exercise #7 : Overfitting and model complexity',
+        text: 'Compare simple vs complex settings and observe train/test behavior.',
+        seconds: 3,
         buttonLabel: 'Continue',
-        onContinue: () => {
-          setTimeout(() => {
-            this.showFlashingArrow('.ui-activation');
-            this.renderActivity1();
-          }, 800);
-        }
+        onContinue: () => this.runStep1()
       });
 
-      if (!handled) {
-        this.showFlashingArrow('.ui-activation');
-        this.renderActivity1();
+      if (!handled) this.runStep1();
+    }
+
+    runStep1() {
+      this.showStepHint(
+        '1',
+        '.control.ui-numHiddenLayers, .control.ui-numHiddenNodes',
+        'Model complexity',
+        'Increase/decrease layers or hidden units to change capacity.'
+      );
+      this.armOneShotClick(() => this.runStep2());
+    }
+
+    runStep2() {
+      this.showStepHint(
+        '2',
+        '.timeline-controls',
+        'Run and reset',
+        'Train with one configuration, reset, then try another.'
+      );
+      this.armOneShotClick(() => this.runStep3());
+    }
+
+    runStep3() {
+      this.showStepHint(
+        '3',
+        '.output-stats.train.ui-trainLoss',
+        'Training loss',
+        'Very low training loss can indicate memorization on complex models.'
+      );
+      this.armOneShotClick(() => this.runStep4());
+    }
+
+    runStep4() {
+      this.showStepHint(
+        '4',
+        '.output-stats.test.ui-testLoss',
+        'Test loss',
+        'If test loss worsens while train loss improves, overfitting is likely.'
+      );
+      this.armOneShotClick(() => this.runStep5());
+    }
+
+    runStep5() {
+      this.showStepHint(
+        '5',
+        '#linechart, #heatmap',
+        'Visual confirmation',
+        'Use both curves and decision boundary to confirm underfit/overfit.'
+      );
+      this.armOneShotClick(() => this.finishTutorial());
+    }
+
+    finishTutorial() {
+      if (this.tour) {
+        this.tour.stopAutoReposition();
+        this.tour.clear();
       }
     }
 
-    getIframeRectFor(selector) {
-      var iframe = document.querySelector('.exo-frame') || document.getElementById(this.iframeId);
-      if (!iframe) return null;
+    showStepHint(label, selector, title, text) {
+      if (!this.tour) return;
 
-      try {
-        var doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
-        if (!doc) return null;
-        var el = doc.querySelector(selector);
-        if (!el) return null;
-
-        var iframeRect = iframe.getBoundingClientRect();
-        var rect = el.getBoundingClientRect();
-
-        return {
-          top: iframeRect.top + rect.top,
-          left: iframeRect.left + rect.left,
-          bottom: iframeRect.top + rect.bottom,
-          width: rect.width
-        };
-      } catch (_e) {
-        return null;
-      }
+      this.tour.clear();
+      this.tour.showHighlightBox(selector, label);
+      this.tour.showTooltip(selector, title, text, 'bottom');
+      this.tour.startAutoReposition();
     }
 
-    showFlashingArrow(targetSelector) {
-      this.removeArrow();
+    armOneShotClick(next) {
+      this.clearStepClickListener();
 
-      var rect = this.getIframeRectFor(targetSelector);
-      if (!rect) return;
+      var done = false;
+      var handler = (e) => {
+        if (done) return;
+        done = true;
+        if (e) e.stopPropagation();
 
-      var arrow = document.createElement('div');
-      arrow.className = 'tutorial-arrow';
-      arrow.dataset.targetSelector = targetSelector;
-      arrow.innerHTML =
-        '<svg width="60" height="60" viewBox="0 0 60 60" style="filter: drop-shadow(0 0 8px rgba(255,3,77,.6));">' +
-          '<path d="M50,10 L10,50 M10,50 L25,50 M10,50 L10,35" stroke="#FF034D" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>' +
-        '</svg>';
+        this.clearStepClickListener();
 
-      arrow.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
-      arrow.style.top = (rect.top - 60 + window.scrollY) + 'px';
+        if (this.tour) {
+          this.tour.stopAutoReposition();
+          this.tour.clear();
+        }
 
-      document.body.appendChild(arrow);
-      this.activeArrow = arrow;
+        if (typeof next === 'function') next();
+      };
 
-      var dismiss = () => this.removeArrow();
       setTimeout(() => {
-        document.addEventListener('click', dismiss, { once: true });
-        try {
-          var iframe = document.querySelector('.exo-frame') || document.getElementById(this.iframeId);
-          if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.document.addEventListener('click', dismiss, { once: true });
-          }
-        } catch (_e) {}
+        document.addEventListener('click', handler, true);
+        this._activeDocClickCleanup = () => {
+          document.removeEventListener('click', handler, true);
+        };
       }, 100);
     }
 
-    repositionArrowIfNeeded() {
-      if (!this.activeArrow) return;
-      var selector = this.activeArrow.dataset.targetSelector;
-      if (!selector) return;
-      var rect = this.getIframeRectFor(selector);
-      if (!rect) return;
-      this.activeArrow.style.left = (rect.left + rect.width / 2 + window.scrollX) + 'px';
-      this.activeArrow.style.top = (rect.top - 60 + window.scrollY) + 'px';
-    }
-
-    removeArrow() {
-      if (this.activeArrow) {
-        this.activeArrow.remove();
-        this.activeArrow = null;
+    clearStepClickListener() {
+      if (this._activeDocClickCleanup) {
+        this._activeDocClickCleanup();
+        this._activeDocClickCleanup = null;
       }
     }
 
-    renderActivity1() {
-      var panels = this.getPanels('quiz-question-panel', 'quiz-feedback-panel');
-      var qPanel = panels.questionPanel;
-      var fPanel = panels.feedbackPanel;
-      if (!qPanel || !fPanel) return;
+    showExerciseSuccessCongrats() {
+      var overlay = document.createElement('div');
+      overlay.className = 'tutorial-overlay';
+      overlay.id = 'exo7-success-overlay';
 
-      this.selectedAnswersAct1 = { relu: null, tanh: null, sigmoid: null, linear: null };
+      var popup = document.createElement('div');
+      popup.className = 'tutorial-popup';
+      popup.style.background = '#004676';
+      popup.innerHTML =
+        '<h3 style="color:#fff;">Well done!</h3>' +
+        '<p style="color:#fff;">You analyzed overfitting behavior correctly. Let’s continue with the quiz.</p>';
 
-      qPanel.innerHTML =
-        '<div class="quiz-question-wrapper">' +
-          '<div class="quiz-question-badge">Activity 1</div>' +
-          '<div class="quiz-question-card">For each activation, does it help solve non-linear data (circles)?</div>' +
-        '</div>' +
-        '<table class="quiz-table"><tbody>' +
-          this.rowAct1('relu', 'ReLU') +
-          this.rowAct1('tanh', 'Tanh') +
-          this.rowAct1('sigmoid', 'Sigmoid') +
-          this.rowAct1('linear', 'Linear') +
-        '</tbody></table>' +
-        '<div style="margin-top:10px;"><button id="btn-validate-act1" class="tutorial-btn">Validate</button></div>';
+      var nextBtn = document.createElement('button');
+      nextBtn.className = 'tutorial-btn';
+      nextBtn.style.background = '#FF553F';
+      nextBtn.innerText = 'Go to Quiz';
 
-      fPanel.innerHTML = '';
+      nextBtn.onclick = async (e) => {
+        e.stopPropagation();
+        overlay.remove();
 
-      var rows = qPanel.querySelectorAll('tbody tr');
-      for (var i = 0; i < rows.length; i++) {
-        this.bindAct1Row(rows[i]);
-      }
-
-      var validateBtn = document.getElementById('btn-validate-act1');
-      if (validateBtn) validateBtn.onclick = () => this.validateActivity1();
-    }
-
-    rowAct1(key, label) {
-      return (
-        '<tr data-activation="' + key + '">' +
-          '<td>' + label + '</td>' +
-          '<td><button class="btn-choice" data-val="yes">Yes</button></td>' +
-          '<td><button class="btn-choice" data-val="no">No</button></td>' +
-        '</tr>'
-      );
-    }
-
-    bindAct1Row(row) {
-      var act = row.getAttribute('data-activation');
-      var yesBtn = row.querySelector('.btn-choice[data-val="yes"]');
-      var noBtn = row.querySelector('.btn-choice[data-val="no"]');
-      if (!yesBtn || !noBtn) return;
-
-      yesBtn.onclick = () => {
-        this.selectedAnswersAct1[act] = 'yes';
-        yesBtn.classList.add('active-yes');
-        noBtn.classList.remove('active-no');
-      };
-
-      noBtn.onclick = () => {
-        this.selectedAnswersAct1[act] = 'no';
-        noBtn.classList.add('active-no');
-        yesBtn.classList.remove('active-yes');
-      };
-    }
-
-    validateActivity1() {
-      var fPanel = document.getElementById('quiz-feedback-panel');
-      var qPanel = document.getElementById('quiz-question-panel');
-      if (!fPanel || !qPanel) return;
-
-      var isCorrect =
-        this.selectedAnswersAct1.relu === 'yes' &&
-        this.selectedAnswersAct1.tanh === 'yes' &&
-        this.selectedAnswersAct1.sigmoid === 'yes' &&
-        this.selectedAnswersAct1.linear === 'no';
-
-      if (isCorrect) {
-        fPanel.innerHTML =
-          '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.1);">' +
-          '✅ Correct! Let’s continue.' +
-          '</div>';
-        setTimeout(() => this.renderActivity2(), 1200);
-      } else {
-        fPanel.innerHTML =
-          '<div class="feedback-box" style="border-left-color:#ef4444;background:rgba(239,68,68,.1);">' +
-          '❌ Incorrect, test again and retry.' +
-          '</div>';
-        this.resetWrongAct1Rows(qPanel);
-      }
-    }
-
-    resetWrongAct1Rows(qPanel) {
-      var expected = { relu: 'yes', tanh: 'yes', sigmoid: 'yes', linear: 'no' };
-      Object.keys(expected).forEach((k) => {
-        if (this.selectedAnswersAct1[k] !== expected[k]) {
-          this.selectedAnswersAct1[k] = null;
-          var row = qPanel.querySelector('tr[data-activation="' + k + '"]');
-          if (!row) return;
-          var yes = row.querySelector('.btn-choice[data-val="yes"]');
-          var no = row.querySelector('.btn-choice[data-val="no"]');
-          if (yes) yes.classList.remove('active-yes', 'active-no');
-          if (no) no.classList.remove('active-yes', 'active-no');
-        }
-      });
-    }
-
-    renderActivity2() {
-      var panels = this.getPanels('quiz-question-panel', 'quiz-feedback-panel');
-      var qPanel = panels.questionPanel;
-      var fPanel = panels.feedbackPanel;
-      if (!qPanel || !fPanel) return;
-
-      this.statementCorrectStates = [false, false, false, false];
-
-      var statements = [
-        {
-          text: '1- It changes the bias term, which shifts the decision boundary.',
-          correct: false,
-          good: '✅ Correct. Activation changes transformation, not bias directly.',
-          bad: '❌ Incorrect. Bias is learned by optimization.'
-        },
-        {
-          text: '2- It influences the shape of the decision boundary the model can learn.',
-          correct: true,
-          good: '✅ Correct. Activation changes representational power.',
-          bad: '❌ Incorrect. Observe boundary changes per activation.'
-        },
-        {
-          text: '3- It changes how each neuron transforms its input before passing it forward.',
-          correct: true,
-          good: '✅ Correct. That is exactly activation’s role.',
-          bad: '❌ Incorrect. Activation is the neuron transform.'
-        },
-        {
-          text: '4- It changes the values of weights directly.',
-          correct: false,
-          good: '✅ Correct. Weights are updated by training, not directly by activation.',
-          bad: '❌ Incorrect. Activation affects outputs/gradients, not direct weight assignment.'
-        }
-      ];
-
-      qPanel.innerHTML =
-        '<div class="quiz-question-wrapper">' +
-          '<div class="quiz-question-badge">Activity 2</div>' +
-          '<div class="quiz-question-card">True / False: role of activation functions.</div>' +
-        '</div>' +
-        statements.map(function (s, idx) {
-          return (
-            '<div class="statement-row" data-idx="' + idx + '">' +
-              '<div style="margin-bottom:8px;">' + s.text + '</div>' +
-              '<button class="btn-choice" data-val="true">True</button> ' +
-              '<button class="btn-choice" data-val="false">False</button>' +
-            '</div>'
-          );
-        }).join('');
-
-      fPanel.innerHTML = '';
-
-      var rows = qPanel.querySelectorAll('.statement-row');
-      for (var i = 0; i < rows.length; i++) {
-        this.bindAct2Row(rows[i], statements);
-      }
-    }
-
-    bindAct2Row(row, statements) {
-      var idx = parseInt(row.getAttribute('data-idx'), 10);
-      var stmt = statements[idx];
-      var trueBtn = row.querySelector('.btn-choice[data-val="true"]');
-      var falseBtn = row.querySelector('.btn-choice[data-val="false"]');
-      var fPanel = document.getElementById('quiz-feedback-panel');
-      if (!stmt || !trueBtn || !falseBtn || !fPanel) return;
-
-      var answer = (choice) => {
-        var isCorrect = choice === stmt.correct;
-
-        if (isCorrect) {
-          this.statementCorrectStates[idx] = true;
-          row.classList.add('correct-locked');
-          trueBtn.disabled = true;
-          falseBtn.disabled = true;
-          trueBtn.classList.toggle('active-yes', choice === true);
-          falseBtn.classList.toggle('active-no', choice === false);
-
-          fPanel.innerHTML = '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.1);">' + stmt.good + '</div>';
-
-          if (this.statementCorrectStates.every(Boolean)) {
-            this.unlockQuizButton(this.doneBtnId, '<span class="icon">📝</span> Take the quiz');
-            fPanel.innerHTML +=
-              '<div class="feedback-box" style="border-left-color:#10b981;background:rgba(16,185,129,.15);margin-top:10px;font-weight:700;">' +
-              '🎉 Great job! You completed Exo 7.' +
-              '</div>';
+        if (window.StorageService) {
+          var success = await window.StorageService.complete(this.exoId);
+          if (success) {
+            var btnDone = document.getElementById(this.doneBtnId);
+            if (btnDone) {
+              btnDone.innerHTML = '✨ Redirection...';
+              btnDone.disabled = true;
+            }
           }
-        } else {
-          var wrongBtn = choice ? trueBtn : falseBtn;
-          wrongBtn.classList.add('active-no');
-          setTimeout(function () { wrongBtn.classList.remove('active-no'); }, 500);
-
-          fPanel.innerHTML = '<div class="feedback-box" style="border-left-color:#ef4444;background:rgba(239,68,68,.1);">' + stmt.bad + '</div>';
         }
+
+        setTimeout(() => {
+          window.location.href = this.quizUrl;
+        }, 800);
       };
 
-      trueBtn.onclick = () => answer(true);
-      falseBtn.onclick = () => answer(false);
-    }
-
-    injectLocalStyles() {
-      if (document.getElementById('exo7-local-styles')) return;
-
-      var styleEl = document.createElement('style');
-      styleEl.id = 'exo7-local-styles';
-      styleEl.textContent =
-        '@keyframes arrow-flash{0%,100%{opacity:0;transform:translate(0,0)}50%{opacity:1;transform:translate(-10px,10px)}}' +
-        '.tutorial-arrow{position:absolute;z-index:10000;pointer-events:none;animation:arrow-flash .6s infinite ease-in-out;}' +
-        '.quiz-table{width:100%;border-collapse:collapse;margin-top:8px;}' +
-        '.quiz-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,.08);}' +
-        '.statement-row{margin:10px 0;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(255,255,255,.02);}' +
-        '.btn-choice.active-yes{background:#10b981!important;color:#fff;}' +
-        '.btn-choice.active-no{background:#ef4444!important;color:#fff;}' +
-        '.correct-locked{border-color:#10b981;}';
-      document.head.appendChild(styleEl);
+      popup.appendChild(nextBtn);
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
     }
   }
 
