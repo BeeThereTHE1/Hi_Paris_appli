@@ -1,34 +1,61 @@
 const express = require('express');
 const cors = require('cors');
+const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
-const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Désactiver la vérification SSL UNIQUEMENT en local
-if (process.env.NODE_ENV !== 'production') {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+// Disable TLS verification only in local/dev environments
+if (process.env.NODE_ENV !== 'production' && process.env.ALLOW_INSECURE_TLS === 'true') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-// Initialisation Supabase
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
 
-// Génère un token OTP 8 caractères (ex: A3F9B2C1)
+const VALID_SUBMISSION_STATUS = new Set(['PENDING', 'APPROVED', 'REJECTED']);
+const VALID_PROGRESS_STATUS = new Set(['IN_PROGRESS', 'COMPLETED']);
+
+function sendError(res, status, message, details = undefined) {
+  const payload = { error: message };
+  if (details !== undefined) payload.details = details;
+  return res.status(status).json(payload);
+}
+
+function requireEnv(name) {
+  if (!process.env[name]) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+}
+
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function parseBoolean(value) {
+  if (typeof value === 'boolean') return value;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return undefined;
+}
+
 function generateToken() {
   return crypto.randomBytes(4).toString('hex').toUpperCase();
 }
 
-// Envoie le token par email via Resend
 async function sendTokenEmail(email, prenom, token, isNew = true) {
+  if (!resend) {
+    throw new Error('RESEND_API_KEY is not configured');
+  }
+
   const subject = isNew
     ? '🎓 Bienvenue sur Hi!Paris Playground - Votre token de connexion'
     : '🔑 Hi!Paris Playground - Votre nouveau token de connexion';
@@ -63,108 +90,197 @@ async function sendTokenEmail(email, prenom, token, isNew = true) {
   });
 }
 
-// --- MIDDLEWARE D'AUTORISATION ---
-
-// Middleware requireTeacher : AUTH DISABLED (version "open" / local).
-// Pour la version publique/production il faudra restaurer la vérification réelle.
+// Placeholder auth middleware.
+// Replace with real JWT/session/role verification before production use.
 const requireTeacher = async (req, res, next) => {
-  // Middleware passe‑tout : autorise toutes les requêtes.
+  const role = req.header('x-user-role');
+  if (process.env.NODE_ENV === 'production' && role !== 'TEACHER') {
+    return sendError(res, 403, 'Forbidden: teacher access required');
+  }
   next();
 };
 
-// --- ROUTES UTILISATEURS ---
-// NOTE: Les routes de connexion / inscription / forgot-token sont retirées pour la version sans auth.
-// Si besoin, on peut les restaurer depuis l'historique git.
+async function getExerciseById(id) {
+  return supabase
+    .from('exercises')
+    .select('id, title, description, config_json, creator_id, is_official, visibility, official_id, status, created_at')
+    .eq('id', id)
+    .single();
+}
 
-// --- ROUTES EXERCICES & PROFESSEURS ---
+async function getUserIdByEmail(email) {
+  if (!isNonEmptyString(email)) return { user: null, error: new Error('Email is required') };
+  return supabase.from('users').select('id').eq('email', email).single();
+}
 
-// ✅ Lister tous les exercices publics (catalogue)
+// Health
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', time: new Date().toISOString() });
+});
+
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: '🚀 Hi!Paris API is running' });
+});
+
+// Exercises
 app.get('/api/exercises', async (req, res) => {
-  const { data, error } = await supabase
-    .from('exercises')
-    .select('id, title, description, config_json, creator_id, is_official, visibility, official_id, created_at')
-    .eq('visibility', 'PUBLIC')
-    .order('created_at', { ascending: false });
+  try {
+    const { data, error } = await supabase
+      .from('exercises')
+      .select('id, title, description, config_json, creator_id, is_official, visibility, official_id, created_at')
+      .eq('visibility', 'PUBLIC')
+      .order('created_at', { ascending: false });
 
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
-});
-
-// ✅ Récupérer un exercice par son UUID (pour custom_exo_template.html)
-app.get('/api/exercises/:id', async (req, res) => {
-  const { data, error } = await supabase
-    .from('exercises')
-    .select('id, title, description, config_json, creator_id, is_official, visibility, official_id, status')
-    .eq('id', req.params.id)
-    .single();
-
-  if (error) return res.status(404).json({ error: 'Exercice introuvable' });
-  res.json(data);
-});
-
-// ✅ Mettre à jour un exercice (Brouillon -> Public, ou Soumission Prof)
-app.patch('/api/exercises/:id', async (req, res) => {
-  const { title, description, config_json, is_official, visibility, teacher_id, creator_id } = req.body;
-  const updateData = {};
-  if (title !== undefined) updateData.title = title;
-  if (description !== undefined) updateData.description = description;
-  if (config_json !== undefined) updateData.config_json = config_json;
-  if (is_official !== undefined) updateData.is_official = is_official;
-  if (visibility !== undefined) updateData.visibility = visibility;
-
-  const { data: exo, error } = await supabase
-    .from('exercises')
-    .update(updateData)
-    .eq('id', req.params.id)
-    .select()
-    .single();
-
-  if (error) return res.status(400).json({ error: error.message });
-
-  // Si on soumet à un prof, on crée/maj la soumission
-  if (teacher_id && creator_id) {
-    await supabase
-      .from('exercise_submissions')
-      .upsert([{
-        exercise_id: exo.id,
-        student_id: creator_id,
-        teacher_id: teacher_id,
-        status: 'PENDING'
-      }], { onConflict: 'exercise_id, student_id' });
+    if (error) return sendError(res, 400, 'Failed to load exercises', error.message);
+    return res.json(data || []);
+  } catch (err) {
+    console.error('GET /api/exercises failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
-
-  res.json(exo);
 });
 
-// Récupérer la liste des enseignants (pour la sélection par l'étudiant)
-app.get('/api/teachers', async (req, res) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('id, nom, prenom, email')
-    .eq('role', 'TEACHER');
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
+app.get('/api/exercises/:id', async (req, res) => {
+  try {
+    const { data, error } = await getExerciseById(req.params.id);
+    if (error || !data) return sendError(res, 404, 'Exercice introuvable');
+    return res.json(data);
+  } catch (err) {
+    console.error('GET /api/exercises/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
 });
 
-// ✅ Supprimer un exercice du catalogue (enseignant uniquement)
+app.post('/api/exercises', async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      config_json,
+      creator_id,
+      is_official,
+      visibility,
+      teacher_id
+    } = req.body || {};
+
+    if (!isNonEmptyString(title)) {
+      return sendError(res, 400, 'title is required');
+    }
+    if (!isNonEmptyString(creator_id)) {
+      return sendError(res, 400, 'creator_id is required');
+    }
+
+    const official = parseBoolean(is_official) ?? false;
+    const vis = isNonEmptyString(visibility) ? visibility : (official ? 'PUBLIC' : 'PRIVATE');
+
+    console.log('📨 Creating exercise:', title);
+
+    const { data: exo, error: exoError } = await supabase
+      .from('exercises')
+      .insert([{
+        title,
+        description: description || '',
+        config_json: config_json ?? null,
+        creator_id,
+        is_official: official,
+        visibility: vis
+      }])
+      .select()
+      .single();
+
+    if (exoError) {
+      console.error('❌ Error inserting exercise:', exoError);
+      return sendError(res, 400, 'Failed to create exercise', exoError.message);
+    }
+
+    if (!official && isNonEmptyString(teacher_id)) {
+      const { error: subError } = await supabase
+        .from('exercise_submissions')
+        .insert([{
+          exercise_id: exo.id,
+          student_id: creator_id,
+          teacher_id,
+          status: 'PENDING'
+        }]);
+
+      if (subError) {
+        console.error('❌ Error creating submission:', subError);
+        return sendError(res, 400, 'Exercise created but submission failed', subError.message);
+      }
+    }
+
+    return res.status(201).json(exo);
+  } catch (err) {
+    console.error('POST /api/exercises failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
+});
+
+app.patch('/api/exercises/:id', async (req, res) => {
+  try {
+    const { title, description, config_json, is_official, visibility, teacher_id, creator_id } = req.body || {};
+    const updateData = {};
+
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (config_json !== undefined) updateData.config_json = config_json;
+    if (is_official !== undefined) updateData.is_official = parseBoolean(is_official);
+    if (visibility !== undefined) updateData.visibility = visibility;
+
+    if (Object.keys(updateData).length === 0) {
+      return sendError(res, 400, 'No valid fields provided for update');
+    }
+
+    const { data: exo, error } = await supabase
+      .from('exercises')
+      .update(updateData)
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (error || !exo) {
+      return sendError(res, 400, 'Failed to update exercise', error?.message);
+    }
+
+    if (isNonEmptyString(teacher_id) && isNonEmptyString(creator_id)) {
+      const { error: submissionError } = await supabase
+        .from('exercise_submissions')
+        .upsert([{
+          exercise_id: exo.id,
+          student_id: creator_id,
+          teacher_id,
+          status: 'PENDING'
+        }], { onConflict: 'exercise_id, student_id' });
+
+      if (submissionError) {
+        console.error('⚠️ Submission upsert failed:', submissionError);
+      }
+    }
+
+    return res.json(exo);
+  } catch (err) {
+    console.error('PATCH /api/exercises/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
+});
+
 app.delete('/api/exercises/:id', requireTeacher, async (req, res) => {
   try {
     const exerciseId = req.params.id;
 
-    // 1. Supprimer la progression associée
-    await supabase
+    const { error: progressError } = await supabase
       .from('progress')
       .delete()
       .eq('exercise_id', exerciseId);
 
-    // 2. Supprimer les soumissions associées
-    await supabase
+    if (progressError) return sendError(res, 400, 'Failed to delete exercise progress', progressError.message);
+
+    const { error: submissionsError } = await supabase
       .from('exercise_submissions')
       .delete()
       .eq('exercise_id', exerciseId);
 
-    // 3. Supprimer l'exercice lui-même
+    if (submissionsError) return sendError(res, 400, 'Failed to delete exercise submissions', submissionsError.message);
+
     const { data, error } = await supabase
       .from('exercises')
       .delete()
@@ -172,144 +288,147 @@ app.delete('/api/exercises/:id', requireTeacher, async (req, res) => {
       .select()
       .single();
 
-    if (error) return res.status(400).json({ error: error.message });
-    res.json({ message: 'Exercice supprimé', data });
+    if (error || !data) return sendError(res, 400, 'Failed to delete exercise', error?.message);
+
+    return res.json({ message: 'Exercice supprimé', data });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('DELETE /api/exercises/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
 });
 
-// Enregistrer un exercice et gérer la soumission
-app.post('/api/exercises', async (req, res) => {
-  console.log("📨 Tentative d'enregistrement d'exercice :", req.body.title);
-  console.log("Données reçues :", JSON.stringify(req.body, null, 2));
+// Teachers
+app.get('/api/teachers', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('id, nom, prenom, email')
+      .eq('role', 'TEACHER');
 
-  const { title, description, config_json, creator_id, is_official, visibility, teacher_id } = req.body;
-
-  // 1. Insérer l'exercice
-  const { data: exo, error: exoError } = await supabase
-    .from('exercises')
-    .insert([{ title, description, config_json, creator_id, is_official, visibility }])
-    .select()
-    .single();
-
-  if (exoError) {
-    console.error("❌ ERREUR INSERT EXERCICE :", exoError.message);
-    console.error("Détails :", exoError);
-    return res.status(400).json({ error: exoError.message });
+    if (error) return sendError(res, 400, 'Failed to load teachers', error.message);
+    return res.json(data || []);
+  } catch (err) {
+    console.error('GET /api/teachers failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
-
-  // 2. Si c'est un étudiant (donc non officiel), on crée une soumission pour le prof
-  if (!is_official && teacher_id) {
-    console.log("📤 Création d'une soumission pour le prof :", teacher_id);
-    const { error: subError } = await supabase
-      .from('exercise_submissions')
-      .insert([{
-        exercise_id: exo.id,
-        student_id: creator_id,
-        teacher_id: teacher_id,
-        status: 'PENDING'
-      }]);
-
-    if (subError) {
-      console.error("❌ ERREUR INSERT SUBMISSION :", subError.message);
-      return res.status(400).json({ error: subError.message });
-    }
-  }
-
-  console.log("✅ Exercice et soumission créés avec succès !");
-  res.status(201).json(exo);
 });
 
-
-// --- ROUTES HISTORIQUE & VALIDATION ---
-
-// Récupérer les soumissions d'un étudiant (avec les détails de l'exercice)
+// Submissions
 app.get('/api/submissions/student/:id', async (req, res) => {
-  const { data, error } = await supabase
-    .from('exercise_submissions')
-    .select(`
-      id,
-      status,
-      feedback,
-      created_at,
-      exercises ( id, title, description, config_json )
-    `)
-    .eq('student_id', req.params.id);
+  try {
+    const { data, error } = await supabase
+      .from('exercise_submissions')
+      .select(`
+        id,
+        status,
+        feedback,
+        created_at,
+        exercises ( id, title, description, config_json )
+      `)
+      .eq('student_id', req.params.id);
 
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
-});
-
-// Récupérer les soumissions reçues par un enseignant
-app.get('/api/submissions/teacher/:id', requireTeacher, async (req, res) => {
-  const { data, error } = await supabase
-    .from('exercise_submissions')
-    .select(`
-      id,
-      status,
-      feedback,
-      created_at,
-      student:users!exercise_submissions_student_id_fkey ( prenom, nom, email ),
-      exercises ( id, title, description, config_json )
-    `)
-    .eq('teacher_id', req.params.id)
-    .eq('status', 'PENDING');
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json(data);
-});
-
-// Récupérer le COMPTEUR de soumissions en attente pour un enseignant (pour notifications)
-app.get('/api/submissions/teacher/:id/count', requireTeacher, async (req, res) => {
-  const { count, error } = await supabase
-    .from('exercise_submissions')
-    .select('*', { count: 'exact', head: true })
-    .eq('teacher_id', req.params.id)
-    .eq('status', 'PENDING');
-
-  if (error) return res.status(400).json({ error: error.message });
-  res.json({ count: count || 0 });
-});
-
-// Mettre à jour le statut d'une soumission (Valider/Rejeter) - Réservé aux profs
-app.patch('/api/submissions/:id', requireTeacher, async (req, res) => {
-  const { status, feedback } = req.body;
-
-  // 1. Mettre à jour la soumission
-  const { data: sub, error: subError } = await supabase
-    .from('exercise_submissions')
-    .update({ status, feedback })
-    .eq('id', req.params.id)
-    .select().single();
-
-  if (subError) return res.status(400).json({ error: subError.message });
-
-  // 2. Si c'est approuvé, on marque l'exercice comme officiel
-  if (status === 'APPROVED') {
-    await supabase
-      .from('exercises')
-      .update({ is_official: true, visibility: 'PUBLIC' })
-      .eq('id', sub.exercise_id);
+    if (error) return sendError(res, 400, 'Failed to load student submissions', error.message);
+    return res.json(data || []);
+  } catch (err) {
+    console.error('GET /api/submissions/student/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
-
-  res.json(sub);
 });
 
-// ✅ Supprimer une soumission (étudiant ou prof)
+app.get('/api/submissions/teacher/:id', requireTeacher, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('exercise_submissions')
+      .select(`
+        id,
+        status,
+        feedback,
+        created_at,
+        student:users!exercise_submissions_student_id_fkey ( prenom, nom, email ),
+        exercises ( id, title, description, config_json )
+      `)
+      .eq('teacher_id', req.params.id)
+      .eq('status', 'PENDING');
+
+    if (error) return sendError(res, 400, 'Failed to load teacher submissions', error.message);
+    return res.json(data || []);
+  } catch (err) {
+    console.error('GET /api/submissions/teacher/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
+});
+
+app.get('/api/submissions/teacher/:id/count', requireTeacher, async (req, res) => {
+  try {
+    const { count, error } = await supabase
+      .from('exercise_submissions')
+      .select('*', { count: 'exact', head: true })
+      .eq('teacher_id', req.params.id)
+      .eq('status', 'PENDING');
+
+    if (error) return sendError(res, 400, 'Failed to count submissions', error.message);
+    return res.json({ count: count || 0 });
+  } catch (err) {
+    console.error('GET /api/submissions/teacher/:id/count failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
+});
+
+app.patch('/api/submissions/:id', requireTeacher, async (req, res) => {
+  try {
+    const { status, feedback } = req.body || {};
+
+    if (!VALID_SUBMISSION_STATUS.has(status)) {
+      return sendError(res, 400, 'Invalid submission status');
+    }
+
+    const { data: sub, error: subError } = await supabase
+      .from('exercise_submissions')
+      .update({ status, feedback: feedback ?? null })
+      .eq('id', req.params.id)
+      .select()
+      .single();
+
+    if (subError || !sub) {
+      return sendError(res, 400, 'Failed to update submission', subError?.message);
+    }
+
+    if (status === 'APPROVED' && sub.exercise_id) {
+      const { error: exoError } = await supabase
+        .from('exercises')
+        .update({ is_official: true, visibility: 'PUBLIC' })
+        .eq('id', sub.exercise_id);
+
+      if (exoError) {
+        console.warn('⚠️ Could not mark exercise as official:', exoError.message);
+      }
+    }
+
+    return res.json(sub);
+  } catch (err) {
+    console.error('PATCH /api/submissions/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
+});
+
 app.delete('/api/submissions/:id', async (req, res) => {
-  const { data, error } = await supabase
-    .from('exercise_submissions')
-    .delete()
-    .eq('id', req.params.id)
-    .select()
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('exercise_submissions')
+      .delete()
+      .eq('id', req.params.id)
+      .select()
+      .single();
 
-  if (error) return res.status(400).json({ error: error.message });
-  res.json({ message: 'Soumission supprimée', data });
+    if (error || !data) return sendError(res, 400, 'Failed to delete submission', error?.message);
+    return res.json({ message: 'Soumission supprimée', data });
+  } catch (err) {
+    console.error('DELETE /api/submissions/:id failed:', err);
+    return sendError(res, 500, 'Internal server error');
+  }
 });
 
-// ✅ Récupérer la progression de TOUS les étudiants (pour le dashboard prof)
+// Teacher dashboard
 app.get('/api/teacher/students-progress', requireTeacher, async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -320,12 +439,10 @@ app.get('/api/teacher/students-progress', requireTeacher, async (req, res) => {
       `)
       .eq('role', 'STUDENT');
 
-    if (error) throw error;
+    if (error) return sendError(res, 400, 'Failed to load students progress', error.message);
 
-    // Formater pour le frontend
-    const stats = data.map(u => {
-      // Filtrer les entrées de progression où l'exercice a été supprimé
-      const activeProgress = u.progress ? u.progress.filter(p => p.exercises) : [];
+    const stats = (data || []).map(u => {
+      const activeProgress = Array.isArray(u.progress) ? u.progress.filter(p => p.exercises) : [];
 
       return {
         id: u.id,
@@ -336,91 +453,146 @@ app.get('/api/teacher/students-progress', requireTeacher, async (req, res) => {
         exosFaits: activeProgress.filter(p => p.status === 'COMPLETED').length,
         totalTime: activeProgress.reduce((acc, p) => acc + (p.time_spent || 0), 0),
         lastActive: activeProgress.length > 0
-          ? new Date(Math.max(...activeProgress.map(p => new Date(p.completed_at || 0)))).toLocaleDateString()
+          ? new Date(
+              Math.max(...activeProgress.map(p => new Date(p.completed_at || 0).getTime()))
+            ).toLocaleDateString()
           : 'Jamais',
         history: activeProgress.map(p => ({
           nom: p.exercises.title,
           temps: p.time_spent || 0,
-          date: p.completed_at ? new Date(p.completed_at).toLocaleDateString() : (p.is_saved ? "Sauvegardé" : "En cours")
+          date: p.completed_at
+            ? new Date(p.completed_at).toLocaleDateString()
+            : (p.is_saved ? 'Sauvegardé' : 'En cours')
         }))
       };
     });
 
-    res.json(stats);
+    return res.json(stats);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('GET /api/teacher/students-progress failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
 });
 
-// --- ROUTES STATISTIQUES ---
-
+// Stats
 app.get('/api/stats/users', async (req, res) => {
   try {
-    const { count: studentCount } = await supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'STUDENT');
-    const { count: teacherCount } = await supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'TEACHER');
+    const { count: studentCount, error: studentErr } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'STUDENT');
 
-    // Récupérer le nombre de visites
-    const { data: visitData } = await supabase.from('site_stats').select('count').eq('id', 'visits').single();
+    if (studentErr) return sendError(res, 400, 'Failed to count students', studentErr.message);
 
-    res.json({
+    const { count: teacherCount, error: teacherErr } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'TEACHER');
+
+    if (teacherErr) return sendError(res, 400, 'Failed to count teachers', teacherErr.message);
+
+    const { data: visitData, error: visitErr } = await supabase
+      .from('site_stats')
+      .select('count')
+      .eq('id', 'visits')
+      .single();
+
+    if (visitErr && visitErr.code !== 'PGRST116') {
+      return sendError(res, 400, 'Failed to load visit stats', visitErr.message);
+    }
+
+    return res.json({
       students: studentCount || 0,
       teachers: teacherCount || 0,
       visits: visitData ? visitData.count : 0
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('GET /api/stats/users failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
 });
 
-// Route pour incrémenter le nombre de visites
 app.get('/api/stats/visit', async (req, res) => {
   try {
-    const { data: current } = await supabase.from('site_stats').select('count').eq('id', 'visits').single();
-    const newCount = (current ? current.count : 0) + 1;
+    const { data: current, error: readErr } = await supabase
+      .from('site_stats')
+      .select('count')
+      .eq('id', 'visits')
+      .single();
 
-    await supabase.from('site_stats').update({ count: newCount }).eq('id', 'visits');
+    if (readErr && readErr.code !== 'PGRST116') {
+      return sendError(res, 400, 'Failed to load visit counter', readErr.message);
+    }
 
-    res.json({ count: newCount });
+    const newCount = (current?.count || 0) + 1;
+
+    const { error: updateErr } = await supabase
+      .from('site_stats')
+      .update({ count: newCount })
+      .eq('id', 'visits');
+
+    if (updateErr) return sendError(res, 400, 'Failed to update visit counter', updateErr.message);
+
+    return res.json({ count: newCount });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('GET /api/stats/visit failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
 });
 
+// Progress
 app.post('/api/progress', async (req, res) => {
-  const { email, official_id, exercise_id, status, is_saved, time_spent } = req.body;
-
-  // Log pour debug
-  console.log(`[API] Progress Update: ${email} | Exo: ${official_id || 'N/A'} (UUID: ${exercise_id || 'N/A'}) | Status: ${status} | Saved: ${is_saved} | Time: ${time_spent}s`);
-
   try {
-    // 1. Trouver l'utilisateur
-    const { data: user, error: userErr } = await supabase.from('users').select('id').eq('email', email).single();
-    if (!user || userErr) return res.status(404).json({ error: "Utilisateur non trouvé avec cet e-mail" });
+    const { email, official_id, exercise_id, status, is_saved, time_spent } = req.body || {};
+
+    console.log(
+      `[API] Progress Update: ${email} | Exo: ${official_id || 'N/A'} (UUID: ${exercise_id || 'N/A'}) | Status: ${status} | Saved: ${is_saved} | Time: ${time_spent}s`
+    );
+
+    if (!isNonEmptyString(email)) {
+      return sendError(res, 400, 'email is required');
+    }
+
+    if (!official_id && !exercise_id) {
+      return sendError(res, 400, "ID d'exercice manquant (ni official_id ni exercise_id fournis).");
+    }
+
+    if (status !== undefined && !VALID_PROGRESS_STATUS.has(status)) {
+      return sendError(res, 400, 'Invalid progress status');
+    }
+
+    const { data: user, error: userErr } = await getUserIdByEmail(email);
+    if (userErr || !user) {
+      return sendError(res, 404, 'Utilisateur non trouvé avec cet e-mail');
+    }
 
     let finalExoId = exercise_id;
 
-    // 2. Si c'est un exo natif (1-17), on trouve son UUID dans la table exercises via official_id
     if (official_id) {
-      const { data: exo, error: exoErr } = await supabase.from('exercises').select('id').eq('official_id', official_id).single();
-      if (exo) {
-        finalExoId = exo.id;
-      } else {
-        console.error(`[API] Exercice official_id=${official_id} non trouvé dans la table exercises.`);
-        return res.status(404).json({ error: `Exercice natif #${official_id} manquant dans la base de données.` });
+      const { data: exo, error: exoErr } = await supabase
+        .from('exercises')
+        .select('id')
+        .eq('official_id', official_id)
+        .single();
+
+      if (exoErr || !exo) {
+        console.error(`[API] Exercice official_id=${official_id} non trouvé.`);
+        return sendError(res, 404, `Exercice natif #${official_id} manquant dans la base de données.`);
       }
+
+      finalExoId = exo.id;
     }
 
-    if (!finalExoId) return res.status(400).json({ error: "ID d'exercice manquant (ni official_id ni exercise_id fournis)." });
-
-    // 3. Préparer l'upsert
     const updateData = {
       user_id: user.id,
       exercise_id: finalExoId
     };
 
-    if (is_saved !== undefined) updateData.is_saved = is_saved;
+    if (is_saved !== undefined) updateData.is_saved = Boolean(is_saved);
     if (status !== undefined) updateData.status = status;
-    if (time_spent !== undefined) updateData.time_spent = time_spent;
+    if (time_spent !== undefined && Number.isFinite(Number(time_spent))) {
+      updateData.time_spent = Number(time_spent);
+    }
 
     if (status === 'COMPLETED') {
       updateData.completed_at = new Date().toISOString();
@@ -431,49 +603,47 @@ app.post('/api/progress', async (req, res) => {
       .upsert(updateData, { onConflict: 'user_id, exercise_id' })
       .select();
 
-    if (progError) throw progError;
+    if (progError) return sendError(res, 400, 'Failed to save progress', progError.message);
 
-    res.json({ success: true, message: "Progression synchronisée !", data: data[0] });
-
+    return res.json({ success: true, message: 'Progression synchronisée !', data: data?.[0] || null });
   } catch (err) {
-    console.error("❌ Erreur critique API progression :", err.message);
-    res.status(500).json({ error: "Erreur serveur lors de la mise à jour de la progression", details: err.message });
+    console.error('POST /api/progress failed:', err);
+    return sendError(res, 500, 'Erreur serveur lors de la mise à jour de la progression', err.message);
   }
 });
 
-// --- RÉCUPÉRER LA PROGRESSION D'UN UTILISATEUR ---
 app.get('/api/progress/:email', async (req, res) => {
-  const { email } = req.params;
-
   try {
+    const { email } = req.params;
+
     const { data: user, error: userErr } = await supabase
       .from('users')
       .select('id')
       .eq('email', email)
       .single();
 
-    if (userErr || !user) return res.status(404).json({ error: "Utilisateur non trouvé" });
+    if (userErr || !user) return sendError(res, 404, 'Utilisateur non trouvé');
 
-      const { data: progress, error: progErr } = await supabase
-        .from('progress')
-        .select(`
-          status,
-          is_saved,
-          completed_at,
-          time_spent,
-          exercises (
-            id,
-            official_id,
-            title
-          )
-        `)
-        .eq('user_id', user.id);
+    const { data: progress, error: progErr } = await supabase
+      .from('progress')
+      .select(`
+        status,
+        is_saved,
+        completed_at,
+        time_spent,
+        exercises (
+          id,
+          official_id,
+          title
+        )
+      `)
+      .eq('user_id', user.id);
 
-    if (progErr) throw progErr;
-    res.json(progress);
+    if (progErr) return sendError(res, 400, 'Failed to load progress', progErr.message);
+    return res.json(progress || []);
   } catch (err) {
-    console.error("Erreur historique:", err);
-    res.status(500).json({ error: err.message });
+    console.error('GET /api/progress/:email failed:', err);
+    return sendError(res, 500, 'Internal server error');
   }
 });
 
